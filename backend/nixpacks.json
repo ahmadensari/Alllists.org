@@ -1,0 +1,16 @@
+{
+  "phases": {
+    "setup": {
+      "commands": [
+        "cd backend",
+        "pip install -r requirements.txt"
+      ]
+    },
+    "start": {
+      "commands": [
+        "cd backend",
+        "python3 main.py"
+      ]
+    }
+  }
+}
