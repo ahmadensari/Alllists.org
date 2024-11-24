@@ -1,4 +1,4 @@
-from main import db
+from database import db
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
