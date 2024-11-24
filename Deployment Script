@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deployment Scripts for All Lists Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        h2 {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Deployment Scripts for All Lists Platform</h1>
+
+<p>Here’s a set of deployment scripts that will help you deploy your Flask-based backend and frontend. These scripts assume you are using a Linux server (such as an Ubuntu server) and have access to SSH for deployment.</p>
+
+<h2>1. Backend Deployment Script</h2>
+<p>Save this script as <code>deploy_backend.sh</code>.</p>
+<pre>
+#!/bin/bash
+
+LOGFILE="/var/log/deploy_backend.log"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Updating system packages..." | tee -a $LOGFILE
+sudo apt update && sudo apt upgrade -y >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to update system packages." | tee -a $LOGFILE; exit 1; }
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Installing Python, pip, and virtualenv..." | tee -a $LOGFILE
+sudo apt install -y python3 python3-pip python3-venv >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to install Python, pip, and virtualenv." | tee -a $LOGFILE; exit 1; }
+
+BACKEND_DIR="/var/www/html/backend"
+if [ ! -d "$BACKEND_DIR" ]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Creating backend directory..." | tee -a $LOGFILE
+    sudo mkdir -p $BACKEND_DIR >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to create backend directory." | tee -a $LOGFILE; exit 1; }
+fi
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Navigating to backend directory..." | tee -a $LOGFILE
+cd $BACKEND_DIR >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to navigate to backend directory." | tee -a $LOGFILE; exit 1; }
+
+if [ ! -d "venv" ]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Creating a Python virtual environment..." | tee -a $LOGFILE
+    python3 -m venv venv >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to create virtual environment." | tee -a $LOGFILE; exit 1; }
+fi
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Activating virtual environment..." | tee -a $LOGFILE
+source venv/bin/activate >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to activate virtual environment." | tee -a $LOGFILE; exit 1; }
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Installing dependencies..." | tee -a $LOGFILE
+pip install -r requirements.txt >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to install dependencies." | tee -a $LOGFILE; exit 1; }
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Starting Flask backend server..." | tee -a $LOGFILE
+nohup flask run --host=0.0.0.0 --port=5000 >> $LOGFILE 2>&1 &
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Backend deployment completed successfully." | tee -a $LOGFILE
+</pre>
+
+<h2>2. Frontend Deployment Script</h2>
+<p>Save this script as <code>deploy_frontend.sh</code>.</p>
+<pre>
+#!/bin/bash
+
+LOGFILE="/var/log/deploy_frontend.log"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Installing Node.js..." | tee -a $LOGFILE
+sudo apt update >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to update system packages." | tee -a $LOGFILE; exit 1; }
+sudo apt install -y nodejs npm >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to install Node.js and npm." | tee -a $LOGFILE; exit 1; }
+
+FRONTEND_DIR="/var/www/html/frontend"
+if [ ! -d "$FRONTEND_DIR" ]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Creating frontend directory..." | tee -a $LOGFILE
+    sudo mkdir -p $FRONTEND_DIR >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to create frontend directory." | tee -a $LOGFILE; exit 1; }
+fi
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Navigating to frontend directory..." | tee -a $LOGFILE
+cd $FRONTEND_DIR >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to navigate to frontend directory." | tee -a $LOGFILE; exit 1; }
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Installing frontend dependencies..." | tee -a $LOGFILE
+npm install >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to install frontend dependencies." | tee -a $LOGFILE; exit 1; }
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Building frontend..." | tee -a $LOGFILE
+npm run build >> $LOGFILE 2>&1 || { echo "$(date '+%Y-%m-%d %H:%M:%S') - Failed to build frontend." | tee -a $LOGFILE; exit 1; }
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Starting the frontend HTTP server..." | tee -a $LOGFILE
+nohup python3 -m http.server 8080 >> $LOGFILE 2>&1 &
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Frontend deployment completed successfully." | tee -a $LOGFILE
+</pre>
+
+<h2>3. System Service for Backend</h2>
+<p>To run the backend as a service (so it starts automatically after reboot), create a systemd service file.</p>
+<ol>
+    <li>Create the service file:</li>
+    <pre>sudo nano /etc/systemd/system/backend.service</pre>
+    <li>Add the following content to the file:</li>
+    <pre>
+[Unit]
+Description=Flask Backend Service
+After=network.target
+
+[Service]
+User=ahmadensari
+WorkingDirectory=/var/www/html/backend
+ExecStart=/var/www/html/backend/venv/bin/python3 /var/www/html/backend/main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+    </pre>
+    <li>Enable and start the service:</li>
+    <pre>
+sudo systemctl enable backend.service
+sudo systemctl start backend.service
+    </pre>
+</ol>
+
+<h2>4. Firewall Configuration</h2>
+<p>Make sure your server firewall allows traffic on ports 5000 (backend) and 8080 (frontend).</p>
+<pre>
+sudo ufw allow 5000/tcp
+sudo ufw allow 8080/tcp
+sudo ufw reload
+</pre>
+
+<h2>5. Nginx Configuration (Optional)</h2>
+<p>If you want to serve your frontend and backend using Nginx, create an Nginx configuration file:</p>
+<ol>
+    <li>Install Nginx:</li>
+    <pre>sudo apt install nginx -y</pre>
+    <li>Configure Nginx:</li>
+    <pre>sudo nano /etc/nginx/sites-available/alllists</pre>
+    <p>Add the following:</p>
+    <pre>
+server {
+    listen 80;
+
+    server_name your-domain-or-ip;
+
+    location / {
+        root /var/www/html/frontend/build;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+    </pre>
+    <li>Enable the configuration and restart Nginx:</li>
+    <pre>
+sudo ln -s /etc/nginx/sites-available/alllists /etc/nginx/sites-enabled/
+sudo systemctl restart nginx
+    </pre>
+</ol>
+
+<h2>How to Use the Scripts</h2>
+<ol>
+    <li>Copy the backend code to <code>/var/www/html/backend</code>.</li>
+    <li>Copy the frontend code to <code>/var/www/html/frontend</code>.</li>
+    <li>Save the <code>deploy_backend.sh</code> and <code>deploy_frontend.sh</code> scripts on your server.</li>
+    <li>Make the scripts executable:</li>
+    <pre>chmod +x deploy_backend.sh deploy_frontend.sh</pre>
+    <li>Run the scripts:</li>
+    <pre>
+./deploy_backend.sh
+./deploy_frontend.sh
+    </pre>
+    <li>Verify that the backend runs on <code>http://&lt;your-server-ip&gt;:5000</code> and the frontend on <code>http://&lt;your-server-ip&gt;:8080</code>.</li>
+</ol>
+
+<p>These scripts automate most of the deployment process, making it easy to set up and manage your application. Let me know if you need additional customization! 😊</p>
+
+</body>
+</html>
