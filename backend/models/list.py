@@ -1,4 +1,4 @@
-rom main import db
+from database import db
 
 class List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
