@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Schema for All Lists Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Database Schema for All Lists Platform</h1>
+
+<h2>Users Table</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Constraints</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>SERIAL</td>
+            <td>PRIMARY KEY</td>
+            <td>Unique identifier for each user</td>
+        </tr>
+        <tr>
+            <td>username</td>
+            <td>VARCHAR(50)</td>
+            <td>UNIQUE, NOT NULL</td>
+            <td>User's chosen username</td>
+        </tr>
+        <tr>
+            <td>email</td>
+            <td>VARCHAR(100)</td>
+            <td>UNIQUE, NOT NULL</td>
+            <td>User's email address</td>
+        </tr>
+        <tr>
+            <td>password_hash</td>
+            <td>VARCHAR(128)</td>
+            <td>NOT NULL</td>
+            <td>Hashed password for security</td>
+        </tr>
+        <tr>
+            <td>role</td>
+            <td>VARCHAR(20)</td>
+            <td>DEFAULT 'creator'</td>
+            <td>User role (admin, creator, subscriber)</td>
+        </tr>
+        <tr>
+            <td>created_at</td>
+            <td>TIMESTAMP</td>
+            <td>DEFAULT CURRENT_TIMESTAMP</td>
+            <td>Timestamp of when the user was created</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Lists Table</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Constraints</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>SERIAL</td>
+            <td>PRIMARY KEY</td>
+            <td>Unique identifier for each list</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>VARCHAR(100)</td>
+            <td>NOT NULL</td>
+            <td>Name of the list</td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>TEXT</td>
+            <td></td>
+            <td>Description of the list</td>
+        </tr>
+        <tr>
+            <td>creator_id</td>
+            <td>INT</td>
+            <td>NOT NULL, FOREIGN KEY</td>
+            <td>ID of the user who created the list</td>
+        </tr>
+        <tr>
+            <td>created_at</td>
+            <td>TIMESTAMP</td>
+            <td>DEFAULT CURRENT_TIMESTAMP</td>
+            <td>Timestamp of when the list was created</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Transactions Table</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Constraints</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>SERIAL</td>
+            <td>PRIMARY KEY</td>
+            <td>Unique identifier for each transaction</td>
+        </tr>
+        <tr>
+            <td>user_id</td>
+            <td>INT</td>
+            <td>NOT NULL, FOREIGN KEY</td>
+            <td>ID of the user involved in the transaction</td>
+        </tr>
+        <tr>
+            <td>list_id</td>
+            <td>INT</td>
+            <td>NOT NULL, FOREIGN KEY</td>
+            <td>ID of the list related to the transaction</td>
+        </tr>
+        <tr>
+            <td>amount</td>
+            <td>FLOAT</td>
+            <td>NOT NULL</td>
+            <td>Amount of the transaction</td>
+        </tr>
+        <tr>
+            <td>transaction_type</td>
+            <td>VARCHAR(50)</td>
+            <td></td>
+            <td>Type of transaction (e.g., purchase, subscription)</td>
+        </tr>
+        <tr>
+            <td>created_at</td>
+            <td>TIMESTAMP</td>
+            <td>DEFAULT CURRENT_TIMESTAMP</td>
+            <td>Timestamp of when the transaction was made</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Indexes</h2>
+<pre>
+CREATE INDEX idx_users_email ON users (email);
+CREATE INDEX idx_lists_creator_id ON lists (creator_id);
+CREATE INDEX idx_transactions_user_id ON transactions (user_id);
+CREATE INDEX idx_transactions_list_id ON transactions (list_id);
+</pre>
+
+<h2>Sample Data</h2>
+<h3>Users</h3>
+<pre>
+INSERT INTO users (username, email, password_hash) 
+VALUES 
+('testuser1', 'testuser1@example.com', 'hashedpassword1'),
+('testuser2', 'testuser2@example.com', 'hashedpassword2');
+</pre>
+
+<h3>Lists</h3>
+<pre>
+INSERT INTO lists (name, description, creator_id) 
+VALUES 
+('Sample List 1', 'This is a sample list', 1),
+('Sample List 2', 'This is another sample list', 2);
+</pre>
+
+<h3>Transactions</h3>
+<pre>
+INSERT INTO transactions (user_id, list_id, amount, transaction_type) 
+VALUES 
+(1, 1, 9.99, 'subscription'),
+(2, 2, 19.99, 'purchase');
+</pre>
+
+</body>
+</html>
