@@ -1,0 +1,9 @@
+runtime: python39  # or the Python version you're using
+handlers:
+- url: /.*
+  script: auto
+env_variables:
+  DATABASE_URL: 'postgresql://postgres:supersecurepassword@alllists:us-central1:ahmadensarisql/alllists 
+'  # Add your actual DATABASE_URL here
+  SECRET_KEY: 'pt39gW9Jf5IFrPxX6uR2q2cKqPlWtB3B17kpq1P3Zlpm1g9H2oK2ZlpU7Y7gJ6
+'  # Add your actual SECRET_KEY here
