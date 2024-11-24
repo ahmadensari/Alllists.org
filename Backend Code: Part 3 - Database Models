@@ -10,7 +10,7 @@ class User(db.Model):
     role = db.Column(db.String(20), default='creator')  # Roles: admin, creator, subscriber
 models/list.py
 python
-from main import db
+from database import db
 
 class List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,7 +19,7 @@ class List(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 models/transaction.py
 python
-from main import db
+from database import db
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
