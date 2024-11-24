@@ -12,11 +12,6 @@ app.config.from_object(Config)
 # Initialize database with the app
 db.init_app(app)
 
-# Import models after db initialization to avoid circular imports
-from models.user import User
-from models.list import List
-from models.transaction import Transaction
-
 # Register routes
 app.register_blueprint(auth_routes, url_prefix='/auth')
 app.register_blueprint(list_routes, url_prefix='/lists')
