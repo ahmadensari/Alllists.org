@@ -1,1 +1,16 @@
+*   Click the "Add file" button near the top right of the file list.
+*   Select "Create new file."
+*   In the "Name your file..." field, type `requirements.txt`.
+*   In the large text area below, paste the following content:
+
+    ```
+    Flask
+    Flask-SQLAlchemy
+    scikit-learn
+    werkzeug
+    ```
+
+*   Scroll down to the "Commit new file" section.
+*   Enter a short commit message like "Add requirements.txt" in the first text box.
+*   Click the "Commit new file" button.
 
