@@ -18,6 +18,10 @@ app.register_blueprint(payment_routes, url_prefix='/payments')
 
 @app.before_first_request
 def create_tables():
+    # Import models inside the function to avoid circular imports
+    from models.user import User
+    from models.list import List
+    from models.transaction import Transaction
     db.create_all()
 
 if __name__ == '__main__':
