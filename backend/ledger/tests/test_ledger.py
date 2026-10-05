@@ -346,3 +346,41 @@ def test_freshness_bonus_starts_exactly_at_the_window_edge():
     assert ledger.freshness_weight(on_edge, now) == Fraction(5, 4)
     assert ledger.freshness_weight(just_past, now) == Fraction(1)
     assert ledger.freshness_weight(SimpleNamespace(last_verified_at=None), now) == Fraction(1)
+
+
+def test_a_revoked_check_earns_nothing_even_though_its_expiry_is_still_in_the_future(scene, users):
+    s = scene
+    before = {e.pk for _, _, e in ledger.allocation_items("pk.punjab.sialkot", s["surgical"])}
+    assert s["e1"].pk in before
+    es.revoke_verification(s["e1"], field_group="identity", level="surveyor", actor=users["mod"], reason="wrong number")
+    after = {e.pk for _, _, e in ledger.allocation_items("pk.punjab.sialkot", s["surgical"])}
+    assert s["e1"].pk not in after and s["e2"].pk in after
+
+
+def test_an_expired_check_earns_nothing(scene):
+    from entries.models import VerificationCurrent
+
+    VerificationCurrent.objects.filter(entry=scene["e1"]).update(expires_at=clock.now() - timedelta(days=1))
+    ids = {e.pk for _, _, e in ledger.allocation_items("pk.punjab.sialkot", scene["surgical"])}
+    assert scene["e1"].pk not in ids
+    VerificationCurrent.objects.filter(entry=scene["e1"]).update(expires_at=None)
+    ids = {e.pk for _, _, e in ledger.allocation_items("pk.punjab.sialkot", scene["surgical"])}
+    assert scene["e1"].pk not in ids  # a check with no expiry date is not a live check
+
+
+def test_entry_count_on_an_allocation_is_the_number_of_that_persons_paid_entries(scene, make_published, tree):
+    s = scene
+    extra = make_published("Delta Works", tree["paris"], phone="0300 000 0109", refresh=False)
+    assert extra.created_by_id == s["adder"].pk
+    for kind in ("list", "subscription"):
+        sale = ledger.record_sale(
+            f"EC-{kind}", kind, gross=10000, scope_path="pk.punjab.sialkot", concept=s["surgical"]
+        )
+        counts = {a.user_id: a.entry_count for a in sale.allocations.all()}
+        assert counts == {s["adder"].pk: 2, s["other"].pk: 1}, (kind, counts)
+
+
+def test_allocation_items_works_without_being_given_a_time(scene):
+    items = ledger.allocation_items("pk.punjab.sialkot", scene["surgical"])
+    assert {u for u, _, _ in items} == {scene["adder"].pk, scene["other"].pk}
+    assert all(rate == 50 for _, rate, _ in items)
