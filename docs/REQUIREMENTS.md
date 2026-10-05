@@ -432,6 +432,7 @@ The owner's stated principles: **better usage and returning clients**, and **rev
 - **Q-S7** Cluster pilot (C30): confirm Sialkot surgical instruments as the first pilot trade; success test: verify 200 firms, get 5 to pay or 5 foreign buyers to send enquiries within 6 to 8 weeks.
 - **Q-S8** Which of the catalogue's proposed additions (report section 6) join the seed list. Note: real estate agents were my prompt to the researcher, not a founder-named list.
 - **Q-S9** Technical stack (see `docs/TECHNICAL_CAPABILITIES.md`, section 12): confirm backend framework, PostgreSQL with PostGIS, hosting and server-rendered front end before coding starts.
+- **Q-S10** Reuse plan (see `docs/REUSE_AND_TOOLS.md`): which open components to study first, and counsel's view on copying any GPL or AGPL code.
 
 ## Next step
 
