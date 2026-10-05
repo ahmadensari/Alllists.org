@@ -85,14 +85,14 @@ Demand intelligence, product requests from shops, product testing, direct sell o
 
 ## 8. Seed list types named by the owner (for seeding and testing)
 
-Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeries; mobile stores; mobile phone repair services; spare parts shops; furniture stores; medical stores and pharmacies; doctors, nurses, lawyers; bookshops; hardware shops; MRI machines with services and prices; plumbers and other skill-based lists; Quran tutors in an area; eye doctors and eye hospitals in a society; contractors (national); data scientists (global); factories and suppliers; and personal lists (books read, belongings, classmates) that stay private by default. Research in `reports/Which lists pay.md` ranks which of these are likely to pay.
+Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeries; mobile stores; mobile phone repair services; spare parts shops; furniture stores; medical stores and pharmacies; doctors, nurses, lawyers; bookshops; hardware shops; MRI machines with services and prices; plumbers and other skill-based lists; Quran tutors in an area; surgical instrument makers and football makers in Sialkot, fan and sanitaryware makers in Gujranwala, furniture makers in Faisalabad, hotels in Murree; eye doctors and eye hospitals in a society; contractors (national); data scientists (global); factories and suppliers; and personal lists (books read, belongings, classmates) that stay private by default. Research in `reports/Which lists pay.md` ranks which of these are likely to pay.
 
 ## 9. Open: owner decisions still needed (with my suggested defaults)
 
 | Open item | Suggested default | Ref |
 |---|---|---|
 | Domain: alllists.org or alllists.com | Confirm which you own | |
-| First country, city and trade | Pakistan, one city, one trade; sell to buyers in Pakistan and the Gulf | Q-N6, Q-P1 |
+| First country, city and trade | Pakistan, one city, one trade; sell to buyers in Pakistan and the Gulf. Candidate trade after the cluster discussion: surgical instrument makers in Sialkot (export buyers abroad), tested as in Q-S7 | Q-N6, Q-P1 |
 | How the 50, 40, 30 steps work: by date, by merge level, or both; locked per entry? | Date phases, locked on each entry | F3, F4 |
 | What a "not verified yet" entry may do | Visible only to owners and moderators; public with badge from "AI-checked" up | Q-P6 |
 | Requirements and duration of each verification level; who pays surveyors | Settle in the 1,000-record pilot | Q-P7 |
