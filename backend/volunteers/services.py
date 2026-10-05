@@ -52,6 +52,7 @@ def take_next_task(user):
         Task.objects.select_for_update(skip_locked=True, of=("self",))
         .filter(state=Task.State.OPEN, kind=Task.Kind.VERIFY)
         .exclude(entry__created_by=user)
+        .exclude(audit_sample__original_verifier_id=user.pk)
         .order_by("created_at")
         .first()
     )
@@ -71,7 +72,16 @@ def complete_task(task, *, user, outcome, evidence="", method="call", minutes=No
         raise es.GuardError("unknown outcome")
     if outcome in ("confirmed", "closed") and not evidence.strip():
         raise es.GuardError("evidence text is required")
-    if outcome == "confirmed":
+    if task.field_group == "audit":
+        # an audit re-checks an already published entry: it measures accuracy and records no new check
+        from .models import AuditSample
+
+        sample = AuditSample.objects.get(task=task)
+        sample.correct = outcome == "confirmed"
+        sample.save(update_fields=["correct"])
+        if outcome == "closed":
+            es.update_entry(task.entry, actor=user, status=Entry.Status.PERM_CLOSED)
+    elif outcome == "confirmed":
         es.record_verification(
             task.entry, field_group=task.field_group, level="surveyor", actor=user, method=method, evidence=evidence
         )
@@ -110,3 +120,77 @@ def completion_rate(days=14):
     assigned = Task.objects.filter(Q(created_at__gte=since), state__in=["assigned", "done", "skipped"]).count()
     done = Task.objects.filter(created_at__gte=since, state="done").count()
     return (done / assigned) if assigned else None
+
+
+# ---- canaries and audit samples (plan 6.4, T1.03) -----------------------------------------------------------------
+
+AUDIT_SAMPLE_SIZE = 385  # about 95 percent confidence, 5 percent margin, for a large population
+
+
+def plant_canaries(place, concept, n, *, purpose="verifier"):
+    """Create fake draft entries. Surveyors are tasked with them; the right answer is that nobody can be reached."""
+    from .models import CanaryEntry
+
+    made = []
+    for i in range(n):
+        e = es.create_entry(
+            name=f"Canary {secrets.token_hex(3)} Traders",
+            place=place,
+            primary_concept=concept,
+            created_via=Entry.CreatedVia.AGENT,
+            source=__import__("intake.models", fromlist=["Source"]).Source.objects.get_or_create(
+                name="Platform canaries", defaults=dict(tier="green", allowed_uses=["agent_fetch", "display", "import"])
+            )[0],
+            contacts=[("phone", f"+0000{secrets.randbelow(10**7):07d}")],
+        )
+        CanaryEntry.objects.create(entry=e, purpose=purpose)
+        if purpose == "verifier":
+            queue_verification(e, canary=True)
+        made.append(e)
+    return made
+
+
+def queue_audit_sample(n=AUDIT_SAMPLE_SIZE, *, seed=None):
+    """Pick random published entries and queue an audit task for each, once. Returns how many were queued."""
+    import random
+
+    from .models import AuditSample
+
+    rng = random.Random(seed)
+    ids = list(
+        Entry.objects.filter(publish_state="published", deleted_at__isnull=True, canary__isnull=True)
+        .exclude(audit_samples__isnull=False)
+        .values_list("pk", flat=True)
+    )
+    queued = 0
+    for pk in rng.sample(ids, min(n, len(ids))):
+        e = Entry.objects.get(pk=pk)
+        t = Task.objects.create(kind=Task.Kind.VERIFY, entry=e, field_group="audit")
+        last = e.verification_events.filter(state="verified", actor_id__isnull=False).order_by("-id").first()
+        AuditSample.objects.create(
+            entry=e, task=t, source=e.source, original_verifier_id=last.actor_id if last else None
+        )
+        queued += 1
+    return queued
+
+
+def accuracy_by_source():
+    """{source name: (checked, correct, accuracy)} from completed audit samples."""
+    from .models import AuditSample
+
+    out = {}
+    for s in AuditSample.objects.filter(correct__isnull=False).select_related("source"):
+        name = s.source.name if s.source else "contributors"
+        c, ok, _ = out.get(name, (0, 0, 0))
+        out[name] = (c + 1, ok + int(s.correct), 0)
+    return {k: (c, ok, ok / c) for k, (c, ok, _) in out.items()}
+
+
+def accuracy_by_verifier():
+    from .models import AuditSample
+
+    out = {}
+    for s in AuditSample.objects.filter(correct__isnull=False, original_verifier_id__isnull=False):
+        c, ok = out.get(s.original_verifier_id, (0, 0))
+        out[s.original_verifier_id] = (c + 1, ok + int(s.correct))
+    return {k: (c, ok, ok / c) for k, (c, ok) in out.items()}

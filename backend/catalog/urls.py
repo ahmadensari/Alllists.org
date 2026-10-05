@@ -35,6 +35,8 @@ urlpatterns = [
     path("staff/audit/", staff_views.audit_view),
     path("staff/switches/", staff_views.switches),
     path("staff/outbox/", staff_views.outbox),
+    path("staff/agents/", staff_views.agents_page),
+    path("staff/jobs/", staff_views.jobs_page),
     path("staff/<str:key>/", staff_views.show_queue),
     path("staff/<str:key>/<int:pk>/<str:action>/", staff_views.act),
     path("account/tasks/", task_views.my_tasks),

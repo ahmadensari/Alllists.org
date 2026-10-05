@@ -41,6 +41,8 @@ ROUTES = {
     "staff/audit/": STAFF,
     "staff/switches/": STAFF,
     "staff/outbox/": STAFF,
+    "staff/agents/": STAFF,
+    "staff/jobs/": STAFF,
     "staff/<str:key>/": STAFF,
     "staff/<str:key>/<int:pk>/<str:action>/": STAFF,
     "account/tasks/": LOGIN,

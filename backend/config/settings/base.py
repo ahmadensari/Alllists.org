@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "billing",
     "outreach",
     "volunteers",
+    "agents",
     "catalog",
 ]
 MIDDLEWARE = [
@@ -173,3 +174,9 @@ REFUND_HOLD_DAYS = 14
 TAX_RATES = {}  # country code -> percent (decimal string), configured per country; empty means none
 PAYMENT_WEBHOOK_SECRETS = {}  # provider name -> shared secret (set per environment; none by default)
 PAYMENT_INSTRUCTIONS = os.environ.get("PAYMENT_INSTRUCTIONS", "")
+
+# AI agent track (plan 7.6): nothing runs until the caps are set. Amounts are minor units (cents).
+AI_KILL_SWITCH = os.environ.get("AI_KILL_SWITCH", "") == "1"
+AI_DAILY_CAP_MINOR = int(os.environ.get("AI_DAILY_CAP_MINOR", "0"))
+AI_MONTHLY_CAP_MINOR = int(os.environ.get("AI_MONTHLY_CAP_MINOR", "0"))
+AI_JOB_CAP_MINOR = int(os.environ.get("AI_JOB_CAP_MINOR", "50"))

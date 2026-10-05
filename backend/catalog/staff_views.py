@@ -126,6 +126,9 @@ def index(request):
         ("audit", "Audit log", "view_audit"),
         ("switches", "Country switches", "edit_registries"),
         ("outbox", "Outbox", "moderate"),
+        ("agents", "AI agents", "moderate"),
+        ("jobs", "Scheduled jobs", "view_audit"),
+        ("orders", "Orders", "record_payment"),
     ]
     return render(
         request,
@@ -331,6 +334,57 @@ def switches(request):
             "fields": fields,
             "robots": "noindex,nofollow",
             "title": "Country switches",
+        },
+    )
+
+
+def agents_page(request):
+    from agents import services as ag
+    from agents.models import AgentJob
+    from volunteers import services as vs
+
+    denied = _gate(request, "moderate")
+    if denied:
+        return denied
+    rows = [
+        [j.pk, j.kind, j.source.name, j.status, f"{j.spent_minor}/{j.budget_cap_minor}", j.stop_reason]
+        for j in AgentJob.objects.select_related("source").order_by("-id")[:50]
+    ]
+    st, per = ag.cap_status(), ag.cost_per_verified()
+    note = (
+        f"Today {st['day']}/{st['day_cap']} ({st['day_pct']}%), month {st['month']}/{st['month_cap']} ({st['month_pct']}%). "
+        f"Cost per verified record: {per['per_verified_minor'] if per['per_verified_minor'] is not None else 'n/a'} minor units. "
+        f"Kill switch: {'ON' if ag.kill_switch_on() else 'off'}. Accuracy by source: "
+        + (", ".join(f"{k} {v[2]:.0%} of {v[0]}" for k, v in vs.accuracy_by_source().items()) or "no audits yet")
+    )
+    return render(
+        request,
+        "catalog/staff/table.html",
+        {
+            "title": "AI agents",
+            "head": ["Job", "Kind", "Source", "Status", "Spent", "Stopped because"],
+            "rows": rows,
+            "note": note,
+            "robots": "noindex,nofollow",
+        },
+    )
+
+
+def jobs_page(request):
+    from core.models import JobRun
+
+    denied = _gate(request, "view_audit")
+    return denied or render(
+        request,
+        "catalog/staff/table.html",
+        {
+            "title": "Scheduled jobs",
+            "head": ["Job", "Last run", "Result", "Error"],
+            "rows": [
+                [j.name, j.last_run.strftime("%Y-%m-%d %H:%M") if j.last_run else "never", j.last_result, j.last_error]
+                for j in JobRun.objects.order_by("name")
+            ],
+            "robots": "noindex,nofollow",
         },
     )
 

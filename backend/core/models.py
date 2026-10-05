@@ -171,3 +171,12 @@ def flag_enabled(key, country_code=""):
 
 
 AUTH_USER = settings.AUTH_USER_MODEL
+
+
+class JobRun(models.Model):
+    """Last run of each scheduled job (plan appendix F). Lets a simple scheduler decide what is due."""
+
+    name = models.CharField(max_length=60, unique=True)
+    last_run = models.DateTimeField(null=True, blank=True)
+    last_result = models.CharField(max_length=200, blank=True)
+    last_error = models.CharField(max_length=300, blank=True)

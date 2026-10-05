@@ -52,3 +52,24 @@ class Reward(models.Model):
     kind = models.CharField(max_length=20)  # certificate, visible_credit, access_credit
     detail = models.CharField(max_length=120, blank=True)
     granted_at = models.DateTimeField(default=clock.now)
+
+
+class CanaryEntry(models.Model):
+    """A fake business only we know. `verifier` canaries test surveyors; `trace` canaries are planted in extracts and
+    large lists so copies can be traced (plan 6.4, 9.3, rule R13)."""
+
+    entry = models.OneToOneField("entries.Entry", on_delete=models.CASCADE, related_name="canary")
+    purpose = models.CharField(max_length=10)  # verifier | trace
+    planted_at = models.DateTimeField(default=clock.now)
+    note = models.CharField(max_length=120, blank=True)
+
+
+class AuditSample(models.Model):
+    """A sampled published entry re-checked by an auditor, to measure accuracy per source and per verifier."""
+
+    entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="audit_samples")
+    task = models.OneToOneField(Task, on_delete=models.CASCADE, related_name="audit_sample")
+    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    original_verifier_id = models.BigIntegerField(null=True, blank=True)
+    correct = models.BooleanField(null=True)
+    created_at = models.DateTimeField(default=clock.now)
