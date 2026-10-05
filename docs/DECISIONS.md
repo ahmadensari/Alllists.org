@@ -16,6 +16,7 @@ Last updated: 2026-10-05 (service-provider round).
 | The platform sets the price of merged (higher-level) lists | E2 |
 | The idea is workable enough to refine fully first. Coding starts only after refinement, top to bottom (global structure first, then country, region, city, area) | S1, S2 |
 | Build in phases, never everything at once | S2 |
+| Launch globally with no spending, growing by a study-then-snowball approach; each stage pays for the next (working view; costs that cannot be zero are open) | C28 |
 | All countries are in the structure; go-to-market starts where data is poor and rules are lighter (Pakistan, the Middle East and other countries); the product becomes high-end as it reaches high-end markets | S3, S4, D14 |
 | Top research priority: which list types pay at Justdial, IndiaMART and other platforms; focus on those in all countries | S5 |
 
@@ -38,6 +39,7 @@ Last updated: 2026-10-05 (service-provider round).
 | Equipment and priced services can be part of an entry (MRI machines in Islamabad with services and prices) | C21 |
 | Skill-based lists of individuals at neighbourhood level are in (plumbers in Bankers Society, mobile phone repair services, Quran tutors in an area, and many more) | C22, C23 |
 | Verification levels on every entry: owner-verified, surveyor-verified, AI-checked, not verified yet, with who, how, when and evidence stored | D19, D20 |
+| Topic lists that are not about places (apps, websites, books, tools) are in; they use a topic tree and are monetised by sponsorship, affiliate links and ads, not by list sales (working view) | C27 |
 | Every list type gets a complete entry template: a common core plus type-specific fields, based on what established platforms and registers hold (research under way) | C26 |
 | Keep adding data first (draft-first); reliability comes later through ownership and manual verification | D18 |
 

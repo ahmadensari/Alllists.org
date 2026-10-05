@@ -84,6 +84,8 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | C24 | **The owner asked that every idea and decision be recorded as the conversation goes on**, so that coding does not reopen debates. A short decision log is kept in `docs/DECISIONS.md` and the full register in this file | U (2026-10-05) | **Decided process rule** |
 | C25 | **Natural scale differs by list type.** Some lists are useful hyper-locally (plumbers in a housing society; eye doctors and eye hospitals in a society), some nationally (contractors) and some globally (data scientists). The place tree (C10) therefore applies to every list, but each list type has a natural scale where it is most useful and sold | U (2026-10-05) | **Decided as a design principle.** Use it to choose launch lists and the default level at which each list is previewed and priced. Research: `reports/Service provider sources.md` |
 | C26 | **Entry template per list type.** The owner wants every relevant detail added to each entry of a list, so each list type gets a complete set of fields (a common core plus type-specific add-ons), based on what established platforms and registers normally hold | U (2026-10-05) | **Decided as a requirement.** Research under way (`entry_attributes_by_list_type.md`). Open: which fields are launch-time and which later, and which are sensitive for individuals (C22) |
+| C27 | **Lists that are not about places:** apps on a topic, websites on a topic, and similar topic lists (books, tools, public figures). These sit in a topic tree instead of the place tree | U (2026-10-05) | **Raised as an idea; working view:** a cheap, fast-to-fill traffic and credibility layer, monetised by sponsored placement, affiliate links and ads rather than by selling lists. Not the core revenue. Open: Q-S4 |
+| C28 | **Launch globally with no spending, grow by a study-then-snowball approach** (each stage's earnings pay for the next) | U (2026-10-05) | **Raised as an approach; working view:** structure global from day one (already decided), money-free first stage possible except for founder time, verification, payment collection and legal advice. Revenue scenarios in the chat answer of 2026-10-05, labelled as estimates. Open: Q-S5 |
 
 ## D. Getting content in, and keeping it good
 
@@ -421,6 +423,8 @@ The owner's stated principles: **better usage and returning clients**, and **rev
 - **Q-S1** Health-sector advertising and price-display rules for doctors, hospitals and equipment prices (C21): to be checked with counsel per country.
 - **Q-S2** Individual tradespeople and tutors (C22, C23): identity checks, consent, safeguarding for tutors of children, who may write reviews.
 - **Q-S3** For each register or body used as a source (D21): written terms of use, whether bulk or partnered access is allowed, and personal-data rules. Registers fetched so far are unverified because official sites were blocked in this environment.
+- **Q-S4** Digital lists (apps, websites on a topic): which topics first, who curates, and whether sponsored placement and affiliate links are allowed (C27).
+- **Q-S5** Zero-spend snowball (C28): what founder time per week, which costs are unavoidable (payment collection, counsel, verification), and what revenue per stage triggers the next stage.
 
 ## Next step
 
