@@ -276,7 +276,7 @@ def record_verification(entry, *, field_group, level, actor=None, method="", evi
             verified_at=now,
             expires_at=event.expires_at,
             method=method,
-            actor_display=(getattr(actor, "username", "") or "")[:80],
+            actor_id=getattr(actor, "pk", None),
         ),
     )
     entry.last_verified_at = now

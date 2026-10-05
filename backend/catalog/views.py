@@ -75,17 +75,33 @@ def breadcrumb(place):
     return [{"place": p, "url": place_url(p)} for p in queries.ancestors_of(place)]
 
 
+def _public_names(user_ids):
+    """The name to show beside a check: only a person who chose to be credited, under the public name they chose. A login
+    name is never shown (it can be a real name or an email address)."""
+    if not user_ids:
+        return {}
+    from accounts.models import Profile
+    from volunteers.models import ContributorProfile
+
+    opted = set(
+        ContributorProfile.objects.filter(user_id__in=user_ids, show_credit=True).values_list("user_id", flat=True)
+    )
+    return {p.user_id: p.display_name for p in Profile.objects.filter(user_id__in=opted).exclude(display_name="")}
+
+
 def check_chips(entry, now):
     """Current and past checks for an entry, best first, for display."""
     rows = []
-    for v in entry.verification_current.all():
+    currents = list(entry.verification_current.all())
+    names = _public_names({v.actor_id for v in currents if v.actor_id})
+    for v in currents:
         current = v.state == "verified" and v.expires_at and v.expires_at > now
         rows.append(
             {
                 "level": v.level,
                 "group": v.field_group,
                 "date": v.verified_at,
-                "who": v.actor_display,
+                "who": names.get(v.actor_id, ""),
                 "method": v.method,
                 "current": bool(current),
                 "expired": v.state == "expired" or (v.state == "verified" and not current),

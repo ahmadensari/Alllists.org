@@ -285,7 +285,10 @@ class VerificationCurrent(models.Model):
     verified_at = models.DateTimeField(null=True, blank=True)
     expires_at = models.DateTimeField(null=True, blank=True)
     method = models.CharField(max_length=40, blank=True)
-    actor_display = models.CharField(max_length=80, blank=True)
+    actor_display = models.CharField(max_length=80, blank=True)  # kept for old rows; never shown publicly
+    actor_id = models.BigIntegerField(
+        null=True, blank=True
+    )  # who checked; a name is shown only if they chose to be credited
 
     class Meta:
         unique_together = [("entry", "field_group", "level")]

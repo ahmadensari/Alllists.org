@@ -231,3 +231,32 @@ def test_a_clean_reply_to_still_works(entry, users):
     )
     enq, counts = relay.send_enquiry(users["owner"], [entry], "Do you make forceps?", "Buyer@Example.org")
     assert counts["delivered"] == 1 and enq.pk
+
+
+# ---- a login name is never shown beside a check ---------------------------------------------------------------------------------
+
+
+def test_checker_login_name_is_never_public_unless_they_chose_a_public_name(tree, surgical, users, make_published):
+    from accounts.models import Profile
+    from volunteers.models import ContributorProfile
+    from volunteers.services import ensure_profile
+
+    hidden = User.objects.create_user("sv_secret_login_77", "real.name@example.org", PW)
+    e = es.create_entry(
+        name="Shown Works",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        website="https://s.example",
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
+    es.record_verification(e, field_group="identity", level="surveyor", actor=hidden, method="call", evidence="ok")
+    url = f"/e/{e.uid}/shown-works/"
+    page = Client().get(url).content.decode()
+    assert "sv_secret_login_77" not in page and "real.name" not in page
+    ensure_profile(hidden)
+    Profile.objects.update_or_create(user=hidden, defaults={"display_name": "Sana K"})
+    assert "Sana K" not in Client().get(url).content.decode()  # a name alone is not consent
+    ContributorProfile.objects.filter(user=hidden).update(show_credit=True)
+    page = Client().get(url).content.decode()
+    assert "Sana K" in page and "sv_secret_login_77" not in page

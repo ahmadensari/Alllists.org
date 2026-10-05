@@ -191,6 +191,11 @@ segment = st.text(alphabet=st.characters(blacklist_categories=("Cs",), blacklist
 @hs(max_examples=150, deadline=None, suppress_health_check=[HealthCheck.function_scoped_fixture])
 def test_random_urls_and_queries_never_give_a_server_error(db, tree, surgical, segs, query):
     c = Client(raise_request_exception=False)
+    from urllib.parse import quote
+
+    segs = [
+        quote(x, safe="") for x in segs if x
+    ]  # the test client would read "//[" as a host name, a server never does
     url = "/" + "/".join(segs) + ("/" if segs else "")
     for prefix in ("", "/ur"):
         for target in (

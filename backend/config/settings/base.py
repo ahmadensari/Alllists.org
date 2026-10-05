@@ -147,9 +147,13 @@ for _item in [i for i in os.environ.get("FIELD_ENCRYPTION_KEYS", "").split(",") 
     FIELD_ENCRYPTION_KEYS[_kid] = _key
 CONTACT_HASH_PEPPER = os.environ.get("CONTACT_HASH_PEPPER", "")
 if not FIELD_ENCRYPTION_KEYS and (DEBUG or "pytest" in sys.modules):
-    from cryptography.fernet import Fernet  # noqa: E402
+    import base64  # noqa: E402
+    import hashlib  # noqa: E402
 
-    FIELD_ENCRYPTION_KEYS = {"dev": Fernet.generate_key().decode()}
+    # Stable across restarts (derived from the dev secret) so data seeded in one run can still be read in the next.
+    FIELD_ENCRYPTION_KEYS = {
+        "dev": base64.urlsafe_b64encode(hashlib.sha256(b"dev-field-key:" + SECRET_KEY.encode()).digest()).decode()
+    }
     FIELD_ENCRYPTION_ACTIVE_KEY = "dev"
     CONTACT_HASH_PEPPER = CONTACT_HASH_PEPPER or "dev-pepper-not-secret"
 
