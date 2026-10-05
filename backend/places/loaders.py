@@ -10,6 +10,7 @@ import json
 from django.db import transaction
 
 from core.models import audit
+from core.textfold import fold
 from places.services import PlaceError, create_place, make_slug
 from taxonomy.services import SYSTEM_SLUGS
 from taxonomy.models import ReservedSlug
@@ -199,11 +200,18 @@ def load_overture_divisions(lines, *, country=None):
                 continue
             if level == Place.Level.COUNTRY:
                 parent = world
+                same = Place.objects.filter(level="country", country_code=(p.get("country") or "").upper()).first()
             else:
                 parent = _find_ext("overture", p.get("parent_division_id") or "")
                 if parent is None:
                     left.append(p)
                     continue
+                same = Place.objects.filter(parent=parent, names__name_fold=fold(primary), status="active").first()
+            if same is not None:  # the place came from another dataset (GeoNames): link it instead of making a twin
+                _link(same, "overture", p["id"])
+                _set_names(same, [(lg, t) for lg, t in (names.get("common") or {}).items() if lg == "ur"])
+                counts["linked"] = counts.get("linked", 0) + 1
+                continue
             try:
                 place = create_place(
                     parent=parent,

@@ -110,3 +110,25 @@ def test_no_user_export_route():
         s = str(p.pattern)
         if any(w in s for w in ("export", "download", "extract")):
             assert s.startswith("staff/"), s
+
+
+def test_a_shared_address_never_points_at_the_wrong_extract(tree, surgical, make_published, admin):
+    from analytics.models import TraceEntry
+
+    _seed(tree, make_published, 6)
+    one = ex.build_extract(admin, "pk.punjab.sialkot", surgical, purpose="r", buyer_label="A")
+    two = ex.build_extract(admin, "pk.punjab.sialkot", surgical, purpose="r", buyer_label="B")
+    a = one.traces.first()
+    TraceEntry.objects.filter(extract=two).update(address_text=a.address_text)  # force the same address in both
+    assert list(ex.identify_leak(f"somebody posted: {a.address_text}")) == []  # an address alone proves nothing
+    assert list(ex.identify_leak(f"{a.name}, {a.address_text}")) == [one.pk]
+
+
+def test_trace_names_are_never_reused_across_extracts(tree, surgical, make_published, admin):
+    from analytics.models import TraceEntry
+
+    _seed(tree, make_published, 6)
+    for i in range(8):
+        ex.build_extract(admin, "pk.punjab.sialkot", surgical, purpose="r", buyer_label=str(i))
+    names = list(TraceEntry.objects.values_list("name", flat=True))
+    assert len(names) == len(set(names)) >= 24

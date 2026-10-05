@@ -19,6 +19,11 @@ class Command(BaseCommand):
         if connection.vendor != "postgresql":
             raise CommandError("PostgreSQL only")
         if o["check"]:
+            with connection.cursor() as cur:
+                for role in (o["app_role"], o["readonly_role"]):
+                    cur.execute("select 1 from pg_roles where rolname = %s", [role])
+                    if not cur.fetchone():
+                        raise CommandError(f"role {role!r} does not exist; create it with deploy/db_roles.sql first")
             rep = dbroles.privilege_report(o["app_role"])
             bad = [
                 t for t in dbroles.APPEND_ONLY if t in rep and any(rep[t][p] for p in ("UPDATE", "DELETE", "TRUNCATE"))

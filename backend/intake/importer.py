@@ -61,13 +61,18 @@ class ImportError_(ValueError):
 
 def parse_table(text):
     """Pasted text or CSV to (headers, rows as dicts). Tab, comma, semicolon and pipe are detected."""
-    text = text.strip("﻿\n\r ")
+    text = text.strip("﻿\n\r ").replace("\r\n", "\n").replace("\r", "\n").replace("\x00", "")
     if not text:
         raise ImportError_("nothing to import")
     sample = text[:2000]
     delim = max(["\t", ",", ";", "|"], key=sample.count)
     reader = csv.reader(io.StringIO(text), delimiter=delim)
-    rows = [r for r in reader if any(c.strip() for c in r)]
+    try:
+        rows = [r for r in reader if any(c.strip() for c in r)]
+    except csv.Error as exc:
+        raise ImportError_(f"the text could not be read as a table: {exc}") from exc
+    if not rows:
+        raise ImportError_("nothing to import")
     headers, body = [h.strip() for h in rows[0]], rows[1:]
     return headers, [{headers[i]: (r[i].strip() if i < len(r) else "") for i in range(len(headers))} for r in body]
 

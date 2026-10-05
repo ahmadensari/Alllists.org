@@ -35,6 +35,10 @@ CHECK_ORDER = {"surveyor": 0, "owner": 1, "ai": 2, "none": 3}
 # ---- helpers -------------------------------------------------------------------------------------------------
 
 
+SHARED_CACHE = "public, max-age=0, s-maxage=300, stale-while-revalidate=600"
+CRAWLER_CACHE = "public, max-age=3600"
+
+
 def shell(request, template, ctx, stamp):
     """Render a shared page with an ETag from template version, language, path, query and data stamp."""
     raw = "|".join(
@@ -44,10 +48,11 @@ def shell(request, template, ctx, stamp):
     cond = get_conditional_response(request, etag=etag)
     if cond is not None:
         cond["ETag"] = etag
+        cond["Cache-Control"] = SHARED_CACHE
         return cond
     response = render(request, template, ctx)
     response["ETag"] = etag
-    response["Cache-Control"] = "public, max-age=0, s-maxage=300, stale-while-revalidate=600"
+    response["Cache-Control"] = SHARED_CACHE
     return response
 
 
@@ -605,7 +610,9 @@ def robots_txt(request):
         "# Thin pages are marked noindex in the page itself; they are not blocked here so the marker can be read.",
         f"Sitemap: {request.build_absolute_uri('/sitemap.xml')}",
     ]
-    return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
+    resp = HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
+    resp["Cache-Control"] = CRAWLER_CACHE
+    return resp
 
 
 SITEMAP_SIZE = 50000
@@ -641,7 +648,9 @@ def sitemap_index(request):
     ]
     xml += [f"<sitemap><loc>{p}</loc></sitemap>" for p in parts]
     xml.append("</sitemapindex>")
-    return HttpResponse("\n".join(xml), content_type="application/xml")
+    resp = HttpResponse("\n".join(xml), content_type="application/xml")
+    resp["Cache-Control"] = CRAWLER_CACHE
+    return resp
 
 
 @require_GET
@@ -658,7 +667,9 @@ def sitemap_shard(request, cc, n):
             loc = request.build_absolute_uri(list_url(p, c.concept))
             xml.append(f"<url><loc>{loc}</loc><lastmod>{c.updated_at.date().isoformat()}</lastmod></url>")
     xml.append("</urlset>")
-    return HttpResponse("\n".join(xml), content_type="application/xml")
+    resp = HttpResponse("\n".join(xml), content_type="application/xml")
+    resp["Cache-Control"] = CRAWLER_CACHE
+    return resp
 
 
 def not_found(request, exception=None):

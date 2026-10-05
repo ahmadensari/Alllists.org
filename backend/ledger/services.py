@@ -11,6 +11,7 @@ from django.db.models import Sum
 
 from core import clock
 from core.models import audit
+from core.pg import advisory_lock
 from entries.models import CreditEvent, Entry
 
 from .models import LedgerAccount, LedgerPosting, LedgerTxn, Payout, RatePhase, Sale, SaleAllocation
@@ -175,6 +176,7 @@ def allocation_items(scope_path, concept, now=None):
 @transaction.atomic
 def record_sale(order_ref, kind, *, gross, fees=0, tax=0, currency="USD", scope_path="", concept=None, now=None):
     """Record a paid sale. Only list sales feed the contributor pool; everything else is platform revenue (plan 12.2)."""
+    advisory_lock(f"sale:{order_ref}")  # a replayed webhook arriving at the same moment waits here, then finds the sale
     existing = Sale.objects.filter(order_ref=order_ref).first()
     if existing:
         return existing
@@ -379,6 +381,9 @@ def decide_kyc(profile, *, actor, approve, note=""):
 
 @transaction.atomic
 def create_payout(user, *, creator, amount_minor=None, method="", currency="USD", batch=None):
+    advisory_lock(
+        f"payout:{user.pk}"
+    )  # two requests for the same person run one after the other, so they cannot overspend
     if not kyc_ok(user):
         raise LedgerError("payout details have not been approved")
     avail = payable_balance(user, currency)
@@ -404,6 +409,7 @@ def create_payout(user, *, creator, amount_minor=None, method="", currency="USD"
 @transaction.atomic
 def cancel_payout(payout, *, actor, reason=""):
     """Cancel a payout that is not yet paid. The reserved amount becomes payable again; the batch total follows."""
+    payout = Payout.objects.select_for_update().get(pk=payout.pk)
     if payout.state not in (Payout.State.PENDING, Payout.State.APPROVED):
         raise LedgerError("only a pending or approved payout can be cancelled")
     payout.state = Payout.State.CANCELLED
@@ -421,6 +427,7 @@ def cancel_payout(payout, *, actor, reason=""):
 @transaction.atomic
 def approve_payout(payout, *, approver):
     """The approver must differ from the creator (rule: separation of duties)."""
+    payout = Payout.objects.select_for_update().get(pk=payout.pk)
     if payout.state != Payout.State.PENDING:
         raise LedgerError("payout is not pending")
     if approver.pk == payout.created_by_id:
@@ -437,6 +444,7 @@ def approve_payout(payout, *, approver):
 
 @transaction.atomic
 def mark_paid(payout, *, external_ref, now=None):
+    payout = Payout.objects.select_for_update().get(pk=payout.pk)
     if payout.state != Payout.State.APPROVED:
         raise LedgerError("payout must be approved first")
     if not _details_unchanged(payout):

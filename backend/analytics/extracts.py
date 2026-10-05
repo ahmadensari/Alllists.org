@@ -118,7 +118,13 @@ def trace_count_for(n):
 
 
 def _fake(rng, place_names):
-    name = f"{rng.choice(_ADJ)} {rng.choice(_NOUN)} {secrets.token_hex(2).upper()}"
+    """A made-up business. The name carries 32 random bits and is never reused by any extract, so a match on the name or
+    the website identifies one extract. The address is only there to look real (it has few possible values and is never
+    used to identify a leak)."""
+    while True:
+        name = f"{rng.choice(_ADJ)} {rng.choice(_NOUN)} {secrets.token_hex(4).upper()}"
+        if not TraceEntry.objects.filter(name=name).exists():
+            break
     slug = name.lower().replace(" ", "-")
     area = rng.choice(place_names) if place_names else "Main Road"
     return name, f"https://www.{slug}.example", f"Plot {rng.randint(2, 98)}, {area}"
@@ -221,11 +227,12 @@ def read_extract(ex, actor):
 
 
 def identify_leak(text):
-    """Which extracts does a pasted sample belong to? Matches any planted name, website or address."""
+    """Which extracts does a pasted sample belong to? Matches a planted name or website, both unique to one extract.
+    An address alone never identifies anyone: it has few possible values and two extracts can share one."""
     text_l = text.lower()
     hits = {}
     for t in TraceEntry.objects.select_related("extract"):
-        for needle in (t.name, t.website, t.address_text):
+        for needle in (t.name, t.website):
             if needle and needle.lower() in text_l:
                 hits.setdefault(t.extract_id, set()).add(needle)
     return {k: sorted(v) for k, v in hits.items()}

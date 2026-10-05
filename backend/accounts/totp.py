@@ -28,6 +28,8 @@ def totp(secret, at=None, step=30, digits=6):
 def verify(secret, code, at=None, step=30, window=1, last_step=0):
     """Return the matched time step (to store against replay) or None."""
     code = (code or "").strip().replace(" ", "")
+    if not code.isascii():  # compare_digest only takes ASCII text; a non-ASCII code can never be right
+        return None
     now_step = int((at if at is not None else time.time()) // step)
     for s in range(now_step - window, now_step + window + 1):
         if s > last_step and hmac.compare_digest(hotp(secret, s), code):

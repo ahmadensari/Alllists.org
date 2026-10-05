@@ -119,8 +119,27 @@ def create_order(buyer, product, *, scope_path="", concept=None, entry=None, cam
 
 @transaction.atomic
 def record_payment(order, *, provider, provider_ref, amount_minor, fees_minor=0, actor=None, raw=None, now=None):
-    """Record a successful payment. Safe to repeat: the same provider reference never counts twice."""
-    now = now or clock.now()
+    """Record a successful payment. Safe to repeat: the same provider reference never counts twice. The order row is
+    locked first, so two payments for one order (different references, a webhook and a hand entry) run one after the
+    other and only the first fulfils it."""
+    caller_order = order
+    try:
+        locked = Order.objects.select_for_update().select_related("product", "buyer").get(pk=order.pk)
+        return _record_payment(
+            locked,
+            provider=provider,
+            provider_ref=provider_ref,
+            amount_minor=amount_minor,
+            fees_minor=fees_minor,
+            actor=actor,
+            raw=raw,
+            now=now or clock.now(),
+        )
+    finally:
+        caller_order.refresh_from_db(fields=["state"])  # the caller's copy must show what happened
+
+
+def _record_payment(order, *, provider, provider_ref, amount_minor, fees_minor, actor, raw, now):
     existing = Payment.objects.filter(provider=provider, provider_ref=provider_ref).first()
     if existing:
         return existing, False
@@ -129,16 +148,17 @@ def record_payment(order, *, provider, provider_ref, amount_minor, fees_minor=0,
     if amount_minor != order.amount_minor:
         raise BillingError("the amount paid does not match the order")
     try:
-        pay = Payment.objects.create(
-            order=order,
-            provider=provider,
-            provider_ref=provider_ref,
-            amount_minor=amount_minor,
-            fees_minor=fees_minor,
-            state=Payment.State.SUCCEEDED,
-            recorded_by_id=getattr(actor, "pk", None),
-            raw=raw or {},
-        )
+        with transaction.atomic():  # a savepoint, so a clash on the reference does not poison the whole transaction
+            pay = Payment.objects.create(
+                order=order,
+                provider=provider,
+                provider_ref=provider_ref,
+                amount_minor=amount_minor,
+                fees_minor=fees_minor,
+                state=Payment.State.SUCCEEDED,
+                recorded_by_id=getattr(actor, "pk", None),
+                raw=raw or {},
+            )
     except IntegrityError:
         return Payment.objects.get(provider=provider, provider_ref=provider_ref), False
     order.state = Order.State.PAID

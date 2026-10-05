@@ -5,8 +5,11 @@ Small local lists (e.g. beauty parlours on one road) are merged by the platform 
 (city → district → division → province → country → region → world), and everyone who contributed
 to a list shares in its revenue.
 
-> **Status: early prototype.** The current code does not run end to end. See "Current state" below.
-> Everything in the "Decisions" and "Assumptions" sections is a product decision to be confirmed, not shipped behavior.
+> **Status: working software, not yet in production.** The Django application in `backend/` implements the plan in
+> `docs/TECHNICAL_PLAN.md` (place tree, lists, entries with four check labels, free and subscriber views, enquiry relay,
+> company pages, claims, moderation, contributor ledger and payouts, billing, placements and ads, outreach campaigns,
+> statistics and extracts, loaders, monitoring). It has not yet been deployed or connected to a real payment or
+> messaging provider. Decisions and assumptions below are recorded in `docs/DECISIONS.md`.
 
 ## The idea
 
@@ -77,8 +80,7 @@ Standalone lists are priced by their creators. **Merged lists are priced by the 
 
 ## Planned architecture (MVP)
 
-- Backend: Python, PostgreSQL, JWT auth (existing Flask code to be repaired, or FastAPI).
-- Frontend: server-rendered (Next.js or Astro) with Tailwind, so list pages can be indexed by search engines. English and Urdu (RTL) early.
+- Backend: Python 3.12, Django 5.2, PostgreSQL 16 (built that way). Server-rendered pages so list pages can be indexed; English and Urdu (right to left).
 - Data model: geography/topic tree, per-list custom fields (JSONB), entries with contributor and rate phase, revenue ledger (one line per person per sale/period), subscriptions, message batches, payout records.
 - Hosting: one managed host and managed Postgres. Kubernetes, Redis and a full monitoring stack are out of scope until there is traffic.
 - Pages for empty or thin lists should be `noindex` until they have real content.
@@ -96,10 +98,17 @@ Later: shop claiming, subscriptions, messaging, automatic payments and payouts, 
 
 ## Current state
 
-The repository holds an early Flask prototype and design notes. Known problems include committed secrets in `app.yaml` and
-`backend/config.py` (rotate them), a `requirements.txt` containing instructions instead of dependencies, a missing `database` module
-and circular imports, a removed Flask API (`before_first_request`), no login endpoint, and a CI workflow that fails. `schema.sql`
-describes the target design more closely than the SQLAlchemy models do.
+| Where | What |
+|---|---|
+| `backend/` | The Django application (see `backend/README.md`) |
+| `docs/TECHNICAL_PLAN.md` | The build plan the code follows, with rules R01 to R40 and a traceability matrix |
+| `docs/DECISIONS.md` | Every decision, with the build log of what was done and why |
+| `docs/MASTER_DOCUMENT.md` | Everything in one document (regenerate with `scripts/build_master_document.py`) |
+| `docs/DEPLOYMENT.md`, `deploy/`, `scripts/` | How to run it for real: deploy, rollback, backup, restore drill, load test |
+| `docs/runbooks/` | One page for each incident or scheduled task |
+
+What only the owner can do: rotate the secrets that were pasted into chat early on, choose the licence, choose hosting,
+a payment provider and a messaging provider, and book counsel before any messaging or list of named people goes live.
 
 ## Open questions
 

@@ -181,7 +181,7 @@ def test_payout_details_swapped_after_creation_block_approval_and_payment(db, tr
         approve=True,
     )
     p = ledger.create_payout(worker, creator=fin1, amount_minor=10000)
-    assert p.details_hash
+    assert p.details_hash and p.method == "bank"  # the method comes from the approved profile
     ledger.submit_kyc(worker, legal_name="W", country_code="PK", method="bank", account="PK99 ATTACKER")  # swapped
     with pytest.raises(ledger.LedgerError, match="changed"):
         ledger.approve_payout(p, approver=fin2)

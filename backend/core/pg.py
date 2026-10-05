@@ -38,3 +38,13 @@ def trigram_index(table, column, name):
     return only_postgres(
         f"CREATE INDEX {name} ON {table} USING gin ({column} gin_trgm_ops);", f"DROP INDEX IF EXISTS {name};"
     )
+
+
+def advisory_lock(key):
+    """Hold a PostgreSQL advisory lock named `key` until the surrounding transaction ends. Two requests that name the same
+    key run one after the other; different keys do not wait for each other. Does nothing on other databases."""
+    from django.db import connection
+
+    if connection.vendor == "postgresql":
+        with connection.cursor() as cur:
+            cur.execute("select pg_advisory_xact_lock(hashtextextended(%s, 0))", [key])

@@ -319,3 +319,30 @@ def test_cents_are_conserved_for_awkward_amounts(scene):
         platform = -sum(p.amount_minor for p in sale.txn.postings.all() if p.account.kind == "platform")
         assert pool + platform == sale.net_minor
     assert sum(balances().values()) == 0
+
+
+# ---- gaps found by the mutation check (scripts/mutation_check.py) -----------------------------------------------------------
+
+
+@pytest.mark.parametrize("fees,tax", [(-5, 0), (0, -5), (-1, -1)])
+def test_a_negative_fee_or_tax_is_refused_even_when_the_net_stays_positive(scene, fees, tax):
+    with pytest.raises(ledger.LedgerError):
+        ledger.record_sale("NEG", "list", gross=1000, fees=fees, tax=tax, scope_path="pk", concept=scene["surgical"])
+    assert not Sale.objects.filter(order_ref="NEG").exists()
+
+
+def test_a_sale_whose_net_is_exactly_zero_is_recorded_and_pays_nobody(scene):
+    sale = ledger.record_sale("ZERO", "list", gross=300, fees=200, tax=100, scope_path="pk", concept=scene["surgical"])
+    assert sale.net_minor == 0 and not sale.allocations.exists() and sum(balances().values()) == 0
+
+
+def test_freshness_bonus_starts_exactly_at_the_window_edge():
+    from fractions import Fraction
+    from types import SimpleNamespace
+
+    now = clock.now()
+    on_edge = SimpleNamespace(last_verified_at=now - timedelta(days=90))
+    just_past = SimpleNamespace(last_verified_at=now - timedelta(days=90, seconds=1))
+    assert ledger.freshness_weight(on_edge, now) == Fraction(5, 4)
+    assert ledger.freshness_weight(just_past, now) == Fraction(1)
+    assert ledger.freshness_weight(SimpleNamespace(last_verified_at=None), now) == Fraction(1)
