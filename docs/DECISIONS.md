@@ -73,6 +73,7 @@ Last updated: 2026-10-05 (service-provider round).
 | Mitigations against rebuilding paid lists from free ones: names-only on free views, accounts, limits, anti-bot checks, terms, charge more as lists get bigger | P15 |
 | Free users see advertisements; subscribers see none | CP5 |
 | Subscribers pay a lower recurring fee for live access | E7 |
+| Paid companies get a full company page on the list: the entry template with more sections the company provides, labelled as company-provided; checks and rank stay separate and cannot be bought | C35 |
 | Businesses pay to rank higher; later they pay to be on the list (hidden or merely ranked lower is not decided) | E15, CP2 |
 | Do not charge to remove personal data; charge for visibility, ranking, badge, extra fields and leads | P17 |
 | Governments and institutions may buy lists or statistics | E16 |

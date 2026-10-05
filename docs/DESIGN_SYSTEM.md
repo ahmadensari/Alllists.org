@@ -179,6 +179,7 @@ The owner's rule is that the app has only a few unique pages, and a change to on
 | List types and add-on fields | Per list type: fields, filters, row descriptor, words for the kind of thing |
 | Plans and visibility | What free visitors and subscribers see, as one table |
 | Strings | All wording by language |
+| Listing plans | Which sections a company page has (basic or company page) and what each plan switches on |
 | Feature flags | Switch parts on for a country or a group of users |
 
 **What a change touches**

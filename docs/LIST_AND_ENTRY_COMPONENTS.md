@@ -259,3 +259,29 @@ Two independent reviews of the prototype (`research_notes/Design review/`) chang
 - Report, claim, correct and remove are one "Something wrong?" section.
 - Empty sponsored slots render nothing. Reviews and rankings sections are hidden until real.
 - Dates read "18 Sep 2026" with an age, and every check shows its date.
+
+## 12. Company page (paid listing)
+
+A paid company has a full page of its own. Clicking its name on a list opens it. It is the same entry template with more sections switched on by the company's listing plan, so no page is hand-made (C34, C35).
+
+| Part | Basic page (every entry) | Company page (paid) |
+|---|---|---|
+| Name, checks with dates, message button, share | Yes | Yes, same place |
+| Key facts, specialities, details block | Yes | Yes |
+| About the company (long description) | No | Yes, written by the company |
+| Products and services with specifications, minimum order and price | No | Yes |
+| Certificates the company lists | No | Yes; each shows "Checked by AllLists" or "Company says" |
+| Capacity and facilities | No | Yes |
+| Terms and samples | No | Yes |
+| Questions buyers ask | No | Yes |
+| Updates and news (text) | No | Later |
+| Documents such as a catalogue file | No | Later |
+| Prompt to add a company page | Yes, one line | No |
+
+**Rules**
+1. Company-provided sections are public to everyone and labelled "Provided by the company", with the date the company last updated them.
+2. AllLists checks are shown separately and cannot be bought. A paid page does not raise or hide a check label.
+3. Rank in the list is separate from the page. Paid placement is a labelled slot (Q-N2).
+4. Provided content is moderated: claims about certificates show as "Company says" until checked; no claims about other businesses; a report button works the same as on any entry.
+5. On a list, a paid company's row carries a small "Company page" tag so buyers know there is more.
+6. Individuals and children's services are not eligible for a company page until their rules are set (Q-S2).

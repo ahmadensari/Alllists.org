@@ -108,10 +108,13 @@ details.key dt{font-weight:600;margin-block-start:var(--s2)} details.key dd{marg
 .row .nm{font-weight:600;font-size:var(--t-lg);overflow-wrap:anywhere}
 .row .alt{display:block;color:var(--ink-2);font-size:var(--t-sm)}
 @media (max-width:700px){.row{grid-template-columns:minmax(0,1fr);gap:var(--s1)}}
+.pill-co{border-color:var(--accent);color:var(--accent);font-weight:600}
 .pill{display:inline-block;font-size:var(--t-xs);border:1px solid var(--rule);border-radius:4px;padding:0 var(--s2);margin-inline-end:var(--s1);margin-block-end:var(--s1)}
 dl.facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:var(--s2) var(--s4);margin:0}
 dl.facts dt{color:var(--ink-2)} dl.facts dd{margin:0;overflow-wrap:anywhere}
 @media (max-width:520px){dl.facts{grid-template-columns:minmax(0,1fr);gap:0}dl.facts dd{margin-block-end:var(--s2)}}
+.provided-tag{font-size:var(--t-xs);color:var(--ink-2);margin:0 0 var(--s2)}
+.co-note{border-inline-start:4px solid var(--accent);background:var(--lock);padding:var(--s3) var(--s4);margin-block:var(--s3);border-radius:var(--r);font-size:var(--t-sm)}
 .records{list-style:none;margin:0;padding:0}
 .records li{padding-block:var(--s2);border-block-end:1px solid var(--rule)}
 .records li:last-child{border-block-end:0}
@@ -201,7 +204,11 @@ var EN = {
   openMap:"Open in Google Maps", notes:"Sample data. Share links are plain links: nothing loads from a social network until you click.",
   linkCopied:"Link copied", toastOutreach:"Demo: opens the channel picker. WhatsApp first, only to people who agreed, sent by AllLists.", toastPlans:"Demo: opens the plans page.", toastSave:"Demo: saved. Needs an account.", toastFollow:"Demo: we will tell you when it changes. Needs an account.",
   statusShown:"{n} businesses shown",
-  ago0:"today", agoD:"{d} days ago", agoW:"{w} weeks ago", agoM:"{m} months ago", mon_sat:"Mon to Sat", x:"X", tg:"Telegram"
+  ago0:"today", agoD:"{d} days ago", agoW:"{w} weeks ago", agoM:"{m} months ago", mon_sat:"Mon to Sat", x:"X", tg:"Telegram",
+  companyPage:"Company page", provided:"Provided by the company", providedNote:"This page is provided by the company. AllLists checks are shown separately and cannot be bought.",
+  coAbout:"About the company", coProducts:"Products and services", coCerts:"Certificates the company lists", coCapacity:"Capacity and facilities", coTerms:"Terms and samples", coFaq:"Questions buyers ask",
+  basicNote:"This is the basic page. The company can add a full page with products, certificates, capacity and more.", addCompanyPage:"Add a company page",
+  checkedByUs:"Checked by AllLists", companySays:"Company says", workers:"Staff", capacityLbl:"Monthly capacity", areaLbl:"Factory area", updatedLbl:"Updated by the company on {date}", moqLbl:"Minimum order"
 };
 var UR = {
   proto:"فرضی ڈیٹا کے ساتھ نمونہ۔ کچھ بھی حقیقی نہیں۔", protoSummary:"نمونے کے کنٹرول", skip:"نتائج پر جائیں",
@@ -251,7 +258,10 @@ var UR = {
   openMap:"گوگل میپس میں کھولیں", notes:"نمونہ ڈیٹا۔ شیئر لنک سادہ لنک ہیں: آپ کے کلک کرنے تک کسی سوشل نیٹ ورک سے کچھ لوڈ نہیں ہوتا۔",
   linkCopied:"لنک کاپی ہو گیا", toastOutreach:"نمونہ: چینل منتخب کرنے کی سکرین کھلے گی۔ پہلے واٹس ایپ، صرف ان لوگوں کو جو راضی ہوں، آل لسٹس کی طرف سے۔", toastPlans:"نمونہ: پلان کا صفحہ کھلے گا۔", toastSave:"نمونہ: محفوظ ہو گیا۔ اکاؤنٹ درکار ہے۔", toastFollow:"نمونہ: بدلنے پر ہم بتائیں گے۔ اکاؤنٹ درکار ہے۔",
   statusShown:"{n} کاروبار دکھائے گئے",
-  ago0:"آج", agoD:"{d} دن پہلے", agoW:"{w} ہفتے پہلے", agoM:"{m} مہینے پہلے", mon_sat:"پیر تا ہفتہ",
+  ago0:"آج", agoD:"{d} دن پہلے", agoW:"{w} ہفتے پہلے", agoM:"{m} مہینے پہلے", mon_sat:"پیر تا ہفتہ",companyPage:"کمپنی کا صفحہ", provided:"کمپنی کی فراہم کردہ معلومات", providedNote:"یہ صفحہ کمپنی نے فراہم کیا ہے۔ آل لسٹس کی جانچ الگ دکھائی جاتی ہے اور خریدی نہیں جا سکتی۔",
+  coAbout:"کمپنی کے بارے میں", coProducts:"مصنوعات اور خدمات", coCerts:"کمپنی کے بتائے ہوئے سرٹیفکیٹ", coCapacity:"پیداواری صلاحیت اور سہولیات", coTerms:"شرائط اور نمونے", coFaq:"خریداروں کے عام سوالات",
+  basicNote:"یہ بنیادی صفحہ ہے۔ کمپنی مصنوعات، سرٹیفکیٹ، صلاحیت اور مزید کے ساتھ مکمل صفحہ شامل کر سکتی ہے۔", addCompanyPage:"کمپنی کا صفحہ شامل کریں",
+  checkedByUs:"آل لسٹس نے جانچا", companySays:"کمپنی کا دعویٰ", workers:"عملہ", capacityLbl:"ماہانہ صلاحیت", areaLbl:"فیکٹری کا رقبہ", updatedLbl:"کمپنی نے {date} کو اپ ڈیٹ کیا", moqLbl:"کم از کم آرڈر",
   "Manufacturer":"مینوفیکچرر", "Trader":"تاجر",
   "General surgery":"جنرل سرجری", "Dental":"ڈینٹل", "Orthopaedic":"آرتھوپیڈک", "Veterinary":"ویٹرنری", "Beauty":"بیوٹی", "Nail care":"ناخنوں کی دیکھ بھال",
   "Paris Road":"پیرس روڈ", "Kashmir Road":"کشمیر روڈ", "Daska Road":"ڈسکہ روڈ", "Industrial Estate":"انڈسٹریل اسٹیٹ",
@@ -268,9 +278,28 @@ function age(s){var d=Math.round((TODAY-new Date(s+"T00:00:00Z"))/86400000);if(d
 
 /* ---------- Sample data (invented) ---------- */
 var CANON="https://alllists.org/pk/punjab/sialkot/surgical-instrument-makers"; /* domain still open */
+/* Details a paid company provides for its own page (invented). Text and numbers only. */
+var PROFILE1={
+  about:"We make stainless steel surgical forceps, scissors and needle holders in Sialkot for distributors and private-label buyers. Our workshop has worked with European and Gulf importers since 1998. Every batch is inspected before it leaves the factory, and we keep batch records for ten years.",
+  products:[{n:"Forceps, standard range",d:"Stainless steel 304 and 420, hand finished. 60 patterns.",moq:"500 pieces",price:"From USD 1.20 each"},{n:"Scissors, surgical",d:"Straight and curved, 11 to 18 cm.",moq:"300 pieces",price:"From USD 2.40 each"},{n:"Private label and engraving",d:"Your brand, your packaging. Setup in 3 weeks.",moq:"1,000 pieces",price:"On request"}],
+  certs:[{s:"ISO 13485",id:"DEMO-0001",exp:"Mar 2027",checked:true},{s:"CE marking",id:"Self-declared, EU representative named",exp:"",checked:false}],
+  capacity:[["workers","50 to 100"],["capacityLbl","Up to 40,000 pieces a month"],["areaLbl","3,200 m²"]],
+  terms:"Prices EXW Sialkot or FOB Karachi. Paid samples, refunded on the first order. Lead time 4 to 6 weeks. Payment by bank transfer.",
+  faq:[["Can you make to our drawings?","Yes. Send the drawing with the message form and we reply with a price in 3 working days."],["Do you export to the EU?","Yes, with the documents an importer needs under the EU rules. Ask for the file list."]],
+  updated:"2026-09-30"
+};
+var PROFILE2={
+  about:"Orthopaedic instruments for hospitals and distributors in the Gulf and Africa. Small runs accepted.",
+  products:[{n:"Orthopaedic set, basic",d:"Eight common instruments in one tray.",moq:"50 sets",price:"From USD 140 per set"}],
+  certs:[{s:"CE marking",id:"Self-declared, no certificate to look up",exp:"",checked:false}],
+  capacity:[["workers","20 to 50"],["capacityLbl","Up to 8,000 pieces a month"]],
+  terms:"Prices FOB Karachi. Samples on request.",
+  faq:[],
+  updated:"2026-08-30"
+};
 var ENTRIES=[
- {id:"e1",name:"Demo Surgical Works",urdu:"ڈیمو سرجیکل ورکس",area:"Paris Road",status:"open",levels:[{k:"surveyor",when:"2026-09-18",n:"12 of 12"},{k:"owner",when:"2026-09-02"}],type:"Manufacturer",spec:["General surgery","Dental","Orthopaedic","Veterinary","Beauty"],cert:"ISO 13485, sample ID DEMO-0001, valid to Mar 2027",moq:"500 pieces",band:"50 to 100",rank:1,lat:32.4945,lng:74.5229,year:1998,markets:["Germany","UK","UAE"],oem:true,hours:true},
- {id:"e2",name:"Sample Instruments Co.",urdu:"سیمپل انسٹرومنٹس",area:"Kashmir Road",status:"open",levels:[{k:"owner",when:"2026-08-21"},{k:"ai",when:"2026-08-22",n:"2"}],type:"Manufacturer",spec:["Orthopaedic"],cert:"CE self-declaration on file, no certificate to look up",moq:"300 pieces",band:"20 to 50",rank:2,lat:32.4960,lng:74.5300,year:2005,markets:["Gulf","Africa"],oem:true,hours:true},
+ {id:"e1",paid:true,profile:PROFILE1,name:"Demo Surgical Works",urdu:"ڈیمو سرجیکل ورکس",area:"Paris Road",status:"open",levels:[{k:"surveyor",when:"2026-09-18",n:"12 of 12"},{k:"owner",when:"2026-09-02"}],type:"Manufacturer",spec:["General surgery","Dental","Orthopaedic","Veterinary","Beauty"],cert:"ISO 13485, sample ID DEMO-0001, valid to Mar 2027",moq:"500 pieces",band:"50 to 100",rank:1,lat:32.4945,lng:74.5229,year:1998,markets:["Germany","UK","UAE"],oem:true,hours:true},
+ {id:"e2",paid:true,profile:PROFILE2,name:"Sample Instruments Co.",urdu:"سیمپل انسٹرومنٹس",area:"Kashmir Road",status:"open",levels:[{k:"owner",when:"2026-08-21"},{k:"ai",when:"2026-08-22",n:"2"}],type:"Manufacturer",spec:["Orthopaedic"],cert:"CE self-declaration on file, no certificate to look up",moq:"300 pieces",band:"20 to 50",rank:2,lat:32.4960,lng:74.5300,year:2005,markets:["Gulf","Africa"],oem:true,hours:true},
  {id:"e3",name:"Demo Dental Tools",urdu:"ڈیمو ڈینٹل ٹولز",area:"Daska Road",status:"open",levels:[{k:"ai",when:"2026-09-29",n:"3"}],type:"Manufacturer",spec:["Dental"],cert:"",moq:"1,000 pieces",band:"10 to 20",rank:3,lat:32.4800,lng:74.5100,year:2012,markets:[],oem:false,hours:false},
  {id:"e4",name:"Example Veterinary Instruments",urdu:"ایگزیمپل ویٹرنری انسٹرومنٹس",area:"Industrial Estate",status:"open",levels:[{k:"surveyor",when:"2026-07-11",n:"10 of 12"}],type:"Manufacturer",spec:["Veterinary"],cert:"ISO 9001, sample ID DEMO-0042, valid to Dec 2026",moq:"200 pieces",band:"20 to 50",rank:4,lat:32.5010,lng:74.5400,year:2009,markets:["EU"],oem:true,hours:true},
  {id:"e5",name:"Placeholder Trading Co.",urdu:"پلیس ہولڈر ٹریڈنگ",area:"Paris Road",status:"open",levels:[{k:"ai",when:"2026-09-10",n:"2"}],type:"Trader",spec:["General surgery"],cert:"",moq:"",band:"under 10",rank:5,lat:32.4950,lng:74.5240,year:2016,markets:[],oem:false,hours:false},
@@ -381,7 +410,7 @@ function renderList(){
   h+='<h2 class="num">'+esc(T("shown",{n:rows.length,m:rowsAll.length}))+'</h2><ol class="rows">';
   rows.forEach(function(e){
     h+='<li class="row"><div><a class="nm" href="#/entry/'+e.id+'">'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</a><span class="alt">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</span></div>'
-      +'<div class="small">'+esc(D(e.type))+' · '+esc(D(e.area))+'<div style="margin-block-start:var(--s1)">'+specText(e,3)+'</div></div>'
+      +'<div class="small">'+esc(D(e.type))+' · '+esc(D(e.area))+'<div style="margin-block-start:var(--s1)">'+specText(e,3)+(e.paid?'<span class="pill pill-co">'+esc(T("companyPage"))+'</span>':'')+'</div></div>'
       +'<div>'+chips(e)+'<div class="muted small">'+esc(T("checked",{date:fmtDate(lastChecked(e))}))+' · '+esc(age(lastChecked(e)))+'</div></div></li>';
   });
   h+='</ol>';
@@ -415,6 +444,7 @@ function renderEntry(id){
   h+='<h1>'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</h1>';
   h+='<p class="muted">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</p>';
   h+='<p class="small">'+esc(D(e.type))+' · '+esc(D(e.area))+', '+esc(T("sialkot"))+'</p>';
+  if(e.paid)h+='<ul class="tags"><li class="tag pill-co">'+esc(T("companyPage"))+'</li></ul>';
   if(!live)h+='<div class="notice"><strong>'+esc(T("closedNote"))+'</strong></div>';
   h+='<div>'+chips(e)+'</div><p class="muted small num">'+esc(live?T("checked",{date:fmtDate(lastChecked(e))})+" · "+age(lastChecked(e)):T("closedPast")+": "+fmtDate(lastChecked(e)))+'</p>';
   h+=keyBlock();
@@ -433,6 +463,19 @@ function renderEntry(id){
   var d='<dt>'+esc(T("btype"))+'</dt><dd>'+esc(D(e.type))+'</dd>'
        +'<dt>'+esc(T("oem"))+'</dt><dd>'+esc(e.oem?T("yes"):T("no"))+'</dd>';
   h+='<section class="sec"><h2>'+esc(T("details",{type:D(e.type)}))+'</h2><dl class="facts">'+d+'</dl></section>';
+  /* company page: sections the paying company provides. Same template, more sections. Public to everyone. */
+  if(e.paid&&e.profile&&live){
+    var pr=e.profile;
+    h+='<div class="co-note">'+esc(T("providedNote"))+' <span class="muted">'+esc(T("updatedLbl",{date:fmtDate(pr.updated)}))+'</span></div>';
+    h+='<section class="sec"><h2>'+esc(T("coAbout"))+'</h2><p class="provided-tag">'+esc(T("provided"))+'</p><p dir="auto">'+esc(pr.about)+'</p></section>';
+    if(pr.products.length)h+='<section class="sec"><h2>'+esc(T("coProducts"))+'</h2><p class="provided-tag">'+esc(T("provided"))+'</p><ul class="records">'+pr.products.map(function(x){return '<li dir="auto"><strong>'+esc(x.n)+'</strong><br><span class="muted small">'+esc(x.d)+'</span><br><span class="small num">'+esc(T("moqLbl"))+': '+esc(x.moq)+' · '+esc(x.price)+'</span></li>';}).join("")+'</ul></section>';
+    if(pr.certs.length)h+='<section class="sec"><h2>'+esc(T("coCerts"))+'</h2><p class="provided-tag">'+esc(T("provided"))+'</p><ul class="records">'+pr.certs.map(function(x){return '<li dir="auto"><strong>'+esc(x.s)+'</strong> '+esc(x.id)+(x.exp?' · '+esc(x.exp):'')+'<br><span class="chip '+(x.checked?'owner':'none')+'">'+esc(x.checked?T("checkedByUs"):T("companySays"))+'</span></li>';}).join("")+'</ul></section>';
+    if(pr.capacity.length)h+='<section class="sec"><h2>'+esc(T("coCapacity"))+'</h2><p class="provided-tag">'+esc(T("provided"))+'</p><dl class="facts">'+pr.capacity.map(function(x){return '<dt>'+esc(T(x[0]))+'</dt><dd class="num" dir="auto">'+esc(x[1])+'</dd>';}).join("")+'</dl></section>';
+    if(pr.terms)h+='<section class="sec"><h2>'+esc(T("coTerms"))+'</h2><p class="provided-tag">'+esc(T("provided"))+'</p><p dir="auto">'+esc(pr.terms)+'</p></section>';
+    if(pr.faq.length)h+='<section class="sec"><h2>'+esc(T("coFaq"))+'</h2><p class="provided-tag">'+esc(T("provided"))+'</p>'+pr.faq.map(function(x){return '<details class="key" dir="auto"><summary>'+esc(x[0])+'</summary><p class="muted">'+esc(x[1])+'</p></details>';}).join("")+'</section>';
+  }else if(live){
+    h+='<section class="sec"><p class="muted">'+esc(T("basicNote"))+'</p><a class="btn" href="#/claim">'+esc(T("addCompanyPage"))+'</a></section>';
+  }
   /* subscriber-only rows: shown only to subscribers; free visitors get one panel naming what exists */
   var subRows=[];
   subRows.push([T("addr"),'—']);
