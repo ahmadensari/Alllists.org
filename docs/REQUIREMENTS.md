@@ -438,6 +438,7 @@ The owner's stated principles: **better usage and returning clients**, and **rev
 - **Q-S11** Prototype scope (C32): confirm the static prototype is the only code authorised for now; production code still waits for the owner's go-ahead.
 - **Q-S12** Sign-off of `docs/LIST_AND_ENTRY_COMPONENTS.md`: once approved, the core entry fields and child records are frozen for version 1 (add, never change meaning).
 - **Q-S13** Visibility of website and social media page links: they can reveal contacts. Suggested default: locked on the free view, shown on the paid view.
+- **Q-S14** Design system sign-off (`docs/DESIGN_SYSTEM.md`): Urdu type style (Naskh fallback or Nastaliq), native-speaker review of the Urdu wording, and number format by locale.
 
 ## Next step
 

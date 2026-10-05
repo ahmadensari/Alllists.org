@@ -234,3 +234,28 @@ Store one WGS-84 point per entry. Map links are generated from it at display tim
 | 9 | Fields marked inference | Check about five live listings per list type in a session with working page access | Q-S12 |
 
 Sign-off (Q-S12): once the owner approves this document, the Tier 1 core and the child records are frozen for version 1. Changes after that follow the rule in section 1: add, never change meaning.
+
+## 11. Changes from the design review (v1.1)
+
+Two independent reviews of the prototype (`research_notes/Design review/`) changed the list and entry components as follows. The page rules are in `docs/DESIGN_SYSTEM.md`.
+
+**One line between free and paid** (replaces any per-field difference between row and entry):
+
+| | Free visitor | Subscriber |
+|---|---|---|
+| List row | Name and other-language name, type, area, up to three specialities, check labels with date | Same. Subscribers also get one enquiry to many makers |
+| Entry page | Everything on the row, plus area, hours, languages, year established, business type, OEM, how it was checked, one message button | Also: street address, exact map pin, size, website, social pages, export markets, minimum order, prices with dates, certificate details |
+| List statistics | Count, last checked, split by check type | Also: with a checkable certificate, verified in the last 12 months |
+| Never shown to anyone | Phone, WhatsApp, email, owner name of an individual | Same |
+
+**Rules added:**
+- The list page order is: title, one-line scope, trust line with a split that adds up to the total, filters and results. The statistics table, areas table and sponsored explanation are removed from above the results; areas become a filter.
+- No position numbers on rows. People are never ranked.
+- No per-field lock boxes. One panel names what subscribers also see, built from the fields that exist.
+- Rows with no value are left out. The page never says "Not stated".
+- A closed entry removes the message button and shows its checks as past.
+- Only five rows show at first; "Show n more" and a stated free limit follow.
+- Share: one native Share button plus WhatsApp and Copy link, the rest under "More options". Copy link gives the clean address.
+- Report, claim, correct and remove are one "Something wrong?" section.
+- Empty sponsored slots render nothing. Reviews and rankings sections are hidden until real.
+- Dates read "18 Sep 2026" with an age, and every check shows its date.

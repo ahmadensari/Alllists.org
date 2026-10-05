@@ -5,55 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AllLists page template</title>
 <meta name="description" content="Design prototype of the AllLists list page and entry page, with sample data, light and dark themes and English or Urdu layout.">
+<meta name="robots" content="noindex">
 <style>
-/* LAYOUT CONCEPT: a register, not a feed. Ruled sections instead of stacked cards, tabular numbers,
-   one accent, system fonts only so every page is light on a slow phone. Logical (start/end) CSS so
-   right-to-left Urdu needs no second stylesheet. This block is the design system's token source. */
+/* LAYOUT CONCEPT: a register, not a feed. Title, scope, trust, filters, results, in that order, on every list.
+   Ruled sections instead of stacked cards, tabular numbers, one accent, system fonts only so each page is light
+   on a slow phone. Logical (start/end) CSS so right-to-left Urdu needs no second stylesheet. This block is the
+   design system's token source. */
 :root{
   /* colour: cool neutrals biased toward the blue accent */
-  --paper:#f5f7fa; --surface:#ffffff; --ink:#101828; --ink-2:#475467; --rule:#d0d5dd;
+  --paper:#f5f7fa; --surface:#ffffff; --ink:#101828; --ink-2:#475467; --rule:#d0d5dd; --control:#667085;
   --accent:#1d4e89; --accent-ink:#ffffff; --lock:#eaecf0;
   --ok:#067647; --warn-bg:#fef0c7; --warn-ink:#7a2e0e; --bad:#b42318; --focus:#b54708;
   /* type: system stacks; Urdu falls back to a Naskh face */
   --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Noto Naskh Arabic","Geeza Pro",sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  --t-xs:.8125rem; --t-sm:.9375rem; --t-md:1rem; --t-lg:1.125rem; --t-xl:1.375rem; --t-2xl:1.75rem;
+  --t-xs:.875rem; --t-sm:.9375rem; --t-md:1rem; --t-lg:1.125rem; --t-xl:1.375rem; --t-2xl:1.75rem;
   /* space on a 4px scale */
   --s1:.25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem; --s6:2rem;
-  --r:6px; --measure:68ch;
+  --r:6px; --measure:68ch; --tap:2.75rem;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0c111d; --surface:#131a29; --ink:#f2f4f7; --ink-2:#98a2b3; --rule:#2a3447;
+    --paper:#0c111d; --surface:#131a29; --ink:#f2f4f7; --ink-2:#a4aebd; --rule:#2a3447; --control:#8592a8;
     --accent:#84adff; --accent-ink:#0c111d; --lock:#1d2636;
     --ok:#47cd89; --warn-bg:#3a2a07; --warn-ink:#fec84b; --bad:#f97066; --focus:#fec84b; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0c111d; --surface:#131a29; --ink:#f2f4f7; --ink-2:#98a2b3; --rule:#2a3447;
+  --paper:#0c111d; --surface:#131a29; --ink:#f2f4f7; --ink-2:#a4aebd; --rule:#2a3447; --control:#8592a8;
   --accent:#84adff; --accent-ink:#0c111d; --lock:#1d2636;
   --ok:#47cd89; --warn-bg:#3a2a07; --warn-ink:#fec84b; --bad:#f97066; --focus:#fec84b; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{font-size:100%;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font:var(--t-md)/1.55 var(--font);padding-block:0}
-a{color:var(--accent);text-underline-offset:.15em}
-a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+body{margin:0;background:var(--paper);color:var(--ink);font:var(--t-md)/1.55 var(--font)}
+html[lang="ur"] body{font-size:1.125rem;line-height:1.95}
+html[lang="ur"] h1{line-height:1.6}
+html[lang="ur"] h2{line-height:1.7}
+a{color:var(--accent);text-underline-offset:.15em;overflow-wrap:anywhere}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .wrap{max-width:60rem;margin-inline:auto;padding-inline:var(--s4)}
-h1{font-size:var(--t-2xl);line-height:1.2;margin:var(--s2) 0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:var(--t-2xl);line-height:1.2;margin:var(--s2) 0;text-wrap:balance;letter-spacing:-.01em;overflow-wrap:anywhere}
 h2{font-size:var(--t-lg);line-height:1.3;margin:0 0 var(--s2)}
-p{margin:0 0 var(--s3);max-width:var(--measure)}
+p{margin:0 0 var(--s3);max-width:var(--measure);overflow-wrap:anywhere}
 .muted{color:var(--ink-2)} .small{font-size:var(--t-sm)} .xs{font-size:var(--t-xs)}
 .num{font-variant-numeric:tabular-nums}
 .mono{font-family:var(--mono);font-size:var(--t-sm)}
 .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-/* prototype controls and product header */
-.proto{background:var(--warn-bg);color:var(--warn-ink);font-size:var(--t-sm)}
-.proto .wrap{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:center;padding-block:var(--s2)}
-.proto strong{margin-inline-end:var(--s2)}
-.ctl{display:inline-flex;align-items:center;gap:var(--s2)}
-.seg{display:inline-flex;border:1px solid currentColor;border-radius:var(--r);overflow:hidden}
-.seg button{border:0;padding:var(--s1) var(--s3);background:transparent;color:inherit;font:inherit;cursor:pointer;min-height:2rem}
+.skip{position:absolute;inset-inline-start:var(--s2);inset-block-start:-4rem;background:var(--surface);color:var(--ink);padding:var(--s2) var(--s3);border:2px solid var(--focus);border-radius:var(--r);z-index:10}
+.skip:focus{inset-block-start:var(--s2)}
+/* prototype controls (not part of the product) */
+details.proto{background:var(--warn-bg);color:var(--warn-ink);font-size:var(--t-sm)}
+details.proto summary{cursor:pointer;padding:var(--s2) var(--s4);max-width:60rem;margin-inline:auto;min-height:2.25rem}
+.proto-body{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:center;padding:0 var(--s4) var(--s3);max-width:60rem;margin-inline:auto}
+.ctl{display:inline-flex;align-items:center;gap:var(--s2);flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid currentColor;border-radius:var(--r)}
+.seg button{border:0;padding:var(--s1) var(--s3);background:transparent;color:inherit;font:inherit;cursor:pointer;min-height:2.25rem}
+.seg button:focus-visible{outline-offset:-3px}
 .seg button[aria-pressed="true"]{background:var(--warn-ink);color:var(--warn-bg);font-weight:600}
 header.site{background:var(--surface);border-block-end:1px solid var(--rule)}
 .site-row{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;padding-block:var(--s3)}
@@ -61,322 +69,398 @@ header.site{background:var(--surface);border-block-end:1px solid var(--rule)}
 .logo b{color:var(--accent)}
 .search{flex:1 1 100%;min-width:0;display:flex;gap:var(--s2)}
 @media (min-width:700px){.search{flex:1 1 20rem}}
-.search input{flex:1;min-width:0;padding:var(--s2) var(--s3);border:1px solid var(--rule);border-radius:var(--r);background:var(--paper);color:var(--ink);font:inherit;min-height:2.75rem}
+.search input{flex:1;min-width:0;padding:var(--s2) var(--s3);border:1px solid var(--control);border-radius:var(--r);background:var(--paper);color:var(--ink);font:inherit;min-height:var(--tap)}
+.search input::placeholder{color:var(--ink-2);opacity:1}
 /* controls */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);padding:var(--s2) var(--s3);min-height:2.75rem;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface);color:var(--ink);text-decoration:none;font:inherit;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);padding:var(--s2) var(--s3);min-height:var(--tap);border:1px solid var(--control);border-radius:var(--r);background:var(--surface);color:var(--ink);text-decoration:none;font:inherit;cursor:pointer}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
-.btn.sm{min-height:2.25rem;padding:var(--s1) var(--s3);font-size:var(--t-sm)}
-select{min-height:2.25rem;padding:var(--s1) var(--s2);border:1px solid var(--rule);border-radius:var(--r);background:var(--surface);color:var(--ink);font:inherit}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--accent);text-decoration:underline}
+select{min-height:var(--tap);padding:var(--s1) var(--s2);border:1px solid var(--control);border-radius:var(--r);background:var(--surface);color:var(--ink);font:inherit;max-width:100%}
 /* page parts */
 nav.crumbs{font-size:var(--t-sm);color:var(--ink-2);padding-block:var(--s3) 0}
 nav.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:var(--s1) var(--s2)}
-nav.crumbs li+li::before{content:"/";margin-inline-end:var(--s2);color:var(--rule)}
+nav.crumbs li+li::before{content:"/";margin-inline-end:var(--s2);color:var(--control)}
 nav.crumbs a{color:var(--ink-2)}
 .tags{display:flex;flex-wrap:wrap;gap:var(--s2);margin:0 0 var(--s3);padding:0;list-style:none}
-.tag{font-size:var(--t-xs);padding:.125rem var(--s2);border:1px solid var(--rule);border-radius:99px;color:var(--ink-2)}
+.tag{font-size:var(--t-xs);padding:.125rem var(--s2);border:1px solid var(--control);border-radius:99px;color:var(--ink-2)}
 .sec{border-block-start:1px solid var(--rule);padding-block:var(--s4)}
 .panel{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:var(--s4);margin-block:var(--s4)}
 .actions{display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center}
-.share{display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center}
-.menu{display:none;gap:var(--s2);margin-block-start:var(--s2);align-items:center}
-.menu.open{display:flex;flex-wrap:wrap}
-.spons{border:1px dashed var(--warn-ink);background:var(--warn-bg);color:var(--warn-ink);padding:var(--s3);border-radius:var(--r);margin-block:var(--s4);font-size:var(--t-sm)}
-.ad{border:1px dashed var(--rule);background:var(--lock);color:var(--ink-2);padding:var(--s3);border-radius:var(--r);margin-block:var(--s4);font-size:var(--t-sm)}
-.tablewrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:var(--t-sm)}
-th,td{text-align:start;padding:var(--s2) var(--s3);border-block-end:1px solid var(--rule);vertical-align:top}
-th{font-weight:600;color:var(--ink-2);font-size:var(--t-xs)}
-/* verification chips: shape and text carry meaning, never colour alone */
-.chip{display:inline-block;font-size:var(--t-xs);padding:.1rem var(--s2);border-radius:99px;border:1px solid var(--ink-2);color:var(--ink);margin:2px 0;margin-inline-end:var(--s1);white-space:nowrap}
+.menu{display:none;gap:var(--s2);margin-block-start:var(--s2);flex-wrap:wrap}
+.menu.open{display:flex}
+.ad{border:1px dashed var(--control);background:var(--lock);color:var(--ink-2);padding:var(--s3);border-radius:var(--r);margin-block:var(--s4);font-size:var(--t-sm)}
+details.key{margin-block:var(--s3)}
+details.key summary{cursor:pointer;color:var(--accent);min-height:var(--tap);display:flex;align-items:center}
+details.key dl{margin:var(--s2) 0 0}
+details.key dt{font-weight:600;margin-block-start:var(--s2)} details.key dd{margin:0;color:var(--ink-2)}
+/* verification chips: shape and words carry meaning, never colour alone */
+.chip{display:inline-block;font-size:var(--t-sm);padding:.1rem var(--s2);border-radius:99px;border:1px solid var(--ink-2);color:var(--ink);margin:2px 0;margin-inline-end:var(--s1)}
 .chip.surveyor{border:2px solid var(--ok);color:var(--ok);font-weight:700}
 .chip.owner{border:1px solid var(--ok);color:var(--ok);font-weight:600}
 .chip.ai{border-style:dashed}
 .chip.none{border-style:dotted;color:var(--ink-2)}
-.chip.closed{border-color:var(--bad);color:var(--bad);font-weight:600}
-.lock{display:inline-block;background:var(--lock);color:var(--ink-2);border:1px dashed var(--rule);border-radius:4px;padding:0 var(--s2);font-size:var(--t-xs)}
+.chip.closed{border:2px solid var(--bad);color:var(--bad);font-weight:700}
+.chip.past{border-style:dotted;color:var(--ink-2);font-weight:400}
 /* result rows */
 .rows{list-style:none;margin:0;padding:0}
-.row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.1fr) minmax(0,1.5fr) auto;gap:var(--s3);padding-block:var(--s3);border-block-end:1px solid var(--rule);align-items:start}
+.row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) minmax(0,1.5fr);gap:var(--s3);padding-block:var(--s3);border-block-end:1px solid var(--rule);align-items:start}
 .row:last-child{border-block-end:0}
-.row.closed{opacity:.7}
-.row .nm{font-weight:600;text-decoration:none}
-@media (max-width:700px){.row{grid-template-columns:minmax(0,1fr)}}
+.row .nm{font-weight:600;font-size:var(--t-lg);overflow-wrap:anywhere}
+.row .alt{display:block;color:var(--ink-2);font-size:var(--t-sm)}
+@media (max-width:700px){.row{grid-template-columns:minmax(0,1fr);gap:var(--s1)}}
+.pill{display:inline-block;font-size:var(--t-xs);border:1px solid var(--rule);border-radius:4px;padding:0 var(--s2);margin-inline-end:var(--s1);margin-block-end:var(--s1)}
 dl.facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:var(--s2) var(--s4);margin:0}
-dl.facts dt{color:var(--ink-2)} dl.facts dd{margin:0}
+dl.facts dt{color:var(--ink-2)} dl.facts dd{margin:0;overflow-wrap:anywhere}
 @media (max-width:520px){dl.facts{grid-template-columns:minmax(0,1fr);gap:0}dl.facts dd{margin-block-end:var(--s2)}}
-.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s5)}
-@media (max-width:700px){.cols{grid-template-columns:minmax(0,1fr)}}
+.records{list-style:none;margin:0;padding:0}
+.records li{padding-block:var(--s2);border-block-end:1px solid var(--rule)}
+.records li:last-child{border-block-end:0}
 .notice{border-inline-start:4px solid var(--bad);background:var(--lock);padding:var(--s3) var(--s4);margin-block:var(--s3);border-radius:var(--r)}
-.empty{border:1px dashed var(--rule);border-radius:var(--r);padding:var(--s5);background:var(--surface)}
+.empty{border:1px dashed var(--control);border-radius:var(--r);padding:var(--s5);background:var(--surface)}
 .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(8rem,1fr));gap:var(--s3)}
 .sw{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;font-size:var(--t-xs)}
 .sw i{display:block;height:2.5rem;border-block-end:1px solid var(--rule)}
 .sw span{display:block;padding:var(--s1) var(--s2)}
+.sponsored-row{border:1px solid var(--warn-ink);border-radius:var(--r);padding:0 var(--s3)}
+.sponsored-label{font-size:var(--t-xs);font-weight:700;color:var(--warn-ink);background:var(--warn-bg);padding:0 var(--s2);border-radius:4px}
 footer.legal{border-block-start:1px solid var(--rule);margin-block-start:var(--s5);padding-block:var(--s4) var(--s6);font-size:var(--t-xs);color:var(--ink-2)}
-.toast{position:fixed;inset-block-end:var(--s4);inset-inline:0;margin-inline:auto;width:max-content;max-width:90%;background:var(--ink);color:var(--paper);padding:var(--s2) var(--s4);border-radius:var(--r);display:none}
+.toast{position:fixed;inset-block-end:var(--s4);inset-inline:0;margin-inline:auto;width:max-content;max-width:90%;background:var(--ink);color:var(--paper);border:2px solid var(--paper);padding:var(--s2) var(--s4);border-radius:var(--r);display:none}
 .toast.show{display:block}
+@media (pointer:coarse){.seg button{min-height:var(--tap)}}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+@media (forced-colors: active){.seg button[aria-pressed="true"]{outline:2px solid Highlight}.chip,.tag,.btn{border:1px solid CanvasText}.toast{border:2px solid CanvasText}}
 </style>
 </head>
 <body>
-<div class="proto"><div class="wrap">
-  <strong id="protoNote"></strong>
-  <span class="ctl"><span id="lblView"></span><span class="seg" role="group"><button id="planFree" type="button"></button><button id="planSub" type="button"></button></span></span>
-  <span class="ctl"><span id="lblTheme"></span><span class="seg" role="group"><button data-theme-btn="system" type="button"></button><button data-theme-btn="light" type="button"></button><button data-theme-btn="dark" type="button"></button></span></span>
-  <span class="ctl"><span id="lblLang"></span><span class="seg" role="group"><button data-lang-btn="en" type="button">English</button><button data-lang-btn="ur" type="button">اردو</button></span></span>
-  <span class="ctl"><a href="#/list" id="navList" style="color:inherit"></a> · <a href="#/empty" id="navEmpty" style="color:inherit"></a> · <a href="#/system" id="navSys" style="color:inherit"></a></span>
-</div></div>
+<a class="skip" href="#results" id="skip"></a>
+<details class="proto" id="proto"><summary id="protoSummary"></summary><div class="proto-body">
+  <span id="protoNote"></span>
+  <span class="ctl"><span id="lblView"></span><span class="seg" role="group" aria-labelledby="lblView"><button id="planFree" type="button"></button><button id="planSub" type="button"></button></span></span>
+  <span class="ctl"><span id="lblTheme"></span><span class="seg" role="group" aria-labelledby="lblTheme"><button data-theme-btn="system" type="button"></button><button data-theme-btn="light" type="button"></button><button data-theme-btn="dark" type="button"></button></span></span>
+  <span class="ctl"><span id="lblLang"></span><span class="seg" role="group" aria-labelledby="lblLang"><button data-lang-btn="en" type="button" lang="en">English</button><button data-lang-btn="ur" type="button" lang="ur">اردو</button></span></span>
+  <span class="ctl"><a href="#/list" id="navList"></a> · <a href="#/empty" id="navEmpty"></a> · <a href="#/system" id="navSys"></a></span>
+</div></details>
 <header class="site"><div class="wrap site-row">
   <a class="logo" href="#/list">All<b>Lists</b></a>
   <form class="search" role="search" onsubmit="return false"><label class="visually-hidden" for="q" id="lblSearch"></label><input id="q" type="search"><button class="btn" type="submit" id="btnSearch"></button></form>
 </div></header>
-<main class="wrap" id="app" aria-live="polite"></main>
+<main class="wrap" id="app"></main>
 <div class="wrap"><footer class="legal" id="legal"></footer></div>
-<div class="toast" id="toast" role="status"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="visually-hidden" id="status" role="status" aria-live="polite"></div>
+<noscript><div class="wrap"><p>This prototype needs JavaScript. The real pages are plain HTML and work without it.</p></div></noscript>
 
 <script>
 "use strict";
-/* ---------- Words. English is the source; Urdu is a draft for native-speaker review. Missing Urdu falls back to English. ---------- */
-var UR = {
-  proto:"نمونہ: یہ صرف ڈیزائن کا خاکہ ہے۔ تمام کاروبار، اعداد اور تاریخیں فرضی ہیں۔",
-  viewing:"بطور دیکھیں", free:"مفت وزیٹر", sub:"سبسکرائبر", theme:"تھیم", system:"سسٹم", light:"روشن", dark:"تاریک", lang:"زبان",
-  navList:"فہرست", navEmpty:"خالی فہرست", navSys:"ڈیزائن نظام",
-  search:"تلاش", searchPh:"فہرستیں اور مقامات تلاش کریں (نمونہ)",
-  global:"دنیا", pakistan:"پاکستان", punjab:"پنجاب", sialkot:"سیالکوٹ",
-  fam:"کاروبار اور تجارت", fam2:"مینوفیکچررز", ltype:"سرجیکل آلات بنانے والے",
-  title:"سیالکوٹ میں سرجیکل آلات بنانے والے",
-  scale:"قومی برآمدی مرکز", sample:"نمونہ فہرست",
-  reach:"اس فہرست تک پہنچیں", follow:"فہرست فالو کریں", share:"شیئر", wa:"واٹس ایپ", copy:"لنک کاپی کریں", fb:"فیس بک", email:"ای میل", li:"لنکڈ اِن", more:"مزید", report:"رپورٹ کریں",
-  about:"اس فہرست کے بارے میں", stats:"پوری فہرست کے اعداد و شمار", areas:"اس فہرست کے علاقے", area:"علاقہ", entries:"اندراجات",
-  verification:"تصدیق", sort:"ترتیب", allLevels:"تمام درجے", ranked:"درجہ بندی", az:"نام الف سے ی", recent:"حال ہی میں تصدیق شدہ",
-  results:"نتائج", open:"کھولیں", help:"اس فہرست کو بنانے میں مدد کریں", add:"اندراج شامل کریں", suggest:"علاقہ تجویز کریں", claim:"کیا یہ آپ کا کاروبار ہے؟ دعویٰ کریں",
-  related:"متعلقہ فہرستیں", contrib:"معاونین اور نگران", whence:"یہ معلومات کہاں سے آئیں",
-  trust:"اعتماد", contact:"اے آل لسٹس کے ذریعے رابطہ کریں", quote:"قیمت کی درخواست", save:"محفوظ کریں", reportEntry:"اندراج کی رپورٹ",
-  facts:"اہم حقائق", aboutEntry:"تعارف", pricesTitle:"خدمات اور مصنوعات", certsTitle:"رجسٹریشن اور سرٹیفکیٹ", reviews:"درجہ بندی اور جائزے", inList:"اس فہرست میں",
-  fix:"درست کریں یا دعویٰ کریں", yours:"کیا یہ آپ کا ہے؟ دعویٰ کریں", edit:"ترمیم تجویز کریں", remove:"آپ نہیں؟ اندراج ہٹائیں یا درست کریں",
-  emptyTitle:"ابھی کوئی اندراج نہیں", emptyBody:"یہ فہرست یہاں موجود ہے مگر خالی ہے۔ پہلا اندراج شامل کریں یا نگران بننے کے لیے درخواست دیں۔",
-  closedNote:"یہ اندراج مستقل طور پر بند ہے۔", locked:"مقفل"
-};
+/* ---------- Words. English is the source. Urdu is a draft for native-speaker review (whole sentences, never joined pieces). ---------- */
 var EN = {
-  proto:"Prototype: design mock-up. Every business, number and date is invented.",
+  proto:"Prototype with invented sample data. Nothing is real.", protoSummary:"Prototype controls", skip:"Skip to results",
   viewing:"Viewing as", free:"Free visitor", sub:"Subscriber", theme:"Theme", system:"System", light:"Light", dark:"Dark", lang:"Language",
   navList:"List page", navEmpty:"Empty list", navSys:"Design system",
-  search:"Search", searchPh:"Search lists and places (demo)",
-  global:"Global", pakistan:"Pakistan", punjab:"Punjab", sialkot:"Sialkot",
-  fam:"Business and trade", fam2:"Manufacturers", ltype:"Surgical instrument makers",
-  title:"Surgical instrument makers in Sialkot",
-  scale:"National export cluster", sample:"Sample list",
-  reach:"Reach this list", follow:"Follow list", share:"Share", wa:"WhatsApp", copy:"Copy link", fb:"Facebook", email:"Email", li:"LinkedIn", more:"More", report:"Report",
-  about:"About this list", stats:"Statistics for the whole list", areas:"Areas in this list", area:"Area", entries:"Entries",
-  verification:"Verification", sort:"Sort", allLevels:"All levels", ranked:"Ranked", az:"Name A to Z", recent:"Recently verified",
-  results:"Results", open:"Open", help:"Help build this list", add:"Add an entry", suggest:"Suggest an area", claim:"Is this your business? Claim it",
-  related:"Related lists", contrib:"Contributors and steward", whence:"Where this data comes from",
-  trust:"Trust", contact:"Contact through AllLists", quote:"Request a quote", save:"Save", reportEntry:"Report entry",
-  facts:"Key facts", aboutEntry:"About", pricesTitle:"Services and products", certsTitle:"Registrations and certificates", reviews:"Rankings and reviews", inList:"In this list",
-  fix:"Correct or claim this entry", yours:"Is this yours? Claim", edit:"Suggest an edit", remove:"Not you? Remove or correct this entry",
-  emptyTitle:"No entries yet", emptyBody:"This list exists here but is empty. Add the first entry or apply to steward it.",
-  closedNote:"This entry is permanently closed.", locked:"Locked"
+  search:"Search", searchPh:"Search lists and places",
+  global:"Global", pakistan:"Pakistan", punjab:"Punjab", sialkot:"Sialkot", gujrat:"Gujrat",
+  fam:"Business and trade", fam2:"Manufacturers",
+  title:"Surgical instrument makers in Sialkot", titleEmpty:"Surgical instrument makers in Gujrat",
+  scope:"Makers of surgical, dental, veterinary and beauty instruments in Sialkot. Traders are marked.",
+  scale:"National export cluster",
+  summary:"{n} businesses listed. Last checked {date}.",
+  trustLine:"{a} visited by a surveyor · {b} confirmed by the owner · {c} checked by computer only",
+  howTitle:"How are entries checked?",
+  gSurveyor:"Visited or called by an AllLists surveyor who is not the owner.",
+  gOwner:"The owner confirmed it with a code sent to their phone.",
+  gAi:"A computer matched it against public sources. No person has seen it.",
+  gNone:"Added from a source. Not checked yet.",
+  lSurveyor:"Surveyor-verified", lOwner:"Owner-verified", lAi:"AI-checked", lNone:"Not verified yet",
+  closedChip:"Permanently closed",
+  enquiry:"Send one enquiry to several makers", forSubs:"Subscribers",
+  follow:"Tell me when this list changes",
+  share:"Share", wa:"WhatsApp", copy:"Copy link", more:"More options", fb:"Facebook", email:"Email", li:"LinkedIn",
+  area:"Area", allAreas:"All areas", verification:"Checks", allChecks:"All checks", sort:"Sort",
+  ranked:"Best checked first", az:"Name A to Z", recent:"Recently checked",
+  order:"Sorted by how well each entry has been checked and filled in. Paid listings are shown apart and marked Sponsored.",
+  howOrder:"How the order works",
+  shown:"{n} of {m} shown", clear:"Clear filters", noMatch:"No businesses match these filters.",
+  showMore:"Show {n} more", checked:"Checked {date}", moreSpec:"+{n} more",
+  subsTitle:"What subscribers also see", subsBody:"Street address, exact map pin, size, website, social pages, export markets, minimum order, prices and certificate details for every business, and one enquiry to many makers.", plans:"See plans",
+  ad:"Advertisement. Free visitors see ads. Subscribers do not.",
+  help:"Is a maker missing?", add:"Add a maker", suggest:"Suggest an area",
+  related:"Related lists", relSports:"Sports goods makers in Sialkot", relPunjab:"Surgical instrument makers in Punjab", relGujrat:"Surgical instrument makers in Gujrat",
+  steward:"Nobody edits this list yet.", stewardApply:"Become the editor of this list",
+  about:"About this list", sourcesBody:"Each entry names its source, its licence and the day it was collected.",
+  wrong:"Something wrong?", wrongList:"This list has a problem", reportEntry:"This business is closed or wrong", claim:"This is my business. Claim it", suggestFix:"Suggest a correction", removeMe:"This is about me and I want it removed or corrected", freeRemoval:"Removing personal data is free.",
+  message:"Message this business", msgNote:"Your message goes through AllLists. Their phone and email stay private.", save:"Save",
+  facts:"Key facts", details:"{type} details", howChecked:"How it was checked", whence:"Where this came from",
+  hours:"Hours", languages:"Languages", established:"Established", contact:"Contact", viaAll:"Through AllLists only",
+  btype:"Business type", cats:"Product categories", oem:"Makes to your brand (OEM)", yes:"Yes", no:"No",
+  specialities:"Specialities", backList:"Back to the list",
+  addr:"Street address", pin:"Map pin", size:"Staff", web:"Website", social:"Social pages", markets:"Export markets", moq:"Minimum order", prices:"Prices", cert:"Certificate",
+  priceDate:"price date {date}", onRequest:"On request", passed:"Checks passed: {n}.",
+  closedNote:"This business has closed. We keep the page so old links still work.", closedPast:"Was checked before it closed",
+  emptyTitle:"No entries yet", emptyBody:"Nobody has listed surgical instrument makers in Gujrat yet. Know one? Add it.", viewSialkot:"See Sialkot (7 businesses)",
+  legal:"A check is a record, not a guarantee. Listings are not endorsements.", privacy:"Privacy and opt-out", report:"Report",
+  openMap:"Open in Google Maps", notes:"Sample data. Share links are plain links: nothing loads from a social network until you click.",
+  linkCopied:"Link copied", toastOutreach:"Demo: opens the channel picker. WhatsApp first, only to people who agreed, sent by AllLists.", toastPlans:"Demo: opens the plans page.", toastSave:"Demo: saved. Needs an account.", toastFollow:"Demo: we will tell you when it changes. Needs an account.",
+  statusShown:"{n} businesses shown",
+  ago0:"today", agoD:"{d} days ago", agoW:"{w} weeks ago", agoM:"{m} months ago", mon_sat:"Mon to Sat"
+};
+var UR = {
+  proto:"فرضی ڈیٹا کے ساتھ نمونہ۔ کچھ بھی حقیقی نہیں۔", protoSummary:"نمونے کے کنٹرول", skip:"نتائج پر جائیں",
+  viewing:"بطور دیکھیں", free:"مفت وزیٹر", sub:"سبسکرائبر", theme:"تھیم", system:"سسٹم", light:"روشن", dark:"تاریک", lang:"زبان",
+  navList:"فہرست", navEmpty:"خالی فہرست", navSys:"ڈیزائن نظام",
+  search:"تلاش", searchPh:"فہرستیں اور مقامات تلاش کریں",
+  global:"دنیا", pakistan:"پاکستان", punjab:"پنجاب", sialkot:"سیالکوٹ", gujrat:"گجرات",
+  fam:"کاروبار اور تجارت", fam2:"مینوفیکچررز",
+  title:"سیالکوٹ میں سرجیکل آلات بنانے والے", titleEmpty:"گجرات میں سرجیکل آلات بنانے والے",
+  scope:"سیالکوٹ میں سرجیکل، ڈینٹل، ویٹرنری اور بیوٹی آلات بنانے والے۔ تاجروں پر الگ نشان ہے۔",
+  scale:"قومی برآمدی مرکز",
+  summary:"{n} کاروبار درج ہیں۔ آخری جانچ: {date}۔",
+  trustLine:"{a} کا سروے کار نے معائنہ کیا · {b} کی مالک نے تصدیق کی · {c} صرف کمپیوٹر سے جانچے گئے",
+  howTitle:"اندراجات کیسے جانچے جاتے ہیں؟",
+  gSurveyor:"آل لسٹس کے سروے کار نے، جو مالک نہیں، خود جا کر یا فون پر جانچا۔",
+  gOwner:"مالک نے اپنے فون پر بھیجے گئے کوڈ سے تصدیق کی۔",
+  gAi:"کمپیوٹر نے عوامی ذرائع سے ملا کر جانچا۔ کسی انسان نے نہیں دیکھا۔",
+  gNone:"کسی ذریعے سے شامل کیا گیا۔ ابھی جانچا نہیں گیا۔",
+  lSurveyor:"سروے کار سے تصدیق شدہ", lOwner:"مالک سے تصدیق شدہ", lAi:"کمپیوٹر سے جانچا گیا", lNone:"ابھی تصدیق نہیں ہوئی",
+  closedChip:"مستقل طور پر بند",
+  enquiry:"کئی بنانے والوں کو ایک ساتھ پیغام بھیجیں", forSubs:"سبسکرائبرز",
+  follow:"فہرست بدلے تو مجھے بتائیں",
+  share:"شیئر", wa:"واٹس ایپ", copy:"لنک کاپی کریں", more:"مزید طریقے", fb:"فیس بک", email:"ای میل", li:"لنکڈ اِن",
+  area:"علاقہ", allAreas:"تمام علاقے", verification:"جانچ", allChecks:"تمام جانچ", sort:"ترتیب",
+  ranked:"سب سے بہتر جانچ پہلے", az:"نام الف سے ے", recent:"حال ہی میں جانچے گئے",
+  order:"ترتیب اس بنیاد پر ہے کہ ہر اندراج کتنا جانچا اور مکمل کیا گیا ہے۔ ادا شدہ اندراج الگ دکھائے جاتے ہیں اور ان پر اسپانسرڈ لکھا ہوتا ہے۔",
+  howOrder:"ترتیب کیسے بنتی ہے",
+  shown:"{m} میں سے {n} دکھائے گئے", clear:"فلٹر ہٹائیں", noMatch:"ان فلٹرز سے کوئی کاروبار نہیں ملا۔",
+  showMore:"{n} مزید دکھائیں", checked:"جانچ: {date}", moreSpec:"+{n} مزید",
+  subsTitle:"سبسکرائبرز مزید کیا دیکھتے ہیں", subsBody:"ہر کاروبار کا پورا پتہ، نقشے پر درست مقام، عملے کا حجم، ویب سائٹ، سوشل صفحات، برآمدی منڈیاں، کم از کم آرڈر، قیمتیں اور سرٹیفکیٹ کی تفصیل، اور کئی بنانے والوں کو ایک پیغام۔", plans:"پلان دیکھیں",
+  ad:"اشتہار۔ مفت وزیٹرز کو اشتہار نظر آتے ہیں۔ سبسکرائبرز کو نہیں۔",
+  help:"کیا کوئی بنانے والا رہ گیا ہے؟", add:"بنانے والا شامل کریں", suggest:"علاقہ تجویز کریں",
+  related:"متعلقہ فہرستیں", relSports:"سیالکوٹ میں کھیلوں کا سامان بنانے والے", relPunjab:"پنجاب میں سرجیکل آلات بنانے والے", relGujrat:"گجرات میں سرجیکل آلات بنانے والے",
+  steward:"ابھی اس فہرست کا کوئی ایڈیٹر نہیں۔", stewardApply:"اس فہرست کے ایڈیٹر بنیں",
+  about:"اس فہرست کے بارے میں", sourcesBody:"ہر اندراج اپنا ذریعہ، لائسنس اور جمع کرنے کا دن بتاتا ہے۔",
+  wrong:"کچھ غلط ہے؟", wrongList:"اس فہرست میں مسئلہ ہے", reportEntry:"یہ کاروبار بند یا غلط ہے", claim:"یہ میرا کاروبار ہے۔ دعویٰ کریں", suggestFix:"درستی تجویز کریں", removeMe:"یہ میرے بارے میں ہے اور میں اسے ہٹوانا یا درست کروانا چاہتا ہوں", freeRemoval:"ذاتی معلومات ہٹانا مفت ہے۔",
+  message:"اس کاروبار کو پیغام بھیجیں", msgNote:"آپ کا پیغام آل لسٹس کے ذریعے جائے گا۔ ان کا فون اور ای میل نجی رہتے ہیں۔", save:"محفوظ کریں",
+  facts:"اہم حقائق", details:"{type} کی تفصیل", howChecked:"جانچ کیسے ہوئی", whence:"یہ معلومات کہاں سے آئیں",
+  hours:"اوقات", languages:"زبانیں", established:"قیام", contact:"رابطہ", viaAll:"صرف آل لسٹس کے ذریعے",
+  btype:"کاروبار کی قسم", cats:"مصنوعات کے زمرے", oem:"آپ کے برانڈ کے لیے تیار کرتے ہیں (OEM)", yes:"جی ہاں", no:"نہیں",
+  specialities:"مہارتیں", backList:"فہرست پر واپس",
+  addr:"پورا پتہ", pin:"نقشے پر مقام", size:"عملہ", web:"ویب سائٹ", social:"سوشل صفحات", markets:"برآمدی منڈیاں", moq:"کم از کم آرڈر", prices:"قیمتیں", cert:"سرٹیفکیٹ",
+  priceDate:"قیمت کی تاریخ {date}", onRequest:"درخواست پر", passed:"کامیاب جانچ: {n}۔",
+  closedNote:"یہ کاروبار بند ہو چکا ہے۔ ہم صفحہ رکھتے ہیں تاکہ پرانے لنک کام کرتے رہیں۔", closedPast:"بند ہونے سے پہلے جانچا گیا تھا",
+  emptyTitle:"ابھی کوئی اندراج نہیں", emptyBody:"گجرات میں ابھی کسی نے سرجیکل آلات بنانے والے درج نہیں کیے۔ کوئی جانتے ہیں؟ شامل کریں۔", viewSialkot:"سیالکوٹ دیکھیں (7 کاروبار)",
+  legal:"جانچ ایک ریکارڈ ہے، ضمانت نہیں۔ فہرست میں شامل ہونا سفارش نہیں۔", privacy:"رازداری اور اخراج", report:"رپورٹ کریں",
+  openMap:"گوگل میپس میں کھولیں", notes:"نمونہ ڈیٹا۔ شیئر لنک سادہ لنک ہیں: آپ کے کلک کرنے تک کسی سوشل نیٹ ورک سے کچھ لوڈ نہیں ہوتا۔",
+  linkCopied:"لنک کاپی ہو گیا", toastOutreach:"نمونہ: چینل منتخب کرنے کی سکرین کھلے گی۔ پہلے واٹس ایپ، صرف ان لوگوں کو جو راضی ہوں، آل لسٹس کی طرف سے۔", toastPlans:"نمونہ: پلان کا صفحہ کھلے گا۔", toastSave:"نمونہ: محفوظ ہو گیا۔ اکاؤنٹ درکار ہے۔", toastFollow:"نمونہ: بدلنے پر ہم بتائیں گے۔ اکاؤنٹ درکار ہے۔",
+  statusShown:"{n} کاروبار دکھائے گئے",
+  ago0:"آج", agoD:"{d} دن پہلے", agoW:"{w} ہفتے پہلے", agoM:"{m} مہینے پہلے", mon_sat:"پیر تا ہفتہ",
+  "Manufacturer":"مینوفیکچرر", "Trader":"تاجر",
+  "General surgery":"جنرل سرجری", "Dental":"ڈینٹل", "Orthopaedic":"آرتھوپیڈک", "Veterinary":"ویٹرنری", "Beauty":"بیوٹی", "Nail care":"ناخنوں کی دیکھ بھال",
+  "Paris Road":"پیرس روڈ", "Kashmir Road":"کشمیر روڈ", "Daska Road":"ڈسکہ روڈ", "Industrial Estate":"انڈسٹریل اسٹیٹ",
+  "Urdu":"اردو", "English":"انگریزی", "Germany":"جرمنی", "UK":"برطانیہ", "UAE":"متحدہ عرب امارات", "Gulf":"خلیج", "Africa":"افریقہ", "EU":"یورپی یونین",
+  "Jan":"جنوری","Feb":"فروری","Mar":"مارچ","Apr":"اپریل","May":"مئی","Jun":"جون","Jul":"جولائی","Aug":"اگست","Sep":"ستمبر","Oct":"اکتوبر","Nov":"نومبر","Dec":"دسمبر"
 };
 var lang="en";
-function T(k){return (lang==="ur"&&UR[k])||EN[k]||k;}
+function T(k,v){var s=(lang==="ur"&&UR[k])||EN[k]||k;if(v){for(var p in v){s=s.split("{"+p+"}").join(v[p]);}}return s;}
+function D(w){return (lang==="ur"&&UR[w])||w;}   /* data words: translated where a draft exists */
+var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var TODAY=new Date("2026-10-05T00:00:00Z");
+function fmtDate(s){var p=s.split("-");return parseInt(p[2],10)+" "+D(MONTHS[parseInt(p[1],10)-1])+" "+p[0];}
+function fmtDateEn(s){var p=s.split("-");return parseInt(p[2],10)+" "+MONTHS[parseInt(p[1],10)-1]+" "+p[0];}
+function age(s){var d=Math.round((TODAY-new Date(s+"T00:00:00Z"))/86400000);if(d<=0)return T("ago0");if(d<14)return T("agoD",{d:d});if(d<60)return T("agoW",{w:Math.round(d/7)});return T("agoM",{m:Math.round(d/30)});}
 
 /* ---------- Sample data (invented) ---------- */
 var CANON="https://alllists.org/pk/punjab/sialkot/surgical-instrument-makers"; /* domain still open */
-var LEVEL={none:"Not verified yet",ai:"AI-checked",owner:"Owner-verified",surveyor:"Surveyor-verified"};
 var ENTRIES=[
- {id:"e1",name:"Demo Surgical Works",urdu:"ڈیمو سرجیکل ورکس",area:"Paris Road",status:"open",levels:[{k:"surveyor",by:"Surveyor S-101",when:"2026-09-18",how:"Visit, checklist 12 of 12"},{k:"owner",by:"Owner",when:"2026-09-02",how:"OTP to stored number"}],type:"Manufacturer",spec:["General surgery","Dental"],cert:"ISO 13485 (sample ID DEMO-0001, valid to 2027-03)",moq:"500 pieces",band:"Staff 50 to 100",rank:1,lat:32.4945,lng:74.5229,year:1998,markets:"Germany, UK, UAE",oem:true},
- {id:"e2",name:"Sample Instruments Co.",urdu:"سیمپل انسٹرومنٹس",area:"Kashmir Road",status:"open",levels:[{k:"owner",by:"Owner",when:"2026-08-21",how:"OTP to stored number"},{k:"ai",by:"AllLists agent",when:"2026-08-22",how:"2 sources matched, confidence 0.82"}],type:"Manufacturer",spec:["Orthopaedic"],cert:"CE self-declaration on file (no certificate to look up)",moq:"300 pieces",band:"Staff 20 to 50",rank:2,lat:32.4960,lng:74.5300,year:2005,markets:"Gulf, Africa",oem:true},
- {id:"e3",name:"Demo Dental Tools",urdu:"ڈیمو ڈینٹل ٹولز",area:"Daska Road",status:"open",levels:[{k:"ai",by:"AllLists agent",when:"2026-09-29",how:"3 sources matched, confidence 0.77"}],type:"Manufacturer",spec:["Dental"],cert:"Not checked",moq:"1,000 pieces",band:"Staff 10 to 20",rank:3,lat:32.4800,lng:74.5100,year:2012,markets:"Not stated",oem:false},
- {id:"e4",name:"Example Veterinary Instruments",urdu:"ایگزیمپل ویٹرنری انسٹرومنٹس",area:"Industrial Estate",status:"open",levels:[{k:"surveyor",by:"Surveyor S-114",when:"2026-07-11",how:"Visit, checklist 10 of 12"}],type:"Manufacturer",spec:["Veterinary"],cert:"ISO 9001 (sample ID DEMO-0042, valid to 2026-12)",moq:"200 pieces",band:"Staff 20 to 50",rank:4,lat:32.5010,lng:74.5400,year:2009,markets:"EU",oem:true},
- {id:"e5",name:"Placeholder Trading Co.",urdu:"پلیس ہولڈر ٹریڈنگ",area:"Paris Road",status:"open",levels:[{k:"ai",by:"AllLists agent",when:"2026-09-10",how:"Trader, not a maker (website says exports only)"}],type:"Trader",spec:["General surgery"],cert:"Not checked",moq:"Not stated",band:"Staff under 10",rank:5,lat:32.4950,lng:74.5240,year:2016,markets:"Not stated",oem:false},
- {id:"e6",name:"Fictional Beauty Instruments",urdu:"فکشنل بیوٹی انسٹرومنٹس",area:"Kashmir Road",status:"open",levels:[{k:"owner",by:"Owner",when:"2026-06-30",how:"OTP to stored number"}],type:"Manufacturer",spec:["Beauty","Nail care"],cert:"Not checked",moq:"1,000 pieces",band:"Staff 10 to 20",rank:6,lat:32.4970,lng:74.5310,year:2019,markets:"Gulf",oem:true},
- {id:"e7",name:"Mock Forceps Works",urdu:"ماک فورسیپس ورکس",area:"Daska Road",status:"open",levels:[{k:"none",by:"Import",when:"2026-10-01",how:"Source recorded only"}],type:"Manufacturer",spec:["General surgery"],cert:"Not checked",moq:"Not stated",band:"Not stated",rank:null,lat:32.4810,lng:74.5120,year:null,markets:"Not stated",oem:false},
- {id:"e8",name:"Test Scissors and Clamps",urdu:"ٹیسٹ سیزرز اینڈ کلیمپس",area:"Industrial Estate",status:"open",levels:[{k:"ai",by:"AllLists agent",when:"2026-09-25",how:"2 sources matched, confidence 0.71"}],type:"Manufacturer",spec:["General surgery","Veterinary"],cert:"Not checked",moq:"500 pieces",band:"Staff 20 to 50",rank:7,lat:32.5020,lng:74.5410,year:2011,markets:"Not stated",oem:false},
- {id:"e9",name:"Former Sample Works",urdu:"سابقہ سیمپل ورکس",area:"Paris Road",status:"closed",levels:[{k:"owner",by:"Owner",when:"2025-11-02",how:"OTP to stored number"}],type:"Manufacturer",spec:["General surgery"],cert:"Not checked",moq:"Not stated",band:"Not stated",rank:null,lat:32.4948,lng:74.5231,year:2001,markets:"Not stated",oem:false}
+ {id:"e1",name:"Demo Surgical Works",urdu:"ڈیمو سرجیکل ورکس",area:"Paris Road",status:"open",levels:[{k:"surveyor",when:"2026-09-18",n:"12 of 12"},{k:"owner",when:"2026-09-02"}],type:"Manufacturer",spec:["General surgery","Dental","Orthopaedic","Veterinary","Beauty"],cert:"ISO 13485, sample ID DEMO-0001, valid to Mar 2027",moq:"500 pieces",band:"50 to 100",rank:1,lat:32.4945,lng:74.5229,year:1998,markets:["Germany","UK","UAE"],oem:true,hours:true},
+ {id:"e2",name:"Sample Instruments Co.",urdu:"سیمپل انسٹرومنٹس",area:"Kashmir Road",status:"open",levels:[{k:"owner",when:"2026-08-21"},{k:"ai",when:"2026-08-22",n:"2"}],type:"Manufacturer",spec:["Orthopaedic"],cert:"CE self-declaration on file, no certificate to look up",moq:"300 pieces",band:"20 to 50",rank:2,lat:32.4960,lng:74.5300,year:2005,markets:["Gulf","Africa"],oem:true,hours:true},
+ {id:"e3",name:"Demo Dental Tools",urdu:"ڈیمو ڈینٹل ٹولز",area:"Daska Road",status:"open",levels:[{k:"ai",when:"2026-09-29",n:"3"}],type:"Manufacturer",spec:["Dental"],cert:"",moq:"1,000 pieces",band:"10 to 20",rank:3,lat:32.4800,lng:74.5100,year:2012,markets:[],oem:false,hours:false},
+ {id:"e4",name:"Example Veterinary Instruments",urdu:"ایگزیمپل ویٹرنری انسٹرومنٹس",area:"Industrial Estate",status:"open",levels:[{k:"surveyor",when:"2026-07-11",n:"10 of 12"}],type:"Manufacturer",spec:["Veterinary"],cert:"ISO 9001, sample ID DEMO-0042, valid to Dec 2026",moq:"200 pieces",band:"20 to 50",rank:4,lat:32.5010,lng:74.5400,year:2009,markets:["EU"],oem:true,hours:true},
+ {id:"e5",name:"Placeholder Trading Co.",urdu:"پلیس ہولڈر ٹریڈنگ",area:"Paris Road",status:"open",levels:[{k:"ai",when:"2026-09-10",n:"2"}],type:"Trader",spec:["General surgery"],cert:"",moq:"",band:"under 10",rank:5,lat:32.4950,lng:74.5240,year:2016,markets:[],oem:false,hours:false},
+ {id:"e6",name:"Fictional Beauty Instruments",urdu:"فکشنل بیوٹی انسٹرومنٹس",area:"Kashmir Road",status:"open",levels:[{k:"owner",when:"2026-06-30"}],type:"Manufacturer",spec:["Beauty","Nail care"],cert:"",moq:"1,000 pieces",band:"10 to 20",rank:6,lat:32.4970,lng:74.5310,year:2019,markets:["Gulf"],oem:true,hours:false},
+ {id:"e7",name:"Mock Forceps Works",urdu:"ماک فورسیپس ورکس",area:"Daska Road",status:"open",levels:[{k:"none",when:"2026-10-01"}],type:"Manufacturer",spec:["General surgery"],cert:"",moq:"",band:"",rank:null,lat:32.4810,lng:74.5120,year:null,markets:[],oem:false,hours:false},
+ {id:"e8",name:"Test Scissors and Clamps",urdu:"ٹیسٹ سیزرز اینڈ کلیمپس",area:"Industrial Estate",status:"open",levels:[{k:"ai",when:"2026-09-25",n:"2"}],type:"Manufacturer",spec:["General surgery","Veterinary"],cert:"",moq:"500 pieces",band:"20 to 50",rank:7,lat:32.5020,lng:74.5410,year:2011,markets:[],oem:false,hours:false},
+ {id:"e9",name:"Former Sample Works",urdu:"سابقہ سیمپل ورکس",area:"Paris Road",status:"closed",levels:[{k:"owner",when:"2025-11-02"}],type:"Manufacturer",spec:["General surgery"],cert:"",moq:"",band:"",rank:null,lat:32.4948,lng:74.5231,year:2001,markets:[],oem:false,hours:false}
 ];
-var state={plan:"free",level:"all",sort:"ranked",showUnverified:false,showClosed:false,theme:"system"};
+var LK={surveyor:"lSurveyor",owner:"lOwner",ai:"lAi",none:"lNone"}, GK={surveyor:"gSurveyor",owner:"gOwner",ai:"gAi",none:"gNone"};
+var state={plan:"free",area:"all",level:"all",sort:"ranked",count:5,theme:"system"};
 
 /* ---------- Helpers ---------- */
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 function topLevel(e){var o=["surveyor","owner","ai","none"];for(var i=0;i<o.length;i++){for(var j=0;j<e.levels.length;j++){if(e.levels[j].k===o[i])return o[i];}}return "none";}
 function isOpen(e){return e.status==="open";}
 function isPub(e){return isOpen(e)&&topLevel(e)!=="none";}
-function chips(e,detail){
-  var h=e.levels.map(function(l){var t=detail?(" ("+esc(l.by)+", "+esc(l.when)+")"):"";return '<span class="chip '+l.k+'" title="'+esc(l.by+", "+l.when+", "+l.how)+'">'+esc(LEVEL[l.k])+t+'</span>';}).join("");
-  if(!isOpen(e))h+='<span class="chip closed">Permanently closed</span>';
-  return h;
+function lastChecked(e){return e.levels.map(function(l){return l.when;}).sort().pop();}
+function chips(e){
+  if(!isOpen(e))return '<span class="chip closed">'+esc(T("closedChip"))+'</span>'+e.levels.map(function(l){return '<span class="chip past">'+esc(T(LK[l.k]))+'</span>';}).join("");
+  return e.levels.map(function(l){return '<span class="chip '+l.k+'">'+esc(T(LK[l.k]))+'</span>';}).join("");
 }
-function lockSpan(x){return '<span class="lock" title="Unlocked on a subscriber plan">'+esc(T("locked"))+': '+esc(x)+'</span>';}
+function altName(e){return lang==="ur"?e.name:e.urdu;}
+function mainName(e){return lang==="ur"?e.urdu:e.name;}
+function bdiName(s,l){return '<bdi lang="'+l+'">'+esc(s)+'</bdi>';}
 function utm(ch,camp,id){return CANON+(id?("/"+id):"")+"?utm_source="+ch+"&utm_medium=share&utm_campaign="+camp+"&utm_content="+(id||"list")+"&ref=DEMO";}
 function links(kind,e){
-  var title=kind==="list"?EN.title:(e.name+" ("+e.type.toLowerCase()+", "+e.area+", Sialkot)");
-  var line=kind==="list"?"Names free, details by account.":("Verification: "+LEVEL[topLevel(e)]);
+  var title=kind==="list"?EN.title:(e.name+", "+e.type.toLowerCase()+", "+e.area+", Sialkot");
+  var line=kind==="list"?"7 businesses listed, last checked 18 Sep 2026.":("Last checked "+fmtDateEn(lastChecked(e))+".");
   var camp=kind==="list"?"list_share":"entry_share", id=kind==="list"?null:e.id;
   function tx(ch){return encodeURIComponent(title+". "+line+" "+utm(ch,camp,id));}
   return {wa:"https://wa.me/?text="+tx("whatsapp"),fb:"https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(utm("facebook",camp,id)),
     li:"https://www.linkedin.com/sharing/share-offsite/?url="+encodeURIComponent(utm("linkedin",camp,id)),
     x:"https://x.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(utm("x",camp,id)),
     mail:"mailto:?subject="+encodeURIComponent(title)+"&body="+encodeURIComponent(line+" "+utm("email",camp,id)),
-    copy:utm("copy",camp,id),title:title};
+    copy:CANON+(id?("/"+id):"")};
 }
 function shareBar(kind,e){
   var s=links(kind,e), key=kind==="list"?"list":e.id;
-  return '<div class="share" role="group" aria-label="'+esc(T("share"))+'">'
-   +'<button class="btn sm" type="button" data-native="'+key+'" hidden>'+esc(T("share"))+'</button>'
-   +'<a class="btn sm" href="'+s.wa+'" target="_blank" rel="noopener noreferrer">'+esc(T("wa"))+'</a>'
-   +'<button class="btn sm" type="button" data-copy="'+esc(s.copy)+'">'+esc(T("copy"))+'</button>'
-   +'<a class="btn sm" href="'+s.fb+'" target="_blank" rel="noopener noreferrer">'+esc(T("fb"))+'</a>'
-   +'<a class="btn sm" href="'+s.mail+'">'+esc(T("email"))+'</a>'
-   +'<a class="btn sm" href="'+s.li+'" target="_blank" rel="noopener noreferrer">'+esc(T("li"))+'</a>'
-   +'<button class="btn sm" type="button" data-more="'+key+'" aria-expanded="false" aria-controls="menu-'+key+'">'+esc(T("more"))+'</button></div>'
-   +'<div class="menu" id="menu-'+key+'"><a class="btn sm" href="'+s.x+'" target="_blank" rel="noopener noreferrer">X</a><span class="muted xs">Telegram, QR code and embed come later.</span></div>';
+  return '<div class="actions" role="group" aria-label="'+esc(T("share"))+'">'
+   +'<button class="btn" type="button" data-native="'+key+'" hidden>'+esc(T("share"))+'</button>'
+   +'<a class="btn" href="'+s.wa+'" target="_blank" rel="noopener noreferrer">'+esc(T("wa"))+'</a>'
+   +'<button class="btn" type="button" data-copy="'+esc(s.copy)+'">'+esc(T("copy"))+'</button>'
+   +'<button class="btn quiet" type="button" data-more="'+key+'" aria-expanded="false" aria-controls="menu-'+key+'">'+esc(T("more"))+'</button></div>'
+   +'<div class="menu" id="menu-'+key+'"><a class="btn" href="'+s.fb+'" target="_blank" rel="noopener noreferrer">'+esc(T("fb"))+'</a><a class="btn" href="'+s.mail+'">'+esc(T("email"))+'</a><a class="btn" href="'+s.li+'" target="_blank" rel="noopener noreferrer">'+esc(T("li"))+'</a><a class="btn" href="'+s.x+'" target="_blank" rel="noopener noreferrer">X</a></div>';
 }
-function mapLinks(e){
-  var ll=e.lat+","+e.lng;
-  return '<a href="https://www.google.com/maps/search/?api=1&amp;query='+ll+'" target="_blank" rel="noopener noreferrer">Google Maps</a> · <a href="https://www.openstreetmap.org/?mlat='+e.lat+'&amp;mlon='+e.lng+'#map=15/'+e.lat+'/'+e.lng+'" target="_blank" rel="noopener noreferrer">OpenStreetMap</a><br><span class="muted xs">Baidu and Amap links need a coordinate conversion and are not shown here.</span>';
-}
-function outreach(label){return '<button class="btn primary" type="button" data-outreach>'+esc(label||T("contact"))+'</button>';}
 function crumbs(parts,last){
   return '<ol>'+parts.map(function(p){return '<li><a href="#/list">'+esc(p)+'</a></li>';}).join("")+(last?'<li aria-current="page"><strong>'+esc(last)+'</strong></li>':'')+'</ol>';
 }
 function placeCrumbs(){return [T("global"),T("pakistan"),T("punjab")];}
-function typeCrumbs(){return [T("fam"),T("fam2")];}
+function keyBlock(){
+  return '<details class="key"><summary>'+esc(T("howTitle"))+'</summary><dl>'
+   +['surveyor','owner','ai','none'].map(function(k){return '<dt>'+esc(T(LK[k]))+'</dt><dd>'+esc(T(GK[k]))+'</dd>';}).join("")+'</dl></details>';
+}
+function specText(e,cap){
+  var s=e.spec.slice(0,cap).map(function(x){return '<span class="pill">'+esc(D(x))+'</span>';}).join("");
+  if(e.spec.length>cap)s+='<span class="pill">'+esc(T("moreSpec",{n:e.spec.length-cap}))+'</span>';
+  return s;
+}
 
 /* ---------- List page ---------- */
 function renderList(){
   var sub=state.plan==="sub";
-  var visible=ENTRIES.filter(function(e){return (state.showUnverified||topLevel(e)!=="none")&&(state.showClosed||isOpen(e));});
-  var rows=visible.filter(function(e){return state.level==="all"||e.levels.some(function(l){return l.k===state.level;});});
-  rows=rows.slice().sort(function(a,b){
+  var pubList=ENTRIES.filter(isPub);
+  var areas={};pubList.forEach(function(e){areas[e.area]=(areas[e.area]||0)+1;});
+  var rowsAll=pubList.filter(function(e){return (state.area==="all"||e.area===state.area)&&(state.level==="all"||topLevel(e)===state.level);});
+  rowsAll=rowsAll.slice().sort(function(a,b){
     if(state.sort==="az")return a.name.localeCompare(b.name);
-    if(state.sort==="recent"){var da=a.levels.map(function(l){return l.when;}).sort().pop(),db=b.levels.map(function(l){return l.when;}).sort().pop();return db.localeCompare(da);}
+    if(state.sort==="recent")return lastChecked(b).localeCompare(lastChecked(a));
     return (a.rank||99)-(b.rank||99);
   });
-  var pubList=ENTRIES.filter(isPub), pub=pubList.length;
-  var wait=ENTRIES.filter(function(e){return isOpen(e)&&topLevel(e)==="none";}).length;
-  var closed=ENTRIES.filter(function(e){return !isOpen(e);}).length;
-  var counts={surveyor:0,owner:0,ai:0}, byArea={};
-  pubList.forEach(function(e){e.levels.forEach(function(l){if(counts[l.k]!==undefined)counts[l.k]++;});byArea[e.area]=(byArea[e.area]||0)+1;});
-  var withCert=pubList.filter(function(e){return /^(ISO|CE)/.test(e.cert);}).length;
+  var rows=rowsAll.slice(0,state.count);
+  var c={surveyor:0,owner:0,ai:0};pubList.forEach(function(e){c[topLevel(e)]++;});
+  var latest=pubList.map(lastChecked).sort().pop();
+  var filtered=state.area!=="all"||state.level!=="all";
   var h='';
-  h+='<nav class="crumbs" aria-label="Place">'+crumbs(placeCrumbs(),T("sialkot"))+'</nav>';
-  h+='<nav class="crumbs" aria-label="List type">'+crumbs(typeCrumbs(),T("ltype"))+'</nav>';
+  h+='<nav class="crumbs" aria-label="'+esc(T("area"))+'">'+crumbs(placeCrumbs(),T("sialkot"))+'</nav>';
   h+='<h1>'+esc(T("title"))+'</h1>';
-  h+='<ul class="tags"><li class="tag">'+esc(T("scale"))+'</li><li class="tag">'+esc(T("sample"))+'</li></ul>';
-  h+='<p class="num"><strong>'+pub+' published</strong>, '+wait+' awaiting verification (hidden), '+closed+' closed (hidden). Last updated 2026-10-05.</p>';
-  h+='<div class="panel"><div class="actions">'+outreach(T("reach"))+'<button class="btn" type="button" data-save>'+esc(T("follow"))+'</button><a class="btn sm" href="#/report">'+esc(T("report"))+'</a></div><div style="margin-block-start:var(--s3)">'+shareBar("list")+'</div></div>';
-  h+='<section class="sec"><h2>'+esc(T("about"))+'</h2><p>Makers of surgical, dental, veterinary and beauty instruments based in Sialkot. Traders and agents are listed separately and marked as traders. Each entry shows what was checked, by whom and when.</p><p class="muted xs">Sources: sample data only. In the real product this line lists each source, its licence and the retrieval date.</p></section>';
-  h+='<section class="sec"><h2>'+esc(T("stats"))+'</h2><div class="tablewrap"><table class="num"><tbody>'
-    +'<tr><th scope="row">Published entries</th><td>'+pub+'</td></tr>'
-    +'<tr><th scope="row">Entries with a surveyor check</th><td>'+counts.surveyor+'</td></tr>'
-    +'<tr><th scope="row">Entries with an owner check</th><td>'+counts.owner+'</td></tr>'
-    +'<tr><th scope="row">Entries with an AI check</th><td>'+counts.ai+'</td></tr>'
-    +'<tr><th scope="row">With a checkable certificate</th><td>'+(sub?withCert:lockSpan("subscribers"))+'</td></tr>'
-    +'<tr><th scope="row">Verified in the last 12 months</th><td>'+(sub?pub:lockSpan("subscribers"))+'</td></tr>'
-    +'</tbody></table></div><p class="muted xs">An entry can hold several checks, so those rows can add up to more than the published total.</p></section>';
-  h+='<section class="sec"><h2>'+esc(T("areas"))+'</h2><div class="tablewrap"><table class="num"><thead><tr><th>'+esc(T("area"))+'</th><th>'+esc(T("entries"))+'</th></tr></thead><tbody>'
-    +Object.keys(byArea).sort().map(function(a){return '<tr><td><a href="#/list">'+esc(a)+'</a></td><td>'+byArea[a]+'</td></tr>';}).join("")+'</tbody></table></div></section>';
-  h+='<section class="sec"><div class="actions"><label for="fl">'+esc(T("verification"))+'</label><select id="fl"><option value="all">'+esc(T("allLevels"))+'</option>'
-    +['surveyor','owner','ai'].map(function(k){return '<option value="'+k+'"'+(state.level===k?' selected':'')+'>'+esc(LEVEL[k])+'</option>';}).join("")
-    +'</select><label for="so">'+esc(T("sort"))+'</label><select id="so"><option value="ranked"'+(state.sort==="ranked"?' selected':'')+'>'+esc(T("ranked"))+'</option><option value="az"'+(state.sort==="az"?' selected':'')+'>'+esc(T("az"))+'</option><option value="recent"'+(state.sort==="recent"?' selected':'')+'>'+esc(T("recent"))+'</option></select></div>'
-    +'<div class="actions" style="margin-block-start:var(--s2)"><label><input type="checkbox" id="uv"'+(state.showUnverified?' checked':'')+'> Show entries not verified yet (moderator view)</label><label><input type="checkbox" id="cl"'+(state.showClosed?' checked':'')+'> Show closed entries</label></div>'
-    +'<p class="muted xs" style="margin-block-start:var(--s2)">Order: by position in the list, which reflects verification and completeness. Paid placement, when it exists, appears only in the labelled slot below.</p></section>';
-  h+='<div class="spons"><strong>Sponsored (example slot, empty until sold).</strong> Labelled, capped at one or two, and never changes the verification order.</div>';
-  h+='<section aria-label="'+esc(T("results"))+'"><h2 class="num">'+rows.length+' of '+visible.length+' shown</h2><ol class="rows">';
+  h+='<p>'+esc(T("scope"))+'</p>';
+  h+='<ul class="tags"><li class="tag">'+esc(T("fam"))+' / '+esc(T("fam2"))+'</li><li class="tag">'+esc(T("scale"))+'</li></ul>';
+  h+='<p class="num"><strong>'+esc(T("summary",{n:pubList.length,date:fmtDate(latest)}))+'</strong><br><span class="muted small">'+esc(T("trustLine",{a:c.surveyor,b:c.owner,c:c.ai}))+'</span></p>';
+  h+=keyBlock();
+  h+='<div class="actions"><button class="btn primary" type="button" data-outreach>'+esc(T("enquiry"))+(sub?'':' <span class="xs">('+esc(T("forSubs"))+')</span>')+'</button><button class="btn" type="button" data-follow>'+esc(T("follow"))+'</button></div>';
+  h+='<div style="margin-block-start:var(--s3)">'+shareBar("list")+'</div>';
+  h+='<section class="sec" id="results" tabindex="-1" aria-label="'+esc(T("shown",{n:rows.length,m:rowsAll.length}))+'" style="margin-block-start:var(--s4)">';
+  h+='<div class="actions"><label for="fa">'+esc(T("area"))+'</label><select id="fa"><option value="all">'+esc(T("allAreas"))+'</option>'
+    +Object.keys(areas).sort().map(function(a){return '<option value="'+esc(a)+'"'+(state.area===a?' selected':'')+'>'+esc(D(a))+' ('+areas[a]+')</option>';}).join("")+'</select>'
+    +'<label for="fl">'+esc(T("verification"))+'</label><select id="fl"><option value="all">'+esc(T("allChecks"))+'</option>'
+    +['surveyor','owner','ai'].map(function(k){return '<option value="'+k+'"'+(state.level===k?' selected':'')+'>'+esc(T(LK[k]))+'</option>';}).join("")+'</select>'
+    +'<label for="so">'+esc(T("sort"))+'</label><select id="so"><option value="ranked"'+(state.sort==="ranked"?' selected':'')+'>'+esc(T("ranked"))+'</option><option value="az"'+(state.sort==="az"?' selected':'')+'>'+esc(T("az"))+'</option><option value="recent"'+(state.sort==="recent"?' selected':'')+'>'+esc(T("recent"))+'</option></select>'
+    +(filtered?'<button class="btn quiet" type="button" data-clear>'+esc(T("clear"))+'</button>':'')+'</div>';
+  h+='<p class="muted xs" style="margin-block-start:var(--s2)">'+esc(T("order"))+' <a href="#/system">'+esc(T("howOrder"))+'</a></p>';
+  h+='<h2 class="num">'+esc(T("shown",{n:rows.length,m:rowsAll.length}))+'</h2><ol class="rows">';
   rows.forEach(function(e){
-    h+='<li class="row'+(isOpen(e)?'':' closed')+'"><div><a class="nm" href="#/entry/'+e.id+'">'+esc(lang==="ur"?e.urdu:e.name)+'</a><div class="muted small" lang="'+(lang==="ur"?"en":"ur")+'" dir="'+(lang==="ur"?"ltr":"rtl")+'">'+esc(lang==="ur"?e.name:e.urdu)+'</div></div>'
-      +'<div class="small">'+esc(e.type)+'<br>'+esc(e.area)+'<br>'+(e.rank?'<span class="num">Position '+e.rank+' of '+pub+'</span>':'Not ranked')+'</div>'
-      +'<div>'+chips(e,false)+(sub?'<div class="small">'+esc(e.spec.join(", "))+'<br>'+esc(e.cert)+'<br>Minimum order: '+esc(e.moq)+'</div>':'<div class="small" style="margin-block-start:var(--s1)">'+lockSpan("specialities, certificate, minimum order")+'</div>')+'</div>'
-      +'<div><a class="btn sm" href="#/entry/'+e.id+'">'+esc(T("open"))+'</a></div></li>';
+    h+='<li class="row"><div><a class="nm" href="#/entry/'+e.id+'">'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</a><span class="alt">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</span></div>'
+      +'<div class="small">'+esc(D(e.type))+' · '+esc(D(e.area))+'<div style="margin-block-start:var(--s1)">'+specText(e,3)+'</div></div>'
+      +'<div>'+chips(e)+'<div class="muted small">'+esc(T("checked",{date:fmtDate(lastChecked(e))}))+' · '+esc(age(lastChecked(e)))+'</div></div></li>';
   });
-  h+='</ol>'+(rows.length?'':'<p>No entries match this filter.</p>')+'</section>';
+  h+='</ol>';
+  if(!rows.length)h+='<p>'+esc(T("noMatch"))+'</p>';
+  if(rowsAll.length>rows.length)h+='<p><button class="btn" type="button" data-more-rows>'+esc(T("showMore",{n:rowsAll.length-rows.length}))+'</button></p>';
+  h+='</section>';
   if(!sub){
-    h+='<section class="sec"><h2>What a subscriber plan unlocks</h2><ul><li>Specialities, certificate details and minimum orders on every row</li><li>Statistics about certificates and freshness</li><li>Exact map pins and outreach tools for the whole list</li></ul><p class="muted small">Phone numbers, WhatsApp numbers and emails are never shown to anyone. Messages go through the Contact button (decision E13).</p></section>';
-    h+='<div class="ad">Advertisement (example). Free visitors see ads; subscribers do not.</div>';
+    h+='<div class="panel"><h2>'+esc(T("subsTitle"))+'</h2><p>'+esc(T("subsBody"))+'</p><button class="btn primary" type="button" data-plans>'+esc(T("plans"))+'</button></div>';
+    h+='<div class="ad">'+esc(T("ad"))+'</div>';
   }
-  h+='<section class="sec"><h2>'+esc(T("help"))+'</h2><div class="actions"><a class="btn" href="#/add">'+esc(T("add"))+'</a><a class="btn" href="#/add">'+esc(T("suggest"))+'</a><a class="btn" href="#/claim">'+esc(T("claim"))+'</a></div></section>';
-  h+='<div class="cols"><section class="sec"><h2>'+esc(T("related"))+'</h2><ul><li><a href="#/list">Sports goods makers in Sialkot</a></li><li><a href="#/list">Surgical instrument makers in Punjab</a> (parent roll-up)</li><li><a href="#/empty">Surgical instrument makers in Gujrat</a> (empty list)</li></ul></section>'
-    +'<section class="sec"><h2>'+esc(T("contrib"))+'</h2><ul><li>Contributor A (sample): 14 verified entries</li><li>Contributor B (sample): 9 verified entries</li><li>Contributor C (sample): 3 verified entries</li></ul><p class="small">Steward: none. <a href="#/steward">Apply to steward this list</a></p></section></div>';
-  h+='<section class="sec"><h2>'+esc(T("whence"))+'</h2><p class="muted small">In the real product: each source, its licence, collection dates, how verification works and a link to the change log appear here.</p></section>';
+  h+='<section class="sec"><h2>'+esc(T("help"))+'</h2><div class="actions"><a class="btn" href="#/add">'+esc(T("add"))+'</a><a class="btn" href="#/add">'+esc(T("suggest"))+'</a></div></section>';
+  h+='<section class="sec"><h2>'+esc(T("about"))+'</h2><p class="muted">'+esc(T("sourcesBody"))+'</p><p class="small">'+esc(T("steward"))+' <a href="#/steward">'+esc(T("stewardApply"))+'</a></p></section>';
+  h+='<section class="sec"><h2>'+esc(T("related"))+'</h2><ul><li><a href="#/list">'+esc(T("relSports"))+'</a></li><li><a href="#/list">'+esc(T("relPunjab"))+'</a></li><li><a href="#/empty">'+esc(T("relGujrat"))+'</a></li></ul></section>';
+  h+='<section class="sec"><h2>'+esc(T("wrong"))+'</h2><p><a href="#/report">'+esc(T("wrongList"))+'</a></p></section>';
   return h;
 }
 
 /* ---------- Empty list ---------- */
 function renderEmpty(){
-  return '<nav class="crumbs" aria-label="Place">'+crumbs(placeCrumbs(),"Gujrat")+'</nav>'
-   +'<nav class="crumbs" aria-label="List type">'+crumbs(typeCrumbs(),T("ltype"))+'</nav>'
-   +'<h1>Surgical instrument makers in Gujrat</h1><ul class="tags"><li class="tag">'+esc(T("scale"))+'</li></ul>'
-   +'<div class="empty"><h2>'+esc(T("emptyTitle"))+'</h2><p>'+esc(T("emptyBody"))+'</p><div class="actions"><a class="btn primary" href="#/add">'+esc(T("add"))+'</a><a class="btn" href="#/steward">Apply to steward</a><a class="btn" href="#/list">Surgical instrument makers in Sialkot (7 published)</a></div></div>'
-   +'<p class="muted small" style="margin-block-start:var(--s4)">Most list pages are empty at the start, so this state is the contributor funnel. It is not indexed by search engines until it holds entries.</p>';
+  return '<nav class="crumbs">'+crumbs(placeCrumbs(),T("gujrat"))+'</nav><h1>'+esc(T("titleEmpty"))+'</h1>'
+   +'<ul class="tags"><li class="tag">'+esc(T("scale"))+'</li></ul>'
+   +'<div class="empty"><h2>'+esc(T("emptyTitle"))+'</h2><p>'+esc(T("emptyBody"))+'</p><div class="actions"><a class="btn primary" href="#/add">'+esc(T("add"))+'</a><a class="btn" href="#/steward">'+esc(T("stewardApply"))+'</a><a class="btn" href="#/list">'+esc(T("viewSialkot"))+'</a></div></div>';
 }
 
 /* ---------- Entry page ---------- */
 function renderEntry(id){
-  var e=ENTRIES.filter(function(x){return x.id===id;})[0]; if(!e) return '<p>Entry not found. <a href="#/list">Back to the list</a></p>';
-  var sub=state.plan==="sub", pub=ENTRIES.filter(isPub).length;
+  var e=ENTRIES.filter(function(x){return x.id===id;})[0]; if(!e) return '<p><a href="#/list">'+esc(T("backList"))+'</a></p>';
+  var sub=state.plan==="sub", live=isOpen(e);
   var h='';
-  h+='<nav class="crumbs" aria-label="Breadcrumb">'+crumbs(placeCrumbs().concat([T("sialkot"),T("ltype")]),lang==="ur"?e.urdu:e.name)+'</nav>';
-  h+='<h1>'+esc(lang==="ur"?e.urdu:e.name)+'</h1>';
-  h+='<p class="muted" lang="'+(lang==="ur"?"en":"ur")+'" dir="'+(lang==="ur"?"ltr":"rtl")+'">'+esc(lang==="ur"?e.name:e.urdu)+'</p>';
-  h+='<ul class="tags"><li class="tag">'+esc(e.type)+'</li><li class="tag">Business</li><li class="tag">'+(isOpen(e)?'Open':'Permanently closed')+'</li></ul>';
-  if(!isOpen(e))h+='<div class="notice"><strong>'+esc(T("closedNote"))+'</strong> It stays on record so that old links and history still make sense. It is not counted in the list.</div>';
-  h+='<section class="sec"><h2>'+esc(T("trust"))+'</h2><div>'+chips(e,true)+'</div>'
-    +'<ul class="small">'+e.levels.map(function(l){return '<li>'+esc(LEVEL[l.k])+': '+esc(l.how)+', <span class="num">'+esc(l.when)+'</span></li>';}).join("")+'</ul>'
-    +'<p class="muted xs">Claimed: '+(e.levels.some(function(l){return l.k==="owner";})?'yes':'no')+'. Last updated: <span class="num">'+esc(e.levels.map(function(l){return l.when;}).sort().pop())+'</span>. A badge says what was checked, by whom and when. It never claims "guaranteed genuine".</p></section>';
-  h+='<div class="panel"><div class="actions">'+outreach()+'<button class="btn" type="button" data-quote>'+esc(T("quote"))+'</button><button class="btn" type="button" data-save>'+esc(T("save"))+'</button><a class="btn sm" href="#/report">'+esc(T("reportEntry"))+'</a></div><div style="margin-block-start:var(--s3)">'+shareBar("entry",e)+'</div><p class="muted xs" style="margin-block-start:var(--s3);margin-block-end:0">Phone, WhatsApp and email are stored but never shown. AllLists delivers the message (decision E13).</p></div>';
-  h+='<div class="cols"><section class="sec"><h2>'+esc(T("facts"))+'</h2><dl class="facts">'
-    +'<dt>Area</dt><dd>'+esc(e.area)+', Sialkot, Punjab, Pakistan</dd>'
-    +'<dt>Address</dt><dd>'+(sub?'Street address (sample, not real)':lockSpan("street address"))+'</dd>'
-    +'<dt>Map pin</dt><dd class="num">'+(sub?e.lat.toFixed(4)+', '+e.lng.toFixed(4)+' (exact, WGS-84)<br>'+mapLinks(e):'Area level only. '+lockSpan("exact pin"))+'</dd>'
-    +'<dt>Hours</dt><dd class="num">Mon to Sat 09:00 to 18:00 (confirmed '+esc(e.levels[0].when)+')</dd>'
-    +'<dt>Languages</dt><dd>Urdu, English</dd>'
-    +'<dt>Established</dt><dd class="num">'+(e.year?e.year:'Not stated')+'</dd>'
-    +'<dt>Size</dt><dd>'+(sub?esc(e.band):lockSpan("size"))+'</dd>'
-    +'<dt>Website</dt><dd>'+(sub?'<bdi dir="ltr">demo-instruments.example</bdi> (sample)':lockSpan("website"))+'</dd>'
-    +'<dt>Social pages</dt><dd>'+(sub?'<a href="#/entry/'+e.id+'" rel="nofollow noopener noreferrer">Facebook</a>, <a href="#/entry/'+e.id+'" rel="nofollow noopener noreferrer">LinkedIn</a>, <a href="#/entry/'+e.id+'" rel="nofollow noopener noreferrer">Instagram</a> (sample links)':lockSpan("social pages"))+'</dd>'
-    +'<dt>Contact</dt><dd>Through AllLists only</dd></dl></section>'
-    +'<section class="sec"><h2>'+esc(T("aboutEntry"))+'</h2><p>Sample description of the business. In the real product this is 150 to 600 characters. Specialities and products are searchable tags.</p><p><strong>Specialities:</strong> '+esc(e.spec.join(", "))+'</p><p class="muted xs">Alternate names and other scripts are stored and searched.</p></section></div>';
-  h+='<section class="sec"><h2>'+esc(e.type)+' details</h2><dl class="facts">'
-    +'<dt>Business type</dt><dd>'+esc(e.type)+' (a trader is not shown as a maker)</dd>'
-    +'<dt>Product categories</dt><dd>'+esc(e.spec.join(", "))+' (HS code in the real product)</dd>'
-    +'<dt>Export markets</dt><dd>'+(sub?esc(e.markets):lockSpan("export markets"))+'</dd>'
-    +'<dt>OEM or private label</dt><dd>'+(e.oem?'Yes':'No or not stated')+'</dd>'
-    +'<dt>Minimum order</dt><dd>'+(sub?esc(e.moq):lockSpan("minimum order"))+'</dd>'
-    +'<dt>Verification tier</dt><dd>'+esc(LEVEL[topLevel(e)])+'</dd></dl></section>';
-  h+='<div class="cols"><section class="sec"><h2>'+esc(T("pricesTitle"))+'</h2><div class="tablewrap"><table class="num"><thead><tr><th>Item</th><th>Price</th><th>Price date</th></tr></thead><tbody>'
-    +'<tr><td>Forceps, standard range (sample)</td><td>'+(sub?'From USD 1.20 each':lockSpan("price"))+'</td><td>'+(sub?esc(e.levels[0].when):'')+'</td></tr>'
-    +'<tr><td>Custom engraving, private label (sample)</td><td>'+(sub?'On request':lockSpan("price"))+'</td><td></td></tr></tbody></table></div>'
-    +'<p class="muted xs">Every price carries a currency and a date. Prices appear only once the sector rules are set.</p></section>'
-    +'<section class="sec"><h2>'+esc(T("certsTitle"))+'</h2><div class="tablewrap"><table><thead><tr><th>Scheme</th><th>Value</th><th>Checked</th></tr></thead><tbody>'
-    +'<tr><td>Quality or CE</td><td>'+(sub?esc(e.cert):lockSpan("details"))+'</td><td class="num">'+esc(e.levels[0].when)+'</td></tr>'
-    +'<tr><td>Company registration</td><td>'+(sub?'Sample number, with link to the register':lockSpan("details"))+'</td><td></td></tr></tbody></table></div>'
-    +'<p class="muted xs">Numbers link to the public register. National ID numbers are never stored.</p></section></div>';
-  h+='<div class="cols"><section class="sec"><h2>'+esc(T("reviews"))+'</h2><p>No rankings yet. When reviewer rankings start, this block states who may write them and how they are checked.</p></section>'
-    +'<section class="sec"><h2>'+esc(T("inList"))+'</h2><p class="num">'+(e.rank?'Position <strong>'+e.rank+' of '+pub+'</strong> in '+esc(EN.title)+'. Ordered by verification and completeness.':'Not ranked.')+'</p><p class="small"><a href="#/list">Back to the list</a></p></section></div>';
-  h+='<section class="sec"><h2>'+esc(T("whence"))+'</h2><ul class="small"><li>Source: sample data. In the real product: source, licence, retrieval date.</li><li>Added by: Contributor A (sample). Last checked by: '+esc(e.levels[0].by)+'.</li><li>Last three changes: shown here in the real product.</li></ul></section>';
-  h+='<section class="sec"><h2>'+esc(T("fix"))+'</h2><div class="actions"><a class="btn" href="#/claim">'+esc(T("yours"))+'</a><a class="btn" href="#/edit">'+esc(T("edit"))+'</a><a class="btn" href="#/remove">'+esc(T("remove"))+'</a></div><p class="muted xs">Removal of personal data is free.</p></section>';
+  h+='<nav class="crumbs">'+crumbs(placeCrumbs().concat([T("sialkot")]),mainName(e))+'</nav>';
+  h+='<h1>'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</h1>';
+  h+='<p class="muted">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</p>';
+  h+='<p class="small">'+esc(D(e.type))+' · '+esc(D(e.area))+', '+esc(T("sialkot"))+'</p>';
+  if(!live)h+='<div class="notice"><strong>'+esc(T("closedNote"))+'</strong></div>';
+  h+='<div>'+chips(e)+'</div><p class="muted small num">'+esc(live?T("checked",{date:fmtDate(lastChecked(e))})+" · "+age(lastChecked(e)):T("closedPast")+": "+fmtDate(lastChecked(e)))+'</p>';
+  h+=keyBlock();
+  if(live){h+='<div class="actions"><button class="btn primary" type="button" data-outreach>'+esc(T("message"))+'</button><button class="btn" type="button" data-save>'+esc(T("save"))+'</button></div><p class="muted small" style="margin-block-start:var(--s2)">'+esc(T("msgNote"))+'</p>';}
+  else{h+='<div class="actions"><button class="btn" type="button" data-save>'+esc(T("save"))+'</button></div>';}
+  h+='<div style="margin-block-start:var(--s3)">'+shareBar("entry",e)+'</div>';
+  /* key facts: only rows that have a value */
+  var f='';
+  f+='<dt>'+esc(T("area"))+'</dt><dd>'+esc(D(e.area))+', '+esc(T("sialkot"))+', '+esc(T("punjab"))+', '+esc(T("pakistan"))+'</dd>';
+  if(e.hours)f+='<dt>'+esc(T("hours"))+'</dt><dd class="num">'+esc(T("mon_sat"))+' 09:00 – 18:00</dd>';
+  f+='<dt>'+esc(T("languages"))+'</dt><dd>'+esc(D("Urdu"))+', '+esc(D("English"))+'</dd>';
+  if(e.year)f+='<dt>'+esc(T("established"))+'</dt><dd class="num">'+e.year+'</dd>';
+  f+='<dt>'+esc(T("contact"))+'</dt><dd>'+esc(T("viaAll"))+'</dd>';
+  h+='<section class="sec"><h2>'+esc(T("facts"))+'</h2><dl class="facts">'+f+'</dl></section>';
+  h+='<section class="sec"><h2>'+esc(T("specialities"))+'</h2><div>'+specText(e,99)+'</div></section>';
+  var d='<dt>'+esc(T("btype"))+'</dt><dd>'+esc(D(e.type))+'</dd>'
+       +'<dt>'+esc(T("oem"))+'</dt><dd>'+esc(e.oem?T("yes"):T("no"))+'</dd>';
+  h+='<section class="sec"><h2>'+esc(T("details",{type:D(e.type)}))+'</h2><dl class="facts">'+d+'</dl></section>';
+  /* subscriber-only rows: shown only to subscribers; free visitors get one panel naming what exists */
+  var subRows=[];
+  subRows.push([T("addr"),'—']);
+  subRows.push([T("pin"),e.lat.toFixed(4)+', '+e.lng.toFixed(4)+' · <a href="https://www.google.com/maps/search/?api=1&amp;query='+e.lat+','+e.lng+'" target="_blank" rel="noopener noreferrer">'+esc(T("openMap"))+'</a>']);
+  if(e.band)subRows.push([T("size"),esc(e.band)]);
+  subRows.push([T("web"),'<bdi dir="ltr">demo-instruments.example</bdi>']);
+  subRows.push([T("social"),'<a href="#/entry/'+e.id+'" rel="nofollow noopener noreferrer">Facebook</a>, <a href="#/entry/'+e.id+'" rel="nofollow noopener noreferrer">LinkedIn</a>']);
+  if(e.markets.length)subRows.push([T("markets"),e.markets.map(function(x){return esc(D(x));}).join(lang==="ur"?"، ":", ")]);
+  if(e.moq)subRows.push([T("moq"),esc(e.moq)]);
+  subRows.push([T("prices"),'<ul class="records"><li>'+(lang==="ur"?"فورسیپس، معیاری رینج":"Forceps, standard range")+': USD 1.20 <span class="muted small">('+esc(T("priceDate",{date:fmtDate(lastChecked(e))}))+')</span></li><li>'+(lang==="ur"?"کسٹم کندہ کاری":"Custom engraving")+': '+esc(T("onRequest"))+'</li></ul>']);
+  if(e.cert)subRows.push([T("cert"),esc(e.cert)]);
+  if(sub){
+    h+='<section class="sec"><h2>'+esc(T("subsTitle"))+'</h2><dl class="facts">'+subRows.map(function(r){return '<dt>'+esc(r[0])+'</dt><dd class="num">'+r[1]+'</dd>';}).join("")+'</dl></section>';
+  }else{
+    h+='<div class="panel"><h2>'+esc(T("subsTitle"))+'</h2><p>'+subRows.map(function(r){return esc(r[0]);}).join(lang==="ur"?"، ":", ")+'.</p><button class="btn primary" type="button" data-plans>'+esc(T("plans"))+'</button></div>';
+  }
+  h+='<section class="sec"><h2>'+esc(T("howChecked"))+'</h2><ul class="records">'
+    +e.levels.map(function(l){return '<li><strong>'+esc(T(LK[l.k]))+'</strong>, <span class="num">'+esc(fmtDate(l.when))+'</span><br><span class="muted small">'+esc(T(GK[l.k]))+(l.n?(' '+esc(T("passed",{n:l.n}))):'')+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="sec"><h2>'+esc(T("whence"))+'</h2><p class="muted small">'+esc(T("sourcesBody"))+'</p><p class="small"><a href="#/list">'+esc(T("backList"))+'</a></p></section>';
+  h+='<section class="sec"><h2>'+esc(T("wrong"))+'</h2><ul><li><a href="#/report">'+esc(T("reportEntry"))+'</a></li><li><a href="#/claim">'+esc(T("claim"))+'</a></li><li><a href="#/edit">'+esc(T("suggestFix"))+'</a></li><li><a href="#/remove">'+esc(T("removeMe"))+'</a></li></ul><p class="muted small">'+esc(T("freeRemoval"))+'</p></section>';
   return h;
 }
 
 /* ---------- Design system page ---------- */
 function renderSystem(){
-  var sw=[["paper","--paper"],["surface","--surface"],["ink","--ink"],["ink-2","--ink-2"],["rule","--rule"],["accent","--accent"],["lock","--lock"],["ok","--ok"],["warn bg","--warn-bg"],["bad","--bad"]];
-  var h='<h1>Design system</h1><p class="muted">Tokens and components used by every list and entry page. Change a token and every page changes. Switch theme and language above to test them.</p>';
+  var sw=[["paper","--paper"],["surface","--surface"],["ink","--ink"],["ink-2","--ink-2"],["rule","--rule"],["control","--control"],["accent","--accent"],["lock","--lock"],["ok","--ok"],["warn bg","--warn-bg"],["bad","--bad"]];
+  var h='<h1>Design system</h1><p class="muted">Tokens and parts used by every list and entry page. Change a token and every page changes. Use the controls at the top to test theme and language.</p>';
   h+='<section class="sec"><h2>Colour tokens</h2><div class="swatches">'+sw.map(function(s){return '<div class="sw"><i style="background:var('+s[1]+')"></i><span>'+s[0]+'<br><span class="mono">'+s[1]+'</span></span></div>';}).join("")+'</div></section>';
-  h+='<section class="sec"><h2>Type scale (system fonts, no downloads)</h2><p style="font-size:var(--t-2xl);margin:0">Page title 28</p><p style="font-size:var(--t-xl);margin:0">Section title 22</p><p style="font-size:var(--t-lg);margin:0">Subsection 18</p><p style="margin:0">Body 16, up to 68 characters a line</p><p class="small" style="margin:0">Small 15</p><p class="xs" style="margin:0">Caption 13</p><p class="mono" style="margin:0">Mono for IDs and codes: 2026-10-05 · DEMO-0001</p><p class="num" style="margin:0">Tabular numbers: 1,234 / 0,567</p></section>';
-  h+='<section class="sec"><h2>Verification chips (shape and words, never colour alone)</h2><div>'
-    +'<span class="chip surveyor">Surveyor-verified</span><span class="chip owner">Owner-verified</span><span class="chip ai">AI-checked</span><span class="chip none">Not verified yet</span><span class="chip closed">Permanently closed</span></div></section>';
-  h+='<section class="sec"><h2>Buttons and markers</h2><div class="actions"><button class="btn primary" type="button">Primary action</button><button class="btn" type="button">Secondary</button><button class="btn sm" type="button">Small</button><span class="lock">Locked: details</span></div><div class="spons">Sponsored slot label</div><div class="ad">Advertisement slot (free visitors only)</div></section>';
-  h+='<section class="sec"><h2>Rules every page follows</h2><ul><li>One title, then the same sections in the same order on every page.</li><li>Names-only preview for free visitors; locked parts are marked with the same Locked label.</li><li>Phone, WhatsApp and email are never shown; one Contact button.</li><li>Every price has a currency and a date.</li><li>Empty, unverified and closed states are designed, not left blank.</li><li>Text and numbers only; no web fonts, no third-party scripts, readable without JavaScript in the real product.</li></ul></section>';
+  h+='<section class="sec"><h2>Type scale (system fonts, no downloads)</h2><p style="font-size:var(--t-2xl);margin:0">Page title 28</p><p style="font-size:var(--t-xl);margin:0">Section title 22</p><p style="font-size:var(--t-lg);margin:0">Row title 18</p><p style="margin:0">Body 16, up to 68 characters a line</p><p class="small" style="margin:0">Small 15</p><p class="xs" style="margin:0">Caption 14</p><p class="mono" style="margin:0">Mono for IDs and codes: DEMO-0001</p><p class="num" style="margin:0">Tabular numbers: 1,234 / 0,567</p><p class="muted small">Urdu is set larger (18) with taller lines (1.95) because Urdu letters need the room.</p></section>';
+  h+='<section class="sec"><h2>Check labels (shape and words, never colour alone)</h2><div><span class="chip surveyor">'+esc(T("lSurveyor"))+'</span><span class="chip owner">'+esc(T("lOwner"))+'</span><span class="chip ai">'+esc(T("lAi"))+'</span><span class="chip none">'+esc(T("lNone"))+'</span><span class="chip closed">'+esc(T("closedChip"))+'</span></div></section>';
+  h+='<section class="sec"><h2>Buttons</h2><div class="actions"><button class="btn primary" type="button">Primary action</button><button class="btn" type="button">Secondary</button><button class="btn quiet" type="button">Quiet link</button></div><p class="muted small">Every button is at least 44 px tall. One primary action per page area.</p></section>';
+  h+='<section class="sec"><h2>How the order works</h2><p>Entries are sorted by how well each has been checked and filled in. Paid listings are never mixed into that order. An empty sponsored slot shows nothing. A filled one is a normal row with a label, and it shows the same checks and date as any other row.</p><div class="sponsored-row"><div class="row"><div><span class="sponsored-label">Sponsored</span><br><span class="nm">Example Sponsored Works</span></div><div class="small">Manufacturer · Paris Road</div><div><span class="chip none">'+esc(T("lNone"))+'</span></div></div></div><div class="ad">'+esc(T("ad"))+'</div></section>';
+  h+='<section class="sec"><h2>What is the same on every page</h2><ul><li>Title, one-line scope, trust line, then filters and results.</li><li>Free visitors see names, areas, specialities and checks. One panel names what subscribers also see; there are no per-field lock boxes.</li><li>Phone, WhatsApp and email are never shown. One message button.</li><li>Rows with no value are left out. Nothing says "Not stated".</li><li>Every price has a currency and a date. Every check has a date.</li><li>Empty and closed pages are designed states.</li><li>Text and numbers only. No web fonts, no third-party scripts, readable without JavaScript in the real product.</li></ul></section>';
+  h+='<section class="sec"><h2>What may change by list type</h2><ul><li>The descriptor in each row (specialities, specialty, star class, grades).</li><li>The details block and its rows.</li><li>Extra filters.</li><li>Words for the kind of thing (business, clinic, person, school).</li><li>Which actions exist. Sharing is hidden for named individuals and for children\'s services.</li></ul></section>';
   return h;
 }
 function renderStub(kind){
-  var m={report:"Report a problem: wrong scope, duplicate, abuse or fake entry. In the real product this opens a form that records the entry and the reason.",
-    add:"Add an entry or suggest an area. In the real product this is a short form that creates a draft.",
+  var m={report:"Report a problem: closed, wrong, duplicate, abuse or a fake entry. This opens a short form that records the page and the reason.",
+    add:"Add a maker or suggest an area. This is a short form that creates a draft.",
     claim:"Claim this business: a one-time code goes to a stored contact, then optional documents are checked.",
-    edit:"Suggest an edit: any signed-in user can propose a correction; it enters a review queue.",
+    edit:"Suggest a correction: any signed-in user can propose it. It goes to a review queue.",
     remove:"Remove or correct this entry: free for personal data. The request is logged and answered within a fixed time.",
-    steward:"Apply to steward this list: a revocable role that lets you correct entries in this segment."};
+    steward:"Become the editor of this list: a revocable role that lets you correct entries in this segment."};
   return '<section class="sec"><h1>Prototype page</h1><p>'+esc(m[kind]||"")+'</p><p><a class="btn" href="#/list">'+esc(T("navList"))+'</a></p></section>';
 }
 
@@ -385,54 +469,71 @@ function applyTheme(){
   var r=document.documentElement; if(state.theme==="system")r.removeAttribute("data-theme"); else r.setAttribute("data-theme",state.theme);
   try{localStorage.setItem("al-theme",state.theme);}catch(x){}
 }
+function setRobots(v){var m=document.querySelector('meta[name="robots"]');if(m)m.setAttribute("content",v);}
 function chrome(){
   document.documentElement.lang=lang; document.documentElement.dir=lang==="ur"?"rtl":"ltr";
   function s(id,k){document.getElementById(id).textContent=T(k);}
-  s("protoNote","proto");s("lblView","viewing");s("lblTheme","theme");s("lblLang","lang");s("navList","navList");s("navEmpty","navEmpty");s("navSys","navSys");
-  s("planFree","free");s("planSub","sub");s("lblSearch","search");s("btnSearch","search");
+  s("protoNote","proto");s("protoSummary","protoSummary");s("lblView","viewing");s("lblTheme","theme");s("lblLang","lang");s("navList","navList");s("navEmpty","navEmpty");s("navSys","navSys");
+  s("planFree","free");s("planSub","sub");s("lblSearch","search");s("btnSearch","search");s("skip","skip");
   document.getElementById("q").placeholder=T("searchPh");
   document.getElementById("planFree").setAttribute("aria-pressed",String(state.plan==="free"));
   document.getElementById("planSub").setAttribute("aria-pressed",String(state.plan==="sub"));
   Array.prototype.forEach.call(document.querySelectorAll("[data-theme-btn]"),function(b){var k=b.getAttribute("data-theme-btn");b.textContent=T(k);b.setAttribute("aria-pressed",String(state.theme===k));});
   Array.prototype.forEach.call(document.querySelectorAll("[data-lang-btn]"),function(b){b.setAttribute("aria-pressed",String(lang===b.getAttribute("data-lang-btn")));});
-  document.getElementById("legal").innerHTML='Listings are shown as submitted and checked; they are not endorsements. <a href="#/remove">Privacy and opt-out</a> · <a href="#/report">'+esc(T("report"))+'</a> · Advertising is labelled · Sample data only. Share links are plain links: nothing loads from a social network until you click.';
+  document.getElementById("legal").innerHTML=esc(T("legal"))+' <a href="#/remove">'+esc(T("privacy"))+'</a> · <a href="#/report">'+esc(T("report"))+'</a><br>'+esc(T("notes"));
 }
-function render(){
-  var hash=location.hash||"#/list", html, m=hash.match(/^#\/entry\/(\w+)/);
-  if(m)html=renderEntry(m[1]);
-  else if(hash==="#/empty")html=renderEmpty();
-  else if(hash==="#/system")html=renderSystem();
-  else if(/^#\/(report|add|claim|edit|remove|steward)$/.test(hash))html=renderStub(hash.slice(2));
-  else html=renderList();
-  chrome(); document.getElementById("app").innerHTML=html; window.scrollTo(0,0);
-  /* partly translated text: let each block set its own direction so English fragments keep their punctuation */
-  if(lang==="ur"){Array.prototype.forEach.call(document.querySelectorAll("#app p, #app ul, #app dd, #app td"),function(el){if(!el.hasAttribute("dir"))el.setAttribute("dir","auto");});}
+function routeInfo(){
+  var hash=location.hash||"#/list", m=hash.match(/^#\/entry\/(\w+)/);
+  if(m){var e=ENTRIES.filter(function(x){return x.id===m[1];})[0];return {kind:"entry",id:m[1],title:(e?e.name:"Entry")+" – "+EN.title+" – AllLists",robots:"noindex"};}
+  if(hash==="#/empty")return {kind:"empty",title:EN.titleEmpty+" – AllLists",robots:"noindex,follow"};
+  if(hash==="#/system")return {kind:"system",title:"Design system – AllLists",robots:"noindex"};
+  var s=hash.match(/^#\/(report|add|claim|edit|remove|steward)$/);
+  if(s)return {kind:"stub",id:s[1],title:"AllLists",robots:"noindex"};
+  return {kind:"list",title:EN.title+" – AllLists",robots:"noindex"};
+}
+function render(keepScroll){
+  var r=routeInfo(), html;
+  if(r.kind==="entry")html=renderEntry(r.id); else if(r.kind==="empty")html=renderEmpty(); else if(r.kind==="system")html=renderSystem(); else if(r.kind==="stub")html=renderStub(r.id); else html=renderList();
+  chrome(); document.getElementById("app").innerHTML=html; document.title=r.title; setRobots(r.robots);
+  if(!keepScroll)window.scrollTo(0,0);
   Array.prototype.forEach.call(document.querySelectorAll("[data-native]"),function(b){if(navigator.share){b.hidden=false;}});
 }
-function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.className="toast show";setTimeout(function(){t.className="toast";},1800);}
+function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.className="toast show";setTimeout(function(){t.className="toast";},3500);}
+function rerender(focusId,announce){
+  render(true);
+  if(focusId){var el=document.getElementById(focusId);if(el)el.focus();}
+  if(announce){document.getElementById("status").textContent=announce;}
+}
 document.addEventListener("click",function(ev){
   var t=ev.target.closest("button"); if(!t)return;
-  if(t.id==="planFree"){state.plan="free";render();return;}
-  if(t.id==="planSub"){state.plan="sub";render();return;}
+  if(t.id==="planFree"){state.plan="free";rerender("planFree");return;}
+  if(t.id==="planSub"){state.plan="sub";rerender("planSub");return;}
   if(t.hasAttribute("data-theme-btn")){state.theme=t.getAttribute("data-theme-btn");applyTheme();chrome();return;}
-  if(t.hasAttribute("data-lang-btn")){lang=t.getAttribute("data-lang-btn");render();return;}
+  if(t.hasAttribute("data-lang-btn")){lang=t.getAttribute("data-lang-btn");render(true);var lb=document.querySelector('[data-lang-btn="'+lang+'"]');if(lb)lb.focus();return;}
   if(t.hasAttribute("data-copy")){var u=t.getAttribute("data-copy");
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){toast("Link copied");},function(){toast(u);});}else{toast(u);}return;}
-  if(t.hasAttribute("data-native")){navigator.share({title:EN.title,url:CANON+"?utm_source=native&utm_medium=share&ref=DEMO"}).catch(function(){});return;}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){toast(T("linkCopied"));},function(){toast(u);});}else{toast(u);}return;}
+  if(t.hasAttribute("data-native")){navigator.share({title:EN.title,url:CANON}).catch(function(){});return;}
   if(t.hasAttribute("data-more")){var key=t.getAttribute("data-more");var mm=document.getElementById("menu-"+key);var open=mm.classList.toggle("open");t.setAttribute("aria-expanded",String(open));return;}
-  if(t.hasAttribute("data-outreach")){toast("Demo: opens the channel picker (WhatsApp first, opt-in, sent by AllLists)");return;}
-  if(t.hasAttribute("data-quote")){toast("Demo: request-a-quote form");return;}
-  if(t.hasAttribute("data-save")){toast("Demo: saved to your list (needs an account)");return;}
+  if(t.hasAttribute("data-outreach")){toast(T("toastOutreach"));return;}
+  if(t.hasAttribute("data-plans")){toast(T("toastPlans"));return;}
+  if(t.hasAttribute("data-save")){toast(T("toastSave"));return;}
+  if(t.hasAttribute("data-follow")){toast(T("toastFollow"));return;}
+  if(t.hasAttribute("data-clear")){state.area="all";state.level="all";state.count=5;rerender("fa",T("statusShown",{n:ENTRIES.filter(isPub).length}));return;}
+  if(t.hasAttribute("data-more-rows")){state.count+=5;rerender("results");return;}
 });
 document.addEventListener("change",function(ev){
-  if(ev.target.id==="fl"){state.level=ev.target.value;render();}
-  if(ev.target.id==="so"){state.sort=ev.target.value;render();}
-  if(ev.target.id==="uv"){state.showUnverified=ev.target.checked;render();}
-  if(ev.target.id==="cl"){state.showClosed=ev.target.checked;render();}
+  var id=ev.target.id;
+  if(id==="fa"){state.area=ev.target.value;state.count=5;}
+  else if(id==="fl"){state.level=ev.target.value;state.count=5;}
+  else if(id==="so"){state.sort=ev.target.value;}
+  else return;
+  var n=ENTRIES.filter(isPub).filter(function(e){return (state.area==="all"||e.area===state.area)&&(state.level==="all"||topLevel(e)===state.level);}).length;
+  rerender(id,T("statusShown",{n:n}));
 });
-window.addEventListener("hashchange",render);
+window.addEventListener("hashchange",function(){render(false);});
 try{var st=localStorage.getItem("al-theme");if(st==="light"||st==="dark"){state.theme=st;applyTheme();}}catch(x){}
-render();
+if(window.innerWidth>=700)document.getElementById("proto").open=true;
+render(false);
 </script>
 </body>
 </html>
