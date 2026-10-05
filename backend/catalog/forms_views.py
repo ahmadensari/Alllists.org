@@ -459,3 +459,57 @@ def steward_page(request):
         if es.steward_covers(request.user, s.entry) or has_cap(request.user, "moderate")
     ]
     return _page(request, "catalog/forms/steward.html", {"items": items})
+
+
+# ---- campaigns (buyer side, phase P4) ----------------------------------------
+
+
+@login_required(login_url=LOGIN)
+@require_http_methods(["GET", "POST"])
+def campaigns_page(request):
+    from outreach import campaigns as cp
+    from outreach.models import Campaign, MessageTemplate
+
+    errors, sv = [], getattr(request.user, "supplier", None)
+    if request.method == "POST":
+        action = request.POST.get("action")
+        try:
+            if action == "verify":
+                cp.request_supplier_verification(request.user, request.POST.get("company", "").strip())
+            elif action == "create":
+                place = Place.objects.filter(path=request.POST.get("scope", ""), status="active").first()
+                concept = Concept.objects.filter(kind="list_type", slug=request.POST.get("type", "")).first()
+                tpl = MessageTemplate.objects.filter(pk=request.POST.get("template") or 0).first()
+                if not (place and concept and tpl):
+                    raise cp.CampaignError("choose a place, a list type and a template")
+                cp.create_campaign(
+                    request.user,
+                    scope_path=place.path,
+                    concept=concept,
+                    template=tpl,
+                    channel=request.POST.get("channel", ""),
+                    variables={k: request.POST.get(k, "") for k in cp.VAR_NAMES},
+                    budget_minor=int(request.POST.get("budget_minor", "0") or 0),
+                )
+        except (cp.CampaignError, ValueError) as exc:
+            errors.append(("company", str(exc)))
+        sv = (
+            getattr(request.user, "supplier", None)
+            if action != "verify"
+            else __import__("outreach.models", fromlist=["x"])
+            .SupplierVerification.objects.filter(user=request.user)
+            .first()
+        )
+    rows = [{"c": c, "report": cp.report(c)} for c in Campaign.objects.filter(buyer=request.user).order_by("-id")[:20]]
+    return _page(
+        request,
+        "catalog/forms/campaigns.html",
+        {
+            "supplier": sv,
+            "rows": rows,
+            "errors": errors,
+            "templates": MessageTemplate.objects.filter(provider_state="approved"),
+            "places": _places(),
+            "types": _list_types(),
+        },
+    )

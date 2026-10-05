@@ -11,7 +11,10 @@ from entries.models import CreditEvent, Entry
 from intake.gate import SourceBlocked
 from intake.models import Source
 
-PAGE = "Name: Crescent Surgical Works\nPhone: 0300 123 4567\nAddress: Plot 10, Paris Road, Sialkot\nWebsite: https://crescent.example.org\n"
+PAGE = (
+    "Name: Crescent Surgical Works\nPhone: 0300 123 4567\n"
+    "Address: Plot 10, Paris Road, Sialkot\nWebsite: https://crescent.example.org\n"
+)
 
 
 @pytest.fixture

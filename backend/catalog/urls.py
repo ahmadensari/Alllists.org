@@ -27,6 +27,7 @@ urlpatterns = [
     path("optout/<str:token>/", forms_views.optout),
     path("account/enquiries/", forms_views.my_enquiries),
     path("account/steward/", forms_views.steward_page),
+    path("account/campaigns/", forms_views.campaigns_page),
     path("account/owner/<str:uid>/", forms_views.owner_page),
     path("staff/", staff_views.index),
     path("staff/imports/", staff_views.imports),

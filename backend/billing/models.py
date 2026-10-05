@@ -13,6 +13,7 @@ class Product(models.Model):
         LISTING = "listing"  # company page for one entry
         RANK = "rank"
         EXTRACT = "extract"
+        OUTREACH = "outreach"
 
     key = models.SlugField(unique=True)
     name = models.CharField(max_length=100)
@@ -40,6 +41,7 @@ class Order(models.Model):
     scope_path = models.CharField(max_length=500, blank=True)
     concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
     entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    campaign_id = models.PositiveIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(default=clock.now)
     ref = models.CharField(max_length=40, unique=True)
 

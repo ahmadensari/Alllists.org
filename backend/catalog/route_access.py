@@ -33,6 +33,8 @@ ROUTES = {
     "optout/<str:token>/": PUBLIC,
     "account/enquiries/": LOGIN,
     "account/steward/": LOGIN,
+    "account/campaigns/": LOGIN,
+    "webhooks/messaging/<str:provider>/": "webhook",
     "account/owner/<str:uid>/": LOGIN,
     "staff/": STAFF,
     "staff/imports/": STAFF,

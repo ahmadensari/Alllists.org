@@ -1,5 +1,6 @@
 from django.contrib import admin
 from billing import views as billing_views
+from outreach import views as outreach_views
 from django.urls import include, path
 from django.views.generic import RedirectView
 
@@ -11,6 +12,7 @@ urlpatterns = [
     path("account/orders/<str:ref>/", billing_views.order_page),
     path("webhooks/payments/<str:provider>/", billing_views.webhook),
     path("staff/orders/", billing_views.staff_orders),
+    path("webhooks/messaging/<str:provider>/", outreach_views.messaging_webhook),
     path("", include("catalog.urls")),
 ]
 

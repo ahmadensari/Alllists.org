@@ -23,6 +23,7 @@ KIND_TO_SALE = {
     "list_access": Sale.Kind.LIST,
     "listing": Sale.Kind.LISTING,
     "rank": Sale.Kind.RANK,
+    "outreach": Sale.Kind.OUTREACH,
     "extract": Sale.Kind.EXTRACT,
 }
 
@@ -44,33 +45,34 @@ def new_ref():
 
 
 @transaction.atomic
-def create_order(buyer, product, *, scope_path="", concept=None, entry=None):
+def create_order(buyer, product, *, scope_path="", concept=None, entry=None, campaign=None):
     if not product.active:
         raise BillingError("this product is not on sale")
+    price = product.price_minor
     if product.kind == Product.Kind.LISTING:
         if entry is None or not es.company_page_allowed(entry):
             raise BillingError("a company page needs an eligible entry")
         if not es.is_owner(entry, buyer):
             raise BillingError("only the owner can buy a company page")
-    elif (
-        product.kind in (Product.Kind.SUBSCRIPTION, Product.Kind.LIST_ACCESS)
-        and concept is None
-        and not scope_path
-        and product.kind == Product.Kind.LIST_ACCESS
-    ):
+    elif product.kind == Product.Kind.LIST_ACCESS and concept is None and not scope_path:
         raise BillingError("choose what to access")
+    elif product.kind == Product.Kind.OUTREACH:
+        if campaign is None or campaign.buyer_id != buyer.pk or campaign.status not in ("pending", "approved"):
+            raise BillingError("choose one of your pending campaigns")
+        price, scope_path, concept = campaign.budget_minor, campaign.scope_path, campaign.concept
     country = scope_path.split(".")[0] if scope_path else (entry.country_code if entry else "")
-    tax = tax_for(country, product.price_minor)
+    tax = tax_for(country, price)
     order = Order.objects.create(
         buyer=buyer,
         product=product,
         currency=product.currency,
-        amount_minor=product.price_minor + tax,
+        amount_minor=price + tax,
         tax_minor=tax,
         scope_path=scope_path,
         concept=concept,
         entry=entry,
         ref=new_ref(),
+        campaign_id=campaign.pk if campaign else None,
     )
     audit("order.create", actor=buyer, object_type="order", object_uid=order.ref, payload={"product": product.key})
     return order
@@ -143,6 +145,10 @@ def fulfil(order, payment, *, now=None):
         )
     elif p.kind == Product.Kind.LISTING:
         es.activate_company_plan(order.entry, days=p.period_days, actor=order.buyer)
+    elif p.kind == Product.Kind.OUTREACH:
+        from outreach.models import Campaign
+
+        Campaign.objects.filter(pk=order.campaign_id).update(funded=True)
     ledger.record_sale(
         order.ref,
         KIND_TO_SALE[p.kind],

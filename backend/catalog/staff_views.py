@@ -16,7 +16,8 @@ from entries.models import Claim, CompanySection
 from intake.models import DedupeCandidate, ImportBatch, Source
 from moderation import services as mod
 from moderation.models import Report, SuggestedEdit, Takedown
-from outreach.models import OutboxMessage
+from outreach import campaigns
+from outreach.models import Campaign, MessageTemplate, OutboxMessage, SupplierVerification
 from places import services as ps
 from places.models import PlaceProposal
 from volunteers import services as vs
@@ -99,6 +100,30 @@ queue(
     describe=lambda s: f"{s.entry.name} / {s.kind}: {s.body[:160]}",
 )
 queue(
+    key="suppliers",
+    title="Supplier verification",
+    cap="moderate",
+    actions=(("approve", "Verify"), ("reject", "Reject")),
+    items=lambda: SupplierVerification.objects.filter(state="pending").select_related("user")[:100],
+    describe=lambda s: f"{s.company} ({s.user.username})",
+)
+queue(
+    key="templates",
+    title="Message templates to approve",
+    cap="moderate",
+    actions=(("approve", "Approve"),),
+    items=lambda: MessageTemplate.objects.filter(provider_state="submitted")[:100],
+    describe=lambda t: f"{t.key} / {t.channel} / {t.language}: {t.body[:140]}",
+)
+queue(
+    key="campaigns",
+    title="Campaigns to approve",
+    cap="moderate",
+    actions=(("approve", "Approve"),),
+    items=lambda: Campaign.objects.filter(status="pending").select_related("buyer", "concept")[:100],
+    describe=lambda c: f"{c.buyer.username}: {c.channel} to {c.scope_path or 'world'} ({c.budget_minor} budget)",
+)
+queue(
     key="takedowns",
     title="Removal and erasure requests",
     cap="takedown",
@@ -172,6 +197,9 @@ def act(request, key, pk, action):
             "suggestions": SuggestedEdit,
             "takedowns": Takedown,
             "company": CompanySection,
+            "suppliers": SupplierVerification,
+            "campaigns": Campaign,
+            "templates": MessageTemplate,
         }[key]
         .objects.filter(pk=pk)
         .first()
@@ -203,13 +231,21 @@ def act(request, key, pk, action):
             mod.decide_suggestion(obj, actor=actor, accept=action == "accept")
         elif key == "company":
             es.moderate_company_section(obj, actor=actor, approve=action == "approve")
+        elif key == "suppliers":
+            campaigns.decide_supplier(obj, actor=actor, approve=action == "approve", note=note)
+        elif key == "campaigns":
+            campaigns.approve_campaign(obj, actor=actor)
+        elif key == "templates":
+            obj.provider_state, obj.approved_by_id = "approved", actor.pk
+            obj.save(update_fields=["provider_state", "approved_by_id"])
+            audit("template.approve", actor=actor, object_type="template", object_uid=str(obj.pk))
         elif key == "takedowns":
             (
                 mod.execute_erasure(obj, actor=actor)
                 if action == "erase"
                 else mod.refuse_takedown(obj, actor=actor, reason=note or "refused")
             )
-    except (es.EntryError, mod.ModerationError, ps.PlaceError) as exc:
+    except (es.EntryError, mod.ModerationError, ps.PlaceError, campaigns.CampaignError) as exc:
         messages.error(request, str(exc))
     return redirect(f"/staff/{key}/")
 
@@ -338,6 +374,10 @@ def switches(request):
     )
 
 
+def _na(v):
+    return "n/a" if v is None else v
+
+
 def agents_page(request):
     from agents import services as ag
     from agents.models import AgentJob
@@ -352,8 +392,9 @@ def agents_page(request):
     ]
     st, per = ag.cap_status(), ag.cost_per_verified()
     note = (
-        f"Today {st['day']}/{st['day_cap']} ({st['day_pct']}%), month {st['month']}/{st['month_cap']} ({st['month_pct']}%). "
-        f"Cost per verified record: {per['per_verified_minor'] if per['per_verified_minor'] is not None else 'n/a'} minor units. "
+        f"Today {st['day']}/{st['day_cap']} ({st['day_pct']}%), "
+        f"month {st['month']}/{st['month_cap']} ({st['month_pct']}%). "
+        f"Cost per verified record: {_na(per['per_verified_minor'])} minor units. "
         f"Kill switch: {'ON' if ag.kill_switch_on() else 'off'}. Accuracy by source: "
         + (", ".join(f"{k} {v[2]:.0%} of {v[0]}" for k, v in vs.accuracy_by_source().items()) or "no audits yet")
     )

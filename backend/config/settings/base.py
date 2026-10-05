@@ -180,3 +180,18 @@ AI_KILL_SWITCH = os.environ.get("AI_KILL_SWITCH", "") == "1"
 AI_DAILY_CAP_MINOR = int(os.environ.get("AI_DAILY_CAP_MINOR", "0"))
 AI_MONTHLY_CAP_MINOR = int(os.environ.get("AI_MONTHLY_CAP_MINOR", "0"))
 AI_JOB_CAP_MINOR = int(os.environ.get("AI_JOB_CAP_MINOR", "50"))
+
+# Outreach (plan 13): everything stays off until counsel clears a country; these are the rules once it is on.
+OUTREACH_SHARE_PERCENT = (
+    None  # contributor share of outreach revenue (decision F7 leaves the figure open); must be set to start
+)
+OUTREACH_PRICE_MINOR = {"whatsapp": 5, "sms": 2, "email": 1}
+OUTREACH_WEEKLY_CAP_PER_SHOP = 2
+OUTREACH_DAILY_CAP_PER_SENDER = 500
+OUTREACH_DEFAULT_WINDOW = (9, 21)  # local hours in which messages may be sent
+OUTREACH_QUIET_WINDOW = {"AE": (9, 18)}
+OUTREACH_TZ = {"PK": "Asia/Karachi", "AE": "Asia/Dubai", "SA": "Asia/Riyadh"}
+OUTREACH_PAUSE_OPTOUT = 0.02
+OUTREACH_PAUSE_FAILURE = 0.10
+OUTREACH_PAUSE_MIN_SAMPLE = 50
+MESSAGING_WEBHOOK_SECRETS = {}

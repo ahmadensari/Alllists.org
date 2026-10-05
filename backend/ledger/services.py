@@ -176,6 +176,14 @@ def record_sale(order_ref, kind, *, gross, fees=0, tax=0, currency="USD", scope_
         alloc, platform = compute_allocation(net, [(u, r) for u, r, _ in items])
         for u, _, _ in items:
             counts[u] = counts.get(u, 0) + 1
+    elif kind == Sale.Kind.OUTREACH and settings.OUTREACH_SHARE_PERCENT:
+        # contributors share a fixed percentage of outreach revenue, split equally across the eligible entries (F7)
+        items = allocation_items(scope_path, concept, now)
+        pool = floor(Fraction(net) * Fraction(str(settings.OUTREACH_SHARE_PERCENT)) / 100)
+        alloc, _ = compute_allocation(pool, [(u, 100) for u, _, _ in items])
+        platform = net - sum(alloc.values())
+        for u, _, _ in items:
+            counts[u] = counts.get(u, 0) + 1
     postings = [(account("clearing", None, currency), gross)]
     if fees:
         postings.append((account("fees", None, currency), -fees))
