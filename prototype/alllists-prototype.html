@@ -130,7 +130,23 @@ footer.legal{border-block-start:1px solid var(--rule);margin-block-start:var(--s
 .toast{position:fixed;inset-block-end:var(--s4);inset-inline:0;margin-inline:auto;width:max-content;max-width:90%;background:var(--ink);color:var(--paper);border:2px solid var(--paper);padding:var(--s2) var(--s4);border-radius:var(--r);display:none}
 .toast.show{display:block}
 @media (pointer:coarse){.seg button{min-height:var(--tap)}}
-@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+/* Motion, CSS first: nothing here loads a library. Every effect has a reduced-motion off switch below. */
+.row{transition:background-color .15s ease}
+.row:hover{background:var(--lock)}
+.btn{transition:background-color .15s ease,border-color .15s ease}
+.toast{opacity:0;transition:opacity .2s ease,display .2s allow-discrete}
+.toast.show{opacity:1}
+@starting-style{.toast.show{opacity:0}}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.18s}
+::view-transition-group(*){animation-duration:.22s;animation-timing-function:ease}
+@media (min-width:700px){
+  header.site{position:sticky;inset-block-start:0;z-index:5}
+  @supports (animation-timeline:scroll()){
+    header.site{animation:head-shadow linear both;animation-timeline:scroll(root block);animation-range:0 80px}
+    @keyframes head-shadow{from{box-shadow:0 0 0 rgba(0,0,0,0)}to{box-shadow:0 2px 10px rgba(0,0,0,.14)}}
+  }
+}
+@media (prefers-reduced-motion: reduce){*,::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 @media (forced-colors: active){.seg button[aria-pressed="true"]{outline:2px solid Highlight}.chip,.tag,.btn{border:1px solid CanvasText}.toast{border:2px solid CanvasText}}
 </style>
 </head>
@@ -309,7 +325,7 @@ var ENTRIES=[
  {id:"e9",name:"Former Sample Works",urdu:"سابقہ سیمپل ورکس",area:"Paris Road",status:"closed",levels:[{k:"owner",when:"2025-11-02"}],type:"Manufacturer",spec:["General surgery"],cert:"",moq:"",band:"",rank:null,lat:32.4948,lng:74.5231,year:2001,markets:[],oem:false,hours:false}
 ];
 var LK={surveyor:"lSurveyor",owner:"lOwner",ai:"lAi",none:"lNone"}, GK={surveyor:"gSurveyor",owner:"gOwner",ai:"gAi",none:"gNone"};
-var state={plan:"free",area:"all",level:"all",sort:"ranked",count:5,theme:"system"};
+var state={plan:"free",area:"all",level:"all",sort:"ranked",count:5,theme:"system",q:""};
 
 /* ---------- Helpers ---------- */
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
@@ -369,6 +385,11 @@ function keyBlock(){
   return '<details class="key"><summary>'+esc(T("howTitle"))+'</summary><dl>'
    +['surveyor','owner','ai','none'].map(function(k){return '<dt>'+esc(T(LK[k]))+'</dt><dd>'+esc(T(GK[k]))+'</dd>';}).join("")+'</dl></details>';
 }
+function matchesQuery(e){
+  if(!state.q)return true;
+  var hay=(e.name+" "+e.urdu+" "+e.area+" "+D(e.area)+" "+e.spec.join(" ")+" "+e.spec.map(D).join(" ")+" "+e.type).toLowerCase();
+  return hay.indexOf(state.q.toLowerCase())!==-1;
+}
 function specText(e,cap){
   var s=e.spec.slice(0,cap).map(function(x){return '<span class="pill">'+esc(D(x))+'</span>';}).join("");
   if(e.spec.length>cap)s+='<span class="pill">'+esc(T("moreSpec",{n:e.spec.length-cap}))+'</span>';
@@ -380,7 +401,7 @@ function renderList(){
   var sub=state.plan==="sub";
   var pubList=ENTRIES.filter(isPub);
   var areas={};pubList.forEach(function(e){areas[e.area]=(areas[e.area]||0)+1;});
-  var rowsAll=pubList.filter(function(e){return (state.area==="all"||e.area===state.area)&&(state.level==="all"||topLevel(e)===state.level);});
+  var rowsAll=pubList.filter(function(e){return matchesQuery(e)&&(state.area==="all"||e.area===state.area)&&(state.level==="all"||topLevel(e)===state.level);});
   rowsAll=rowsAll.slice().sort(function(a,b){
     if(state.sort==="az")return a.name.localeCompare(b.name);
     if(state.sort==="recent")return lastChecked(b).localeCompare(lastChecked(a));
@@ -389,7 +410,7 @@ function renderList(){
   var rows=rowsAll.slice(0,state.count);
   var c={surveyor:0,owner:0,ai:0};pubList.forEach(function(e){c[topLevel(e)]++;});
   var latest=pubList.map(lastChecked).sort().pop();
-  var filtered=state.area!=="all"||state.level!=="all";
+  var filtered=state.area!=="all"||state.level!=="all"||state.q!=="";
   var h='';
   h+='<nav class="crumbs" aria-label="'+esc(T("area"))+'">'+crumbs(placeCrumbs(),T("sialkot"))+'</nav>';
   h+='<h1>'+esc(T("title"))+'</h1>';
@@ -409,7 +430,7 @@ function renderList(){
   h+='<p class="muted xs" style="margin-block-start:var(--s2)">'+esc(T("order"))+' <a href="#/system">'+esc(T("howOrder"))+'</a></p>';
   h+='<h2 class="num">'+esc(T("shown",{n:rows.length,m:rowsAll.length}))+'</h2><ol class="rows">';
   rows.forEach(function(e){
-    h+='<li class="row"><div><a class="nm" href="#/entry/'+e.id+'">'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</a><span class="alt">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</span></div>'
+    h+='<li class="row" style="view-transition-name:r-'+e.id+'"><div><a class="nm" href="#/entry/'+e.id+'">'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</a><span class="alt">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</span></div>'
       +'<div class="small">'+esc(D(e.type))+' · '+esc(D(e.area))+'<div style="margin-block-start:var(--s1)">'+specText(e,3)+(e.paid?'<span class="pill pill-co">'+esc(T("companyPage"))+'</span>':'')+'</div></div>'
       +'<div>'+chips(e)+'<div class="muted small">'+esc(T("checked",{date:fmtDate(lastChecked(e))}))+' · '+esc(age(lastChecked(e)))+'</div></div></li>';
   });
@@ -557,9 +578,17 @@ function render(keepScroll){
   Array.prototype.forEach.call(document.querySelectorAll("[data-native]"),function(b){if(navigator.share){b.hidden=false;}});
 }
 function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.className="toast show";setTimeout(function(){t.className="toast";},3500);}
+function visibleCount(){return ENTRIES.filter(isPub).filter(function(e){return matchesQuery(e)&&(state.area==="all"||e.area===state.area)&&(state.level==="all"||topLevel(e)===state.level);}).length;}
+/* One place for motion: use the browser's View Transitions when available and motion is allowed. */
+function withTransition(fn){
+  var calm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(document.startViewTransition&&!calm){document.startViewTransition(fn);}else{fn();}
+}
 function rerender(focusId,announce){
-  render(true);
-  if(focusId){var el=document.getElementById(focusId);if(el)el.focus();}
+  withTransition(function(){
+    render(true);
+    if(focusId){var el=document.getElementById(focusId);if(el)el.focus();}
+  });
   if(announce){document.getElementById("status").textContent=announce;}
 }
 document.addEventListener("click",function(ev){
@@ -576,7 +605,7 @@ document.addEventListener("click",function(ev){
   if(t.hasAttribute("data-plans")){toast(T("toastPlans"));return;}
   if(t.hasAttribute("data-save")){toast(T("toastSave"));return;}
   if(t.hasAttribute("data-follow")){toast(T("toastFollow"));return;}
-  if(t.hasAttribute("data-clear")){state.area="all";state.level="all";state.count=5;rerender("fa",T("statusShown",{n:ENTRIES.filter(isPub).length}));return;}
+  if(t.hasAttribute("data-clear")){state.area="all";state.level="all";state.count=5;state.q="";document.getElementById("q").value="";rerender("fa",T("statusShown",{n:visibleCount()}));return;}
   if(t.hasAttribute("data-more-rows")){state.count+=5;rerender("results");return;}
 });
 document.addEventListener("change",function(ev){
@@ -585,10 +614,15 @@ document.addEventListener("change",function(ev){
   else if(id==="fl"){state.level=ev.target.value;state.count=5;}
   else if(id==="so"){state.sort=ev.target.value;}
   else return;
-  var n=ENTRIES.filter(isPub).filter(function(e){return (state.area==="all"||e.area===state.area)&&(state.level==="all"||topLevel(e)===state.level);}).length;
-  rerender(id,T("statusShown",{n:n}));
+  rerender(id,T("statusShown",{n:visibleCount()}));
 });
-window.addEventListener("hashchange",function(){render(false);});
+window.addEventListener("hashchange",function(){withTransition(function(){render(false);});});
+/* Search as you type: filters the list live without leaving the search box. */
+document.getElementById("q").addEventListener("input",function(ev){
+  state.q=ev.target.value.trim();state.count=5;
+  if(routeInfo().kind!=="list"){location.hash="#/list";return;}
+  rerender(null,T("statusShown",{n:visibleCount()}));
+});
 try{var st=localStorage.getItem("al-theme");if(st==="light"||st==="dark"){state.theme=st;applyTheme();}}catch(x){}
 if(window.innerWidth>=700)document.getElementById("proto").open=true;
 render(false);

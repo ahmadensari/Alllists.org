@@ -203,3 +203,11 @@ The owner's rule is that the app has only a few unique pages, and a change to on
 5. A rollback is a return to the previous template version.
 
 **Proof in the prototype.** The share buttons on every list and entry page come from one list of channels. A test added one new channel as a single object and it appeared on the list page, on every entry page and on the closed entry, with no template change.
+
+## 14. Motion and interaction rules (details in `docs/MODERN_UI_TOOLS.md`)
+
+- Motion explains change: page changes fade and slide, rows glide when sorted or filtered, search filters as you type. No decoration, no autoplay, no parallax.
+- CSS first: View Transitions, scroll-driven header shadow, `@starting-style`. No animation library on list and entry pages.
+- Only opacity and position move. Duration 150 to 220 ms.
+- Reduced-motion users get no animation. Browsers without a feature get an instant change.
+- JavaScript for interaction stays under 30 KB compressed (proposal), with no third-party scripts.
