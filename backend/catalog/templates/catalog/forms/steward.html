@@ -1,0 +1,4 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Review queue for your segment</h1>
+<ul class="records">{% for s in items %}<li>{{ s.entry.name }}: <strong>{{ s.field_key }}</strong> to {{ s.new_value }}
+<form method="post" class="ctl">{% csrf_token %}<input type="hidden" name="id" value="{{ s.pk }}"><button class="btn" name="action" value="accept">Accept</button><button class="btn" name="action" value="reject">Reject</button></form></li>{% empty %}<li>Nothing waiting.</li>{% endfor %}</ul>{% endblock %}

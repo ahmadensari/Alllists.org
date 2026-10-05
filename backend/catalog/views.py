@@ -21,7 +21,7 @@ from entries.models import Entry
 from places.models import Place
 from taxonomy.models import ListTypeSettings
 
-from . import search
+from . import maps, search
 from . import format as fmt
 from entries import services as es
 
@@ -459,6 +459,7 @@ def frag_entry(request, uid):
         "services": list(entry.service_set.all()) if full else [],
         "identifiers": list(entry.identifier_set.all()) if full else [],
         "addons_locked": [],
+        "map_links": maps.links(entry.lat, entry.lon, entry.country_code) if full and entry.lat is not None else {},
         "can_message": entry.status != "permanently_closed"
         and visible("enquiry_one", viewer, entry.place_path, entry.primary_concept_id) != "none",
     }
@@ -481,6 +482,22 @@ def resolve_concept(slug):
 
 
 # ---- preferences (demo plan and place choice need the session; theme, view and language do not) ---------------------
+
+
+@require_POST
+def prefs_location(request):
+    """Exact location from the browser button: matched to the nearest place, kept in the session only, never stored."""
+    from .location import nearest_place
+
+    try:
+        place = nearest_place(request.POST.get("lat", ""), request.POST.get("lon", ""))
+    except ValueError:
+        place = None
+    if place:
+        request.session["place_uid"] = place.uid
+    nxt = request.POST.get("next", "/")
+    ok = url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}, require_https=request.is_secure())
+    return redirect(nxt if ok else "/")
 
 
 @require_POST

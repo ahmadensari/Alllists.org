@@ -1,7 +1,7 @@
 """Forms and relay pages (plan 8.3.4, 13, 6.5). Server-rendered, one layout, errors summarised at the top."""
 
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
@@ -432,3 +432,30 @@ def owner_page(request, uid):
             "saved": saved,
         },
     )
+
+
+# ---- steward review queue ------------------------------------------------------------------------------------------------
+
+
+@login_required(login_url=LOGIN)
+@require_http_methods(["GET", "POST"])
+def steward_page(request):
+    from entries.models import StewardGrant
+    from moderation.models import SuggestedEdit
+
+    if not StewardGrant.objects.filter(user=request.user, state="active").exists() and not has_cap(
+        request.user, "moderate"
+    ):
+        return HttpResponseForbidden("Stewards only")
+    es.touch_steward(request.user)
+    if request.method == "POST":
+        s = SuggestedEdit.objects.filter(pk=request.POST.get("id"), state="pending").select_related("entry").first()
+        if s and (es.steward_covers(request.user, s.entry) or has_cap(request.user, "moderate")):
+            mod.decide_suggestion(s, actor=request.user, accept=request.POST.get("action") == "accept")
+        return redirect("/account/steward/")
+    items = [
+        s
+        for s in SuggestedEdit.objects.filter(state="pending").select_related("entry")[:200]
+        if es.steward_covers(request.user, s.entry) or has_cap(request.user, "moderate")
+    ]
+    return _page(request, "catalog/forms/steward.html", {"items": items})

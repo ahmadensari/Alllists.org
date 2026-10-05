@@ -12,10 +12,21 @@ from places.services import create_place
 from taxonomy.models import Concept
 from taxonomy.services import create_concept, seed_manufacturer_template
 
+CENTRES = {
+    "sialkot": (32.4945, 74.5229),
+    "paris-road": (32.4990, 74.5300),
+    "kashmir-road": (32.5040, 74.5150),
+    "wazirabad-road": (32.5200, 74.5400),
+}
+
 
 def get_or_create_place(parent, **kw):
-    existing = Place.objects.filter(parent=parent, slug=kw.get("slug") or kw["name"].lower().replace(" ", "-")).first()
-    return existing or create_place(parent=parent, **kw)
+    slug = kw.get("slug") or kw["name"].lower().replace(" ", "-")
+    place = Place.objects.filter(parent=parent, slug=slug).first() or create_place(parent=parent, **kw)
+    if slug in CENTRES and place.centre_lat is None:
+        place.centre_lat, place.centre_lon = CENTRES[slug]
+        place.save(update_fields=["centre_lat", "centre_lon"])
+    return place
 
 
 class Command(BaseCommand):

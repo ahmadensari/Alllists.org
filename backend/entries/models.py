@@ -369,3 +369,21 @@ class CompanySection(models.Model):
     state = models.CharField(max_length=10, choices=State.choices, default=State.PENDING)
     updated_at = models.DateTimeField(default=clock.now)
     moderated_by_id = models.BigIntegerField(null=True, blank=True)
+
+
+class StewardGrant(models.Model):
+    """A revocable right to review and correct one place segment, optionally for one list type (plan 6.6, C20)."""
+
+    class State(models.TextChoices):
+        ACTIVE = "active"
+        EXPIRED = "expired"
+        REVOKED = "revoked"
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="steward_grants")
+    place = models.ForeignKey("places.Place", on_delete=models.CASCADE, related_name="+")
+    concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.CASCADE, related_name="+")
+    state = models.CharField(max_length=10, choices=State.choices, default=State.ACTIVE)
+    granted_at = models.DateTimeField(default=clock.now)
+    last_active_at = models.DateTimeField(default=clock.now)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    dispute_state = models.CharField(max_length=12, blank=True)

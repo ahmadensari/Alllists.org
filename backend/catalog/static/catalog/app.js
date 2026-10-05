@@ -53,6 +53,19 @@
     navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function () { toast(copied); });
   });
 
+  /* exact location: only when the person presses the button; the position is matched to a place and kept in the session */
+  doc.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-geolocate]");
+    if (!b || !navigator.geolocation) { return; }
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      var src = doc.querySelector("#near-you form input[name=csrfmiddlewaretoken]");
+      var f = doc.createElement("form"); f.method = "post"; f.action = (doc.documentElement.lang === "ur" ? "/ur" : "") + "/prefs/location/";
+      [["csrfmiddlewaretoken", src ? src.value : ""], ["lat", pos.coords.latitude], ["lon", pos.coords.longitude], ["next", location.pathname + location.search]]
+        .forEach(function (kv) { var i = doc.createElement("input"); i.type = "hidden"; i.name = kv[0]; i.value = kv[1]; f.appendChild(i); });
+      doc.body.appendChild(f); f.submit();
+    });
+  });
+
   /* live search on the search page: results update as you type and focus stays in the box */
   var sq = doc.getElementById("q"), live = doc.getElementById("live-results");
   if (sq && live && window.fetch) {
@@ -81,6 +94,7 @@
           var old = doc.getElementById(n.id);
           if (old && old.parentNode) { old.replaceWith(n); }
         });
+        doc.querySelectorAll(".geo").forEach(function (g) { g.hidden = !navigator.geolocation; });
       }).catch(function () {});
   }
 })();

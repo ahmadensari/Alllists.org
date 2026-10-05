@@ -650,3 +650,102 @@ def moderate_company_section(section, *, actor, approve):
         payload={"approved": approve, "kind": section.kind},
     )
     return section
+
+
+# ---- stewardship (plan 6.6) -----------------------------------------------------------------------------------
+
+STEWARD_INACTIVITY_DAYS = 90
+
+
+@transaction.atomic
+def grant_stewardship(user, place, *, concept=None, actor=None):
+    from .models import StewardGrant
+
+    existing = StewardGrant.objects.filter(user=user, place=place, concept=concept, state="active").first()
+    if existing:
+        return existing
+    grant = StewardGrant.objects.create(user=user, place=place, concept=concept)
+    from accounts.roles import grant_role
+
+    grant_role(user, "steward")
+    audit("steward.grant", actor=actor, object_type="user", object_uid=str(user.pk), payload={"place": place.path})
+    return grant
+
+
+def steward_covers(user, entry):
+    from .models import StewardGrant
+
+    for g in StewardGrant.objects.filter(user=user, state="active").select_related("place"):
+        inside = (
+            g.place.path == "" or entry.place_path == g.place.path or entry.place_path.startswith(g.place.path + ".")
+        )
+        if inside and (g.concept_id is None or g.concept_id == entry.primary_concept_id):
+            return True
+    return False
+
+
+def touch_steward(user, now=None):
+    from .models import StewardGrant
+
+    StewardGrant.objects.filter(user=user, state="active").update(last_active_at=now or clock.now())
+
+
+@transaction.atomic
+def expire_stewards(now=None):
+    """Grants unused for 90 days return to the pool (plan 6.6). Returns how many expired."""
+    from datetime import timedelta as _td
+
+    from .models import StewardGrant
+
+    now = now or clock.now()
+    n = 0
+    for g in StewardGrant.objects.filter(state="active", last_active_at__lte=now - _td(days=STEWARD_INACTIVITY_DAYS)):
+        g.state, g.expires_at = "expired", now
+        g.save(update_fields=["state", "expires_at"])
+        n += 1
+        if not StewardGrant.objects.filter(user=g.user, state="active").exists():
+            from accounts.roles import revoke_role
+
+            revoke_role(g.user, "steward")
+        audit("steward.expire", object_type="user", object_uid=str(g.user_id), payload={"place": g.place.path})
+    return n
+
+
+# ---- services with prices (rules R20, Q-S1) ----------------------------------------------------------------------
+
+
+@transaction.atomic
+def add_service(
+    entry, name, *, price_minor=None, currency="", price_type="fixed", price_date=None, unit="", actor=None
+):
+    """A price needs a date. Health list types show prices only where the country switch allows (rule R20)."""
+    from .models import Service
+
+    if price_minor is not None:
+        if price_minor < 0 or not currency:
+            raise EntryError("a price needs an amount and a currency")
+        if price_date is None:
+            raise EntryError("a price needs the date it was confirmed")
+        cs = ListTypeSettings.objects.filter(concept_id=entry.primary_concept_id).first()
+        if cs and cs.is_health and not CountrySwitch.for_country(entry.country_code).health_prices_on:
+            raise EntryError("prices for health services are not open in this country yet")
+        if name.strip().lower() in ("cheapest", "lowest price"):
+            raise EntryError("claims such as cheapest are not allowed")
+    svc = Service.objects.create(
+        entry=entry,
+        country_code=entry.country_code,
+        name_text=name.strip(),
+        price_minor=price_minor,
+        currency=currency.upper(),
+        price_type=price_type,
+        price_date=price_date,
+        unit=unit,
+    )
+    ChangeLog.objects.create(
+        entry_id=entry.pk,
+        country_code=entry.country_code,
+        field_key="service",
+        new={"name": name, "price": price_minor},
+        actor_id=getattr(actor, "pk", None),
+    )
+    return svc

@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 
-from . import forms_views, staff_views, task_views, views
+from . import forms_views, staff_views, static_views, task_views, views
 
 urlpatterns = [
     path("", views.world, name="world"),
@@ -10,6 +10,14 @@ urlpatterns = [
     path("sitemaps/<str:cc>-<int:n>.xml", views.sitemap_shard),
     path("prefs/", views.prefs, name="prefs"),
     path("search/", views.search_page),
+    path("prefs/location/", views.prefs_location),
+    path("about/", static_views.page, {"key": "about"}),
+    path("terms/", static_views.page, {"key": "terms"}),
+    path("privacy/", static_views.page, {"key": "privacy"}),
+    path("plans/", static_views.page, {"key": "plans"}),
+    path("sources/", static_views.page, {"key": "sources"}),
+    path("how-checks-work/", static_views.page, {"key": "how-checks-work"}),
+    path("contributors/rules/", static_views.page, {"key": "contributors/rules"}),
     path("add/", forms_views.add_entry),
     path("add/area/", forms_views.add_area),
     path("claim/<str:uid>/", forms_views.claim),
@@ -18,6 +26,7 @@ urlpatterns = [
     path("enquiry/", forms_views.enquiry_many),
     path("optout/<str:token>/", forms_views.optout),
     path("account/enquiries/", forms_views.my_enquiries),
+    path("account/steward/", forms_views.steward_page),
     path("account/owner/<str:uid>/", forms_views.owner_page),
     path("staff/", staff_views.index),
     path("staff/imports/", staff_views.imports),

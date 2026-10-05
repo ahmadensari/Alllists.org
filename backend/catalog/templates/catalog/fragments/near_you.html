@@ -7,5 +7,6 @@
 <label for="pl" class="visually-hidden">{% tr 'change_place' %}</label>
 <select id="pl" name="place">{% for p in all_places %}<option value="{{ p.uid }}"{% if place and place.pk == p.pk %} selected{% endif %}>{{ p.path }}</option>{% endfor %}</select>
 <button class="btn" type="submit">{% tr 'change_place' %}</button>
+<span class="geo" hidden><button class="btn quiet" type="button" data-geolocate>{% tr 'use_exact_location' %}</button></span>
 {% if demo_mode %}<button class="btn quiet" type="submit" name="plan" value="{% if demo_plan == 'subscriber' %}free{% else %}subscriber{% endif %}">{% tr 'demo_plan' %}: {% if demo_plan == 'subscriber' %}{% tr 'plan_subscriber' %}{% else %}{% tr 'plan_free' %}{% endif %}</button>{% endif %}</form>
 </div>
