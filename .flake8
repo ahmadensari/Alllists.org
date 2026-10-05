@@ -1,6 +1,7 @@
 [flake8]
 max-line-length = 127
+extend-ignore = E203
 exclude = .git,__pycache__,migrations,prototype,research_notes,reports
-# legacy demo app, removed in phase P2 (plan section 24)
+# translation catalogues hold whole sentences
 per-file-ignores =
-    backend/lists/*:E501,E127
+    backend/catalog/strings/*:E501

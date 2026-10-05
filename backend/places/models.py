@@ -1,4 +1,5 @@
 """Place tree (plan sections 4.2.2, 5.1). `path` makes "everything under Rawalpindi" one prefix range scan."""
+
 from django.db import models
 from django.db.models import Q
 
@@ -86,6 +87,7 @@ class PlaceName(models.Model):
 
 class PlaceProposal(models.Model):
     """A user-added area (Adyala Road, Abraham Street) waits here for approval (Q-O2 default)."""
+
     class State(models.TextChoices):
         PENDING = "pending"
         APPROVED = "approved"

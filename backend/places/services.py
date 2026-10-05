@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from core.models import audit
 from core.textfold import fold
 from taxonomy.models import ReservedSlug
+from taxonomy.services import SYSTEM_SLUGS
 
 from .models import Place, PlaceName, PlaceProposal
 
@@ -27,6 +28,8 @@ def create_place(*, parent, level, name, language="en", slug=None, country_code=
         country_code = parent.country_code
     if level == Place.Level.COUNTRY and not country_code:
         raise PlaceError("a country needs a country_code")
+    if slug in SYSTEM_SLUGS and level != Place.Level.WORLD:
+        raise PlaceError(f"slug {slug!r} is a system address")
     if ReservedSlug.objects.filter(slug=slug, kind="list_type").exists():
         raise PlaceError(f"slug {slug!r} is reserved by a list type")
     path = slug if parent is None or not parent.path else f"{parent.path}.{slug}"
@@ -35,9 +38,15 @@ def create_place(*, parent, level, name, language="en", slug=None, country_code=
     if level == Place.Level.COUNTRY:
         path = country_code.lower()
         slug = country_code.lower()
-    place = Place.objects.create(parent=parent, level=level, slug=slug, path=path,
-                                 depth=0 if parent is None else parent.depth + 1,
-                                 country_code=country_code.upper(), **extra)
+    place = Place.objects.create(
+        parent=parent,
+        level=level,
+        slug=slug,
+        path=path,
+        depth=0 if parent is None else parent.depth + 1,
+        country_code=country_code.upper(),
+        **extra,
+    )
     ReservedSlug.objects.get_or_create(slug=slug, kind="place")
     for lang, nm in [(language, name)] + list(names or []):
         PlaceName.objects.create(place=place, language=lang, name=nm, name_fold=fold(nm))
@@ -56,10 +65,14 @@ def propose_area(*, parent, name, language="en", proposer=None):
     """Match against existing areas first; a close match is returned as a duplicate hint."""
     folded = fold(name)
     existing = Place.objects.filter(parent=parent, names__name_fold=folded).first()
-    prop = PlaceProposal.objects.create(parent=parent, proposed_name=name, language=language,
-                                        proposer_id=getattr(proposer, "pk", None),
-                                        state=PlaceProposal.State.DUPLICATE if existing else PlaceProposal.State.PENDING,
-                                        duplicate_of=existing)
+    prop = PlaceProposal.objects.create(
+        parent=parent,
+        proposed_name=name,
+        language=language,
+        proposer_id=getattr(proposer, "pk", None),
+        state=PlaceProposal.State.DUPLICATE if existing else PlaceProposal.State.PENDING,
+        duplicate_of=existing,
+    )
     return prop
 
 
@@ -67,8 +80,14 @@ def propose_area(*, parent, name, language="en", proposer=None):
 def approve_proposal(proposal, *, actor, level=Place.Level.AREA, slug=None):
     if proposal.state != PlaceProposal.State.PENDING:
         raise PlaceError("only pending proposals can be approved")
-    place = create_place(parent=proposal.parent, level=level, name=proposal.proposed_name,
-                         language=proposal.language, slug=slug, actor=actor)
+    place = create_place(
+        parent=proposal.parent,
+        level=level,
+        name=proposal.proposed_name,
+        language=proposal.language,
+        slug=slug,
+        actor=actor,
+    )
     proposal.state = PlaceProposal.State.APPROVED
     proposal.decided_by = getattr(actor, "pk", None)
     proposal.save(update_fields=["state", "decided_by"])

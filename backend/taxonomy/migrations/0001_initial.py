@@ -218,11 +218,7 @@ class Migration(migrations.Migration):
                 ("kind", models.CharField(max_length=10)),
             ],
             options={
-                "constraints": [
-                    models.UniqueConstraint(
-                        fields=("slug", "kind"), name="uniq_reserved_slug_kind"
-                    )
-                ],
+                "constraints": [models.UniqueConstraint(fields=("slug", "kind"), name="uniq_reserved_slug_kind")],
             },
         ),
         migrations.CreateModel(
@@ -286,17 +282,11 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "constraints": [
-                    models.UniqueConstraint(
-                        fields=("template", "key"), name="uniq_addon_field"
-                    )
-                ],
+                "constraints": [models.UniqueConstraint(fields=("template", "key"), name="uniq_addon_field")],
             },
         ),
         migrations.AddConstraint(
             model_name="concept",
-            constraint=models.UniqueConstraint(
-                fields=("kind", "slug"), name="uniq_concept_slug_per_kind"
-            ),
+            constraint=models.UniqueConstraint(fields=("kind", "slug"), name="uniq_concept_slug_per_kind"),
         ),
     ]

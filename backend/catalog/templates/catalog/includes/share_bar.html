@@ -1,0 +1,4 @@
+{% load catalog_tags %}{% if share_links %}<div class="actions" role="group" aria-label="{% tr 'share' %}">
+{% for ch in share_links %}{% if ch.group == 'main' %}{% if ch.kind == 'native' %}<button class="btn" type="button" data-native-share data-title="{{ ch.title }}" data-url="{{ ch.copy }}" hidden>{% tr 'share' %}</button>{% elif ch.kind == 'copy' %}<button class="btn" type="button" data-copy="{{ ch.copy }}">{% tr 'copy_link' %}</button>{% else %}<a class="btn" rel="noopener" target="_blank" href="{{ ch.href }}">{{ ch.label }}</a>{% endif %}{% endif %}{% endfor %}
+<details class="key more"><summary>{% tr 'share_more' %}</summary><div class="actions">{% for ch in share_links %}{% if ch.group == 'more' %}<a class="btn" rel="noopener" target="_blank" href="{{ ch.href }}">{{ ch.label }}</a>{% endif %}{% endfor %}</div></details>
+</div>{% endif %}

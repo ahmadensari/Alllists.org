@@ -15,11 +15,18 @@ from taxonomy.models import ListTypeSettings
 
 def verify(entry, user, level="surveyor", **kw):
     return es.record_verification(
-        entry, field_group="identity", level=level, actor=user, method=kw.pop("method", "call"),
-        evidence=kw.pop("evidence", "Phone answered, name matched"), **kw)
+        entry,
+        field_group="identity",
+        level=level,
+        actor=user,
+        method=kw.pop("method", "call"),
+        evidence=kw.pop("evidence", "Phone answered, name matched"),
+        **kw
+    )
 
 
 # ---- creation, contacts, history (R02, R21) ------------------------------------------------------------------
+
 
 def test_create_is_draft_with_country_path_and_template_version(entry, tree):
     assert entry.publish_state == "draft" and entry.country_code == "PK"
@@ -46,8 +53,13 @@ def test_contact_normalisation_and_same_number_same_hash(entry):
 
 def test_invalid_addons_rejected(tree, surgical, users):
     with pytest.raises(es.EntryError):
-        es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        addons={"business_type": "pirate"})
+        es.create_entry(
+            name="X",
+            place=tree["paris"],
+            primary_concept=surgical,
+            created_by=users["adder"],
+            addons={"business_type": "pirate"},
+        )
 
 
 def test_update_writes_change_log_and_refolds_name(entry, users):
@@ -63,13 +75,20 @@ def test_update_writes_change_log_and_refolds_name(entry, users):
 def test_import_needs_an_allowed_source(tree, surgical, users, db):
     red = Source.objects.create(name="Scraped maps", tier="red", allowed_uses=["import"])
     with pytest.raises(SourceBlocked):
-        es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_via="import", source=red,
-                        addons={"business_type": "trader", "product_categories": ["a"]})
+        es.create_entry(
+            name="X",
+            place=tree["paris"],
+            primary_concept=surgical,
+            created_via="import",
+            source=red,
+            addons={"business_type": "trader", "product_categories": ["a"]},
+        )
     with pytest.raises(SourceBlocked):
         es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_via="import", source=None)
 
 
 # ---- verification guards (R07) -------------------------------------------------------------------------------
+
 
 def test_surveyor_never_verifies_own_entry(entry, users):
     with pytest.raises(es.GuardError):
@@ -116,8 +135,14 @@ def test_ai_check_needs_different_source_and_evidence(entry, users, green, web_s
         es.record_verification(entry, field_group="identity", level="ai", source=None, evidence="x", method="web")
     with pytest.raises(es.GuardError):
         es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="", method="web")
-    ev = es.record_verification(entry, field_group="identity", level="ai", source=web_source,
-                                evidence="Page lists the same address", method="web")
+    ev = es.record_verification(
+        entry,
+        field_group="identity",
+        level="ai",
+        source=web_source,
+        evidence="Page lists the same address",
+        method="web",
+    )
     assert ev.state == "verified"
 
 
@@ -155,6 +180,7 @@ def test_append_only_verification_event(pg, entry, users):
 
 # ---- expiry and grace (R07, R08) -----------------------------------------------------------------------------
 
+
 def test_checks_expire_then_grace_then_draft(entry, users, settings):
     t0 = clock.now()
     verify(entry, users["surveyor"], now=t0)
@@ -178,22 +204,33 @@ def test_ai_check_expires_sooner_than_surveyor(settings):
 
 # ---- publish bar (R08, R18, R19, R21) -------------------------------------------------------------------------
 
+
 def test_draft_stays_draft_without_a_check(entry):
     assert entry.publish_state == "draft"
     assert "needs at least an AI check" in es.quality_failures(entry)
 
 
 def test_needs_website_or_contact(tree, surgical, users):
-    e = es.create_entry(name="No Contact Co", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        addons={"business_type": "trader", "product_categories": ["a"]})
+    e = es.create_entry(
+        name="No Contact Co",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
     verify(e, users["surveyor"])
     e.refresh_from_db()
     assert e.publish_state == "draft" and "needs a website or a contact" in es.quality_failures(e)
 
 
 def test_required_addon_fields_gate_publishing(tree, surgical, users):
-    e = es.create_entry(name="Thin Co", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        website="https://t.example.org")
+    e = es.create_entry(
+        name="Thin Co",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        website="https://t.example.org",
+    )
     verify(e, users["surveyor"])
     e.refresh_from_db()
     assert e.publish_state == "draft"
@@ -218,9 +255,15 @@ def test_blocked_source_prevents_publish(entry, users, green):
 
 
 def test_person_needs_switch_and_consent(tree, surgical, users, db):
-    e = es.create_entry(name="Dr Example", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        entity_type="person", website="https://dr.example.org",
-                        addons={"business_type": "trader", "product_categories": ["a"]})
+    e = es.create_entry(
+        name="Dr Example",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        entity_type="person",
+        website="https://dr.example.org",
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
     verify(e, users["surveyor"])
     e.refresh_from_db()
     assert e.publish_state == "draft"
@@ -249,6 +292,7 @@ def test_country_defaults_all_off_except_browsing(db):
 
 # ---- credit eligibility (R09, D6) -----------------------------------------------------------------------------
 
+
 def test_credit_only_after_surveyor_or_owner_check(entry, users, web_source):
     ce = CreditEvent.objects.get(entry=entry)
     assert not ce.eligible and ce.ineligible_reason == "unverified"
@@ -261,24 +305,43 @@ def test_credit_only_after_surveyor_or_owner_check(entry, users, web_source):
 
 
 def test_self_listed_never_earns(tree, surgical, users):
-    e = es.create_entry(name="Self Listed", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        created_via="self", website="https://s.example.org",
-                        addons={"business_type": "trader", "product_categories": ["a"]})
+    e = es.create_entry(
+        name="Self Listed",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        created_via="self",
+        website="https://s.example.org",
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
     verify(e, users["surveyor"])
     ce = CreditEvent.objects.get(entry=e)
     assert not ce.eligible and ce.ineligible_reason == "self"
 
 
 def test_import_credit_waits_for_verification(tree, surgical, users, green):
-    e = es.create_entry(name="Imported Co", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        created_via="import", source=green, website="https://i.example.org",
-                        addons={"business_type": "trader", "product_categories": ["a"]})
+    e = es.create_entry(
+        name="Imported Co",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        created_via="import",
+        source=green,
+        website="https://i.example.org",
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
     assert not CreditEvent.objects.get(entry=e).eligible
     verify(e, users["surveyor"])
     assert CreditEvent.objects.get(entry=e).eligible
 
 
 def test_agent_entries_have_no_human_credit(tree, surgical, web_source):
-    e = es.create_entry(name="Agent Draft", place=tree["paris"], primary_concept=surgical, created_via="agent",
-                        source=web_source, addons={"business_type": "trader", "product_categories": ["a"]})
+    e = es.create_entry(
+        name="Agent Draft",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_via="agent",
+        source=web_source,
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
     assert not CreditEvent.objects.filter(entry=e).exists() and e.publish_state == "draft"

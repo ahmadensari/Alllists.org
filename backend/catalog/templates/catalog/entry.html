@@ -1,0 +1,30 @@
+{% extends "catalog/base.html" %}{% load catalog_tags %}
+{% block crumbs %}{% include "catalog/includes/crumbs.html" with link_last=True %}{% endblock %}
+{% block content %}
+<h1 id="results">{{ entry.name }}</h1>
+{% if alt %}<p class="muted" dir="auto"><bdi>{{ alt }}</bdi></p>{% endif %}
+<p><a href="{% u list_url %}">{% clabel concept %}</a>
+{% if company %}<span class="pill pill-co">{% tr 'company_page' %}</span>{% endif %}
+{% if status_label %}<span class="chip closed">{% if status_label == 'closed' %}{% tr 'closed' %}{% elif status_label == 'moved' %}{% tr 'moved' %}{% else %}{% tr 'temporarily_closed' %}{% endif %}</span>{% endif %}</p>
+{% if closed %}<div class="notice">{% tr 'closed_notice' %}</div>{% endif %}
+<section class="sec" aria-label="{% tr 'checks_title' %}">
+<h2>{% tr 'checks_title' %}</h2>
+{% include "catalog/includes/check_key.html" %}
+<ul class="records">
+{% for c in checks %}<li>{% include "catalog/includes/check_chip.html" with level=c.level %}
+ <span class="small muted num">{% date c.date as d %}{% age c.date as a %}{% tr 'checked_on' date=d age=a %}{% if c.who %} · {% tr 'check_by' who=c.who %}{% endif %}{% if c.expired %} · {% tr 'check_expired' %}{% endif %}</span></li>
+{% empty %}<li>{% include "catalog/includes/check_chip.html" with level='none' %}</li>{% endfor %}
+</ul></section>
+<div id="entry-actions" class="actions"></div>
+{% include "catalog/includes/share_bar.html" %}
+<section class="sec"><h2>{% tr 'key_facts' %}</h2><dl class="facts">
+<dt>{% tr 'area' %}</dt><dd><bdi>{% pname place %}</bdi></dd>
+<dt>{% tr 'category' %}</dt><dd>{% clabel concept %}</dd>
+{% for key, val in free_details %}<dt>{% addon_label key %}</dt><dd>{% if val is True %}{% tr 'yes' %}{% elif val is False %}{% tr 'no' %}{% else %}{% enum_label val %}{% endif %}</dd>{% endfor %}
+{% if specialities %}<dt>{% tr 'specialities' %}</dt><dd>{% for s in specialities %}<span class="pill">{{ s }}</span>{% endfor %}{% if more_specialities %}<span class="pill">{% tr 'more_n' n=more_specialities %}</span>{% endif %}</dd>{% endif %}
+{% if services %}<dt>{% tr 'services' %}</dt><dd>{{ services|join:", " }}</dd>{% endif %}
+{% if certs %}<dt>{% tr 'certificates' %}</dt><dd>{{ certs|join:", " }}</dd>{% endif %}
+</dl></section>
+<div id="entry-detail"></div>
+{% include "catalog/includes/something_wrong.html" %}
+{% endblock %}

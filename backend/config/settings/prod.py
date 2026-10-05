@@ -1,4 +1,5 @@
 """Production settings: nothing here relaxes base; it only fails fast when required values are missing."""
+
 from django.core.exceptions import ImproperlyConfigured
 
 from .base import *  # noqa: F401,F403

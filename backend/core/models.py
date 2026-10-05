@@ -1,4 +1,5 @@
 """Shared base models: ids, soft delete, audit hash chain, change log, flags, country switches (plan section 4.2.1)."""
+
 import hashlib
 import json
 
@@ -26,6 +27,7 @@ class SoftDeleteModel(models.Model):
 
 class AuditLog(models.Model):
     """Append-only, hash-chained: hash = sha256(prev_hash + canonical row). Written in the same transaction as the change."""
+
     ts = models.DateTimeField()
     actor_id = models.BigIntegerField(null=True, blank=True)
     actor_role = models.CharField(max_length=40, blank=True)
@@ -46,7 +48,9 @@ def _canonical(prev_hash, fields):
     return prev_hash + json.dumps(fields, sort_keys=True, separators=(",", ":"), default=str)
 
 
-def audit(action, *, actor=None, actor_role="", object_type="", object_uid="", country_code="", ip_hash="", payload=None):
+def audit(
+    action, *, actor=None, actor_role="", object_type="", object_uid="", country_code="", ip_hash="", payload=None
+):
     """Append one audit row. Call inside the transaction that makes the change."""
     with transaction.atomic():
         if connection.vendor == "postgresql":
@@ -55,22 +59,48 @@ def audit(action, *, actor=None, actor_role="", object_type="", object_uid="", c
         last = AuditLog.objects.order_by("-id").first()
         prev = last.hash if last else ""
         ts = clock.now()
-        fields = {"ts": ts.isoformat(), "actor_id": getattr(actor, "pk", actor), "actor_role": actor_role,
-                  "action": action, "object_type": object_type, "object_uid": object_uid,
-                  "country_code": country_code, "ip_hash": ip_hash, "payload": payload or {}}
+        fields = {
+            "ts": ts.isoformat(),
+            "actor_id": getattr(actor, "pk", actor),
+            "actor_role": actor_role,
+            "action": action,
+            "object_type": object_type,
+            "object_uid": object_uid,
+            "country_code": country_code,
+            "ip_hash": ip_hash,
+            "payload": payload or {},
+        }
         digest = hashlib.sha256(_canonical(prev, fields).encode()).hexdigest()
-        return AuditLog.objects.create(ts=ts, actor_id=fields["actor_id"], actor_role=actor_role, action=action,
-                                       object_type=object_type, object_uid=object_uid, country_code=country_code,
-                                       ip_hash=ip_hash, payload=fields["payload"], prev_hash=prev, hash=digest)
+        return AuditLog.objects.create(
+            ts=ts,
+            actor_id=fields["actor_id"],
+            actor_role=actor_role,
+            action=action,
+            object_type=object_type,
+            object_uid=object_uid,
+            country_code=country_code,
+            ip_hash=ip_hash,
+            payload=fields["payload"],
+            prev_hash=prev,
+            hash=digest,
+        )
 
 
 def verify_audit_chain():
     """Returns None if the chain is intact, else the id of the first broken row."""
     prev = ""
     for row in AuditLog.objects.order_by("id").iterator():
-        fields = {"ts": row.ts.isoformat(), "actor_id": row.actor_id, "actor_role": row.actor_role, "action": row.action,
-                  "object_type": row.object_type, "object_uid": row.object_uid, "country_code": row.country_code,
-                  "ip_hash": row.ip_hash, "payload": row.payload}
+        fields = {
+            "ts": row.ts.isoformat(),
+            "actor_id": row.actor_id,
+            "actor_role": row.actor_role,
+            "action": row.action,
+            "object_type": row.object_type,
+            "object_uid": row.object_uid,
+            "country_code": row.country_code,
+            "ip_hash": row.ip_hash,
+            "payload": row.payload,
+        }
         if row.prev_hash != prev or hashlib.sha256(_canonical(prev, fields).encode()).hexdigest() != row.hash:
             return row.id
         prev = row.hash
@@ -79,6 +109,7 @@ def verify_audit_chain():
 
 class ChangeLog(models.Model):
     """One row per field change on an entry (append-only)."""
+
     entry_id = models.BigIntegerField(db_index=True)
     country_code = models.CharField(max_length=2)
     field_key = models.CharField(max_length=60)
@@ -102,6 +133,7 @@ class FeatureFlag(models.Model):
 
 class CountrySwitch(models.Model):
     """Per-country control for rule R24. Everything except browsing defaults to off."""
+
     country_code = models.CharField(max_length=2, unique=True)
     browsing_on = models.BooleanField(default=True)
     indexing_on = models.BooleanField(default=False)

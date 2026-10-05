@@ -1,0 +1,36 @@
+{% load static catalog_tags %}<!doctype html>
+<html lang="{{ lang }}" dir="{{ dir }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ title }}</title>
+<meta name="robots" content="{{ robots|default:'index,follow' }}">
+{% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
+{% for code, href in alternates %}<link rel="alternate" hreflang="{{ code }}" href="{{ href }}">
+{% endfor %}<meta name="description" content="{% tr 'tagline' %}">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="{% static 'catalog/app.css' %}">
+<script src="{% static 'catalog/theme.js' %}"></script>
+{% if jsonld %}<script type="application/ld+json">{{ jsonld|safe }}</script>{% endif %}
+</head>
+<body>
+<a class="skip" href="#results">{% tr 'skip' %}</a>
+<header class="site"><div class="wrap site-row">
+  <a class="logo" href="{% u '/' %}">All<b>Lists</b></a>
+  <span class="grow"></span>
+  <a class="btn quiet" href="{{ alt_url }}" hreflang="{{ other_lang }}" lang="{{ other_lang }}">{% if lang == 'en' %}اردو{% else %}English{% endif %}</a>
+  <button class="btn quiet" type="button" data-theme-toggle>{% tr 'theme' %}</button>
+</div></header>
+<main class="wrap">
+{% block crumbs %}{% include "catalog/includes/crumbs.html" %}{% endblock %}
+<div id="near-you" class="locbar-slot"></div>
+{% block content %}{% endblock %}
+<div id="sub-panel"></div>
+<div id="ad-slot"></div>
+</main>
+<footer class="legal wrap"><p>{% tr 'legal' %}</p><p><a href="{% u '/privacy/' %}">{% tr 'privacy' %}</a> · <a href="{% u '/terms/' %}">{% tr 'terms' %}</a></p></footer>
+{% if fragment %}<div id="page-fragments" data-fragment="{{ fragment }}" hidden></div>{% endif %}
+<div class="toast" role="status" aria-live="polite" id="toast"></div>
+<script src="{% static 'catalog/app.js' %}" defer data-copied="{% tr 'copied' %}"></script>
+</body>
+</html>

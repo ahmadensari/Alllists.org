@@ -83,95 +83,110 @@ One file holding every decision, detail, research note, the design code and the 
 77. prototype/README.md
 78. Design code: full interactive prototype (single HTML file)
 79. Software source: backend/README.md
-80. Software source: backend/analytics/__init__.py
-81. Software source: backend/analytics/apps.py
-82. Software source: backend/analytics/models.py
-83. Software source: backend/analytics/rollups.py
-84. Software source: backend/analytics/tests/__init__.py
-85. Software source: backend/analytics/tests/test_rollups.py
-86. Software source: backend/config/__init__.py
-87. Software source: backend/config/settings/__init__.py
-88. Software source: backend/config/settings/base.py
-89. Software source: backend/config/settings/prod.py
-90. Software source: backend/config/urls.py
-91. Software source: backend/config/wsgi.py
-92. Software source: backend/conftest.py
-93. Software source: backend/core/__init__.py
-94. Software source: backend/core/admin.py
-95. Software source: backend/core/apps.py
-96. Software source: backend/core/clock.py
-97. Software source: backend/core/crypto.py
-98. Software source: backend/core/management/__init__.py
-99. Software source: backend/core/management/commands/__init__.py
-100. Software source: backend/core/management/commands/seed_pilot.py
-101. Software source: backend/core/models.py
-102. Software source: backend/core/pg.py
-103. Software source: backend/core/tests/__init__.py
-104. Software source: backend/core/tests/test_core.py
-105. Software source: backend/core/textfold.py
-106. Software source: backend/core/ulid.py
-107. Software source: backend/entries/__init__.py
-108. Software source: backend/entries/admin.py
-109. Software source: backend/entries/apps.py
-110. Software source: backend/entries/models.py
-111. Software source: backend/entries/services.py
-112. Software source: backend/entries/tests/__init__.py
-113. Software source: backend/entries/tests/test_entries.py
-114. Software source: backend/intake/__init__.py
-115. Software source: backend/intake/admin.py
-116. Software source: backend/intake/apps.py
-117. Software source: backend/intake/dedupe.py
-118. Software source: backend/intake/gate.py
-119. Software source: backend/intake/importer.py
-120. Software source: backend/intake/models.py
-121. Software source: backend/intake/tests/__init__.py
-122. Software source: backend/intake/tests/test_gate.py
-123. Software source: backend/intake/tests/test_import_dedupe.py
-124. Software source: backend/lists/__init__.py
-125. Software source: backend/lists/admin.py
-126. Software source: backend/lists/context.py
-127. Software source: backend/lists/management/__init__.py
-128. Software source: backend/lists/management/commands/__init__.py
-129. Software source: backend/lists/management/commands/seed_demo.py
-130. Software source: backend/lists/middleware.py
-131. Software source: backend/lists/models.py
-132. Software source: backend/lists/share.py
-133. Software source: backend/lists/static/lists/app.css
-134. Software source: backend/lists/static/lists/app.js
-135. Software source: backend/lists/strings.py
-136. Software source: backend/lists/templates/lists/404.html
-137. Software source: backend/lists/templates/lists/_chip.html
-138. Software source: backend/lists/templates/lists/_crumbs.html
-139. Software source: backend/lists/templates/lists/_share.html
-140. Software source: backend/lists/templates/lists/base.html
-141. Software source: backend/lists/templates/lists/entry.html
-142. Software source: backend/lists/templates/lists/home.html
-143. Software source: backend/lists/templates/lists/list.html
-144. Software source: backend/lists/templates/lists/place.html
-145. Software source: backend/lists/templatetags/__init__.py
-146. Software source: backend/lists/templatetags/lists_extras.py
-147. Software source: backend/lists/tests/__init__.py
-148. Software source: backend/lists/tests/test_app.py
-149. Software source: backend/lists/urls.py
-150. Software source: backend/lists/views.py
-151. Software source: backend/lists/visibility.py
-152. Software source: backend/manage.py
-153. Software source: backend/places/__init__.py
-154. Software source: backend/places/admin.py
-155. Software source: backend/places/apps.py
-156. Software source: backend/places/models.py
-157. Software source: backend/places/services.py
-158. Software source: backend/places/tests/__init__.py
-159. Software source: backend/places/tests/test_places.py
-160. Software source: backend/requirements.txt
-161. Software source: backend/taxonomy/__init__.py
-162. Software source: backend/taxonomy/admin.py
-163. Software source: backend/taxonomy/apps.py
-164. Software source: backend/taxonomy/models.py
-165. Software source: backend/taxonomy/services.py
-166. Software source: backend/taxonomy/tests/__init__.py
-167. Software source: backend/taxonomy/tests/test_taxonomy.py
-168. Appendix: founder's messages, verbatim
+80. Software source: backend/access/__init__.py
+81. Software source: backend/access/apps.py
+82. Software source: backend/access/policy.py
+83. Software source: backend/access/tests/__init__.py
+84. Software source: backend/access/tests/test_policy.py
+85. Software source: backend/analytics/__init__.py
+86. Software source: backend/analytics/apps.py
+87. Software source: backend/analytics/models.py
+88. Software source: backend/analytics/rollups.py
+89. Software source: backend/analytics/tests/__init__.py
+90. Software source: backend/analytics/tests/test_rollups.py
+91. Software source: backend/catalog/__init__.py
+92. Software source: backend/catalog/apps.py
+93. Software source: backend/catalog/context.py
+94. Software source: backend/catalog/format.py
+95. Software source: backend/catalog/location.py
+96. Software source: backend/catalog/middleware.py
+97. Software source: backend/catalog/queries.py
+98. Software source: backend/catalog/resolver.py
+99. Software source: backend/catalog/seo.py
+100. Software source: backend/catalog/share.py
+101. Software source: backend/catalog/static/catalog/app.css
+102. Software source: backend/catalog/static/catalog/app.js
+103. Software source: backend/catalog/static/catalog/theme.js
+104. Software source: backend/catalog/strings/__init__.py
+105. Software source: backend/catalog/strings/en.py
+106. Software source: backend/catalog/strings/ur.py
+107. Software source: backend/catalog/templates/catalog/404.html
+108. Software source: backend/catalog/templates/catalog/base.html
+109. Software source: backend/catalog/templates/catalog/entry.html
+110. Software source: backend/catalog/templates/catalog/fragments/entry_detail.html
+111. Software source: backend/catalog/templates/catalog/fragments/list_detail.html
+112. Software source: backend/catalog/templates/catalog/fragments/near_you.html
+113. Software source: backend/catalog/templates/catalog/includes/check_chip.html
+114. Software source: backend/catalog/templates/catalog/includes/check_key.html
+115. Software source: backend/catalog/templates/catalog/includes/crumbs.html
+116. Software source: backend/catalog/templates/catalog/includes/row.html
+117. Software source: backend/catalog/templates/catalog/includes/share_bar.html
+118. Software source: backend/catalog/templates/catalog/includes/something_wrong.html
+119. Software source: backend/catalog/templates/catalog/list.html
+120. Software source: backend/catalog/templates/catalog/place.html
+121. Software source: backend/catalog/templatetags/__init__.py
+122. Software source: backend/catalog/templatetags/catalog_tags.py
+123. Software source: backend/catalog/tests/__init__.py
+124. Software source: backend/catalog/tests/test_pages.py
+125. Software source: backend/catalog/tests/test_strings.py
+126. Software source: backend/catalog/urls.py
+127. Software source: backend/catalog/views.py
+128. Software source: backend/config/__init__.py
+129. Software source: backend/config/settings/__init__.py
+130. Software source: backend/config/settings/base.py
+131. Software source: backend/config/settings/prod.py
+132. Software source: backend/config/urls.py
+133. Software source: backend/config/wsgi.py
+134. Software source: backend/conftest.py
+135. Software source: backend/core/__init__.py
+136. Software source: backend/core/admin.py
+137. Software source: backend/core/apps.py
+138. Software source: backend/core/clock.py
+139. Software source: backend/core/crypto.py
+140. Software source: backend/core/management/__init__.py
+141. Software source: backend/core/management/commands/__init__.py
+142. Software source: backend/core/management/commands/seed_demo_entries.py
+143. Software source: backend/core/management/commands/seed_pilot.py
+144. Software source: backend/core/models.py
+145. Software source: backend/core/pg.py
+146. Software source: backend/core/tests/__init__.py
+147. Software source: backend/core/tests/test_core.py
+148. Software source: backend/core/textfold.py
+149. Software source: backend/core/ulid.py
+150. Software source: backend/entries/__init__.py
+151. Software source: backend/entries/admin.py
+152. Software source: backend/entries/apps.py
+153. Software source: backend/entries/models.py
+154. Software source: backend/entries/services.py
+155. Software source: backend/entries/tests/__init__.py
+156. Software source: backend/entries/tests/test_entries.py
+157. Software source: backend/intake/__init__.py
+158. Software source: backend/intake/admin.py
+159. Software source: backend/intake/apps.py
+160. Software source: backend/intake/dedupe.py
+161. Software source: backend/intake/gate.py
+162. Software source: backend/intake/importer.py
+163. Software source: backend/intake/models.py
+164. Software source: backend/intake/tests/__init__.py
+165. Software source: backend/intake/tests/test_gate.py
+166. Software source: backend/intake/tests/test_import_dedupe.py
+167. Software source: backend/manage.py
+168. Software source: backend/places/__init__.py
+169. Software source: backend/places/admin.py
+170. Software source: backend/places/apps.py
+171. Software source: backend/places/models.py
+172. Software source: backend/places/services.py
+173. Software source: backend/places/tests/__init__.py
+174. Software source: backend/places/tests/test_places.py
+175. Software source: backend/requirements.txt
+176. Software source: backend/taxonomy/__init__.py
+177. Software source: backend/taxonomy/admin.py
+178. Software source: backend/taxonomy/apps.py
+179. Software source: backend/taxonomy/models.py
+180. Software source: backend/taxonomy/services.py
+181. Software source: backend/taxonomy/tests/__init__.py
+182. Software source: backend/taxonomy/tests/test_taxonomy.py
+183. Appendix: founder's messages, verbatim
 
 
 ---
@@ -436,6 +451,7 @@ Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeri
 - 2026-10-05: Technical plan written (`docs/TECHNICAL_PLAN.md`): 40 enforceable rules (R01 to R40), modular-monolith architecture, full schema, 94 work packages in phases P0 to P6 plus an agent track, owner-decision register with assumed defaults (including new questions Q-T1 to Q-T11), and a traceability matrix over every requirement ID. Coding follows this plan; the first Django build is kept only where section 24 says so.
 - 2026-10-05: Coding started per `docs/TECHNICAL_PLAN.md`. Done: P0.02 (legacy files removed), P0.03 (compose), P0.04 (CI on PostgreSQL, Python 3.11 to 3.13, blocking flake8, migrate-reverse check), P0.05 (bandit, pip-audit in CI), P0.07 (settings package, module skeletons), P0.09 (session hook), P0.10 partly (pull-request template, CONTRIBUTING; **LICENSE not added**, awaiting the owner's licence decision). P1: `core` (ULID, audit hash chain, change log, flags, country switches, field encryption, `fold()`), `places`, `taxonomy` (concepts, synonyms, add-on registry, reserved slugs), `entries` (schema, verification state machine with guards, publish bar, claims, consent, credit eligibility, expiry and grace), `intake` source gate. Append-only enforced by PostgreSQL triggers. 80 tests. Not done: P0.01 (owner must rotate secrets), P0.06 (hosting), import UI, duplicate pipeline, roll-ups, staff console, loaders.
 - 2026-10-05 (second coding step): added `analytics` roll-up cells (P1.05), merge service with first-adder credit (P1.14), paste and CSV import with header guessing in English, Urdu and Roman Urdu (P1.16), duplicate pipeline v1 with block, score and decide (P1.18), admin screens for pilot data entry, and `seed_pilot` (Sialkot structure, surgical-instrument list type, starter sources, Pakistan country switch with everything off but browsing). 99 tests pass on PostgreSQL. Dedupe thresholds (auto-merge 0.90, review 0.60) are first guesses to be calibrated on the 500 labelled pairs in the pilot.
+- 2026-10-05 (third coding step, public pages): `lists` demo app replaced by `catalog` (addresses `/pk/punjab/sialkot/surgical-instrument-makers/`, entry pages `/e/{uid}/{slug}/`, Urdu under `/ur/`), `access.policy` (one visibility table), private fragments under `/_f/`, SEO rules (noindex unless switch on and 10 verified; filters never indexed; sharded sitemaps; robots.txt allows thin pages), English and Urdu strings, share registry, place and list pages in light and dark. Decisions and deviations taken while building: (1) the shared page shell shows names-only fields for every viewer, richer free details (type, specialities) and all subscriber details arrive in a private fragment, so one address gives the same bytes to everyone (R05); (2) the scope rule (names only wider than your own place) applies to list rows; entry pages are not scope-limited, so one message button is free everywhere (policy table changed accordingly); (3) the dashboard prefix is `/account/` because two-letter system addresses collide with country codes (`/me/` is Montenegro); system slugs are refused as place slugs; (4) no gettext tools exist in this environment, so strings live in Python catalogues with plural forms (moving to .po later is mechanical); (5) pages show 25 rows with page links; the "five rows then Show more" free-limit comes with quotas (P3.03); (6) theme and list or card view are kept in the browser (localStorage), not cookies the server reads; (7) query count per list page is constant in the number of rows (23 now).
 
 
 ---
@@ -3861,10 +3877,10 @@ Access: **P** public, **S** signed in, **R** role needed, **F** fragment (privat
 | `/enquiry/` | GET, POST | R subscriber | Enquiry to many | No |
 | `/about/`, `/terms/`, `/privacy/`, `/plans/`, `/sources/`, `/how-checks-work/`, `/contributors/rules/` | GET | P | Static pages | Shared |
 | `/account/signup/`, `/login/`, `/logout/`, `/password/…`, `/delete/` | GET, POST | P or S | Accounts | No |
-| `/me/` | GET | S | Dashboard (contributor, owner, buyer by role) | No |
-| `/me/owner/{uid}/` | GET, POST | R owner | Edit claimed entry, company page content, opt-ins | No |
-| `/me/tasks/` | GET, POST | R surveyor, steward | Task queue | No |
-| `/me/subscription/` | GET, POST | S | Subscription and orders | No |
+| `/account/` | GET | S | Dashboard (contributor, owner, buyer by role) | No |
+| `/account/owner/{uid}/` | GET, POST | R owner | Edit claimed entry, company page content, opt-ins | No |
+| `/account/tasks/` | GET, POST | R surveyor, steward | Task queue | No |
+| `/account/subscription/` | GET, POST | S | Subscription and orders | No |
 | `/staff/…` | GET, POST | R staff + MFA | Queues, registries, switches, payouts | No |
 | `/admin/` | GET, POST | R admin + MFA | Django admin | No |
 | `/_f/near-you/` | GET | F | Near-you strip | Private |
@@ -4093,7 +4109,7 @@ Metrics tracked from these: weekly returning-user rate by place and list type; s
 
 #### Appendix H. Named tests beyond the rule tests
 
-Place path constraint; slug collision with list-type slug; folding rules one by one; query folding finds Urdu variants; concept synonym lookup; import mapper header guesses (English, Urdu, Roman Urdu); phone normalisation to E.164 by country; duplicate scoring examples (same shop two spellings; different shops same road); merge keeps earliest credit; claim OTP flow; verification guard matrix; expiry and grace; rollup refresher against recount; list query plan uses the place-prefix index; query budget (a list page of 25 rows uses at most 12 queries); entry page query budget; pagination caps; quota counters; canary seeding; URL resolver for place versus list; redirects from old scheme; ETag changes only when data or template version changes; fragments are `private, no-store`; JSON-LD matches visible content; sitemap shard size; publish throttle; ledger balance trigger rejects unbalanced; idempotent webhook replay; refund reversal; largest-remainder conservation; phase lock under changed phases; cap-months rule; hold release; payout two-person rule; MFA required for staff routes; every-route authorisation inventory; CSP header; log scrubber removes contacts; encrypted column round-trip with key rotation; erasure tombstone and suppression on re-import; opt-out suppression global; caps and quiet hours; auto-pause thresholds; agent evidence-quote check; agent isolation; agent cap and kill switch; map-link conversions; date and age formatting in English and Urdu; plural forms in Urdu; RTL screenshot comparisons at three widths.
+Place path constraint; slug collision with list-type slug; folding rules one by one; query folding finds Urdu variants; concept synonym lookup; import mapper header guesses (English, Urdu, Roman Urdu); phone normalisation to E.164 by country; duplicate scoring examples (same shop two spellings; different shops same road); merge keeps earliest credit; claim OTP flow; verification guard matrix; expiry and grace; rollup refresher against recount; list query plan uses the place-prefix index; query budget (a list page's query count does not grow with the rows (no N+1)); entry page query budget; pagination caps; quota counters; canary seeding; URL resolver for place versus list; redirects from old scheme; ETag changes only when data or template version changes; fragments are `private, no-store`; JSON-LD matches visible content; sitemap shard size; publish throttle; ledger balance trigger rejects unbalanced; idempotent webhook replay; refund reversal; largest-remainder conservation; phase lock under changed phases; cap-months rule; hold release; payout two-person rule; MFA required for staff routes; every-route authorisation inventory; CSP header; log scrubber removes contacts; encrypted column round-trip with key rotation; erasure tombstone and suppression on re-import; opt-out suppression global; caps and quiet hours; auto-pause thresholds; agent evidence-quote check; agent isolation; agent cap and kill switch; map-link conversions; date and age formatting in English and Urdu; plural forms in Urdu; RTL screenshot comparisons at three widths.
 
 #### Appendix I. CI pipeline outline
 
@@ -4153,7 +4169,7 @@ reports/ research_notes/ prototype/ scripts/
 | Fonts and images | none | none |
 | Requests for the shell | 1 HTML plus 1 cached CSS file (or inline) and 1 deferred script | |
 
-Latency goals in section 18.5. A list page of 25 rows uses at most 12 database queries. CSS is served once and cached for a year with hashed names.
+Latency goals in section 18.5. A list page's database query count must not grow with the number of rows (tested: the same count at 2 rows and at 25; currently 23). CSS is served once and cached for a year with hashed names.
 
 #### Appendix M. Glossary
 
@@ -20913,7 +20929,7 @@ moderation queues are not built yet; see `docs/DECISIONS.md` open items.
 
 ---
 
-## 80. Software source: backend/analytics/__init__.py
+## 80. Software source: backend/access/__init__.py
 
 ```py
 
@@ -20923,7 +20939,203 @@ moderation queues are not built yet; see `docs/DECISIONS.md` open items.
 
 ---
 
-## 81. Software source: backend/analytics/apps.py
+## 81. Software source: backend/access/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class AccessConfig(AppConfig):
+    name = "access"
+```
+
+
+
+---
+
+## 82. Software source: backend/access/policy.py
+
+```py
+"""One table decides what each viewer may see (plan 9.1, appendix C.4, rule R03). Views and fragments call `visible()`
+and nothing else decides visibility. Contacts are absent on purpose: they are never shown (rule R02)."""
+
+from dataclasses import dataclass
+from typing import Optional
+
+# value meanings: "full" shown in full; "area" place name only; "names" names only; "first3" first three items;
+# "list" names of items without detail; "locked" present but locked (one panel names it); "none" not shown
+FREE_OWN, FREE_WIDER, SUBSCRIBER = 0, 1, 2
+
+FIELDS = {
+    "name": ("full", "full", "full"),
+    "name_variants": ("full", "full", "full"),
+    "entity_type": ("full", "none", "full"),
+    "category": ("full", "full", "full"),
+    "area": ("full", "full", "full"),
+    "specialities": ("first3", "none", "full"),
+    "checks": ("full", "full", "full"),
+    "status": ("full", "full", "full"),
+    "company_tag": ("full", "full", "full"),
+    "free_details": ("full", "none", "full"),  # hours, languages, year established, business type, OEM
+    "address": ("area", "none", "full"),
+    "location": ("area", "none", "full"),
+    "website": ("locked", "none", "full"),
+    "social_links": ("locked", "none", "full"),
+    "size": ("locked", "none", "full"),
+    "markets": ("locked", "none", "full"),
+    "min_order": ("locked", "none", "full"),
+    "services": ("list", "none", "full"),  # names free, prices with dates for subscribers
+    "products": ("locked", "none", "full"),
+    "certificates": ("list", "none", "full"),  # names free, details for subscribers
+    "company_sections": ("full", "none", "full"),
+    "enquiry_one": ("full", "full", "full"),  # entry pages are not scope-limited; only list rows are
+    "enquiry_many": ("none", "none", "full"),
+    "ads": ("full", "full", "none"),
+}
+
+
+@dataclass(frozen=True)
+class Viewer:
+    subscriber: bool = False
+    own_path: Optional[str] = None  # the viewer's own place subtree (chosen place, else edge guess)
+
+
+def scope_of(viewer, place_path):
+    """ "own" when the list's place is inside the viewer's own place subtree, else "wider" (rule R04).
+    Unknown own place counts as wider, the safe side."""
+    own = viewer.own_path
+    if own is None:
+        return "wider"
+    if place_path == own or place_path.startswith(own + "."):
+        return "own"
+    return "wider"
+
+
+def visible(field, viewer, place_path):
+    """Return the visibility value for a field. Unknown fields are not shown."""
+    row = FIELDS.get(field)
+    if row is None:
+        return "none"
+    if viewer.subscriber:
+        return row[SUBSCRIBER]
+    return row[FREE_OWN] if scope_of(viewer, place_path) == "own" else row[FREE_WIDER]
+
+
+def list_mode(viewer, place_path):
+    """How a list page's rows render for this viewer: "full" (subscriber), "free" (own place) or "names" (wider)."""
+    if viewer.subscriber:
+        return "full"
+    return "free" if scope_of(viewer, place_path) == "own" else "names"
+```
+
+
+
+---
+
+## 83. Software source: backend/access/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 84. Software source: backend/access/tests/test_policy.py
+
+```py
+import pytest
+
+from access.policy import FIELDS, Viewer, list_mode, scope_of, visible
+
+OWN = "pk.punjab.sialkot"
+
+
+@pytest.mark.parametrize(
+    "own,place,expected",
+    [
+        (OWN, "pk.punjab.sialkot", "own"),
+        (OWN, "pk.punjab.sialkot.paris-road", "own"),
+        (OWN, "pk.punjab", "wider"),
+        (OWN, "pk", "wider"),
+        (OWN, "", "wider"),
+        (OWN, "pk.punjab.sialkotx", "wider"),
+        (OWN, "ae.dubai", "wider"),
+        (None, "pk.punjab.sialkot", "wider"),
+    ],
+)
+def test_scope(own, place, expected):
+    assert scope_of(Viewer(own_path=own), place) == expected
+
+
+def test_list_mode():
+    assert list_mode(Viewer(subscriber=True), "pk") == "full"
+    assert list_mode(Viewer(own_path=OWN), "pk.punjab.sialkot.x") == "free"
+    assert list_mode(Viewer(own_path=OWN), "pk") == "names"
+    assert list_mode(Viewer(), "pk.punjab.sialkot") == "names"
+
+
+EXPECTED = {  # the plans-and-visibility table of the technical plan, appendix C.4, as an independent copy
+    "name": ("full", "full", "full"),
+    "name_variants": ("full", "full", "full"),
+    "category": ("full", "full", "full"),
+    "area": ("full", "full", "full"),
+    "checks": ("full", "full", "full"),
+    "status": ("full", "full", "full"),
+    "specialities": ("first3", "none", "full"),
+    "free_details": ("full", "none", "full"),
+    "address": ("area", "none", "full"),
+    "location": ("area", "none", "full"),
+    "website": ("locked", "none", "full"),
+    "social_links": ("locked", "none", "full"),
+    "size": ("locked", "none", "full"),
+    "markets": ("locked", "none", "full"),
+    "min_order": ("locked", "none", "full"),
+    "services": ("list", "none", "full"),
+    "certificates": ("list", "none", "full"),
+    "products": ("locked", "none", "full"),
+    "enquiry_one": ("full", "full", "full"),
+    "enquiry_many": ("none", "none", "full"),
+    "ads": ("full", "full", "none"),
+}
+
+
+def test_visibility_matrix_every_cell():
+    own, wider, sub = Viewer(own_path=OWN), Viewer(own_path=OWN), Viewer(subscriber=True, own_path=OWN)
+    for field, (a, b, c) in EXPECTED.items():
+        assert visible(field, own, OWN + ".x") == a, field
+        assert visible(field, wider, "pk") == b, field
+        assert visible(field, sub, "pk") == c, field
+    assert set(EXPECTED) <= set(FIELDS)
+
+
+def test_contacts_have_no_visibility_row_so_they_never_show():
+    for field in ("phone", "whatsapp", "email", "contacts", "owner_name"):
+        for v in (Viewer(), Viewer(subscriber=True, own_path=OWN)):
+            assert visible(field, v, OWN) == "none"
+    assert not {"phone", "whatsapp", "email", "contacts"} & set(FIELDS)
+
+
+def test_ads_only_for_free():
+    assert visible("ads", Viewer(), "pk") != "none" and visible("ads", Viewer(subscriber=True), "pk") == "none"
+```
+
+
+
+---
+
+## 85. Software source: backend/analytics/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 86. Software source: backend/analytics/apps.py
 
 ```py
 from django.apps import AppConfig
@@ -20937,7 +21149,7 @@ class AnalyticsConfig(AppConfig):
 
 ---
 
-## 82. Software source: backend/analytics/models.py
+## 87. Software source: backend/analytics/models.py
 
 ```py
 from django.db import models
@@ -20947,6 +21159,7 @@ from core import clock
 
 class RollupCell(models.Model):
     """Counts for one (place, concept) cell, including everything below the place. Only non-empty cells exist."""
+
     country_code = models.CharField(max_length=2)
     place_path = models.CharField(max_length=500)
     concept = models.ForeignKey("taxonomy.Concept", on_delete=models.CASCADE, related_name="+")
@@ -20958,7 +21171,9 @@ class RollupCell(models.Model):
     updated_at = models.DateTimeField(default=clock.now)
 
     class Meta:
-        constraints = [models.UniqueConstraint(fields=["country_code", "place_path", "concept"], name="uniq_rollup_cell")]
+        constraints = [
+            models.UniqueConstraint(fields=["country_code", "place_path", "concept"], name="uniq_rollup_cell")
+        ]
         indexes = [models.Index(fields=["country_code", "place_path"], name="rollup_place_idx")]
 ```
 
@@ -20966,10 +21181,11 @@ class RollupCell(models.Model):
 
 ---
 
-## 83. Software source: backend/analytics/rollups.py
+## 88. Software source: backend/analytics/rollups.py
 
 ```py
 """Roll-up cells (plan 4.4). Each changed entry touches its place ancestors times its concept ancestors."""
+
 from datetime import timedelta
 
 from django.db import transaction
@@ -21001,8 +21217,11 @@ def _entries_in(path, concept_ids, country):
     if country:
         qs = qs.filter(country_code=country)
     if path:
-        qs = [e for e in qs.filter(place_path__startswith=path)
-              if e.place_path == path or e.place_path.startswith(path + ".")]
+        qs = [
+            e
+            for e in qs.filter(place_path__startswith=path)
+            if e.place_path == path or e.place_path.startswith(path + ".")
+        ]
     return list(qs)
 
 
@@ -21030,10 +21249,18 @@ def recount_cell(country, path, concept_id, now=None):
             verified_12m += 1
     with_contact = sum(1 for e in published if e.contact_set.exists())
     cell, _ = RollupCell.objects.update_or_create(
-        country_code=country, place_path=path, concept_id=concept_id,
-        defaults=dict(total=len(entries), published=len(published), by_level=by_level, verified_12m=verified_12m,
-                      with_contact_pct=round(100 * with_contact / len(published)) if published else 0,
-                      updated_at=now))
+        country_code=country,
+        place_path=path,
+        concept_id=concept_id,
+        defaults=dict(
+            total=len(entries),
+            published=len(published),
+            by_level=by_level,
+            verified_12m=verified_12m,
+            with_contact_pct=round(100 * with_contact / len(published)) if published else 0,
+            updated_at=now,
+        ),
+    )
     return cell
 
 
@@ -21064,7 +21291,7 @@ def recount_all(now=None):
 
 ---
 
-## 84. Software source: backend/analytics/tests/__init__.py
+## 89. Software source: backend/analytics/tests/__init__.py
 
 ```py
 
@@ -21074,7 +21301,7 @@ def recount_all(now=None):
 
 ---
 
-## 85. Software source: backend/analytics/tests/test_rollups.py
+## 90. Software source: backend/analytics/tests/test_rollups.py
 
 ```py
 from analytics.models import RollupCell
@@ -21088,8 +21315,9 @@ def test_place_paths():
 
 
 def test_incremental_refresh_matches_recount(entry, tree, surgical, users):
-    es.record_verification(entry, field_group="identity", level="surveyor", actor=users["surveyor"], method="call",
-                           evidence="Answered")
+    es.record_verification(
+        entry, field_group="identity", level="surveyor", actor=users["surveyor"], method="call", evidence="Answered"
+    )
     entry.refresh_from_db()
     refresh_for_entry(entry)
     cities = RollupCell.objects.get(place_path=tree["sialkot"].path, concept=surgical)
@@ -21110,8 +21338,12 @@ def test_drafts_count_in_total_but_not_published(entry, tree, surgical):
 
 
 def test_merged_entries_leave_the_counts(entry, tree, surgical, users):
-    other = es.create_entry(name="Dup Co", place=tree["paris"], primary_concept=surgical,
-                            addons={"business_type": "trader", "product_categories": ["x"]})
+    other = es.create_entry(
+        name="Dup Co",
+        place=tree["paris"],
+        primary_concept=surgical,
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
     recount_all()
     assert RollupCell.objects.get(place_path=tree["paris"].path, concept=surgical).total == 2
     es.merge_entries(entry, other)
@@ -21131,7 +21363,7 @@ def test_empty_cell_is_removed(entry, tree, surgical):
 
 ---
 
-## 86. Software source: backend/config/__init__.py
+## 91. Software source: backend/catalog/__init__.py
 
 ```py
 
@@ -21141,3101 +21373,572 @@ def test_empty_cell_is_removed(entry, tree, surgical):
 
 ---
 
-## 87. Software source: backend/config/settings/__init__.py
+## 92. Software source: backend/catalog/apps.py
 
 ```py
-"""Settings package. `config.settings` is the development default; production uses `config.settings.prod`."""
-from .base import *  # noqa: F401,F403
+from django.apps import AppConfig
+
+
+class CatalogConfig(AppConfig):
+    name = "catalog"
 ```
 
 
 
 ---
 
-## 88. Software source: backend/config/settings/base.py
+## 93. Software source: backend/catalog/context.py
 
 ```py
-"""AllLists settings. Secure by default; everything environment-specific comes from env vars."""
-import os
-import sys
-from pathlib import Path
+from django.conf import settings
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+from . import strings
+from .strings import Translator
 
-DEBUG = os.environ.get("DJANGO_DEBUG", "") == "1"
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or ("dev-only-insecure-key" if DEBUG else "")
-if not SECRET_KEY:
-    if "pytest" in sys.modules or os.environ.get("DJANGO_ALLOW_TEST_KEY") == "1":
-        SECRET_KEY = "test-key-not-for-production"
-    else:
-        from django.core.exceptions import ImproperlyConfigured
-        raise ImproperlyConfigured("Set DJANGO_SECRET_KEY (or DJANGO_DEBUG=1 for local development).")
-ALLOWED_HOSTS = [h for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",") if h]
-CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o]
 
-# Demo switch lets a visitor flip between Free and Subscriber to preview. Never on in production.
-DEMO_MODE = os.environ.get("ALLLISTS_DEMO", "1" if DEBUG else "0") == "1"
-
-INSTALLED_APPS = [
-    "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
-    "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
-    "core", "places", "taxonomy", "entries", "intake", "analytics",
-    "lists",  # legacy demo app, replaced by catalog in phase P2
-]
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "lists.middleware.PreferencesMiddleware",
-    "lists.middleware.LocationMiddleware",
-]
-ROOT_URLCONF = "config.urls"
-TEMPLATES = [{
-    "BACKEND": "django.template.backends.django.DjangoTemplates",
-    "APP_DIRS": True,
-    "OPTIONS": {"context_processors": [
-        "django.template.context_processors.request",
-        "django.contrib.auth.context_processors.auth",
-        "django.contrib.messages.context_processors.messages",
-        "lists.context.site",
-    ]},
-}]
-WSGI_APPLICATION = "config.wsgi.application"
-
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3",
-                         "NAME": os.environ.get("ALLLISTS_DB", BASE_DIR / "db.sqlite3")}}
-if os.environ.get("POSTGRES_DB"):  # PostgreSQL in production (install psycopg)
-    DATABASES["default"] = {
-        "ENGINE": "django.db.backends.postgresql", "NAME": os.environ["POSTGRES_DB"],
-        "USER": os.environ.get("POSTGRES_USER", ""), "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
-        "HOST": os.environ.get("POSTGRES_HOST", "localhost"), "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+def site(request):
+    lang = getattr(request, "lang", "en")
+    other = "ur" if lang == "en" else "en"
+    qs = request.META.get("QUERY_STRING", "") if hasattr(request, "META") else ""
+    path = getattr(request, "path_info", "/")
+    alt_url = ("/ur" if other == "ur" else "") + path + (("?" + qs) if qs else "")
+    return {
+        "alt_url": alt_url,
+        "lang": lang,
+        "dir": "rtl" if lang == "ur" else "ltr",
+        "prefix": getattr(request, "prefix", ""),
+        "T": Translator(lang),
+        "demo_mode": settings.DEMO_MODE,
+        "template_version": settings.TEMPLATE_VERSION,
+        "other_lang": "ur" if lang == "en" else "en",
+        "languages": strings.LANGUAGES,
     }
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-AUTH_PASSWORD_VALIDATORS = [{"NAME": f"django.contrib.auth.password_validation.{n}"} for n in
-                            ("UserAttributeSimilarityValidator", "MinimumLengthValidator",
-                             "CommonPasswordValidator", "NumericPasswordValidator")]
-LANGUAGE_CODE = "en"
-TIME_ZONE = "UTC"
-USE_I18N = False
-USE_TZ = True
-
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATIC_ROOT.mkdir(exist_ok=True)
-STORAGES = {"default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-            "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"}}
-
-# Security headers and cookies
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SAMESITE = "Lax"
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_REFERRER_POLICY = "same-origin"
-X_FRAME_OPTIONS = "DENY"
-if not DEBUG:
-    SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE = os.environ.get("DJANGO_INSECURE_COOKIES", "") != "1"
-    SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_HSTS_SECONDS", "0"))
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-# Business rules (decisions Q-S15 and the 50/40/30 phase decision)
-CONTRIBUTOR_PHASE_RATES = {1: 50, 2: 40, 3: 30}
-CURRENT_PHASE = int(os.environ.get("ALLLISTS_PHASE", "1"))
-FREE_PREVIEW_NAMES = 25          # names-only preview beyond the visitor's own place
-FREE_MAX_SPECIALITIES = 3
-
-# Field encryption and keyed hashes (plan section 17). Dev values are throwaway; production sets real ones.
-FIELD_ENCRYPTION_KEYS = {}
-FIELD_ENCRYPTION_ACTIVE_KEY = os.environ.get("FIELD_ENCRYPTION_ACTIVE_KEY", "")
-for _item in [i for i in os.environ.get("FIELD_ENCRYPTION_KEYS", "").split(",") if i]:
-    _kid, _, _key = _item.partition(":")
-    FIELD_ENCRYPTION_KEYS[_kid] = _key
-CONTACT_HASH_PEPPER = os.environ.get("CONTACT_HASH_PEPPER", "")
-if not FIELD_ENCRYPTION_KEYS and (DEBUG or "pytest" in sys.modules):
-    from cryptography.fernet import Fernet  # noqa: E402
-    FIELD_ENCRYPTION_KEYS = {"dev": Fernet.generate_key().decode()}
-    FIELD_ENCRYPTION_ACTIVE_KEY = "dev"
-    CONTACT_HASH_PEPPER = CONTACT_HASH_PEPPER or "dev-pepper-not-secret"
-
-# Verification defaults (plan section 6.3, Q-T4): validity in days per level; grace before an expired entry returns to draft
-CHECK_VALIDITY_DAYS = {"surveyor": 365, "owner": 365, "ai": 180}
-GRACE_DAYS = 90
-INDEX_THRESHOLD = 10
 ```
 
 
 
 ---
 
-## 89. Software source: backend/config/settings/prod.py
+## 94. Software source: backend/catalog/format.py
 
 ```py
-"""Production settings: nothing here relaxes base; it only fails fast when required values are missing."""
-from django.core.exceptions import ImproperlyConfigured
+"""Dates, ages and numbers for pages. Western digits in every language (decision); Urdu gets Urdu month names."""
 
-from .base import *  # noqa: F401,F403
-from .base import CONTACT_HASH_PEPPER, DEBUG, FIELD_ENCRYPTION_KEYS
-
-if DEBUG:
-    raise ImproperlyConfigured("DJANGO_DEBUG must be off in production")
-if not FIELD_ENCRYPTION_KEYS or not CONTACT_HASH_PEPPER:
-    raise ImproperlyConfigured("Set FIELD_ENCRYPTION_KEYS, FIELD_ENCRYPTION_ACTIVE_KEY and CONTACT_HASH_PEPPER")
-```
-
-
-
----
-
-## 90. Software source: backend/config/urls.py
-
-```py
-from django.contrib import admin
-from django.urls import include, path
-
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", include("lists.urls")),
-]
-```
-
-
-
----
-
-## 91. Software source: backend/config/wsgi.py
-
-```py
-import os
-
-from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-application = get_wsgi_application()
-```
-
-
-
----
-
-## 92. Software source: backend/conftest.py
-
-```py
 import datetime
 
-import pytest
-from django.contrib.auth.models import User
-from django.db import connection
-
-from core.models import CountrySwitch
-from entries import services as es
-from intake.models import Source
-from places.models import Place
-from places.services import create_place
-from taxonomy.models import Concept
-from taxonomy.services import create_concept, seed_manufacturer_template
-
-
-@pytest.fixture(autouse=True)
-def fast_hashers(settings):
-    settings.PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
-
-
-@pytest.fixture
-def pg(db):
-    if connection.vendor != "postgresql":
-        pytest.skip("needs PostgreSQL (set POSTGRES_DB)")
-
-
-@pytest.fixture
-def tree(db):
-    world = create_place(parent=None, level=Place.Level.WORLD, name="World", slug="world")
-    pk = create_place(parent=world, level=Place.Level.COUNTRY, name="Pakistan", country_code="PK",
-                      names=[("ur", "پاکستان")])
-    punjab = create_place(parent=pk, level=Place.Level.ADMIN1, name="Punjab")
-    sialkot = create_place(parent=punjab, level=Place.Level.CITY, name="Sialkot", names=[("ur", "سیالکوٹ")])
-    paris = create_place(parent=sialkot, level=Place.Level.AREA, name="Paris Road")
-    return dict(world=world, pk=pk, punjab=punjab, sialkot=sialkot, paris=paris)
-
-
-@pytest.fixture
-def surgical(db):
-    tpl = seed_manufacturer_template()
-    return create_concept(kind=Concept.Kind.LIST_TYPE, name="Surgical instrument makers", template=tpl,
-                          synonyms=["surgical instruments manufacturers"])
-
-
-@pytest.fixture
-def users(db):
-    return {n: User.objects.create_user(n, f"{n}@example.org", "pw-for-tests-only") for n in
-            ("adder", "surveyor", "owner", "mod")}
-
-
-@pytest.fixture
-def green(db):
-    return Source.objects.create(name="Owner submissions", tier="green", allowed_uses=["import", "agent_fetch", "display"])
-
-
-@pytest.fixture
-def web_source(db):
-    return Source.objects.create(name="Open web page check", tier="amber", allowed_uses=["agent_fetch", "display"],
-                                 reviewed_on=datetime.date(2026, 10, 1))
-
-
-@pytest.fixture
-def entry(tree, surgical, users):
-    return es.create_entry(name="Crescent Surgical Works", place=tree["paris"], primary_concept=surgical,
-                           created_by=users["adder"], website="https://example.org",
-                           contacts=[("phone", "0300 123 4567")],
-                           addons={"business_type": "manufacturer", "product_categories": ["scissors"]})
-
-
-@pytest.fixture
-def pk_open(db):
-    return CountrySwitch.objects.create(country_code="PK", named_individuals_on=True)
-```
-
-
-
----
-
-## 93. Software source: backend/core/__init__.py
-
-```py
-
-```
-
-
-
----
-
-## 94. Software source: backend/core/admin.py
-
-```py
-from django.contrib import admin
-
-from .models import AuditLog, ChangeLog, CountrySwitch, FeatureFlag, RegistryVersion
-
-
-@admin.register(AuditLog)
-class AuditLogAdmin(admin.ModelAdmin):
-    list_display = ("id", "ts", "action", "object_type", "object_uid", "actor_id")
-    search_fields = ("action", "object_uid")
-
-    def has_add_permission(self, request):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-
-@admin.register(CountrySwitch)
-class CountrySwitchAdmin(admin.ModelAdmin):
-    list_display = ("country_code", "browsing_on", "indexing_on", "selling_on", "outreach_on", "ads_on", "cleared_by")
-
-
-admin.site.register([ChangeLog, FeatureFlag, RegistryVersion])
-```
-
-
-
----
-
-## 95. Software source: backend/core/apps.py
-
-```py
-from django.apps import AppConfig
-
-
-class CoreConfig(AppConfig):
-    name = "core"
-```
-
-
-
----
-
-## 96. Software source: backend/core/clock.py
-
-```py
-"""One clock so tests can set the time."""
-from django.utils import timezone
-
-_override = None
-
-
-def now():
-    return _override or timezone.now()
-
-
-def set_now(value):
-    global _override
-    _override = value
-
-
-def today():
-    return now().date()
-```
-
-
-
----
-
-## 97. Software source: backend/core/crypto.py
-
-```py
-"""Field encryption with key versioning, and keyed hashes for lookup without decryption (plan sections 4.1, 17)."""
-import hashlib
-import hmac
-
-from cryptography.fernet import Fernet, InvalidToken
-from django.conf import settings
-from django.db import models
-
-
-class CryptoError(Exception):
-    pass
-
-
-def encrypt(plaintext: str) -> str:
-    kid = settings.FIELD_ENCRYPTION_ACTIVE_KEY
-    key = settings.FIELD_ENCRYPTION_KEYS.get(kid)
-    if not key:
-        raise CryptoError("no active encryption key configured")
-    return f"{kid}:{Fernet(key.encode()).encrypt(plaintext.encode()).decode()}"
-
-
-def decrypt(stored: str) -> str:
-    kid, _, token = stored.partition(":")
-    key = settings.FIELD_ENCRYPTION_KEYS.get(kid)
-    if not key:
-        raise CryptoError(f"unknown key id {kid!r}")
-    try:
-        return Fernet(key.encode()).decrypt(token.encode()).decode()
-    except InvalidToken as exc:
-        raise CryptoError("cannot decrypt value") from exc
-
-
-def keyed_hash(value: str) -> str:
-    """Stable keyed hash for de-duplication and suppression lists. Normalise before calling."""
-    pepper = settings.CONTACT_HASH_PEPPER
-    if not pepper:
-        raise CryptoError("CONTACT_HASH_PEPPER is not set")
-    return hmac.new(pepper.encode(), value.encode(), hashlib.sha256).hexdigest()
-
-
-class EncryptedTextField(models.TextField):
-    """Stores `key_id:ciphertext`. Never rendered to visitors (rule R02)."""
-
-    def get_prep_value(self, value):
-        if value is None:
-            return None
-        return encrypt(value)
-
-    def from_db_value(self, value, expression, connection):
-        return None if value is None else decrypt(value)
-```
-
-
-
----
-
-## 98. Software source: backend/core/management/__init__.py
-
-```py
-
-```
-
-
-
----
-
-## 99. Software source: backend/core/management/commands/__init__.py
-
-```py
-
-```
-
-
-
----
-
-## 100. Software source: backend/core/management/commands/seed_pilot.py
-
-```py
-"""Seed the pilot structure: Pakistan to Sialkot, the surgical-instrument list type, and a starter source register.
-Safe to run twice. Entries are not created here; they come from imports and verification."""
-import datetime
-
-from django.core.management.base import BaseCommand
-
-from core.models import CountrySwitch
-from intake.models import Source
-from places.models import Place
-from places.services import create_place
-from taxonomy.models import Concept
-from taxonomy.services import create_concept, seed_manufacturer_template
-
-
-def get_or_create_place(parent, **kw):
-    existing = Place.objects.filter(parent=parent, slug=kw.get("slug") or kw["name"].lower().replace(" ", "-")).first()
-    return existing or create_place(parent=parent, **kw)
-
-
-class Command(BaseCommand):
-    def handle(self, *args, **opts):
-        world = Place.objects.filter(level="world").first() or create_place(
-            parent=None, level=Place.Level.WORLD, name="World", slug="world")
-        pk = Place.objects.filter(country_code="PK", level="country").first() or create_place(
-            parent=world, level=Place.Level.COUNTRY, name="Pakistan", country_code="PK", names=[("ur", "پاکستان")])
-        punjab = get_or_create_place(pk, level=Place.Level.ADMIN1, name="Punjab", names=[("ur", "پنجاب")])
-        city = get_or_create_place(punjab, level=Place.Level.CITY, name="Sialkot", names=[("ur", "سیالکوٹ")])
-        for area, ur in (("Paris Road", "پیرس روڈ"), ("Kashmir Road", "کشمیر روڈ"), ("Wazirabad Road", "وزیرآباد روڈ")):
-            get_or_create_place(city, level=Place.Level.AREA, name=area, names=[("ur", ur)])
-        tpl = seed_manufacturer_template()
-        if not Concept.objects.filter(kind="list_type", slug="surgical-instrument-makers").exists():
-            create_concept(kind=Concept.Kind.LIST_TYPE, name="Surgical instrument makers", template=tpl,
-                           natural_scale="national",
-                           synonyms=[("surgical instruments manufacturers", "en"), ("جراحی آلات بنانے والے", "ur")])
-        Source.objects.get_or_create(name="Owner and contributor submissions", defaults=dict(
-            tier="green", allowed_uses=["import", "display"], attribution_text="Provided by contributors"))
-        Source.objects.get_or_create(name="Open web page check", defaults=dict(
-            tier="amber", allowed_uses=["agent_fetch", "display"], reviewed_on=datetime.date.today(),
-            personal_data_rules="Business facts only; no personal data"))
-        CountrySwitch.objects.get_or_create(country_code="PK")  # everything off except browsing until counsel clears it
-        self.stdout.write("pilot structure ready")
-```
-
-
-
----
-
-## 101. Software source: backend/core/models.py
-
-```py
-"""Shared base models: ids, soft delete, audit hash chain, change log, flags, country switches (plan section 4.2.1)."""
-import hashlib
-import json
-
-from django.conf import settings
-from django.db import connection, models, transaction
-
-from . import clock
-from .ulid import new_ulid
-
-
-class UidModel(models.Model):
-    uid = models.CharField(max_length=26, unique=True, default=new_ulid, editable=False)
-
-    class Meta:
-        abstract = True
-
-
-class SoftDeleteModel(models.Model):
-    deleted_at = models.DateTimeField(null=True, blank=True)
-    tombstone_reason = models.CharField(max_length=80, blank=True)
-
-    class Meta:
-        abstract = True
-
-
-class AuditLog(models.Model):
-    """Append-only, hash-chained: hash = sha256(prev_hash + canonical row). Written in the same transaction as the change."""
-    ts = models.DateTimeField()
-    actor_id = models.BigIntegerField(null=True, blank=True)
-    actor_role = models.CharField(max_length=40, blank=True)
-    action = models.CharField(max_length=80)
-    object_type = models.CharField(max_length=60, blank=True)
-    object_uid = models.CharField(max_length=40, blank=True)
-    country_code = models.CharField(max_length=2, blank=True)
-    ip_hash = models.CharField(max_length=64, blank=True)
-    payload = models.JSONField(default=dict, blank=True)
-    prev_hash = models.CharField(max_length=64, blank=True)
-    hash = models.CharField(max_length=64, unique=True)
-
-    class Meta:
-        ordering = ["id"]
-
-
-def _canonical(prev_hash, fields):
-    return prev_hash + json.dumps(fields, sort_keys=True, separators=(",", ":"), default=str)
-
-
-def audit(action, *, actor=None, actor_role="", object_type="", object_uid="", country_code="", ip_hash="", payload=None):
-    """Append one audit row. Call inside the transaction that makes the change."""
-    with transaction.atomic():
-        if connection.vendor == "postgresql":
-            with connection.cursor() as cur:
-                cur.execute("SELECT pg_advisory_xact_lock(727001)")
-        last = AuditLog.objects.order_by("-id").first()
-        prev = last.hash if last else ""
-        ts = clock.now()
-        fields = {"ts": ts.isoformat(), "actor_id": getattr(actor, "pk", actor), "actor_role": actor_role,
-                  "action": action, "object_type": object_type, "object_uid": object_uid,
-                  "country_code": country_code, "ip_hash": ip_hash, "payload": payload or {}}
-        digest = hashlib.sha256(_canonical(prev, fields).encode()).hexdigest()
-        return AuditLog.objects.create(ts=ts, actor_id=fields["actor_id"], actor_role=actor_role, action=action,
-                                       object_type=object_type, object_uid=object_uid, country_code=country_code,
-                                       ip_hash=ip_hash, payload=fields["payload"], prev_hash=prev, hash=digest)
-
-
-def verify_audit_chain():
-    """Returns None if the chain is intact, else the id of the first broken row."""
-    prev = ""
-    for row in AuditLog.objects.order_by("id").iterator():
-        fields = {"ts": row.ts.isoformat(), "actor_id": row.actor_id, "actor_role": row.actor_role, "action": row.action,
-                  "object_type": row.object_type, "object_uid": row.object_uid, "country_code": row.country_code,
-                  "ip_hash": row.ip_hash, "payload": row.payload}
-        if row.prev_hash != prev or hashlib.sha256(_canonical(prev, fields).encode()).hexdigest() != row.hash:
-            return row.id
-        prev = row.hash
-    return None
-
-
-class ChangeLog(models.Model):
-    """One row per field change on an entry (append-only)."""
-    entry_id = models.BigIntegerField(db_index=True)
-    country_code = models.CharField(max_length=2)
-    field_key = models.CharField(max_length=60)
-    old = models.JSONField(null=True, blank=True)
-    new = models.JSONField(null=True, blank=True)
-    actor_id = models.BigIntegerField(null=True, blank=True)
-    source_id = models.BigIntegerField(null=True, blank=True)
-    ts = models.DateTimeField(default=clock.now)
-
-    class Meta:
-        ordering = ["id"]
-
-
-class FeatureFlag(models.Model):
-    key = models.CharField(max_length=60, unique=True)
-    description = models.CharField(max_length=200, blank=True)
-    enabled_default = models.BooleanField(default=False)
-    country_code = models.CharField(max_length=2, blank=True, help_text="Blank means every country")
-    rollout_percent = models.PositiveSmallIntegerField(default=100)
-
-
-class CountrySwitch(models.Model):
-    """Per-country control for rule R24. Everything except browsing defaults to off."""
-    country_code = models.CharField(max_length=2, unique=True)
-    browsing_on = models.BooleanField(default=True)
-    indexing_on = models.BooleanField(default=False)
-    selling_on = models.BooleanField(default=False)
-    outreach_on = models.BooleanField(default=False)
-    outreach_channels = models.JSONField(default=list, blank=True)
-    ads_on = models.BooleanField(default=False)
-    named_individuals_on = models.BooleanField(default=False)
-    health_prices_on = models.BooleanField(default=False)
-    child_services_on = models.BooleanField(default=False)
-    publish_cap_per_week = models.PositiveIntegerField(default=0)
-    legal_note = models.TextField(blank=True)
-    cleared_by = models.CharField(max_length=120, blank=True)
-    cleared_on = models.DateField(null=True, blank=True)
-
-    @classmethod
-    def for_country(cls, code):
-        """Unknown countries get the all-off default (browsing only)."""
-        return cls.objects.filter(country_code=code).first() or cls(country_code=code)
-
-
-class RegistryVersion(models.Model):
-    registry_key = models.CharField(max_length=60)
-    version = models.PositiveIntegerField()
-    changed_at = models.DateTimeField(default=clock.now)
-    changed_by = models.CharField(max_length=120, blank=True)
-
-    class Meta:
-        unique_together = [("registry_key", "version")]
-
-
-def flag_enabled(key, country_code=""):
-    f = FeatureFlag.objects.filter(key=key, country_code__in=[country_code, ""]).order_by("-country_code").first()
-    return bool(f and f.enabled_default and f.rollout_percent > 0)
-
-
-AUTH_USER = settings.AUTH_USER_MODEL
-```
-
-
-
----
-
-## 102. Software source: backend/core/pg.py
-
-```py
-"""Helpers for PostgreSQL-only parts of migrations. SQLite (local demo) skips them."""
-from django.db import migrations
-
-
-def only_postgres(forward_sql, reverse_sql=""):
-    def forward(apps, schema_editor):
-        if schema_editor.connection.vendor == "postgresql":
-            schema_editor.execute(forward_sql, params=None)
-
-    def reverse(apps, schema_editor):
-        if reverse_sql and schema_editor.connection.vendor == "postgresql":
-            schema_editor.execute(reverse_sql, params=None)
-
-    return migrations.RunPython(forward, reverse)
-
-
-FORBID_FN = """
-CREATE OR REPLACE FUNCTION forbid_mutation() RETURNS trigger AS $$
-BEGIN
-  RAISE EXCEPTION 'table % is append-only: % is not allowed', TG_TABLE_NAME, TG_OP
-    USING ERRCODE = 'integrity_constraint_violation';
-END;
-$$ LANGUAGE plpgsql;
-"""
-DROP_FORBID_FN = "DROP FUNCTION IF EXISTS forbid_mutation();"
-
-
-def append_only(table):
-    return only_postgres(
-        f"CREATE TRIGGER {table}_append_only BEFORE UPDATE OR DELETE ON {table} "
-        "FOR EACH ROW EXECUTE FUNCTION forbid_mutation();",
-        f"DROP TRIGGER IF EXISTS {table}_append_only ON {table};")
-
-
-def trigram_index(table, column, name):
-    return only_postgres(
-        f"CREATE INDEX {name} ON {table} USING gin ({column} gin_trgm_ops);",
-        f"DROP INDEX IF EXISTS {name};")
-```
-
-
-
----
-
-## 103. Software source: backend/core/tests/__init__.py
-
-```py
-
-```
-
-
-
----
-
-## 104. Software source: backend/core/tests/test_core.py
-
-```py
-import pytest
-from django.db import connection, transaction
-from django.db.utils import IntegrityError, InternalError
-
-from core import clock
-from core.crypto import CryptoError, decrypt, encrypt, keyed_hash
-from core.models import AuditLog, ChangeLog, audit, verify_audit_chain
-from core.textfold import fold
-from core.ulid import new_ulid
-
-
-def test_ulid_is_26_chars_unique_and_time_ordered():
-    a, b = new_ulid(1000), new_ulid(2000)
-    assert len(a) == 26 and a < b and new_ulid() != new_ulid()
-
-
-@pytest.mark.parametrize("a,b", [
-    ("کراچی", "کراچی"),
-    ("ياسر", "یاسر"),          # Arabic yeh vs Farsi yeh
-    ("كراچی", "کراچی"),  # Arabic kaf vs keheh
-    ("آمین", "امین"),                                                   # madda folds to alef
-    ("پاکستان‌", "پاکستان"),
-    ("سیالکوٹ ١٢٣", "سیالکوٹ 123"),                                     # Arabic-Indic digits
-    ("Paris  Road!", "paris road"),
-    ("ہوٹل", "ہوٹل"),
-])
-def test_fold_unifies_variants(a, b):
-    assert fold(a) == fold(b)
-
-
-def test_fold_removes_marks_and_tatweel():
-    assert fold("مُحَمَّد") == fold("محمد")
-    assert fold("اللـه") == fold("الله")
-    assert fold("") == "" and fold(None) == ""
-
-
-def test_zwnj_becomes_space():
-    assert fold("ہوٹل‌سٹی") == "ہوٹل سٹی"
-
-
-def test_encrypt_roundtrip_and_key_rotation(settings):
-    from cryptography.fernet import Fernet
-    token = encrypt("+923001234567")
-    assert token.startswith("dev:") and "923001234567" not in token and decrypt(token) == "+923001234567"
-    settings.FIELD_ENCRYPTION_KEYS = {**settings.FIELD_ENCRYPTION_KEYS, "k2": Fernet.generate_key().decode()}
-    settings.FIELD_ENCRYPTION_ACTIVE_KEY = "k2"
-    assert encrypt("x").startswith("k2:") and decrypt(token) == "+923001234567"
-    with pytest.raises(CryptoError):
-        decrypt("nokey:abc")
-
-
-def test_keyed_hash_is_stable_and_keyed(settings):
-    h1 = keyed_hash("phone:+923001234567")
-    assert h1 == keyed_hash("phone:+923001234567") and len(h1) == 64
-    settings.CONTACT_HASH_PEPPER = "other"
-    assert keyed_hash("phone:+923001234567") != h1
-
-
-@pytest.mark.django_db
-def test_audit_chain_verifies_and_links():
-    a = audit("t.one")
-    b = audit("t.two", payload={"k": 1})
-    assert b.prev_hash == a.hash and verify_audit_chain() is None
-
-
-def test_audit_chain_detects_tamper(pg):
-    audit("t.one")
-    row = audit("t.two", payload={"k": 1})
-    with connection.cursor() as cur:
-        cur.execute("ALTER TABLE core_auditlog DISABLE TRIGGER core_auditlog_append_only")
-        cur.execute("UPDATE core_auditlog SET payload = '{\"k\": 2}' WHERE id = %s", [row.id])
-        cur.execute("ALTER TABLE core_auditlog ENABLE TRIGGER core_auditlog_append_only")
-    assert verify_audit_chain() == row.id
-
-
-@pytest.mark.parametrize("model", [AuditLog, ChangeLog])
-def test_append_only_tables_refuse_update_and_delete(pg, model):
-    if model is AuditLog:
-        obj = audit("t.one")
-    else:
-        obj = ChangeLog.objects.create(entry_id=1, country_code="PK", field_key="name", new="x")
-    for sql in (f"UPDATE {model._meta.db_table} SET country_code = 'AE'", f"DELETE FROM {model._meta.db_table}"):
-        with pytest.raises((InternalError, IntegrityError)), transaction.atomic():
-            with connection.cursor() as cur:
-                cur.execute(sql)
-    assert model.objects.filter(pk=obj.pk).exists()
-
-
-def test_clock_override():
-    import datetime
-    from django.utils import timezone
-    fixed = timezone.make_aware(datetime.datetime(2026, 1, 2, 3, 4))
-    clock.set_now(fixed)
-    try:
-        assert clock.now() == fixed
-    finally:
-        clock.set_now(None)
-
-
-def test_seed_pilot_is_idempotent_and_safe_by_default(db):
-    from django.core.management import call_command
-    from core.models import CountrySwitch
-    from places.models import Place
-    from taxonomy.models import Concept
-    call_command("seed_pilot")
-    call_command("seed_pilot")
-    assert Place.objects.filter(path="pk.punjab.sialkot").count() == 1
-    assert Place.objects.filter(parent__path="pk.punjab.sialkot").count() == 3
-    assert Concept.objects.filter(slug="surgical-instrument-makers").count() == 1
-    sw = CountrySwitch.objects.get(country_code="PK")
-    assert sw.browsing_on and not (sw.selling_on or sw.outreach_on or sw.indexing_on or sw.named_individuals_on)
-```
-
-
-
----
-
-## 105. Software source: backend/core/textfold.py
-
-```py
-"""Search folding for Urdu, Arabic and Latin text (plan section 7.3).
-
-Unicode normalisation alone does not unify Urdu and Arabic letters: trigram similarity of the same name written with
-the two yeh forms was 0.54 before folding. This one function is used for names, place names, concept labels and queries.
-"""
-import re
-import unicodedata
-
-_MAP = {
-    0x064A: 0x06CC, 0x0649: 0x06CC,            # Arabic yeh, alef maksura -> Farsi yeh
-    0x0643: 0x06A9,                            # Arabic kaf -> keheh
-    0x0647: 0x06C1, 0x06D5: 0x06C1,            # heh, ae -> heh goal
-    0x06BE: 0x06C1,                            # heh doachashmee -> heh goal
-    0x0623: 0x0627, 0x0625: 0x0627, 0x0671: 0x0627, 0x0622: 0x0627,  # alef variants and madda -> alef
-    0x06C0: 0x06C1, 0x0624: 0x0648,            # heh with yeh above, waw with hamza
-    0x0626: 0x06CC,                            # yeh with hamza
+from . import strings
+
+MONTHS = {
+    "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "ur": ["جنوری", "فروری", "مارچ", "اپریل", "مئی", "جون", "جولائی", "اگست", "ستمبر", "اکتوبر", "نومبر", "دسمبر"],
 }
-_REMOVE = {0x0640, 0x200C, 0x200D, 0x200E, 0x200F, 0x0670}
-_DIGITS = {**{0x0660 + i: ord("0") + i for i in range(10)}, **{0x06F0 + i: ord("0") + i for i in range(10)}}
-_PUNCT = re.compile(r"[^\w\s]", re.UNICODE)
-_SPACE = re.compile(r"\s+")
 
 
-def fold(text):
-    if not text:
+def fmt_date(lang, value):
+    if value is None:
         return ""
-    text = unicodedata.normalize("NFKC", text)
-    out = []
-    for ch in text:
-        cp = ord(ch)
-        if cp == 0x200C:       # ZWNJ separates words in Urdu
-            out.append(" ")
-        elif cp in _REMOVE or 0x064B <= cp <= 0x065F:
-            continue
-        elif cp in _DIGITS:
-            out.append(chr(_DIGITS[cp]))
-        elif cp in _MAP:
-            out.append(chr(_MAP[cp]))
-        else:
-            out.append(ch)
-    text = "".join(out).lower()
-    text = _PUNCT.sub(" ", text)
-    return _SPACE.sub(" ", text).strip()
+    if isinstance(value, datetime.datetime):
+        value = value.date()
+    return f"{value.day} {MONTHS[lang][value.month - 1]} {value.year}"
+
+
+def age_text(lang, value, today):
+    if value is None:
+        return ""
+    if isinstance(value, datetime.datetime):
+        value = value.date()
+    days = (today - value).days
+    if days <= 0:
+        return strings.t(lang, "age_today")
+    if days < 14:
+        return strings.t(lang, "age_days", n=days)
+    if days < 60:
+        return strings.t(lang, "age_weeks", n=days // 7)
+    if days < 730:
+        return strings.t(lang, "age_months", n=days // 30)
+    return strings.t(lang, "age_years", n=days // 365)
 ```
 
 
 
 ---
 
-## 106. Software source: backend/core/ulid.py
+## 95. Software source: backend/catalog/location.py
 
 ```py
-"""ULID: 26 characters, time-ordered, never reused. Public ids in URLs (plan section 4.1)."""
-import os
-import time
+"""Where the viewer is: the chosen place, else the edge guess, else nothing (plan 10.2). Used only by fragments."""
 
-_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+from core.textfold import fold
+from places.models import Place, PlaceName
 
 
-def new_ulid(now_ms=None):
-    ms = int(time.time() * 1000) if now_ms is None else now_ms
-    value = (ms << 80) | int.from_bytes(os.urandom(10), "big")
-    out = []
-    for _ in range(26):
-        out.append(_ALPHABET[value & 31])
-        value >>= 5
-    return "".join(reversed(out))
+def guess_place(country_code, city_name):
+    """Match the CDN's country and city headers to the place tree. Falls back to the country, then to None."""
+    country_code = (country_code or "").upper()[:2]
+    if not country_code or country_code in ("XX", "T1"):
+        return None
+    if city_name:
+        hit = (
+            PlaceName.objects.filter(
+                name_fold=fold(city_name), place__country_code=country_code, place__level="city", place__status="active"
+            )
+            .select_related("place")
+            .first()
+        )
+        if hit:
+            return hit.place
+    return Place.objects.filter(country_code=country_code, level="country", status="active").first()
+
+
+def viewer_place(request):
+    """Return (place, source) with source in chosen, guess or none."""
+    pid = request.session.get("place_uid")
+    if pid:
+        place = Place.objects.filter(uid=pid, status="active").first()
+        if place:
+            return place, "chosen"
+    place = guess_place(request.META.get("HTTP_CF_IPCOUNTRY", ""), request.META.get("HTTP_CF_IPCITY", ""))
+    return (place, "guess") if place else (None, "none")
 ```
 
 
 
 ---
 
-## 107. Software source: backend/entries/__init__.py
+## 96. Software source: backend/catalog/middleware.py
 
 ```py
+"""Language prefix and template version (plan 3.4, 8.2). Nothing here reads cookies or the session, so the shell
+of every page stays identical and shareable by a CDN (rule R05)."""
 
-```
-
-
-
----
-
-## 108. Software source: backend/entries/admin.py
-
-```py
-from django.contrib import admin
-
-from .models import (Claim, ConsentRecord, Contact, CreditEvent, Entry, Identifier, NameVariant, Service, Social,
-                     VerificationCurrent)
-
-
-class NameVariantInline(admin.TabularInline):
-    model = NameVariant
-    extra = 0
-
-
-class SocialInline(admin.TabularInline):
-    model = Social
-    extra = 0
-
-
-class ServiceInline(admin.TabularInline):
-    model = Service
-    extra = 0
-
-
-class IdentifierInline(admin.TabularInline):
-    model = Identifier
-    extra = 0
-
-
-class CurrentInline(admin.TabularInline):
-    model = VerificationCurrent
-    extra = 0
-    can_delete = False
-    readonly_fields = ("field_group", "level", "state", "verified_at", "expires_at", "method", "actor_display")
-
-    def has_add_permission(self, request, obj=None):
-        return False
-
-
-@admin.register(Entry)
-class EntryAdmin(admin.ModelAdmin):
-    """Raw edits go through the service layer in the staff console (phase P2); admin is for staff inspection and seeding.
-    Contact values are deliberately not shown here: they are encrypted and relay-only (rule R02)."""
-    list_display = ("name", "country_code", "place_path", "publish_state", "claim_state", "created_via")
-    list_filter = ("country_code", "publish_state", "claim_state", "created_via", "entity_type")
-    search_fields = ("name", "name_fold", "uid")
-    readonly_fields = ("uid", "name_fold", "place_path", "created_at", "updated_at", "last_verified_at")
-    inlines = [NameVariantInline, SocialInline, ServiceInline, IdentifierInline, CurrentInline]
-
-
-admin.site.register([Claim, ConsentRecord, CreditEvent])
-admin.site.register(Contact, type("ContactAdmin", (admin.ModelAdmin,), {
-    "list_display": ("entry", "kind", "label", "optin_state"), "exclude": ("value_enc", "value_hash")}))
-```
-
-
-
----
-
-## 109. Software source: backend/entries/apps.py
-
-```py
-from django.apps import AppConfig
-
-
-class EntriesConfig(AppConfig):
-    name = "entries"
-```
-
-
-
----
-
-## 110. Software source: backend/entries/models.py
-
-```py
-"""Entries, child records, per-field provenance and verification (plan sections 4.2.4, 6)."""
 from django.conf import settings
-from django.db import models
-
-from core import clock
-from core.crypto import EncryptedTextField
-from core.models import SoftDeleteModel, UidModel
 
 
-class Entry(UidModel, SoftDeleteModel):
-    class EntityType(models.TextChoices):
-        BUSINESS = "business"
-        FACILITY = "facility"
-        PERSON = "person"
-        INSTITUTION = "institution"
+class LanguagePrefixMiddleware:
+    """`/ur/...` serves Urdu; the prefix is stripped before URL resolution and `request.prefix` keeps it for links."""
 
-    class Status(models.TextChoices):
-        OPEN = "open"
-        TEMP_CLOSED = "temporarily_closed"
-        PERM_CLOSED = "permanently_closed"
-        MOVED = "moved"
+    def __init__(self, get_response):
+        self.get_response = get_response
 
-    class PublishState(models.TextChoices):
-        DRAFT = "draft"
-        REVIEW = "review"
-        PUBLISHED = "published"
-        SUPPRESSED = "suppressed"
-        TOMBSTONED = "tombstoned"
-
-    class ClaimState(models.TextChoices):
-        UNCLAIMED = "unclaimed"
-        PENDING = "pending"
-        CLAIMED = "claimed"
-
-    class CreatedVia(models.TextChoices):
-        CONTRIBUTOR = "contributor"
-        IMPORT = "import"
-        AGENT = "agent"
-        REGISTER = "register"
-        SELF = "self"
-
-    country_code = models.CharField(max_length=2, db_index=True)
-    entity_type = models.CharField(max_length=12, choices=EntityType.choices, default=EntityType.BUSINESS)
-    primary_concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
-    secondary_concepts = models.ManyToManyField("taxonomy.Concept", blank=True, related_name="secondary_entries")
-    name = models.CharField(max_length=250)
-    name_lang = models.CharField(max_length=10, default="en")
-    name_fold = models.CharField(max_length=250, db_index=True)
-    description = models.TextField(blank=True)
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.OPEN)
-    status_date = models.DateField(null=True, blank=True)
-    publish_state = models.CharField(max_length=12, choices=PublishState.choices, default=PublishState.DRAFT)
-    address = models.JSONField(default=dict, blank=True)
-    address_text = models.CharField(max_length=400, blank=True)
-    place = models.ForeignKey("places.Place", on_delete=models.PROTECT, related_name="entries")
-    place_path = models.CharField(max_length=500)
-    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    precision_class = models.CharField(max_length=10, blank=True)
-    coord_source = models.CharField(max_length=40, blank=True)
-    coord_date = models.DateField(null=True, blank=True)
-    service_area = models.JSONField(default=dict, blank=True)
-    website = models.URLField(blank=True)
-    size_band = models.CharField(max_length=20, blank=True)
-    year_established = models.PositiveSmallIntegerField(null=True, blank=True)
-    parent_entry = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="branches_of")
-    languages = models.JSONField(default=list, blank=True)
-    price_band = models.CharField(max_length=10, blank=True)
-    payment_methods = models.JSONField(default=list, blank=True)
-    addons = models.JSONField(default=dict, blank=True)
-    addon_template_version = models.PositiveIntegerField(null=True, blank=True)
-    claim_state = models.CharField(max_length=10, choices=ClaimState.choices, default=ClaimState.UNCLAIMED)
-    listing_plan = models.CharField(max_length=10, default="basic")
-    plan_valid_until = models.DateField(null=True, blank=True)
-    visibility_flags = models.JSONField(default=list, blank=True)  # do_not_share, noindex, suppressed
-    created_via = models.CharField(max_length=12, choices=CreatedVia.choices, default=CreatedVia.CONTRIBUTOR)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
-                                   related_name="+")
-    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
-    phase_id = models.PositiveIntegerField(null=True, blank=True)  # locked rate phase (rule R11), set by the ledger module
-    created_at = models.DateTimeField(default=clock.now)
-    updated_at = models.DateTimeField(auto_now=True)
-    last_verified_at = models.DateTimeField(null=True, blank=True)
-    merged_into = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="merged_from")
-
-    class Meta:
-        verbose_name_plural = "entries"
-        indexes = [
-            models.Index(fields=["country_code", "place_path", "primary_concept", "publish_state"], name="entry_list_query"),
-            models.Index(fields=["country_code", "claim_state"], name="entry_claim_idx"),
-        ]
-
-    def __str__(self):
-        return self.name
+    def __call__(self, request):
+        path = request.path_info
+        if path == "/ur" or path.startswith("/ur/"):
+            request.lang, request.prefix = "ur", "/ur"
+            request.path_info = path[3:] or "/"
+        else:
+            request.lang, request.prefix = "en", ""
+        return self.get_response(request)
 
 
-# ---- child records (plan 4.2.4) ----------------------------------------------------------------------------
+class TemplateVersionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
 
-class EntryChild(models.Model):
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="%(class)s_set")
-    country_code = models.CharField(max_length=2)
-
-    class Meta:
-        abstract = True
-
-
-class NameVariant(EntryChild):
-    text = models.CharField(max_length=250)
-    language = models.CharField(max_length=10, blank=True)
-    kind = models.CharField(max_length=15, default="trade")  # legal, trade, old, transliteration
-    text_fold = models.CharField(max_length=250, db_index=True)
-
-
-class Contact(EntryChild):
-    """Never rendered to anyone (rule R02). Value is encrypted; the keyed hash allows lookups and suppression."""
-    class Kind(models.TextChoices):
-        PHONE = "phone"
-        MOBILE = "mobile"
-        WHATSAPP = "whatsapp"
-        EMAIL = "email"
-        FAX = "fax"
-
-    kind = models.CharField(max_length=10, choices=Kind.choices)
-    value_enc = EncryptedTextField()
-    value_hash = models.CharField(max_length=64, db_index=True)
-    label = models.CharField(max_length=20, blank=True)
-    preferred_hours = models.CharField(max_length=60, blank=True)
-    verified_at = models.DateTimeField(null=True, blank=True)
-    relay_only = models.BooleanField(default=True, editable=False)
-    optin_state = models.CharField(max_length=12, default="none")
-
-
-class Social(EntryChild):
-    platform = models.CharField(max_length=30)
-    handle_or_url = models.CharField(max_length=300)
-    owner_confirmed = models.BooleanField(default=False)
-    last_link_check = models.DateTimeField(null=True, blank=True)
-    link_status = models.CharField(max_length=10, blank=True)
-
-
-class Hours(EntryChild):
-    day_from = models.PositiveSmallIntegerField()
-    day_to = models.PositiveSmallIntegerField()
-    open_time = models.TimeField(null=True, blank=True)
-    close_time = models.TimeField(null=True, blank=True)
-    appointment_only = models.BooleanField(default=False)
-    confirmed_on = models.DateField(null=True, blank=True)
-    tz = models.CharField(max_length=40, blank=True)
-
-
-class Service(EntryChild):
-    concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
-    name_text = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    price_minor = models.BigIntegerField(null=True, blank=True)
-    currency = models.CharField(max_length=3, blank=True)
-    price_type = models.CharField(max_length=10, blank=True)  # fixed, from, hourly, per_visit
-    unit = models.CharField(max_length=40, blank=True)
-    price_date = models.DateField(null=True, blank=True)
-    prep_notes = models.CharField(max_length=300, blank=True)
-
-
-class Product(EntryChild):
-    concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
-    name_text = models.CharField(max_length=200)
-    brand = models.CharField(max_length=100, blank=True)
-    unit = models.CharField(max_length=40, blank=True)
-    price_band = models.CharField(max_length=10, blank=True)
-    availability_note = models.CharField(max_length=200, blank=True)
-    price_date = models.DateField(null=True, blank=True)
-
-
-class Speciality(EntryChild):
-    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
-    qualification = models.CharField(max_length=200, blank=True)
-    own_hours = models.CharField(max_length=120, blank=True)
-
-
-class Identifier(EntryChild):
-    """Store the fact and the register link, never a national ID number such as CNIC."""
-    scheme = models.CharField(max_length=30)
-    value = models.CharField(max_length=80)
-    issuer = models.CharField(max_length=120, blank=True)
-    valid_from = models.DateField(null=True, blank=True)
-    valid_to = models.DateField(null=True, blank=True)
-    last_checked = models.DateField(null=True, blank=True)
-    register_url = models.URLField(blank=True)
-
-
-class AreaServed(EntryChild):
-    place = models.ForeignKey("places.Place", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
-    radius_km = models.PositiveIntegerField(null=True, blank=True)
-    notes = models.CharField(max_length=200, blank=True)
-
-
-class Equipment(EntryChild):
-    type = models.CharField(max_length=80)
-    make_model = models.CharField(max_length=120, blank=True)
-    quantity = models.PositiveIntegerField(default=1)
-    modality = models.CharField(max_length=60, blank=True)
-    installed_year = models.PositiveSmallIntegerField(null=True, blank=True)
-    services_supported = models.JSONField(default=list, blank=True)
-
-
-class Branch(EntryChild):
-    address_text = models.CharField(max_length=400, blank=True)
-    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-
-
-# ---- provenance and verification (plan 6) ------------------------------------------------------------------
-
-class ValueMeta(models.Model):
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="value_meta")
-    country_code = models.CharField(max_length=2)
-    field_key = models.CharField(max_length=60)
-    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
-    licence_text = models.CharField(max_length=200, blank=True)
-    retrieved_at = models.DateTimeField(default=clock.now)
-    level = models.CharField(max_length=10, default="none")
-    verified_by_id = models.BigIntegerField(null=True, blank=True)
-    method = models.CharField(max_length=40, blank=True)
-    verified_at = models.DateTimeField(null=True, blank=True)
-    expires_at = models.DateTimeField(null=True, blank=True)
-    evidence_text = models.TextField(blank=True)
-    consent_ref = models.CharField(max_length=40, blank=True)
-    confidence = models.FloatField(null=True, blank=True)
-
-    class Meta:
-        unique_together = [("entry", "field_key")]
-
-
-class VerificationEvent(models.Model):
-    """Append-only (database trigger forbids update and delete)."""
-    class Level(models.TextChoices):
-        SURVEYOR = "surveyor"
-        OWNER = "owner"
-        AI = "ai"
-
-    class State(models.TextChoices):
-        PENDING = "pending"
-        VERIFIED = "verified"
-        EXPIRED = "expired"
-        REVOKED = "revoked"
-
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="verification_events")
-    country_code = models.CharField(max_length=2)
-    field_group = models.CharField(max_length=20)  # identity, location, contact, hours, services, certificates
-    level = models.CharField(max_length=10, choices=Level.choices)
-    state = models.CharField(max_length=10, choices=State.choices)
-    actor_id = models.BigIntegerField(null=True, blank=True)
-    method = models.CharField(max_length=40, blank=True)
-    evidence_text = models.TextField(blank=True)
-    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
-    ts = models.DateTimeField(default=clock.now)
-    expires_at = models.DateTimeField(null=True, blank=True)
-    supersedes = models.ForeignKey("self", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
-
-    class Meta:
-        ordering = ["id"]
-
-
-class VerificationCurrent(models.Model):
-    """Projection the pages read. Rebuilt from events."""
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="verification_current")
-    field_group = models.CharField(max_length=20)
-    level = models.CharField(max_length=10)
-    state = models.CharField(max_length=10)
-    verified_at = models.DateTimeField(null=True, blank=True)
-    expires_at = models.DateTimeField(null=True, blank=True)
-    method = models.CharField(max_length=40, blank=True)
-    actor_display = models.CharField(max_length=80, blank=True)
-
-    class Meta:
-        unique_together = [("entry", "field_group", "level")]
-
-
-class Claim(models.Model):
-    class State(models.TextChoices):
-        PENDING = "pending"
-        APPROVED = "approved"
-        REJECTED = "rejected"
-
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="claims")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+")
-    method = models.CharField(max_length=20)  # otp_phone, otp_email, documents
-    state = models.CharField(max_length=10, choices=State.choices, default=State.PENDING)
-    evidence_text = models.TextField(blank=True)
-    created_at = models.DateTimeField(default=clock.now)
-    decided_by_id = models.BigIntegerField(null=True, blank=True)
-    decided_at = models.DateTimeField(null=True, blank=True)
-
-
-class ConsentRecord(models.Model):
-    """Append-only consent for individuals and contacts (rule R18)."""
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="consents")
-    subject_kind = models.CharField(max_length=10, default="entry")  # entry | contact
-    status = models.CharField(max_length=12)  # consented, withdrawn, takedown
-    method = models.CharField(max_length=40)
-    wording_version = models.CharField(max_length=20)
-    evidence_text = models.TextField(blank=True)
-    at = models.DateTimeField(default=clock.now)
-
-    class Meta:
-        ordering = ["id"]
-
-
-class CreditEvent(models.Model):
-    """Credit lives here, not on the entry, so duplicates can merge without losing first-adder credit (D6)."""
-    entry = models.ForeignKey(Entry, null=True, on_delete=models.SET_NULL, related_name="credit_events")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="+")
-    kind = models.CharField(max_length=20)  # added, verified, area_added, claimed_assist
-    eligible = models.BooleanField(default=False)
-    ineligible_reason = models.CharField(max_length=60, blank=True)
-    phase_id = models.PositiveIntegerField(null=True, blank=True)
-    created_at = models.DateTimeField(default=clock.now)
-    merged_from_id = models.BigIntegerField(null=True, blank=True)
-
-
-class MergeMap(models.Model):
-    """Append-only record of a merge (plan 6.7). The dropped entry redirects to the kept one."""
-    from_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
-    to_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
-    score = models.FloatField(null=True, blank=True)
-    decided_by_id = models.BigIntegerField(null=True, blank=True)
-    decided_at = models.DateTimeField(default=clock.now)
+    def __call__(self, request):
+        response = self.get_response(request)
+        response["X-Template-Version"] = settings.TEMPLATE_VERSION
+        return response
 ```
 
 
 
 ---
 
-## 111. Software source: backend/entries/services.py
+## 97. Software source: backend/catalog/queries.py
 
 ```py
-"""Entry service layer: creation, edits with change log, verification state machine, publish rules, claims, consent.
+"""Read side for pages: everything is scoped by place path and concept and uses the indexes (plan 4.4, 10.3)."""
 
-Rules enforced here: R07 (independence, expiry), R08 (draft hidden, publish bar), R09 (credit eligibility),
-R18/R19 (person and child-facing gates), R21 (source gate), R02 (contacts encrypted, hashed)."""
-import re
 from datetime import timedelta
 
-from django.conf import settings
-from django.db import transaction
+from django.db.models import Max, Q, Sum
 
+from analytics.models import RollupCell
+from analytics.rollups import descendant_concept_ids
 from core import clock
-from core.crypto import keyed_hash
-from core.models import ChangeLog, CountrySwitch, audit
-from core.textfold import fold
-from intake.gate import SourceBlocked, assert_allowed
-from taxonomy.models import ListTypeSettings
-from taxonomy.services import validate_addons
-
-from .models import (Claim, ConsentRecord, Contact, CreditEvent, Entry, NameVariant, VerificationCurrent,
-                     VerificationEvent)
+from entries.models import Entry
+from places.models import Place
+from taxonomy.models import Concept
 
 LEVEL_ORDER = ["surveyor", "owner", "ai"]
-EDITABLE = {"name", "description", "address", "address_text", "website", "size_band", "year_established", "languages",
-            "price_band", "payment_methods", "addons", "status", "status_date", "lat", "lon", "precision_class",
-            "coord_source", "coord_date", "service_area", "entity_type", "place"}
 
 
-class EntryError(ValueError):
-    pass
+def published_entries(place, concept=None):
+    qs = Entry.objects.filter(
+        publish_state=Entry.PublishState.PUBLISHED, deleted_at__isnull=True, merged_into__isnull=True
+    )
+    if place.path:
+        qs = qs.filter(Q(place_path=place.path) | Q(place_path__startswith=place.path + "."))
+    if concept is not None:
+        qs = qs.filter(primary_concept_id__in=descendant_concept_ids(concept.pk))
+    return qs
 
 
-class GuardError(EntryError):
-    """A verification rule (independence, claim, evidence) was not met."""
-
-
-def normalize_contact(kind, value, country_code=""):
-    value = (value or "").strip()
-    if kind == "email":
-        return value.lower()
-    digits = re.sub(r"[^\d+]", "", value)
-    if digits.startswith("00"):
-        digits = "+" + digits[2:]
-    if not digits.startswith("+") and country_code == "PK" and digits.startswith("0"):
-        digits = "+92" + digits[1:]
-    return digits
-
-
-@transaction.atomic
-def create_entry(*, name, place, primary_concept, created_by=None, created_via=Entry.CreatedVia.CONTRIBUTOR, source=None,
-                 contacts=(), name_variants=(), **fields):
-    if created_via in (Entry.CreatedVia.IMPORT, Entry.CreatedVia.AGENT, Entry.CreatedVia.REGISTER):
-        assert_allowed(source, "import" if created_via != Entry.CreatedVia.AGENT else "agent_fetch")
-    addons = fields.get("addons") or {}
-    if primary_concept.template_id:
-        problems = validate_addons(primary_concept.template, addons)
-        if problems:
-            raise EntryError(f"invalid add-on values: {problems}")
-        fields["addon_template_version"] = primary_concept.template.version
-    elif addons:
-        raise EntryError("this list type has no add-on template")
-    country = place.country_code or "ZZ"
-    entry = Entry.objects.create(
-        name=name, name_fold=fold(name), place=place, place_path=place.path, country_code=country,
-        primary_concept=primary_concept, entity_type=fields.pop("entity_type", primary_concept.entity_type_default),
-        created_by=created_by, created_via=created_via, source=source, **fields)
-    for text, lang, kind in name_variants:
-        NameVariant.objects.create(entry=entry, country_code=country, text=text, language=lang, kind=kind,
-                                   text_fold=fold(text))
-    for kind, value in contacts:
-        add_contact(entry, kind, value)
-    ChangeLog.objects.create(entry_id=entry.pk, country_code=country, field_key="created", new={"name": name},
-                             actor_id=getattr(created_by, "pk", None), source_id=getattr(source, "pk", None))
-    if created_by is not None:
-        CreditEvent.objects.create(entry=entry, user=created_by, kind="added", eligible=False,
-                                   ineligible_reason="unverified")
-    audit("entry.create", actor=created_by, object_type="entry", object_uid=entry.uid, country_code=country,
-          payload={"via": created_via})
-    return entry
-
-
-def add_contact(entry, kind, value):
-    norm = normalize_contact(kind, value, entry.country_code)
-    return Contact.objects.create(entry=entry, country_code=entry.country_code, kind=kind, value_enc=norm,
-                                  value_hash=keyed_hash(f"{kind}:{norm}"))
-
-
-@transaction.atomic
-def update_entry(entry, *, actor=None, **changes):
-    bad = set(changes) - EDITABLE
-    if bad:
-        raise EntryError(f"fields not editable here: {sorted(bad)}")
-    for key, new in changes.items():
-        old = getattr(entry, key)
-        if old == new:
-            continue
-        if key == "place":
-            entry.place_path = new.path
-            old, new_log = old.uid, new.uid
-        else:
-            new_log = new
-        setattr(entry, key, new)
-        if key == "name":
-            entry.name_fold = fold(new)
-        ChangeLog.objects.create(entry_id=entry.pk, country_code=entry.country_code, field_key=key,
-                                 old=_jsonable(old), new=_jsonable(new_log), actor_id=getattr(actor, "pk", None))
-    entry.save()
-    audit("entry.update", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
-          payload={"fields": sorted(changes)})
-    return entry
-
-
-def _jsonable(v):
-    return v if isinstance(v, (str, int, float, bool, list, dict, type(None))) else str(v)
-
-
-# ---- verification -------------------------------------------------------------------------------------------
-
-def current_level(entry, now=None):
-    """Best unexpired check level, or "none". Levels are independent chips; this is the best one for list order."""
+def best_level(entry, now=None):
+    """Best unexpired level from prefetched `verification_current` rows (no extra queries)."""
     now = now or clock.now()
-    levels = {v.level for v in VerificationCurrent.objects.filter(entry=entry, state="verified", expires_at__gt=now)}
+    levels = {
+        v.level
+        for v in entry.verification_current.all()
+        if v.state == "verified" and v.expires_at and v.expires_at > now
+    }
     for lv in LEVEL_ORDER:
         if lv in levels:
             return lv
     return "none"
 
 
-def current_levels(entry, now=None):
-    now = now or clock.now()
-    return {v.level for v in VerificationCurrent.objects.filter(entry=entry, state="verified", expires_at__gt=now)}
-
-
-@transaction.atomic
-def record_verification(entry, *, field_group, level, actor=None, method="", evidence="", source=None, now=None):
-    now = now or clock.now()
-    if level not in LEVEL_ORDER:
-        raise GuardError(f"unknown level {level!r}")
-    if level in ("surveyor", "owner"):
-        if actor is None:
-            raise GuardError("a person must record a surveyor or owner check")
-        if not method or not evidence.strip():
-            raise GuardError("method and evidence text are required")
-    if level == "surveyor" and entry.created_by_id and actor.pk == entry.created_by_id:
-        raise GuardError("a surveyor never verifies an entry they added (rule R07)")
-    if level == "owner":
-        if entry.claim_state != Entry.ClaimState.CLAIMED:
-            raise GuardError("owner check needs a successful claim")
-        if not Claim.objects.filter(entry=entry, user=actor, state=Claim.State.APPROVED).exists():
-            raise GuardError("actor is not the approved claimant")
-    if level == "ai":
-        if source is None:
-            raise GuardError("an AI check must name its source")
-        if entry.source_id is not None and source.pk == entry.source_id:
-            raise GuardError("an AI check must use a different source from the draft (rule R07)")
-        assert_allowed(source, "agent_fetch")
-        if not evidence.strip():
-            raise GuardError("an AI check must store its evidence")
-    days = settings.CHECK_VALIDITY_DAYS[level]
-    previous = VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
-    event = VerificationEvent.objects.create(
-        entry=entry, country_code=entry.country_code, field_group=field_group, level=level, state="verified",
-        actor_id=getattr(actor, "pk", None), method=method, evidence_text=evidence, source=source, ts=now,
-        expires_at=now + timedelta(days=days), supersedes=previous)
-    VerificationCurrent.objects.update_or_create(
-        entry=entry, field_group=field_group, level=level,
-        defaults=dict(state="verified", verified_at=now, expires_at=event.expires_at, method=method,
-                      actor_display=(getattr(actor, "username", "") or "")[:80]))
-    entry.last_verified_at = now
-    entry.save(update_fields=["last_verified_at"])
-    if level in ("surveyor", "owner"):
-        _mark_credit_eligible(entry)
-    audit("verification.record", actor=actor, object_type="entry", object_uid=entry.uid,
-          country_code=entry.country_code, payload={"level": level, "group": field_group})
-    try_publish(entry, actor=actor, now=now)
-    return event
-
-
-def _mark_credit_eligible(entry):
-    """R09: payout credit needs a surveyor or owner check. Self-listed and agent-made entries never earn."""
-    if entry.created_via in (Entry.CreatedVia.SELF, Entry.CreatedVia.AGENT):
-        CreditEvent.objects.filter(entry=entry, kind="added").update(eligible=False, ineligible_reason=entry.created_via)
-        return
-    CreditEvent.objects.filter(entry=entry, kind="added", eligible=False, ineligible_reason="unverified").update(
-        eligible=True, ineligible_reason="")
-
-
-@transaction.atomic
-def revoke_verification(entry, *, field_group, level, actor, reason):
-    previous = VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
-    VerificationEvent.objects.create(entry=entry, country_code=entry.country_code, field_group=field_group, level=level,
-                                     state="revoked", actor_id=getattr(actor, "pk", None), evidence_text=reason,
-                                     supersedes=previous)
-    VerificationCurrent.objects.filter(entry=entry, field_group=field_group, level=level).update(state="revoked")
-    audit("verification.revoke", actor=actor, object_type="entry", object_uid=entry.uid,
-          country_code=entry.country_code, payload={"level": level, "group": field_group, "reason": reason})
-
-
-@transaction.atomic
-def sweep_expired(now=None):
-    """Drop expired checks; return published entries that lost every check past the grace period to draft (R07, R08)."""
-    now = now or clock.now()
-    expired = list(VerificationCurrent.objects.select_for_update().filter(state="verified", expires_at__lte=now))
-    touched = set()
-    for cur in expired:
-        previous = VerificationEvent.objects.filter(entry_id=cur.entry_id, field_group=cur.field_group,
-                                                    level=cur.level).order_by("-id").first()
-        VerificationEvent.objects.create(entry_id=cur.entry_id, country_code=cur.entry.country_code,
-                                         field_group=cur.field_group, level=cur.level, state="expired", ts=now,
-                                         supersedes=previous)
-        cur.state = "expired"
-        cur.save(update_fields=["state"])
-        touched.add(cur.entry_id)
-    returned = 0
-    grace = timedelta(days=settings.GRACE_DAYS)
-    for entry in Entry.objects.filter(publish_state=Entry.PublishState.PUBLISHED):
-        if current_level(entry, now) != "none":
-            continue
-        last_expiry = max((v.expires_at for v in entry.verification_current.all() if v.expires_at), default=None)
-        if last_expiry is None or now > last_expiry + grace:
-            entry.publish_state = Entry.PublishState.DRAFT
-            entry.save(update_fields=["publish_state"])
-            audit("entry.to_draft", object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
-                  payload={"reason": "checks expired past grace"})
-            returned += 1
-    return {"expired": len(expired), "returned_to_draft": returned}
-
-
-# ---- publish bar ---------------------------------------------------------------------------------------------
-
-def quality_failures(entry, now=None):
-    """Why an entry may not be public yet (plan 6.1). Empty list means it clears the bar."""
-    fails = []
-    if not entry.name.strip():
-        fails.append("name missing")
-    if not entry.place_id:
-        fails.append("place missing")
-    if current_level(entry, now) == "none":
-        fails.append("needs at least an AI check")
-    if not (entry.website or entry.contact_set.exists()):
-        fails.append("needs a website or a contact")
-    if entry.source_id:
-        try:
-            assert_allowed(entry.source, "display")
-        except SourceBlocked as exc:
-            fails.append(str(exc))
-    switch = CountrySwitch.for_country(entry.country_code)
-    cs = ListTypeSettings.objects.filter(concept_id=entry.primary_concept_id).first()
-    if entry.entity_type == Entry.EntityType.PERSON:
-        if not switch.named_individuals_on:
-            fails.append("named individuals are off in this country")
-        latest = entry.consents.order_by("-id").first()
-        if not latest or latest.status != "consented":
-            fails.append("person needs recorded consent")
-    if cs and cs.is_child_facing and not switch.child_services_on:
-        fails.append("child-facing services are off in this country")
-    tpl = entry.primary_concept.template
-    if tpl:
-        for key, msg in validate_addons(tpl, entry.addons, for_publish=True):
-            fails.append(f"{key}: {msg}")
-    return fails
-
-
-def try_publish(entry, *, actor=None, now=None):
-    """Move draft or review to published when the bar is met. Returns the failure list (empty if published)."""
-    if entry.publish_state not in (Entry.PublishState.DRAFT, Entry.PublishState.REVIEW):
-        return []
-    fails = quality_failures(entry, now)
-    if not fails:
-        entry.publish_state = Entry.PublishState.PUBLISHED
-        entry.save(update_fields=["publish_state"])
-        audit("entry.publish", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code)
-    return fails
-
-
-# ---- claims and consent --------------------------------------------------------------------------------------
-
-@transaction.atomic
-def start_claim(entry, user, method, evidence=""):
-    if entry.claim_state == Entry.ClaimState.CLAIMED:
-        raise EntryError("entry is already claimed")
-    claim = Claim.objects.create(entry=entry, user=user, method=method, evidence_text=evidence)
-    entry.claim_state = Entry.ClaimState.PENDING
-    entry.save(update_fields=["claim_state"])
-    audit("claim.start", actor=user, object_type="entry", object_uid=entry.uid, country_code=entry.country_code)
-    return claim
-
-
-@transaction.atomic
-def decide_claim(claim, *, actor, approve, now=None):
-    now = now or clock.now()
-    if claim.state != Claim.State.PENDING:
-        raise EntryError("claim already decided")
-    claim.state = Claim.State.APPROVED if approve else Claim.State.REJECTED
-    claim.decided_by_id, claim.decided_at = actor.pk, now
-    claim.save()
-    entry = claim.entry
-    entry.claim_state = Entry.ClaimState.CLAIMED if approve else Entry.ClaimState.UNCLAIMED
-    entry.save(update_fields=["claim_state"])
-    audit("claim.decide", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
-          payload={"approved": approve})
-    if approve:
-        record_verification(entry, field_group="identity", level="owner", actor=claim.user, method=claim.method,
-                            evidence=claim.evidence_text or "claim approved", now=now)
-    return claim
-
-
-def record_consent(entry, *, status, method, wording_version, evidence="", actor=None):
-    rec = ConsentRecord.objects.create(entry=entry, status=status, method=method, wording_version=wording_version,
-                                       evidence_text=evidence)
-    audit("consent.record", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
-          payload={"status": status})
-    return rec
-
-
-# ---- merging (plan 6.7, rule D6) -----------------------------------------------------------------------------
-
-@transaction.atomic
-def merge_entries(keep, drop, *, actor=None, score=None):
-    """Merge `drop` into `keep`. Children move, credit events are re-pointed, the earliest added-credit survives,
-    the dropped entry is tombstoned with a redirect, and everything is logged."""
-    from .models import MergeMap
-    if keep.pk == drop.pk or drop.merged_into_id:
-        raise EntryError("cannot merge an entry into itself or merge twice")
-    if keep.country_code != drop.country_code:
-        raise EntryError("entries in different countries are never merged")
-    for rel in ("namevariant_set", "contact_set", "social_set", "hours_set", "service_set", "product_set",
-                "speciality_set", "identifier_set", "areaserved_set", "equipment_set", "branch_set"):
-        getattr(drop, rel).update(entry=keep)
-    NameVariant.objects.get_or_create(entry=keep, country_code=keep.country_code, text=drop.name,
-                                      defaults=dict(language=drop.name_lang, kind="old", text_fold=drop.name_fold))
-    CreditEvent.objects.filter(entry=drop).update(entry=keep, merged_from_id=drop.pk)
-    added = list(CreditEvent.objects.filter(entry=keep, kind="added").order_by("created_at", "id"))
-    for later in added[1:]:
-        later.eligible, later.ineligible_reason = False, "duplicate"
-        later.save(update_fields=["eligible", "ineligible_reason"])
-    drop.merged_into = keep
-    drop.publish_state = Entry.PublishState.SUPPRESSED
-    drop.save(update_fields=["merged_into", "publish_state"])
-    MergeMap.objects.create(from_entry=drop, to_entry=keep, score=score, decided_by_id=getattr(actor, "pk", None))
-    ChangeLog.objects.create(entry_id=keep.pk, country_code=keep.country_code, field_key="merged",
-                             new={"from": drop.uid}, actor_id=getattr(actor, "pk", None))
-    audit("entry.merge", actor=actor, object_type="entry", object_uid=keep.uid, country_code=keep.country_code,
-          payload={"from": drop.uid, "score": score})
-    return keep
-```
-
-
-
----
-
-## 112. Software source: backend/entries/tests/__init__.py
-
-```py
-
-```
-
-
-
----
-
-## 113. Software source: backend/entries/tests/test_entries.py
-
-```py
-from datetime import timedelta
-
-import pytest
-from django.db import connection, transaction
-from django.db.utils import IntegrityError, InternalError
-
-from core import clock
-from core.models import ChangeLog, CountrySwitch, verify_audit_chain
-from entries import services as es
-from entries.models import Contact, CreditEvent, VerificationCurrent, VerificationEvent
-from intake.gate import SourceBlocked
-from intake.models import Source
-from taxonomy.models import ListTypeSettings
-
-
-def verify(entry, user, level="surveyor", **kw):
-    return es.record_verification(
-        entry, field_group="identity", level=level, actor=user, method=kw.pop("method", "call"),
-        evidence=kw.pop("evidence", "Phone answered, name matched"), **kw)
-
-
-# ---- creation, contacts, history (R02, R21) ------------------------------------------------------------------
-
-def test_create_is_draft_with_country_path_and_template_version(entry, tree):
-    assert entry.publish_state == "draft" and entry.country_code == "PK"
-    assert entry.place_path == tree["paris"].path and entry.addon_template_version == 1
-    assert ChangeLog.objects.filter(entry_id=entry.pk, field_key="created").exists()
-    assert verify_audit_chain() is None
-
-
-def test_contact_is_encrypted_at_rest_and_hashed(pg, entry):
-    c = Contact.objects.get(entry=entry)
-    with connection.cursor() as cur:
-        cur.execute("SELECT value_enc FROM entries_contact WHERE id=%s", [c.pk])
-        raw = cur.fetchone()[0]
-    assert "923001234567" not in raw and raw.startswith("dev:")
-    assert c.value_enc == "+923001234567" and c.relay_only is True
-    assert Contact.objects.filter(value_hash=c.value_hash).count() == 1
-
-
-def test_contact_normalisation_and_same_number_same_hash(entry):
-    es.add_contact(entry, "phone", "+92 (300) 123-4567")
-    assert Contact.objects.filter(entry=entry).values("value_hash").distinct().count() == 1
-    assert es.normalize_contact("email", " A@B.CO ") == "a@b.co"
-
-
-def test_invalid_addons_rejected(tree, surgical, users):
-    with pytest.raises(es.EntryError):
-        es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        addons={"business_type": "pirate"})
-
-
-def test_update_writes_change_log_and_refolds_name(entry, users):
-    es.update_entry(entry, actor=users["mod"], name="كريسنت Surgical", website="https://new.example.org")
-    rows = {r.field_key: r for r in ChangeLog.objects.filter(entry_id=entry.pk)}
-    assert rows["website"].old == "https://example.org" and rows["name"].new == "كريسنت Surgical"
-    entry.refresh_from_db()
-    assert "ک" in entry.name_fold
-    with pytest.raises(es.EntryError):
-        es.update_entry(entry, publish_state="published")
-
-
-def test_import_needs_an_allowed_source(tree, surgical, users, db):
-    red = Source.objects.create(name="Scraped maps", tier="red", allowed_uses=["import"])
-    with pytest.raises(SourceBlocked):
-        es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_via="import", source=red,
-                        addons={"business_type": "trader", "product_categories": ["a"]})
-    with pytest.raises(SourceBlocked):
-        es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_via="import", source=None)
-
-
-# ---- verification guards (R07) -------------------------------------------------------------------------------
-
-def test_surveyor_never_verifies_own_entry(entry, users):
-    with pytest.raises(es.GuardError):
-        verify(entry, users["adder"])
-    assert verify(entry, users["surveyor"]).state == "verified"
-
-
-def test_surveyor_and_owner_need_method_and_evidence(entry, users):
-    with pytest.raises(es.GuardError):
-        verify(entry, users["surveyor"], evidence="  ")
-    with pytest.raises(es.GuardError):
-        verify(entry, users["surveyor"], method="")
-    with pytest.raises(es.GuardError):
-        es.record_verification(entry, field_group="identity", level="surveyor", actor=None, method="call", evidence="x")
-
-
-def test_owner_check_needs_approved_claim(entry, users):
-    with pytest.raises(es.GuardError):
-        verify(entry, users["owner"], level="owner")
-    claim = es.start_claim(entry, users["owner"], "otp_phone", "OTP matched stored phone")
-    with pytest.raises(es.GuardError):
-        verify(entry, users["owner"], level="owner")
-    es.decide_claim(claim, actor=users["mod"], approve=True)
-    entry.refresh_from_db()
-    assert entry.claim_state == "claimed" and es.current_level(entry) == "owner"
-
-
-def test_rejected_claim_leaves_entry_unclaimed(entry, users):
-    claim = es.start_claim(entry, users["owner"], "otp_phone")
-    es.decide_claim(claim, actor=users["mod"], approve=False)
-    entry.refresh_from_db()
-    assert entry.claim_state == "unclaimed"
-    with pytest.raises(es.EntryError):
-        es.decide_claim(claim, actor=users["mod"], approve=True)
-
-
-def test_ai_check_needs_different_source_and_evidence(entry, users, green, web_source):
-    es.update_entry(entry)  # no-op
-    entry.source = green
-    entry.save()
-    with pytest.raises(es.GuardError):
-        es.record_verification(entry, field_group="identity", level="ai", source=green, evidence="same", method="web")
-    with pytest.raises(es.GuardError):
-        es.record_verification(entry, field_group="identity", level="ai", source=None, evidence="x", method="web")
-    with pytest.raises(es.GuardError):
-        es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="", method="web")
-    ev = es.record_verification(entry, field_group="identity", level="ai", source=web_source,
-                                evidence="Page lists the same address", method="web")
-    assert ev.state == "verified"
-
-
-def test_ai_check_refuses_red_or_unreviewed_source(entry):
-    red = Source.objects.create(name="Bought list", tier="red", allowed_uses=["agent_fetch"])
-    with pytest.raises(SourceBlocked):
-        es.record_verification(entry, field_group="identity", level="ai", source=red, evidence="x", method="web")
-
-
-def test_levels_are_independent_chips(entry, users, web_source):
-    verify(entry, users["surveyor"])
-    es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="e", method="web")
-    assert es.current_levels(entry) == {"surveyor", "ai"} and es.current_level(entry) == "surveyor"
-
-
-def test_reverification_supersedes_and_keeps_history(entry, users):
-    e1 = verify(entry, users["surveyor"])
-    e2 = verify(entry, users["surveyor"])
-    assert e2.supersedes_id == e1.pk and VerificationEvent.objects.filter(entry=entry).count() == 2
-    assert VerificationCurrent.objects.filter(entry=entry).count() == 1
-
-
-def test_revoke(entry, users):
-    verify(entry, users["surveyor"])
-    es.revoke_verification(entry, field_group="identity", level="surveyor", actor=users["mod"], reason="report upheld")
-    assert es.current_level(entry) == "none"
-
-
-def test_append_only_verification_event(pg, entry, users):
-    ev = verify(entry, users["surveyor"])
-    with pytest.raises((InternalError, IntegrityError)), transaction.atomic():
-        with connection.cursor() as cur:
-            cur.execute("UPDATE entries_verificationevent SET method='x' WHERE id=%s", [ev.pk])
-
-
-# ---- expiry and grace (R07, R08) -----------------------------------------------------------------------------
-
-def test_checks_expire_then_grace_then_draft(entry, users, settings):
-    t0 = clock.now()
-    verify(entry, users["surveyor"], now=t0)
-    entry.refresh_from_db()
-    assert entry.publish_state == "published" and es.current_level(entry, t0) == "surveyor"
-    after = t0 + timedelta(days=settings.CHECK_VALIDITY_DAYS["surveyor"] + 1)
-    r = es.sweep_expired(after)
-    entry.refresh_from_db()
-    assert r == {"expired": 1, "returned_to_draft": 0} and entry.publish_state == "published"  # grace
-    assert es.current_level(entry, after) == "none"
-    later = after + timedelta(days=settings.GRACE_DAYS + 1)
-    assert es.sweep_expired(later)["returned_to_draft"] == 1
-    entry.refresh_from_db()
-    assert entry.publish_state == "draft"
-    assert VerificationEvent.objects.filter(entry=entry, state="expired").count() == 1
-
-
-def test_ai_check_expires_sooner_than_surveyor(settings):
-    assert settings.CHECK_VALIDITY_DAYS["ai"] < settings.CHECK_VALIDITY_DAYS["surveyor"]
-
-
-# ---- publish bar (R08, R18, R19, R21) -------------------------------------------------------------------------
-
-def test_draft_stays_draft_without_a_check(entry):
-    assert entry.publish_state == "draft"
-    assert "needs at least an AI check" in es.quality_failures(entry)
-
-
-def test_needs_website_or_contact(tree, surgical, users):
-    e = es.create_entry(name="No Contact Co", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        addons={"business_type": "trader", "product_categories": ["a"]})
-    verify(e, users["surveyor"])
-    e.refresh_from_db()
-    assert e.publish_state == "draft" and "needs a website or a contact" in es.quality_failures(e)
-
-
-def test_required_addon_fields_gate_publishing(tree, surgical, users):
-    e = es.create_entry(name="Thin Co", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        website="https://t.example.org")
-    verify(e, users["surveyor"])
-    e.refresh_from_db()
-    assert e.publish_state == "draft"
-    fails = es.quality_failures(e)
-    assert any(f.startswith("business_type") for f in fails)
-
-
-def test_published_after_surveyor_check(entry, users):
-    verify(entry, users["surveyor"])
-    entry.refresh_from_db()
-    assert entry.publish_state == "published"
-
-
-def test_blocked_source_prevents_publish(entry, users, green):
-    entry.source = green
-    entry.save()
-    green.status = "paused"
-    green.save()
-    verify(entry, users["surveyor"])
-    entry.refresh_from_db()
-    assert entry.publish_state == "draft" and any("not active" in f for f in es.quality_failures(entry))
-
-
-def test_person_needs_switch_and_consent(tree, surgical, users, db):
-    e = es.create_entry(name="Dr Example", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        entity_type="person", website="https://dr.example.org",
-                        addons={"business_type": "trader", "product_categories": ["a"]})
-    verify(e, users["surveyor"])
-    e.refresh_from_db()
-    assert e.publish_state == "draft"
-    CountrySwitch.objects.create(country_code="PK", named_individuals_on=True)
-    assert es.quality_failures(e) == ["person needs recorded consent"]
-    es.record_consent(e, status="consented", method="signed form", wording_version="v1")
-    assert es.try_publish(e) == [] and e.publish_state == "published"
-    es.record_consent(e, status="withdrawn", method="email", wording_version="v1")
-    e.publish_state = "draft"
-    assert "person needs recorded consent" in es.quality_failures(e)
-
-
-def test_child_facing_list_type_off_by_default(entry, users):
-    ListTypeSettings.objects.filter(concept=entry.primary_concept).update(is_child_facing=True)
-    verify(entry, users["surveyor"])
-    entry.refresh_from_db()
-    assert entry.publish_state == "draft"
-    CountrySwitch.objects.create(country_code="PK", child_services_on=True)
-    assert es.try_publish(entry) == []
-
-
-def test_country_defaults_all_off_except_browsing(db):
-    s = CountrySwitch.for_country("ZZ")
-    assert s.browsing_on and not (s.indexing_on or s.selling_on or s.outreach_on or s.ads_on or s.named_individuals_on)
-
-
-# ---- credit eligibility (R09, D6) -----------------------------------------------------------------------------
-
-def test_credit_only_after_surveyor_or_owner_check(entry, users, web_source):
-    ce = CreditEvent.objects.get(entry=entry)
-    assert not ce.eligible and ce.ineligible_reason == "unverified"
-    es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="e", method="web")
-    ce.refresh_from_db()
-    assert not ce.eligible  # an AI check earns nothing
-    verify(entry, users["surveyor"])
-    ce.refresh_from_db()
-    assert ce.eligible
-
-
-def test_self_listed_never_earns(tree, surgical, users):
-    e = es.create_entry(name="Self Listed", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        created_via="self", website="https://s.example.org",
-                        addons={"business_type": "trader", "product_categories": ["a"]})
-    verify(e, users["surveyor"])
-    ce = CreditEvent.objects.get(entry=e)
-    assert not ce.eligible and ce.ineligible_reason == "self"
-
-
-def test_import_credit_waits_for_verification(tree, surgical, users, green):
-    e = es.create_entry(name="Imported Co", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
-                        created_via="import", source=green, website="https://i.example.org",
-                        addons={"business_type": "trader", "product_categories": ["a"]})
-    assert not CreditEvent.objects.get(entry=e).eligible
-    verify(e, users["surveyor"])
-    assert CreditEvent.objects.get(entry=e).eligible
-
-
-def test_agent_entries_have_no_human_credit(tree, surgical, web_source):
-    e = es.create_entry(name="Agent Draft", place=tree["paris"], primary_concept=surgical, created_via="agent",
-                        source=web_source, addons={"business_type": "trader", "product_categories": ["a"]})
-    assert not CreditEvent.objects.filter(entry=e).exists() and e.publish_state == "draft"
-```
-
-
-
----
-
-## 114. Software source: backend/intake/__init__.py
-
-```py
-
-```
-
-
-
----
-
-## 115. Software source: backend/intake/admin.py
-
-```py
-from django.contrib import admin
-
-from .models import DedupeCandidate, ImportBatch, ImportRow, Source
-
-
-@admin.register(Source)
-class SourceAdmin(admin.ModelAdmin):
-    list_display = ("name", "tier", "status", "reviewed_on", "bulk_permission")
-    list_filter = ("tier", "status")
-
-
-admin.site.register([ImportBatch, ImportRow, DedupeCandidate])
-```
-
-
-
----
-
-## 116. Software source: backend/intake/apps.py
-
-```py
-from django.apps import AppConfig
-
-
-class IntakeConfig(AppConfig):
-    name = "intake"
-```
-
-
-
----
-
-## 117. Software source: backend/intake/dedupe.py
-
-```py
-"""Duplicate pipeline v1 (plan 7.4): block, score, decide. Scoped by place subtree and concept so it stays cheap."""
-import math
-from itertools import combinations
-
-from core.textfold import fold
-from entries.models import Contact, Entry
-
-AUTO_MERGE = 0.90
-REVIEW = 0.60
-WEIGHTS = {"phone": 0.50, "name": 0.30, "distance": 0.10, "address": 0.10}
-
-
-def trigrams(text):
-    padded = f"  {text} "
-    return {padded[i:i + 3] for i in range(len(padded) - 2)}
-
-
-def similarity(a, b):
-    """Jaccard similarity of trigrams of folded text, the same idea as pg_trgm."""
-    ta, tb = trigrams(fold(a)), trigrams(fold(b))
-    if not ta or not tb:
-        return 0.0
-    return len(ta & tb) / len(ta | tb)
-
-
-def haversine_m(lat1, lon1, lat2, lon2):
-    r = 6371000.0
-    p1, p2 = math.radians(float(lat1)), math.radians(float(lat2))
-    dphi, dl = p2 - p1, math.radians(float(lon2) - float(lon1))
-    h = math.sin(dphi / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
-    return 2 * r * math.asin(math.sqrt(h))
-
-
-def features(a, b):
-    kinds = ["phone", "mobile", "whatsapp"]
-    phones_a = set(Contact.objects.filter(entry=a, kind__in=kinds).values_list("value_hash", flat=True))
-    phones_b = set(Contact.objects.filter(entry=b, kind__in=kinds).values_list("value_hash", flat=True))
-    f = {"phone": 1.0 if phones_a & phones_b else 0.0, "name": similarity(a.name, b.name),
-         "address": similarity(a.address_text, b.address_text) if a.address_text and b.address_text else 0.0,
-         "distance": 0.0}
-    if a.lat is not None and b.lat is not None:
-        d = haversine_m(a.lat, a.lon, b.lat, b.lon)
-        f["distance_m"] = round(d)
-        f["distance"] = 1.0 if d <= 100 else 0.0
-    return f
-
-
-def score(f):
-    s = sum(WEIGHTS[k] * f[k] for k in WEIGHTS)
-    # a shared phone plus a similar name is as good as a match; an exact name alone never auto-merges
-    if f["phone"] and f["name"] >= 0.5:
-        s = max(s, 0.92)
-    if f["distance"] and f["name"] >= 0.8:
-        s = max(s, 0.92)  # same name within 100 m
-    if f["name"] >= 0.8:
-        # near-identical names inside one place and concept block always reach review, never auto-merge alone
-        s = max(s, REVIEW + (f["name"] - 0.8) / 0.2 * 0.25)
-    return round(min(s, 1.0), 4)
-
-
-def candidates_for(entry):
-    """Blocking: same country and concept, within the same place subtree, or sharing a phone hash."""
-    base = Entry.objects.filter(country_code=entry.country_code, deleted_at__isnull=True, merged_into__isnull=True
-                                ).exclude(pk=entry.pk)
-    same_place = base.filter(primary_concept=entry.primary_concept, place_path__startswith=entry.place_path)
-    hashes = list(Contact.objects.filter(entry=entry).values_list("value_hash", flat=True))
-    same_phone = base.filter(contact_set__value_hash__in=hashes) if hashes else base.none()
-    seen, out = set(), []
-    for e in list(same_place) + list(same_phone):
-        if e.pk not in seen:
-            seen.add(e.pk)
-            out.append(e)
+def rollup(place, concept):
+    """Sum the cell across countries (the world path spans countries). Returns a dict, zero if no cell."""
+    cells = list(RollupCell.objects.filter(place_path=place.path, concept=concept))
+    out = {"total": 0, "published": 0, "by_level": {"surveyor": 0, "owner": 0, "ai": 0, "none": 0}, "updated_at": None}
+    for c in cells:
+        out["total"] += c.total
+        out["published"] += c.published
+        for k, v in c.by_level.items():
+            out["by_level"][k] = out["by_level"].get(k, 0) + v
+        if out["updated_at"] is None or c.updated_at > out["updated_at"]:
+            out["updated_at"] = c.updated_at
     return out
 
 
-def scan_entry(entry):
-    """Return [(other, score, features)] at or above the review threshold, best first."""
-    found = []
-    for other in candidates_for(entry):
-        f = features(entry, other)
-        s = score(f)
-        if s >= REVIEW:
-            found.append((other, s, f))
-    return sorted(found, key=lambda t: -t[1])
+def trust_split(cell):
+    pub = cell["published"] or 0
+    if not pub:
+        return {"s": 0, "o": 0, "a": 0, "pct": 0}
+    s = round(100 * cell["by_level"].get("surveyor", 0) / pub)
+    o = round(100 * cell["by_level"].get("owner", 0) / pub)
+    a = round(100 * cell["by_level"].get("ai", 0) / pub)
+    return {"s": s, "o": o, "a": a, "pct": s + o}
 
 
-def scan_all(country_code=None):
-    """Batch scan of every pair inside each (place, concept) block. Returns the number of candidates stored."""
-    from .models import DedupeCandidate
-    qs = Entry.objects.filter(deleted_at__isnull=True, merged_into__isnull=True)
-    if country_code:
-        qs = qs.filter(country_code=country_code)
-    blocks = {}
-    for e in qs:
-        blocks.setdefault((e.country_code, e.place_id, e.primary_concept_id), []).append(e)
-    stored = 0
-    for group in blocks.values():
-        for a, b in combinations(sorted(group, key=lambda e: e.pk), 2):
-            f = features(a, b)
-            s = score(f)
-            if s >= REVIEW:
-                _, created = DedupeCandidate.objects.get_or_create(a_entry=a, b_entry=b, defaults=dict(score=s, features=f))
-                stored += int(created)
-    return stored
-```
+def lists_here(place):
+    """List-type cells at a place, biggest first."""
+    return (
+        RollupCell.objects.filter(place_path=place.path, concept__kind=Concept.Kind.LIST_TYPE, published__gt=0)
+        .values("concept_id")
+        .annotate(n=Sum("published"))
+        .order_by("-n")
+    )
 
 
-
----
-
-## 118. Software source: backend/intake/gate.py
-
-```py
-"""Licence gate (rules R21, R22). A blocked source can never feed a published record."""
-from .models import Source
-
-
-class SourceBlocked(Exception):
-    pass
-
-
-def assert_allowed(source, use):
-    """Raise SourceBlocked unless `source` may be used for `use` ("import", "agent_fetch", "display")."""
-    if source is None:
-        raise SourceBlocked("every record needs a source")
-    if source.status != "active":
-        raise SourceBlocked(f"source {source.name!r} is not active")
-    if source.tier == Source.Tier.RED:
-        raise SourceBlocked(f"source {source.name!r} is red (scraping, logins or bought lists are never ingested)")
-    if use not in (source.allowed_uses or []):
-        raise SourceBlocked(f"source {source.name!r} does not allow {use!r}")
-    if use == "import" and source.tier == Source.Tier.AMBER and not source.reviewed_on:
-        raise SourceBlocked(f"amber source {source.name!r} has no recorded terms review")
-    return True
-```
-
-
-
----
-
-## 119. Software source: backend/intake/importer.py
-
-```py
-"""Paste and CSV import (plan 7.2): parse, map columns, normalise, create drafts, check for duplicates.
-Imported entries are drafts and earn nothing until verified (rules R08, R09)."""
-import csv
-import io
-
-from django.db import transaction
-from django.utils import timezone
-
-from core.models import audit
-from core.textfold import fold
-from entries import services as es
-
-from . import dedupe
-from .gate import assert_allowed
-from .models import DedupeCandidate, ImportBatch, ImportRow
-
-# Header words in English, Urdu and Roman Urdu. Compared after folding.
-ALIASES = {
-    "name": ["name", "business name", "company", "company name", "firm", "shop", "title", "naam",
-             "نام", "کمپنی", "دکان", "فرم"],
-    "phone": ["phone", "mobile", "tel", "telephone", "contact", "contact no", "number", "cell", "whatsapp", "raabta",
-              "فون", "موبائل", "نمبر", "رابطہ"],
-    "email": ["email", "e-mail", "mail", "ای میل"],
-    "address": ["address", "location", "road", "street", "pata", "پتہ", "علاقہ", "سڑک"],
-    "website": ["website", "web", "url", "site", "ویب سائٹ"],
-    "specialities": ["products", "speciality", "specialities", "services", "items", "make", "پروڈکٹ", "مصنوعات"],
-}
-_FOLDED = {field: {fold(a) for a in words} for field, words in ALIASES.items()}
-
-
-class ImportError_(ValueError):
-    pass
-
-
-def parse_table(text):
-    """Pasted text or CSV to (headers, rows as dicts). Tab, comma, semicolon and pipe are detected."""
-    text = text.strip("﻿\n\r ")
-    if not text:
-        raise ImportError_("nothing to import")
-    sample = text[:2000]
-    delim = max(["\t", ",", ";", "|"], key=sample.count)
-    reader = csv.reader(io.StringIO(text), delimiter=delim)
-    rows = [r for r in reader if any(c.strip() for c in r)]
-    headers, body = [h.strip() for h in rows[0]], rows[1:]
-    return headers, [{headers[i]: (r[i].strip() if i < len(r) else "") for i in range(len(headers))} for r in body]
-
-
-def guess_mapping(headers):
-    mapping = {}
-    for h in headers:
-        for field, names in _FOLDED.items():
-            if fold(h) in names and field not in mapping.values():
-                mapping[h] = field
-                break
-    return mapping
-
-
-def normalise_row(raw, mapping, country_code):
-    out = {"name": "", "phones": [], "emails": [], "address": "", "website": "", "specialities": []}
-    for header, value in raw.items():
-        field = mapping.get(header)
-        value = (value or "").strip()
-        if not field or not value:
-            continue
-        if field == "name":
-            out["name"] = " ".join(value.split())
-        elif field == "phone":
-            for part in value.replace("/", ",").replace(";", ",").split(","):
-                n = es.normalize_contact("phone", part, country_code)
-                if len(n.lstrip("+")) >= 7:
-                    out["phones"].append(n)
-        elif field == "email":
-            out["emails"].append(es.normalize_contact("email", value))
-        elif field == "address":
-            out["address"] = value
-        elif field == "website":
-            out["website"] = value if value.startswith("http") else "https://" + value
-        elif field == "specialities":
-            out["specialities"] = [s.strip() for s in value.replace(";", ",").split(",") if s.strip()]
+def child_counts(place):
+    """{child place id: published entries under it} from list-type cells (nested list types would double count)."""
+    children = list(Place.objects.filter(parent=place, status="active").order_by("slug"))
+    out = []
+    for c in children:
+        n = (
+            RollupCell.objects.filter(place_path=c.path, concept__kind=Concept.Kind.LIST_TYPE).aggregate(
+                n=Sum("published")
+            )["n"]
+            or 0
+        )
+        out.append((c, n))
     return out
 
 
-@transaction.atomic
-def run_import(batch, actor=None, addons=None):
-    """Create draft entries for every usable row. Returns the batch counts."""
-    if not batch.declared_rights:
-        raise ImportError_("the contributor must declare the right to share this list")
-    assert_allowed(batch.source, "import")
-    headers, rows = parse_table(batch.raw_text)
-    batch.mapping = batch.mapping or guess_mapping(headers)
-    if "name" not in batch.mapping.values():
-        batch.status = ImportBatch.Status.FAILED
-        batch.counts = {"error": "no name column found"}
-        batch.save()
-        raise ImportError_("could not find a name column; set the mapping")
-    country = batch.place.country_code
-    counts = {"rows": len(rows), "drafted": 0, "duplicate": 0, "possible_duplicate": 0, "error": 0}
-    for line_no, raw in enumerate(rows, start=2):
-        row = ImportRow.objects.create(batch=batch, line_no=line_no, raw=raw)
-        norm = normalise_row(raw, batch.mapping, country)
-        row.normalised = norm
-        if not norm["name"]:
-            row.status, row.message = ImportRow.Status.ERROR, "no name"
-            counts["error"] += 1
-            row.save()
-            continue
-        contacts = [("phone", p) for p in dict.fromkeys(norm["phones"])] + [("email", e) for e in norm["emails"]]
-        extra = {"addons": addons} if addons else {}
-        entry = es.create_entry(name=norm["name"], place=batch.place, primary_concept=batch.concept,
-                                created_by=batch.uploader, created_via="import", source=batch.source,
-                                address_text=norm["address"], website=norm["website"], contacts=contacts, **extra)
-        row.entry = entry
-        found = dedupe.scan_entry(entry)
-        if found and found[0][1] >= dedupe.AUTO_MERGE:
-            other, s, _ = found[0]
-            es.merge_entries(other, entry, actor=actor, score=s)
-            row.entry, row.status, row.message = other, ImportRow.Status.DUPLICATE, f"merged into {other.uid}"
-            counts["duplicate"] += 1
-        else:
-            row.status = ImportRow.Status.DRAFTED
-            if found:
-                for other, s, f in found:
-                    a, b = sorted([entry, other], key=lambda e: e.pk)
-                    DedupeCandidate.objects.get_or_create(a_entry=a, b_entry=b, defaults=dict(score=s, features=f))
-                row.message = "possible duplicate, queued for review"
-                counts["possible_duplicate"] += 1
-            counts["drafted"] += 1
-        row.save()
-    batch.status, batch.counts, batch.finished_at = ImportBatch.Status.DONE, counts, timezone.now()
-    batch.save()
-    audit("import.run", actor=actor, object_type="import_batch", object_uid=str(batch.pk), country_code=country,
-          payload=counts)
-    return counts
+def place_total(place):
+    return (
+        RollupCell.objects.filter(place_path=place.path, concept__kind=Concept.Kind.LIST_TYPE).aggregate(
+            n=Sum("published")
+        )["n"]
+        or 0
+    )
+
+
+def area_chips(place, concept):
+    """Child places of `place` that have published entries of this list type, with counts."""
+    cells = RollupCell.objects.filter(
+        concept=concept,
+        published__gt=0,
+        place_path__in=list(Place.objects.filter(parent=place, status="active").values_list("path", flat=True)),
+    )
+    counts = {}
+    for c in cells:
+        counts[c.place_path] = counts.get(c.place_path, 0) + c.published
+    out = []
+    for child in Place.objects.filter(parent=place, status="active", path__in=list(counts)).prefetch_related("names"):
+        out.append((child, counts[child.path]))
+    return sorted(out, key=lambda t: t[0].slug)
+
+
+def last_checked(place, concept):
+    return published_entries(place, concept).aggregate(m=Max("last_verified_at"))["m"]
+
+
+def alt_name(entry, lang):
+    """The entry name in the other script or language, if one is stored."""
+    for v in entry.namevariant_set.all():
+        if (
+            v.text != entry.name
+            and v.kind in ("legal", "trade", "transliteration")
+            and (v.language or "") != entry.name_lang
+        ):
+            return v.text
+    return ""
+
+
+def list_rows_queryset(place, concept, area_place=None, sort="name"):
+    scope_place = area_place or place
+    qs = (
+        published_entries(scope_place, concept)
+        .select_related("place", "primary_concept")
+        .prefetch_related("verification_current", "namevariant_set", "place__names")
+    )
+    if sort == "checked":
+        return qs.order_by("-last_verified_at", "name_fold")
+    return qs.order_by("name_fold", "id")
+
+
+def stamp(*parts):
+    """A cheap data stamp used in ETags: the newest of the given datetimes."""
+    ds = [p for p in parts if p is not None]
+    return max(ds).isoformat() if ds else "0"
+
+
+def freshness_window():
+    return clock.now() - timedelta(days=365)
+
+
+def ancestors_of(place):
+    """World down to `place` in one query (by path prefixes), with names prefetched."""
+    from analytics.rollups import place_paths
+
+    return list(
+        Place.objects.filter(path__in=place_paths(place.path), status="active")
+        .prefetch_related("names")
+        .order_by("depth")
+    )
 ```
 
 
 
 ---
 
-## 120. Software source: backend/intake/models.py
+## 98. Software source: backend/catalog/resolver.py
 
 ```py
-"""Source register (plan section 7.1). Every import and agent fetch references a source; the gate decides."""
-from django.db import models
+"""Address resolution (plan 8.2): the last segment is a place if a child place has that slug, else a list type."""
+
+from places.models import Place
+from taxonomy.models import Concept
 
 
-class Source(models.Model):
-    class Tier(models.TextChoices):
-        GREEN = "green"
-        AMBER = "amber"
-        RED = "red"
-
-    name = models.CharField(max_length=160, unique=True)
-    tier = models.CharField(max_length=6, choices=Tier.choices, default=Tier.AMBER)
-    licence_text = models.TextField(blank=True)
-    terms_url = models.URLField(blank=True)
-    robots_decision = models.CharField(max_length=60, blank=True)
-    allowed_uses = models.JSONField(default=list, blank=True)  # e.g. ["import", "agent_fetch", "display"]
-    bulk_permission = models.BooleanField(default=False)
-    personal_data_rules = models.TextField(blank=True)
-    attribution_text = models.CharField(max_length=300, blank=True)
-    reviewed_by = models.CharField(max_length=120, blank=True)
-    reviewed_on = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=10, default="active")
-
-    def __str__(self):
-        return self.name
+def place_url(place):
+    return "/" if not place.path else "/" + place.path.replace(".", "/") + "/"
 
 
-class ImportBatch(models.Model):
-    class Status(models.TextChoices):
-        UPLOADED = "uploaded"
-        MAPPED = "mapped"
-        DONE = "done"
-        FAILED = "failed"
-
-    source = models.ForeignKey(Source, on_delete=models.PROTECT, related_name="batches")
-    uploader = models.ForeignKey("auth.User", null=True, on_delete=models.SET_NULL, related_name="+")
-    declared_rights = models.BooleanField(default=False)  # contributor declares the right to share (D11)
-    place = models.ForeignKey("places.Place", on_delete=models.PROTECT, related_name="+")
-    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
-    raw_text = models.TextField()
-    mapping = models.JSONField(default=dict, blank=True)
-    status = models.CharField(max_length=10, choices=Status.choices, default=Status.UPLOADED)
-    counts = models.JSONField(default=dict, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    finished_at = models.DateTimeField(null=True, blank=True)
+def list_url(place, concept):
+    return place_url(place) + concept.slug + "/"
 
 
-class ImportRow(models.Model):
-    class Status(models.TextChoices):
-        NEW = "new"
-        DUPLICATE = "duplicate"
-        HELD = "held"
-        ERROR = "error"
-        DRAFTED = "drafted"
-
-    batch = models.ForeignKey(ImportBatch, on_delete=models.CASCADE, related_name="rows")
-    line_no = models.PositiveIntegerField()
-    raw = models.JSONField(default=dict)
-    normalised = models.JSONField(default=dict, blank=True)
-    status = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
-    message = models.CharField(max_length=200, blank=True)
-    entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+def world():
+    return Place.objects.filter(level=Place.Level.WORLD, status="active").first()
 
 
-class DedupeCandidate(models.Model):
-    class State(models.TextChoices):
-        PENDING = "pending"
-        AUTO_MERGED = "auto_merged"
-        REJECTED = "rejected"
-        MERGED = "merged"
-
-    a_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
-    b_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
-    score = models.FloatField()
-    features = models.JSONField(default=dict)
-    state = models.CharField(max_length=12, choices=State.choices, default=State.PENDING)
-    decided_by_id = models.BigIntegerField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        constraints = [models.UniqueConstraint(fields=["a_entry", "b_entry"], name="uniq_dedupe_pair")]
+def resolve(path):
+    """Return ("place", place), ("list", place, concept) or None for an address path without slashes at the ends."""
+    segments = [s for s in path.strip("/").split("/") if s]
+    if not segments:
+        w = world()
+        return ("place", w) if w else None
+    dotted = ".".join(segments)
+    place = Place.objects.filter(path=dotted, status="active").first()
+    if place:
+        return ("place", place)
+    if len(segments) >= 2:
+        parent = Place.objects.filter(path=".".join(segments[:-1]), status="active").first()
+    else:
+        parent = world()
+    if parent:
+        concept = Concept.objects.filter(kind=Concept.Kind.LIST_TYPE, slug=segments[-1], status="active").first()
+        if concept:
+            return ("list", parent, concept)
+    return None
 ```
 
 
 
 ---
 
-## 121. Software source: backend/intake/tests/__init__.py
+## 99. Software source: backend/catalog/seo.py
 
 ```py
+"""Search-engine rules in code (plan 8.6, rule R23)."""
 
-```
+import json
+from urllib.parse import urlencode
 
-
-
----
-
-## 122. Software source: backend/intake/tests/test_gate.py
-
-```py
-import datetime
-
-import pytest
-
-from intake.gate import SourceBlocked, assert_allowed
-from intake.models import Source
-
-
-def mk(**kw):
-    base = dict(name="s", tier="green", allowed_uses=["import", "display"])
-    base.update(kw)
-    return Source(**base)
-
-
-def test_red_source_always_blocked():
-    for use in ("import", "agent_fetch", "display"):
-        with pytest.raises(SourceBlocked):
-            assert_allowed(mk(tier="red", allowed_uses=["import", "agent_fetch", "display"]), use)
-
-
-def test_missing_source_and_unallowed_use_blocked():
-    with pytest.raises(SourceBlocked):
-        assert_allowed(None, "import")
-    with pytest.raises(SourceBlocked):
-        assert_allowed(mk(), "agent_fetch")
-    with pytest.raises(SourceBlocked):
-        assert_allowed(mk(status="paused"), "import")
-
-
-def test_amber_import_needs_a_terms_review():
-    with pytest.raises(SourceBlocked):
-        assert_allowed(mk(tier="amber"), "import")
-    assert assert_allowed(mk(tier="amber", reviewed_on=datetime.date(2026, 10, 1)), "import")
-
-
-def test_green_allowed():
-    assert assert_allowed(mk(), "import")
-```
-
-
-
----
-
-## 123. Software source: backend/intake/tests/test_import_dedupe.py
-
-```py
-import pytest
-
-from entries import services as es
-from entries.models import Contact, CreditEvent, Entry
-from intake import dedupe
-from intake.importer import ImportError_, guess_mapping, normalise_row, parse_table, run_import
-from intake.models import DedupeCandidate, ImportBatch, Source
-from intake.gate import SourceBlocked
-
-CSV = """Business Name,Mobile,Address,Products
-Crescent Surgical Works,0300-111-2222,Paris Road,"scissors, forceps"
-Falcon Medical Instruments,0301 333 4444 / 0302 555 6666,Kashmir Road,dental
-,0300 999 9999,Nowhere,
-"""
-
-
-def batch(tree, surgical, users, source, text=CSV, rights=True):
-    return ImportBatch.objects.create(source=source, uploader=users["adder"], declared_rights=rights, place=tree["sialkot"],
-                                      concept=surgical, raw_text=text)
-
-
-def run(b, addons=True):
-    return run_import(b, addons={"business_type": "manufacturer", "product_categories": ["x"]} if addons else None)
-
-
-def test_parse_detects_delimiters():
-    h, rows = parse_table("name\tphone\nA\t0300 1\nB\t0300 2")
-    assert h == ["name", "phone"] and len(rows) == 2
-    h, rows = parse_table("name;phone\nA;1")
-    assert h == ["name", "phone"]
-    with pytest.raises(ImportError_):
-        parse_table("  ")
-
-
-def test_header_guess_english_urdu_roman_urdu():
-    assert guess_mapping(["Business Name", "Mobile", "Address", "Products"]) == {
-        "Business Name": "name", "Mobile": "phone", "Address": "address", "Products": "specialities"}
-    assert guess_mapping(["نام", "موبائل", "پتہ"]) == {"نام": "name", "موبائل": "phone", "پتہ": "address"}
-    assert guess_mapping(["Naam", "Raabta", "Pata"]) == {"Naam": "name", "Raabta": "phone", "Pata": "address"}
-    assert guess_mapping(["foo", "bar"]) == {}
-
-
-def test_normalise_row_phones_and_website():
-    m = {"N": "name", "P": "phone", "W": "website"}
-    out = normalise_row({"N": "  A   B ", "P": "0300-111-2222 / 042 111 222", "W": "a.example.org"}, m, "PK")
-    assert out["name"] == "A B" and out["phones"][0] == "+923001112222" and out["website"] == "https://a.example.org"
-
-
-def test_import_creates_drafts_with_provenance_and_no_earnings(tree, surgical, users, green):
-    counts = run(batch(tree, surgical, users, green))
-    assert counts["rows"] == 3 and counts["drafted"] == 2 and counts["error"] == 1
-    entries = Entry.objects.filter(created_via="import")
-    assert entries.count() == 2 and set(entries.values_list("publish_state", flat=True)) == {"draft"}
-    assert all(e.source_id == green.pk for e in entries)
-    assert Contact.objects.filter(entry__name="Falcon Medical Instruments").count() == 2
-    assert not CreditEvent.objects.filter(entry__in=entries, eligible=True).exists()
-
-
-def test_import_requires_rights_and_a_green_or_reviewed_source(tree, surgical, users, green):
-    with pytest.raises(ImportError_):
-        run(batch(tree, surgical, users, green, rights=False))
-    red = Source.objects.create(name="Scraped", tier="red", allowed_uses=["import"])
-    with pytest.raises(SourceBlocked):
-        run(batch(tree, surgical, users, red))
-    amber = Source.objects.create(name="Chamber list", tier="amber", allowed_uses=["import"])
-    with pytest.raises(SourceBlocked):
-        run(batch(tree, surgical, users, amber))
-
-
-def test_missing_name_column_fails_clearly(tree, surgical, users, green):
-    b = batch(tree, surgical, users, green, text="foo,bar\n1,2")
-    with pytest.raises(ImportError_):
-        run(b)
-
-
-def test_same_phone_similar_spelling_auto_merges_and_keeps_first_credit(tree, surgical, users, green):
-    first = es.create_entry(name="Crescent Surgical Works", place=tree["sialkot"], primary_concept=surgical,
-                            created_by=users["mod"], contacts=[("phone", "0300 111 2222")],
-                            addons={"business_type": "manufacturer", "product_categories": ["x"]})
-    counts = run(batch(tree, surgical, users, green, text="Name,Phone\nCrescent Surgical Work,+92 300 111 2222"))
-    assert counts["duplicate"] == 1 and Entry.objects.filter(merged_into=first).count() == 1
-    dropped = Entry.objects.get(merged_into=first)
-    assert dropped.publish_state == "suppressed"
-    adds = CreditEvent.objects.filter(entry=first, kind="added").order_by("created_at", "id")
-    assert adds.count() == 2 and adds[0].user == users["mod"]
-    assert adds[1].ineligible_reason == "duplicate" and not adds[1].eligible
-    assert Contact.objects.filter(entry=first).count() == 2
-
-
-def test_similar_name_without_phone_goes_to_review_not_merge(tree, surgical, users, green):
-    es.create_entry(name="Royal Steel Instruments", place=tree["sialkot"], primary_concept=surgical,
-                    created_by=users["mod"], addons={"business_type": "trader", "product_categories": ["x"]})
-    counts = run(batch(tree, surgical, users, green, text="Name,Address\nRoyal Steel Instrument,Paris Road"))
-    assert counts["possible_duplicate"] == 1 and counts["duplicate"] == 0
-    cand = DedupeCandidate.objects.get()
-    assert dedupe.REVIEW <= cand.score < dedupe.AUTO_MERGE and cand.state == "pending"
-
-
-def test_different_shops_same_road_are_not_candidates(tree, surgical, users, green):
-    es.create_entry(name="Crescent Surgical Works", place=tree["sialkot"], primary_concept=surgical,
-                    created_by=users["mod"], addons={"business_type": "trader", "product_categories": ["x"]})
-    counts = run(batch(tree, surgical, users, green, text="Name,Address\nUnity Medical Traders,Paris Road"))
-    assert counts["possible_duplicate"] == 0 and not DedupeCandidate.objects.exists()
-
-
-def test_urdu_spelling_variants_match_after_fold(tree, surgical, users, green):
-    a = "كريسنت سرجيكل"            # Arabic yeh and kaf
-    b = "کریسنت سرجیکل"            # Farsi yeh and keheh
-    assert dedupe.similarity(a, b) == 1.0
-    es.create_entry(name=a, place=tree["sialkot"], primary_concept=surgical, created_by=users["mod"],
-                    contacts=[("phone", "0300 000 1111")], addons={"business_type": "trader", "product_categories": ["x"]})
-    counts = run(batch(tree, surgical, users, green, text=f"Name,Phone\n{b},0300 000 1111"))
-    assert counts["duplicate"] == 1
-
-
-def test_distance_feature(tree, surgical, users):
-    from decimal import Decimal
-    addons = {"business_type": "trader", "product_categories": ["x"]}
-    a = es.create_entry(name="A Shop", place=tree["sialkot"], primary_concept=surgical, addons=addons,
-                        lat=Decimal("32.5"), lon=Decimal("74.5"))
-    b = es.create_entry(name="B Shop", place=tree["sialkot"], primary_concept=surgical, addons=addons,
-                        lat=Decimal("32.5003"), lon=Decimal("74.5"))
-    assert dedupe.features(a, b)["distance"] == 1.0 and dedupe.features(a, b)["distance_m"] < 100
-
-
-def test_merge_guards(tree, surgical, entry, users):
-    with pytest.raises(es.EntryError):
-        es.merge_entries(entry, entry)
-    other = es.create_entry(name="Other", place=tree["sialkot"], primary_concept=surgical,
-                            addons={"business_type": "trader", "product_categories": ["x"]})
-    es.merge_entries(entry, other, actor=users["mod"])
-    with pytest.raises(es.EntryError):
-        es.merge_entries(entry, other)
-
-
-def test_scan_all_stores_candidates_once(tree, surgical, users):
-    for nm in ("Royal Steel Instruments", "Royal Steel Instrument"):
-        es.create_entry(name=nm, place=tree["sialkot"], primary_concept=surgical, created_by=users["mod"],
-                        addons={"business_type": "trader", "product_categories": ["x"]})
-    assert dedupe.scan_all() == 1 and dedupe.scan_all() == 0
-```
-
-
-
----
-
-## 124. Software source: backend/lists/__init__.py
-
-```py
-
-```
-
-
-
----
-
-## 125. Software source: backend/lists/admin.py
-
-```py
-from django.contrib import admin
-
-from . import models
-
-
-class CheckInline(admin.TabularInline):
-    model = models.Check
-    extra = 0
-
-
-class ContactInline(admin.TabularInline):
-    model = models.Contact
-    extra = 0
-
-
-class SocialInline(admin.TabularInline):
-    model = models.SocialLink
-    extra = 0
-
-
-@admin.register(models.Entry)
-class EntryAdmin(admin.ModelAdmin):
-    list_display = ("name", "place", "plan", "status", "sponsored")
-    list_filter = ("plan", "status", "sponsored", "list_types")
-    search_fields = ("name", "name_alt")
-    inlines = [CheckInline, ContactInline, SocialInline]
-
-
-@admin.register(models.Place)
-class PlaceAdmin(admin.ModelAdmin):
-    list_display = ("name", "kind", "parent", "country_code")
-    list_filter = ("kind",)
-    search_fields = ("name",)
-
-
-for m in (models.ListType, models.Profile, models.Enquiry, models.Report, models.Contribution,
-          models.Sale, models.LedgerLine):
-    admin.site.register(m)
-```
-
-
-
----
-
-## 126. Software source: backend/lists/context.py
-
-```py
 from django.conf import settings
+
+from core.models import CountrySwitch
+from entries.models import Entry
 
 from . import strings
 
+FILTER_PARAMS = ("area", "sort", "q", "page", "view")
 
-def site(request):
-    lang = getattr(request, "lang", "en")
-    return {"T": strings.STRINGS[lang], "lang": lang, "dir": "rtl" if lang == "ur" else "ltr",
-            "theme": getattr(request, "theme", ""), "subscriber": getattr(request, "subscriber", False),
-            "view_mode": getattr(request, "view_mode", "list"), "my_place": getattr(request, "my_place", None),
-            "location_source": getattr(request, "location_source", "none"), "demo_mode": settings.DEMO_MODE}
+
+def canonical_path(path):
+    return path
+
+
+def indexable_list(place, concept, cell, params):
+    """A list page is indexable only with enough verified entries, an allowing country switch, and no filter or sort."""
+    if any(params.get(p) for p in FILTER_PARAMS):
+        return False
+    threshold = getattr(getattr(concept, "settings", None), "index_threshold", settings.INDEX_THRESHOLD)
+    verified = cell["by_level"].get("surveyor", 0) + cell["by_level"].get("owner", 0)
+    country = place.country_code
+    if not country or not CountrySwitch.for_country(country).indexing_on:
+        return False
+    return verified >= threshold
+
+
+def indexable_entry(entry, level):
+    """Entry pages index only when verified by a person and rich enough (plan decision Q-T3 default)."""
+    if entry.publish_state != Entry.PublishState.PUBLISHED or level not in ("surveyor", "owner"):
+        return False
+    if "noindex" in (entry.visibility_flags or []) or entry.entity_type == Entry.EntityType.PERSON:
+        return False
+    if not CountrySwitch.for_country(entry.country_code).indexing_on:
+        return False
+    rich = entry.service_set.exists() or entry.identifier_set.exists() or entry.hours_set.exists()
+    return bool(rich)
+
+
+def robots_meta(indexable):
+    return "index,follow" if indexable else "noindex,follow"
+
+
+def alternates(request, path):
+    base = request.build_absolute_uri("/").rstrip("/")
+    return [("en", base + path), ("ur", base + "/ur" + path), ("x-default", base + path)]
+
+
+def query_string(params, **changes):
+    merged = {k: v for k, v in params.items() if v}
+    merged.update({k: v for k, v in changes.items()})
+    merged = {k: v for k, v in merged.items() if v not in (None, "", 0)}
+    return ("?" + urlencode(sorted(merged.items()))) if merged else ""
+
+
+def jsonld(data):
+    # "</" is escaped so the block can never end the script element
+    return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+
+def list_jsonld(lang, title, url, rows):
+    return jsonld(
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": title,
+            "url": url,
+            "itemListElement": [
+                {"@type": "ListItem", "position": i + 1, "name": r["name"]} for i, r in enumerate(rows)
+            ],
+        }
+    )
+
+
+def entry_jsonld(entry, place, url):
+    return jsonld(
+        {
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": entry.name,
+            "url": url,
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": place.name_for("en"),
+                "addressCountry": entry.country_code,
+            },
+        }
+    )
+
+
+def title(lang, key, **kw):
+    return strings.t(lang, key, **kw)
 ```
 
 
 
 ---
 
-## 127. Software source: backend/lists/management/__init__.py
+## 100. Software source: backend/catalog/share.py
 
 ```py
+"""One registry drives every share control on every page (rule R25, plan appendix C.1). Add a channel here and it
+appears everywhere, except where its hide rule says otherwise."""
 
-```
-
-
-
----
-
-## 128. Software source: backend/lists/management/commands/__init__.py
-
-```py
-
-```
-
-
-
----
-
-## 129. Software source: backend/lists/management/commands/seed_demo.py
-
-```py
-"""Load a small demo register (Sialkot surgical instruments and footballs). Safe to run twice."""
-import datetime
-
-from django.contrib.auth.models import User
-from django.core.management.base import BaseCommand
-
-from lists.models import Check, Contact, Contribution, Entry, ListType, Place, Profile, Service, SocialLink
-
-AREAS = [("Paris Road", "پیرس روڈ"), ("Kashmir Road", "کشمیر روڈ"), ("Wazirabad Road", "وزیرآباد روڈ")]
-DEMO = [
-    ("Crescent Surgical Works", "Manufacturer", 0, ["Scissors", "Forceps", "Needle holders", "Retractors"], "company", "surveyor"),
-    ("Falcon Medical Instruments", "Manufacturer", 1, ["Dental", "Forceps"], "company", "owner"),
-    ("Royal Steel Instruments", "Exporter", 0, ["Scissors"], "basic", "ai"),
-    ("Sialkot Precision Tools", "Manufacturer", 2, ["Needle holders", "Clamps"], "basic", "owner"),
-    ("Unity Surgical Co", "Trader", 1, ["Retractors", "Speculums"], "basic", "none"),
-    ("Pioneer Instruments", "Manufacturer", 0, ["Forceps"], "basic", "surveyor"),
-]
-
-
-class Command(BaseCommand):
-    def handle(self, *args, **opts):
-        world, _ = Place.objects.get_or_create(kind="world", parent=None, defaults={"name": "World", "slug": "world"})
-        pk, _ = Place.objects.get_or_create(parent=world, slug="pakistan", defaults={"kind": "country", "name": "Pakistan", "name_ur": "پاکستان", "country_code": "PK"})
-        pb, _ = Place.objects.get_or_create(parent=pk, slug="punjab", defaults={"kind": "region", "name": "Punjab", "name_ur": "پنجاب", "country_code": "PK"})
-        city, _ = Place.objects.get_or_create(parent=pb, slug="sialkot", defaults={"kind": "city", "name": "Sialkot", "name_ur": "سیالکوٹ", "country_code": "PK"})
-        areas = [Place.objects.get_or_create(parent=city, slug=n.lower().replace(" ", "-"), defaults={"kind": "area", "name": n, "name_ur": u, "country_code": "PK"})[0] for n, u in AREAS]
-        lt, _ = ListType.objects.get_or_create(slug="surgical-instrument-makers", defaults={"name": "Surgical instrument makers", "name_ur": "جراحی آلات بنانے والے", "group": "Manufacturing"})
-        ListType.objects.get_or_create(slug="football-makers", defaults={"name": "Football makers", "name_ur": "فٹ بال بنانے والے", "group": "Manufacturing"})
-        user, _ = User.objects.get_or_create(username="contributor1")
-        Profile.objects.get_or_create(user=user, defaults={"contributor": True})
-        today = datetime.date.today()
-        for i, (name, kind, a, specs, plan, level) in enumerate(DEMO):
-            e, created = Entry.objects.get_or_create(name=name, defaults={
-                "place": areas[a], "entry_type": kind, "specialities": specs, "plan": plan,
-                "address": f"Plot {10 + i}, {areas[a].name}, Sialkot", "website": f"https://example.org/{i}",
-                "markets": "EU, USA", "moq": "100 pieces", "certificates": "ISO 13485",
-                "company_profile": "Family firm making instruments since 1980." if plan == "company" else "",
-                "sponsored": i == 0})
-            if not created:
-                continue
-            e.list_types.add(lt)
-            if level != "none":
-                Check.objects.create(entry=e, level=level, checked_on=today - datetime.timedelta(days=i * 9))
-            Contact.objects.create(entry=e, kind="phone", value="+92 300 0000000")
-            SocialLink.objects.create(entry=e, channel="facebook", url="https://facebook.com/example")
-            Service.objects.create(entry=e, text="OEM and private label")
-            Contribution.lock(e, user)
-        self.stdout.write("demo data ready")
-```
-
-
-
----
-
-## 130. Software source: backend/lists/middleware.py
-
-```py
-from .models import Place
-
-
-class PreferencesMiddleware:
-    """Language, theme, list/cards view and viewer plan. Same URL for everyone; cookies only change presentation."""
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        c = request.COOKIES
-        request.lang = c.get("lang") if c.get("lang") in ("en", "ur") else "en"
-        request.theme = c.get("theme") if c.get("theme") in ("light", "dark") else ""
-        request.view_mode = c.get("view") if c.get("view") in ("list", "cards") else "list"
-        from django.conf import settings
-        sub = False
-        u = getattr(request, "user", None)
-        if u is not None and u.is_authenticated:
-            p = getattr(u, "profile", None)
-            sub = bool(p and p.subscriber)
-        if settings.DEMO_MODE and request.session.get("demo_plan") == "subscriber":
-            sub = True
-        request.subscriber = sub
-        return self.get_response(request)
-
-
-class LocationMiddleware:
-    """Auto location: session choice first, then the edge IP guess (Cloudflare headers), never a redirect.
-    The guess only fills the 'near you' piece so the main page stays cacheable and identical for all."""
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        request.my_place = None
-        pid = request.session.get("place_id")
-        if pid:
-            request.my_place = Place.objects.filter(pk=pid).first()
-        if request.my_place is None:
-            country = request.META.get("HTTP_CF_IPCOUNTRY", "").upper()[:2]
-            city = request.META.get("HTTP_CF_IPCITY", "")[:120]
-            if country and city:
-                request.my_place = Place.objects.filter(
-                    kind="city", name__iexact=city, country_code=country).first()
-            if request.my_place is None and country:
-                request.my_place = Place.objects.filter(kind="country", country_code=country).first()
-            request.location_source = "guess" if request.my_place else "none"
-        else:
-            request.location_source = "chosen"
-        return self.get_response(request)
-```
-
-
-
----
-
-## 131. Software source: backend/lists/models.py
-
-```py
-"""Data model. Places form a tree; list types are categories; a *list* is a view (list type at a place).
-Entries are stored once and roll up the tree. Contacts are stored but never rendered to visitors."""
-from django.conf import settings
-from django.contrib.auth.models import User
-from django.db import models
-from django.db.models import Q
-from django.utils.text import slugify
-
-
-class Place(models.Model):
-    class Kind(models.TextChoices):
-        WORLD = "world"
-        COUNTRY = "country"
-        REGION = "region"
-        CITY = "city"
-        AREA = "area"
-
-    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE, related_name="children")
-    kind = models.CharField(max_length=10, choices=Kind.choices)
-    name = models.CharField(max_length=120)
-    name_ur = models.CharField(max_length=120, blank=True)
-    slug = models.SlugField(max_length=140)
-    country_code = models.CharField(max_length=2, blank=True)  # partition key
-
-    class Meta:
-        ordering = ["name"]
-        constraints = [models.UniqueConstraint(fields=["parent", "slug"], name="uniq_place_slug_per_parent")]
-
-    def __str__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-
-    def label(self, lang):
-        return (self.name_ur if lang == "ur" and self.name_ur else self.name)
-
-    def ancestors(self):
-        chain, node = [], self
-        while node:
-            chain.append(node)
-            node = node.parent
-        return list(reversed(chain))
-
-    def descendant_ids(self):
-        ids, frontier = [self.pk], [self.pk]
-        while frontier:
-            frontier = list(Place.objects.filter(parent_id__in=frontier).values_list("pk", flat=True))
-            ids += frontier
-        return ids
-
-    @property
-    def path(self):
-        return "/".join(p.slug for p in self.ancestors()[1:])
-
-
-class ListType(models.Model):
-    slug = models.SlugField(unique=True)
-    name = models.CharField(max_length=120)
-    name_ur = models.CharField(max_length=120, blank=True)
-    group = models.CharField(max_length=60, blank=True)
-    # add-on field registry: which extra fields this type uses (decision: one registry per list type)
-    addon_fields = models.JSONField(default=list, blank=True)
-
-    class Meta:
-        ordering = ["name"]
-
-    def __str__(self):
-        return self.name
-
-    def label(self, lang):
-        return self.name_ur if lang == "ur" and self.name_ur else self.name
-
-
-class Entry(models.Model):
-    class Plan(models.TextChoices):
-        BASIC = "basic"
-        COMPANY = "company"   # paid company page: same template, more sections
-
-    class Status(models.TextChoices):
-        ACTIVE = "active"
-        CLOSED = "closed"
-        MOVED = "moved"
-
-    name = models.CharField(max_length=200)
-    name_alt = models.CharField(max_length=200, blank=True)
-    place = models.ForeignKey(Place, on_delete=models.PROTECT, related_name="entries")  # most specific place
-    list_types = models.ManyToManyField(ListType, related_name="entries")
-    entry_type = models.CharField(max_length=80, blank=True)
-    address = models.CharField(max_length=300, blank=True)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    website = models.URLField(blank=True)
-    size = models.CharField(max_length=60, blank=True)
-    markets = models.CharField(max_length=200, blank=True)
-    moq = models.CharField(max_length=80, blank=True)
-    price_note = models.CharField(max_length=200, blank=True)
-    certificates = models.CharField(max_length=300, blank=True)
-    specialities = models.JSONField(default=list, blank=True)
-    extra = models.JSONField(default=dict, blank=True)  # add-on block values
-    plan = models.CharField(max_length=10, choices=Plan.choices, default=Plan.BASIC)
-    company_profile = models.TextField(blank=True)  # provided by the company, shown only on company pages
-    sponsored = models.BooleanField(default=False)
-    status = models.CharField(max_length=10, choices=Status.choices, default=Status.ACTIVE)
-    created_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ["-sponsored", "name"]
-        verbose_name_plural = "entries"
-        indexes = [models.Index(fields=["place", "status"])]
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def is_company(self):
-        return self.plan == self.Plan.COMPANY
-
-    def last_checked(self):
-        c = self.checks.order_by("-checked_on").first()
-        return c.checked_on if c else None
-
-    def best_level(self):
-        order = [Check.Level.SURVEYOR, Check.Level.OWNER, Check.Level.AI]
-        have = {c.level for c in self.checks.all()}
-        for lv in order:
-            if lv in have:
-                return lv
-        return Check.Level.NONE
-
-
-class Check(models.Model):
-    """Per-field provenance: who verified what, and when. Four decided labels."""
-    class Level(models.TextChoices):
-        SURVEYOR = "surveyor"
-        OWNER = "owner"
-        AI = "ai"
-        NONE = "none"
-
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="checks")
-    field = models.CharField(max_length=40, default="entry")
-    level = models.CharField(max_length=10, choices=Level.choices)
-    checked_on = models.DateField()
-    checked_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-
-    class Meta:
-        ordering = ["-checked_on"]
-
-
-class Contact(models.Model):
-    """Phone, WhatsApp, email. Stored for the outreach relay only; never shown on a page."""
-    class Kind(models.TextChoices):
-        PHONE = "phone"
-        WHATSAPP = "whatsapp"
-        EMAIL = "email"
-
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="contacts")
-    kind = models.CharField(max_length=10, choices=Kind.choices)
-    value = models.CharField(max_length=200)
-
-
-class SocialLink(models.Model):
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="socials")
-    channel = models.CharField(max_length=30)
-    url = models.URLField()
-
-
-class Service(models.Model):
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="services")
-    text = models.CharField(max_length=200)
-
-
-class Identifier(models.Model):
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="identifiers")
-    scheme = models.CharField(max_length=40)
-    value = models.CharField(max_length=80)
-
-
-class Profile(models.Model):
-    """Viewer plan (Free or Subscriber). Distinct from an entry's listing plan."""
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    subscriber = models.BooleanField(default=False)
-    contributor = models.BooleanField(default=False)
-
-
-class Enquiry(models.Model):
-    """One message relayed to many suppliers. Supplier contacts are used by the relay, never revealed."""
-    sender = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    entries = models.ManyToManyField(Entry, related_name="enquiries")
-    reply_to = models.EmailField()
-    message = models.TextField(max_length=2000)
-    created_at = models.DateTimeField(auto_now_add=True)
-    relayed_at = models.DateTimeField(null=True, blank=True)
-
-
-class Report(models.Model):
-    class Kind(models.TextChoices):
-        REPORT = "report"
-        CLAIM = "claim"
-
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="reports")
-    kind = models.CharField(max_length=10, choices=Kind.choices)
-    note = models.TextField(max_length=1000, blank=True)
-    contact = models.CharField(max_length=200, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    resolved = models.BooleanField(default=False)
-
-
-class Contribution(models.Model):
-    """A contributor's entry. The share rate is locked when the entry is accepted (phase 1/2/3 = 50/40/30)."""
-    entry = models.OneToOneField(Entry, on_delete=models.CASCADE, related_name="contribution")
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    phase = models.PositiveSmallIntegerField()
-    rate_percent = models.PositiveSmallIntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    @classmethod
-    def lock(cls, entry, user):
-        phase = settings.CURRENT_PHASE
-        return cls.objects.create(entry=entry, user=user, phase=phase,
-                                  rate_percent=settings.CONTRIBUTOR_PHASE_RATES[phase])
-
-
-class Sale(models.Model):
-    """A list (list type at a place) sold. Revenue is shared only when a list sells."""
-    place = models.ForeignKey(Place, on_delete=models.PROTECT)
-    list_type = models.ForeignKey(ListType, on_delete=models.PROTECT)
-    amount_cents = models.PositiveBigIntegerField()
-    currency = models.CharField(max_length=3, default="USD")
-    created_at = models.DateTimeField(auto_now_add=True)
-    distributed = models.BooleanField(default=False)
-
-    def distribute(self):
-        """Split the sale equally across the list's entries; each contributor gets that slice at the
-        rate locked for their entry. Idempotent; returns the ledger lines created."""
-        if self.distributed:
-            return []
-        entries = list(Entry.objects.filter(
-            Q(place_id__in=self.place.descendant_ids()), list_types=self.list_type, status=Entry.Status.ACTIVE))
-        lines = []
-        if entries:
-            slice_cents = self.amount_cents // len(entries)
-            for e in entries:
-                c = getattr(e, "contribution", None)
-                if c:
-                    lines.append(LedgerLine.objects.create(
-                        sale=self, entry=e, user=c.user, rate_percent=c.rate_percent,
-                        amount_cents=slice_cents * c.rate_percent // 100))
-        self.distributed = True
-        self.save(update_fields=["distributed"])
-        return lines
-
-
-class LedgerLine(models.Model):
-    sale = models.ForeignKey(Sale, on_delete=models.CASCADE, related_name="lines")
-    entry = models.ForeignKey(Entry, on_delete=models.PROTECT)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    rate_percent = models.PositiveSmallIntegerField()
-    amount_cents = models.PositiveBigIntegerField()
-```
-
-
-
----
-
-## 132. Software source: backend/lists/share.py
-
-```py
-"""One registry drives every share control on every page. Add a channel here and it appears everywhere."""
 from urllib.parse import quote
 
 CHANNELS = [
-    {"id": "whatsapp", "label": "WhatsApp", "group": "main", "kind": "link",
-     "url": lambda c: "https://wa.me/?text=" + c["text"]},
-    {"id": "copy", "label": "Copy link", "group": "main", "kind": "copy"},
-    {"id": "facebook", "label": "Facebook", "group": "more", "kind": "link",
-     "url": lambda c: "https://www.facebook.com/sharer/sharer.php?u=" + c["url"]},
-    {"id": "email", "label": "Email", "group": "more", "kind": "link",
-     "url": lambda c: "mailto:?subject=" + quote(c["title"]) + "&body=" + c["text"]},
-    {"id": "linkedin", "label": "LinkedIn", "group": "more", "kind": "link",
-     "url": lambda c: "https://www.linkedin.com/sharing/share-offsite/?url=" + c["url"]},
-    {"id": "x", "label": "X", "group": "more", "kind": "link",
-     "url": lambda c: "https://x.com/intent/tweet?text=" + quote(c["title"]) + "&url=" + c["url"]},
+    {"id": "native", "label_key": "share", "group": "main", "kind": "native"},
+    {
+        "id": "whatsapp",
+        "label": "WhatsApp",
+        "group": "main",
+        "kind": "link",
+        "url": lambda c: "https://wa.me/?text=" + c["text"],
+    },
+    {"id": "copy", "label_key": "copy_link", "group": "main", "kind": "copy"},
+    {
+        "id": "facebook",
+        "label": "Facebook",
+        "group": "more",
+        "kind": "link",
+        "url": lambda c: "https://www.facebook.com/sharer/sharer.php?u=" + c["url"],
+    },
+    {
+        "id": "email",
+        "label": "Email",
+        "group": "more",
+        "kind": "link",
+        "url": lambda c: "mailto:?subject=" + quote(c["title"]) + "&body=" + c["text"],
+    },
+    {
+        "id": "linkedin",
+        "label": "LinkedIn",
+        "group": "more",
+        "kind": "link",
+        "url": lambda c: "https://www.linkedin.com/sharing/share-offsite/?url=" + c["url"],
+    },
+    {
+        "id": "x",
+        "label": "X",
+        "group": "more",
+        "kind": "link",
+        "url": lambda c: "https://x.com/intent/tweet?text=" + quote(c["title"]) + "&url=" + c["url"],
+    },
 ]
 
 
-def utm(url, channel, campaign):
-    sep = "&" if "?" in url else "?"
-    return f"{url}{sep}utm_source={channel}&utm_medium=share&utm_campaign={campaign}"
+def tracked(url, channel, campaign):
+    return f"{url}{'&' if '?' in url else '?'}utm_source={channel}&utm_medium=share&utm_campaign={campaign}"
 
 
-def build(title, line, url, campaign, hide=()):
+def build(title, line, url, campaign, hidden=False):
+    """Return the channels to render. `hidden` removes every share control (individuals, child-facing, do_not_share)."""
+    if hidden:
+        return []
     out = []
     for ch in CHANNELS:
-        if ch["id"] in hide:
-            continue
-        tracked = utm(url, ch["id"], campaign)
-        ctx = {"title": title, "url": quote(tracked, safe=""), "text": quote(f"{title}. {line} {tracked}")}
-        out.append({"id": ch["id"], "label": ch["label"], "group": ch["group"], "kind": ch["kind"],
-                    "href": ch["url"](ctx) if "url" in ch else "", "copy": tracked})
+        link = tracked(url, ch["id"], campaign)
+        ctx = {"title": title, "url": quote(link, safe=""), "text": quote(f"{title}. {line} {link}")}
+        out.append(
+            {
+                "id": ch["id"],
+                "label": ch.get("label"),
+                "label_key": ch.get("label_key"),
+                "group": ch["group"],
+                "kind": ch["kind"],
+                "href": ch["url"](ctx) if "url" in ch else "",
+                "copy": url,
+                "title": title,
+            }
+        )
     return out
 ```
 
@@ -24243,7 +21946,7 @@ def build(title, line, url, campaign, hide=()):
 
 ---
 
-## 133. Software source: backend/lists/static/lists/app.css
+## 101. Software source: backend/catalog/static/catalog/app.css
 
 ```css
 
@@ -24414,159 +22117,513 @@ footer.legal{border-block-start:1px solid var(--rule);margin-block-start:var(--s
 }
 @media (prefers-reduced-motion: reduce){*,::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 @media (forced-colors: active){.seg button[aria-pressed="true"]{outline:2px solid Highlight}.chip,.tag,.btn{border:1px solid CanvasText}.toast{border:2px solid CanvasText}}
+
+/* catalog additions */
+.grow{flex:1}
+.chip-link{display:inline-block;flex:none;min-height:var(--tap);padding:var(--s2) var(--s4);border:1px solid var(--control);border-radius:99px;background:var(--surface);color:var(--ink);text-decoration:none;line-height:1.2;display:inline-flex;align-items:center}
+.chip-link:hover{background:var(--lock)}
+.chip-link[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+nav.chips{display:flex;gap:var(--s2);overflow-x:auto;padding-block:var(--s1) var(--s2);margin-block:var(--s3)}
+.closed-row .nm{color:var(--ink-2)}
+.locbar-slot:empty{display:none}
+.widen{display:flex;flex-wrap:wrap;gap:var(--s2)}
+details.more{display:inline-block}
+details.more summary{min-height:var(--tap);display:inline-flex;align-items:center;cursor:pointer;color:var(--accent)}
+.vt button{font:inherit}
+.pager{justify-content:space-between;margin-block:var(--s4)}
 ```
 
 
 
 ---
 
-## 134. Software source: backend/lists/static/lists/app.js
+## 102. Software source: backend/catalog/static/catalog/app.js
 
 ```js
-// Tiny interaction layer: copy-link buttons only. Everything else works without JavaScript.
-document.addEventListener("click", function (ev) {
-  var b = ev.target.closest("[data-copy]");
-  if (!b || !navigator.clipboard) return;
-  navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function () {
-    var t = b.textContent; b.textContent = "✓"; setTimeout(function () { b.textContent = t; }, 1200);
+/* Small interaction layer, no libraries (plan 8.4). Every feature is an enhancement; pages work without it. */
+(function () {
+  "use strict";
+  var doc = document, root = doc.documentElement;
+
+  function store(k, v) { try { if (v === undefined) { return localStorage.getItem(k); } localStorage.setItem(k, v); } catch (e) { return null; } }
+  function toast(msg) {
+    var el = doc.getElementById("toast"); if (!el) { return; }
+    el.textContent = msg; el.classList.add("show");
+    setTimeout(function () { el.classList.remove("show"); }, 1600);
+  }
+
+  /* theme toggle */
+  var tt = doc.querySelector("[data-theme-toggle]");
+  if (tt) {
+    tt.addEventListener("click", function () {
+      var cur = root.getAttribute("data-theme") ||
+        (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      var next = cur === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next); store("al-theme", next);
+    });
+  }
+
+  /* list or cards view */
+  var target = doc.querySelector("[data-view-target]");
+  function setView(v) {
+    if (!target) { return; }
+    target.classList.toggle("cards", v === "cards");
+    doc.querySelectorAll("[data-view]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-view") === v)); });
+  }
+  if (target) {
+    setView(store("al-view") === "cards" ? "cards" : "list");
+    doc.querySelectorAll("[data-view]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var v = b.getAttribute("data-view");
+        var go = function () { setView(v); store("al-view", v); };
+        if (doc.startViewTransition && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) { doc.startViewTransition(go); } else { go(); }
+      });
+    });
+  }
+
+  /* share: native button appears only where the browser supports it; copy link copies the clean address */
+  doc.querySelectorAll("[data-native-share]").forEach(function (b) {
+    if (navigator.share) {
+      b.hidden = false;
+      b.addEventListener("click", function () { navigator.share({ title: b.getAttribute("data-title"), url: b.getAttribute("data-url") }).catch(function () {}); });
+    }
   });
-});
+  var copied = (doc.currentScript && doc.currentScript.getAttribute("data-copied")) || "Copied";
+  doc.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-copy]");
+    if (!b || !navigator.clipboard) { return; }
+    navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function () { toast(copied); });
+  });
+
+  /* fragments: one private request per page brings the near-you strip, details for this viewer, the subscriber panel and
+     the ad slot. Each returned element replaces the page element with the same id. */
+  var holder = doc.getElementById("page-fragments");
+  if (holder && window.fetch) {
+    fetch(holder.getAttribute("data-fragment") + (holder.getAttribute("data-fragment").indexOf("?") < 0 ? "?" : "&") + "_=1", { credentials: "same-origin" })
+      .then(function (r) { return r.status === 200 ? r.text() : ""; })
+      .then(function (html) {
+        if (!html) { return; }
+        var tpl = doc.createElement("template"); tpl.innerHTML = html;
+        tpl.content.querySelectorAll("[id]").forEach(function (n) {
+          var old = doc.getElementById(n.id);
+          if (old && old.parentNode) { old.replaceWith(n); }
+        });
+      }).catch(function () {});
+  }
+})();
 ```
 
 
 
 ---
 
-## 135. Software source: backend/lists/strings.py
+## 103. Software source: backend/catalog/static/catalog/theme.js
+
+```js
+/* Applies the saved theme before first paint (no flash). Preferences live in the browser, not in cookies the server reads,
+   so every page stays identical for everyone (rule R05). */
+try { var t = localStorage.getItem("al-theme"); if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+```
+
+
+
+---
+
+## 104. Software source: backend/catalog/strings/__init__.py
 
 ```py
-"""All interface text, English and Urdu, in one place. Missing Urdu keys fall back to English."""
+"""Interface text in English and Urdu (plan 8.5). Whole sentences with placeholders, plural forms per key.
+
+The environment has no gettext tools, so catalogues are Python modules for now; moving them to .po files later is
+mechanical because every entry is a whole sentence. English is the source language; a missing Urdu entry falls
+back to English and is reported by `missing_translations()`."""
+
+import re
+
+from .en import EN
+from .ur import UR
+
+LANGUAGES = ("en", "ur")
+_PLACEHOLDER = re.compile(r"\{(\w+)\}")
+
+
+def _entry(lang, key):
+    table = EN if lang == "en" else UR
+    return table[key] if key in table else EN[key]
+
+
+def t(lang, key, **kw):
+    """Translate a key. Plural entries are dicts {"one": ..., "other": ...} chosen by kw["n"]."""
+    value = _entry(lang, key)
+    if isinstance(value, dict):
+        n = kw.get("n", 0)
+        value = value["one"] if n == 1 and "one" in value else value["other"]
+    return value.format(**kw) if kw or "{" in value else value
+
+
+def placeholders(value):
+    if isinstance(value, dict):
+        out = set()
+        for v in value.values():
+            out |= set(_PLACEHOLDER.findall(v))
+        return out
+    return set(_PLACEHOLDER.findall(value))
+
+
+def missing_translations():
+    return sorted(set(EN) - set(UR))
+
+
+def placeholder_mismatches():
+    return sorted(k for k in UR if k in EN and placeholders(UR[k]) != placeholders(EN[k]))
+
+
+class Translator:
+    """Bound to a language; used in templates as `T.key` or `T.n_entries(n=5)` through the `tr` tag."""
+
+    def __init__(self, lang):
+        self.lang = lang
+
+    def __call__(self, key, **kw):
+        return t(self.lang, key, **kw)
+```
+
+
+
+---
+
+## 105. Software source: backend/catalog/strings/en.py
+
+```py
 EN = {
-    "site": "AllLists", "tagline": "Lists of anything, checked and dated.",
-    "search": "Search this list", "search_go": "Search", "skip": "Skip to content",
-    "near_you": "Near you", "choose_place": "Choose a place", "guess_note": "Guessed from your connection. Change it any time.",
-    "chosen_note": "You chose this place.", "no_place": "We could not tell where you are. Choose a place.",
-    "countries": "Countries", "places_in": "Places in", "lists_here": "Lists here", "entries": "entries",
-    "widen": "Widen search", "widen_note": "Names only on a wider list. Subscribe for full details.",
-    "all_areas": "All areas", "sort": "Sort", "sort_name": "Name", "sort_checked": "Last checked",
-    "view_list": "List", "view_cards": "Cards", "trust": "of entries checked by a person",
-    "level_surveyor": "Surveyor-verified", "level_owner": "Owner-verified", "level_ai": "AI-checked",
-    "level_none": "Not verified yet", "checked": "Checked", "closed": "Closed", "moved": "Moved",
-    "company": "Company page", "sponsored": "Sponsored", "locked": "Subscribe to see this",
-    "subscribe": "Subscribe", "address": "Address", "website": "Website", "size": "Size", "markets": "Markets",
-    "moq": "Minimum order", "prices": "Prices", "certificates": "Certificates", "services": "Services",
-    "specialities": "Specialities", "more": "more", "social": "Social pages", "map": "Map pin",
-    "provided_by": "Provided by the company.", "contact_note": "Phone, WhatsApp and email are never shown. Send an enquiry and we pass it on.",
-    "enquiry": "Send one enquiry to many", "your_email": "Your email", "message": "Message", "send": "Send",
-    "enquiry_sent": "Enquiry sent. Suppliers reply to you directly.", "subscribers_only": "Enquiries are for subscribers.",
-    "report": "Report a problem", "claim": "Claim this entry", "note": "Note", "contact": "How we can reach you",
-    "submitted": "Thank you. We will check it.", "share": "Share", "share_more": "More",
-    "empty_title": "Nothing here yet", "empty_body": "No entries in this list. Be the first to add one.",
-    "ads": "Advertisement", "home": "Home", "theme": "Theme", "language": "Language", "demo_plan": "Preview plan",
-    "plan_free": "Free", "plan_subscriber": "Subscriber", "ok": "OK",
-    "legal": "AllLists is a register: verified where marked, and dated. Contacts are never shown.",
+    "site": "AllLists",
+    "tagline": "Lists of anything, checked and dated.",
+    "skip": "Skip to results",
+    "search": "Search this list",
+    "search_go": "Search",
+    "search_everything": "Search lists and places",
+    "theme": "Theme",
+    "language": "Language",
+    "home": "World",
+    "countries": "Countries",
+    "places_in": "Places in {place}",
+    "lists_here": "Lists here",
+    "list_title": "{list_type} in {place}",
+    "scope_line": "{list_type} listed in {place} and the places inside it.",
+    "n_entries": {"one": "{n} entry", "other": "{n} entries"},
+    "n_published": {"one": "{n} listed", "other": "{n} listed"},
+    "awaiting": "{n} awaiting verification",
+    "trust_line": "{published} published, {awaiting} awaiting verification. Last checked {date}.",
+    "trust_hero_label": "Checked by a person",
+    "last_checked": "Last checked {date}",
+    "checked_on": "Checked {date} · {age}",
+    "age_today": "today",
+    "age_days": {"one": "{n} day ago", "other": "{n} days ago"},
+    "age_weeks": {"one": "{n} week ago", "other": "{n} weeks ago"},
+    "age_months": {"one": "{n} month ago", "other": "{n} months ago"},
+    "age_years": {"one": "{n} year ago", "other": "{n} years ago"},
+    "check_key_title": "What the checks mean",
+    "level_surveyor": "Surveyor-verified",
+    "level_owner": "Owner-verified",
+    "level_ai": "AI-checked",
+    "level_none": "Not verified yet",
+    "level_surveyor_help": "An independent AllLists surveyor checked this by call or visit.",
+    "level_owner_help": "The owner or manager of the business confirmed this.",
+    "level_ai_help": "A computer program compared this with other sources. A person has not checked it.",
+    "level_none_help": "Nobody has checked this yet.",
+    "legend_surveyor": "Surveyor-verified",
+    "legend_owner": "Owner-verified",
+    "legend_ai": "AI-checked only",
+    "areas": "Areas",
+    "all_areas": "All areas",
+    "area_count": "{area} ({n})",
+    "sort": "Sort",
+    "sort_name": "Name",
+    "sort_checked": "Recently verified",
+    "view_list": "List",
+    "view_cards": "Cards",
+    "clear_filters": "Clear filters",
+    "company_page": "Company page",
+    "sponsored": "Sponsored",
+    "closed": "Closed",
+    "moved": "Moved",
+    "temporarily_closed": "Temporarily closed",
+    "closed_notice": "This business is closed. Its checks are shown as past records.",
+    "subscriber_panel_title": "What subscribers also see",
+    "subscriber_panel_body": (
+        "Street address, exact map pin, size, website, social pages, export markets, minimum order, "
+        "prices with dates and certificate details."
+    ),
+    "subscribe": "Subscribe",
+    "share": "Share",
+    "share_more": "More options",
+    "copy_link": "Copy link",
+    "copied": "Link copied",
+    "empty_title": "No entries yet",
+    "empty_body": "Nobody has listed {list_type} in {place} yet. You can add the first entry.",
+    "empty_nearest": "See {list_type} in {place}",
+    "add_entry": "Add an entry",
+    "suggest_area": "Suggest an area",
+    "claim_business": "Claim your business",
+    "something_wrong": "Something wrong?",
+    "something_wrong_body": (
+        "Report a problem, claim this entry, suggest a correction, or ask us to remove or correct your data. It is free."
+    ),
+    "message_business": "Message this business",
+    "page_next": "Next page",
+    "page_prev": "Previous page",
+    "page_of": "Page {page} of {pages}",
+    "provenance": "Where this comes from",
+    "as_of": "Counts as of {date}",
+    "legal": "A check is a record, not a guarantee. Listings are not endorsements.",
+    "privacy": "Privacy and opt-out",
+    "terms": "Terms",
+    "near_you": "Near you",
+    "near_you_guess": "We think you are in {place}. This is a guess from your connection and is not stored.",
+    "near_you_chosen": "Showing lists for {place}.",
+    "near_you_none": "We could not tell where you are.",
+    "change_place": "Change place",
+    "widen": "Widen your search",
+    "widen_place": "{place}",
+    "widen_world": "World",
+    "names_only_note": "Outside your own area this list shows names only. Subscribers see the full list.",
+    "key_facts": "Key facts",
+    "about": "About",
+    "specialities": "Specialities",
+    "more_n": "+{n} more",
+    "area": "Area",
+    "category": "Category",
+    "entity_type": "Type",
+    "business_type": "Business type",
+    "languages": "Languages",
+    "year_established": "Established",
+    "oem": "OEM work",
+    "yes": "Yes",
+    "no": "No",
+    "services": "Services",
+    "certificates": "Certificates",
+    "checks_title": "How this was checked",
+    "checks_none": "No check is current.",
+    "check_expired": "expired",
+    "check_by": "by {who}",
+    "method": "Method: {method}",
+    "address": "Address",
+    "map_pin": "Map pin",
+    "website": "Website",
+    "size": "Size",
+    "markets": "Export markets",
+    "min_order": "Minimum order",
+    "social": "Social pages",
+    "locked_line": "Subscribers also see {fields}.",
     "not_found": "Page not found",
+    "not_found_body": "That address does not exist. Try the world page.",
+    "unchecked_notice": "Not verified yet",
+    "ad_label": "Advertisement",
+    "demo_plan": "Preview plan",
+    "plan_free": "Free",
+    "plan_subscriber": "Subscriber",
+    "title_entry": "{name} – {list_type} in {place} – AllLists",
+    "title_list": "{list_type} in {place} – AllLists",
+    "title_place": "{place} – lists – AllLists",
+    "title_home": "AllLists – lists of anything, checked and dated",
+    "addon_business_type": "Business type",
+    "addon_product_categories": "Products",
+    "addon_year_established": "Established",
+    "addon_years_exporting": "Years exporting",
+    "addon_export_markets": "Export markets",
+    "addon_certifications": "Certifications",
+    "addon_verification_tier": "How it was verified",
+    "addon_capacity_band": "Capacity",
+    "addon_workforce_band": "Workforce",
+    "addon_oem": "OEM work",
+    "addon_moq": "Minimum order",
+    "addon_tax_ids": "Tax and legal IDs",
+    "enum_manufacturer": "Manufacturer",
+    "enum_trader": "Trader",
+    "enum_wholesaler": "Wholesaler",
+    "enum_exporter": "Exporter",
 }
+```
+
+
+
+---
+
+## 106. Software source: backend/catalog/strings/ur.py
+
+```py
+# Draft Urdu wording. Needs review by a native speaker before launch (decision Q-S14).
 UR = {
-    "tagline": "ہر چیز کی فہرست، جانچی ہوئی اور تاریخ کے ساتھ۔", "search": "اس فہرست میں تلاش کریں",
-    "search_go": "تلاش", "skip": "مواد پر جائیں", "near_you": "آپ کے قریب", "choose_place": "جگہ منتخب کریں",
-    "countries": "ممالک", "places_in": "مقامات", "lists_here": "یہاں کی فہرستیں", "entries": "اندراجات",
-    "widen": "تلاش وسیع کریں", "all_areas": "تمام علاقے", "sort": "ترتیب", "sort_name": "نام",
-    "sort_checked": "آخری جانچ", "view_list": "فہرست", "view_cards": "کارڈز",
-    "level_surveyor": "سروے کنندہ سے تصدیق شدہ", "level_owner": "مالک سے تصدیق شدہ",
-    "level_ai": "اے آئی سے جانچا ہوا", "level_none": "ابھی تصدیق نہیں", "checked": "جانچ",
-    "closed": "بند", "company": "کمپنی کا صفحہ", "sponsored": "اسپانسر شدہ", "locked": "دیکھنے کے لیے سبسکرائب کریں",
-    "subscribe": "سبسکرائب", "address": "پتہ", "website": "ویب سائٹ", "services": "خدمات",
-    "specialities": "خصوصیات", "enquiry": "ایک پیغام کئی سپلائرز کو", "send": "بھیجیں", "report": "مسئلہ بتائیں",
-    "claim": "اندراج پر دعویٰ کریں", "share": "شیئر", "home": "ہوم", "language": "زبان", "theme": "تھیم",
-    "empty_title": "ابھی کچھ نہیں",
+    "tagline": "ہر چیز کی فہرست، جانچی ہوئی اور تاریخ کے ساتھ۔",
+    "skip": "نتائج پر جائیں",
+    "search": "اس فہرست میں تلاش کریں",
+    "search_go": "تلاش",
+    "search_everything": "فہرستیں اور مقامات تلاش کریں",
+    "theme": "تھیم",
+    "language": "زبان",
+    "home": "دنیا",
+    "countries": "ممالک",
+    "places_in": "{place} کے مقامات",
+    "lists_here": "یہاں کی فہرستیں",
+    "list_title": "{place} میں {list_type}",
+    "scope_line": "{place} اور اس کے اندر کے مقامات میں {list_type} کی فہرست۔",
+    "n_entries": {"one": "{n} اندراج", "other": "{n} اندراجات"},
+    "n_published": {"one": "{n} درج", "other": "{n} درج"},
+    "awaiting": "{n} تصدیق کے منتظر",
+    "trust_line": "{published} شائع، {awaiting} تصدیق کے منتظر۔ آخری جانچ {date}۔",
+    "trust_hero_label": "کسی انسان سے جانچے گئے",
+    "last_checked": "آخری جانچ {date}",
+    "checked_on": "جانچ {date} · {age}",
+    "age_today": "آج",
+    "age_days": {"one": "{n} دن پہلے", "other": "{n} دن پہلے"},
+    "age_weeks": {"one": "{n} ہفتہ پہلے", "other": "{n} ہفتے پہلے"},
+    "age_months": {"one": "{n} مہینہ پہلے", "other": "{n} مہینے پہلے"},
+    "age_years": {"one": "{n} سال پہلے", "other": "{n} سال پہلے"},
+    "check_key_title": "جانچ کا مطلب",
+    "level_surveyor": "سروے کنندہ سے تصدیق شدہ",
+    "level_owner": "مالک سے تصدیق شدہ",
+    "level_ai": "اے آئی سے جانچا ہوا",
+    "level_none": "ابھی تصدیق نہیں ہوئی",
+    "level_surveyor_help": "آل لسٹس کے آزاد سروے کنندہ نے کال یا دورے سے جانچا۔",
+    "level_owner_help": "کاروبار کے مالک یا منیجر نے اس کی تصدیق کی۔",
+    "level_ai_help": "ایک کمپیوٹر پروگرام نے دوسرے ذرائع سے موازنہ کیا۔ کسی انسان نے نہیں جانچا۔",
+    "level_none_help": "ابھی تک کسی نے اسے نہیں جانچا۔",
+    "legend_surveyor": "سروے کنندہ سے تصدیق شدہ",
+    "legend_owner": "مالک سے تصدیق شدہ",
+    "legend_ai": "صرف اے آئی سے جانچا ہوا",
+    "areas": "علاقے",
+    "all_areas": "تمام علاقے",
+    "area_count": "{area} ({n})",
+    "sort": "ترتیب",
+    "sort_name": "نام",
+    "sort_checked": "حال ہی میں تصدیق شدہ",
+    "view_list": "فہرست",
+    "view_cards": "کارڈز",
+    "clear_filters": "فلٹر ہٹائیں",
+    "company_page": "کمپنی کا صفحہ",
+    "sponsored": "اسپانسر شدہ",
+    "closed": "بند",
+    "moved": "منتقل",
+    "temporarily_closed": "عارضی طور پر بند",
+    "subscriber_panel_title": "سبسکرائبرز مزید کیا دیکھتے ہیں",
+    "subscribe": "سبسکرائب کریں",
+    "share": "شیئر",
+    "share_more": "مزید اختیارات",
+    "copy_link": "لنک کاپی کریں",
+    "copied": "لنک کاپی ہو گیا",
+    "empty_title": "ابھی کوئی اندراج نہیں",
+    "empty_body": "{place} میں {list_type} ابھی کسی نے درج نہیں کیے۔ آپ پہلا اندراج شامل کر سکتے ہیں۔",
+    "add_entry": "اندراج شامل کریں",
+    "suggest_area": "علاقہ تجویز کریں",
+    "claim_business": "اپنے کاروبار پر دعویٰ کریں",
+    "something_wrong": "کچھ غلط ہے؟",
+    "message_business": "اس کاروبار کو پیغام بھیجیں",
+    "page_next": "اگلا صفحہ",
+    "page_prev": "پچھلا صفحہ",
+    "page_of": "صفحہ {page} از {pages}",
+    "legal": "جانچ ایک ریکارڈ ہے، ضمانت نہیں۔ فہرست میں شامل ہونا تائید نہیں۔",
+    "privacy": "رازداری اور اخراج",
+    "terms": "شرائط",
+    "near_you": "آپ کے قریب",
+    "near_you_guess": "ہمارا اندازہ ہے کہ آپ {place} میں ہیں۔ یہ آپ کے کنکشن سے اندازہ ہے اور محفوظ نہیں کیا جاتا۔",
+    "change_place": "جگہ تبدیل کریں",
+    "key_facts": "اہم معلومات",
+    "specialities": "خصوصیات",
+    "more_n": "+{n} مزید",
+    "area": "علاقہ",
+    "category": "زمرہ",
+    "languages": "زبانیں",
+    "year_established": "قیام",
+    "services": "خدمات",
+    "certificates": "سرٹیفکیٹس",
+    "checks_title": "اس کی جانچ کیسے ہوئی",
+    "address": "پتہ",
+    "website": "ویب سائٹ",
+    "not_found": "صفحہ نہیں ملا",
+    "ad_label": "اشتہار",
+    "subscriber_panel_body": "گلی کا پتہ، نقشے پر درست مقام، سائز، ویب سائٹ، سوشل صفحات، برآمدی منڈیاں، کم از کم آرڈر، تاریخ کے ساتھ قیمتیں اور سرٹیفکیٹ کی تفصیل۔",
+    "something_wrong_body": "مسئلہ بتائیں، اس اندراج پر دعویٰ کریں، درستی تجویز کریں، یا اپنا ڈیٹا ہٹانے یا درست کرنے کو کہیں۔ یہ مفت ہے۔",
+    "check_by": "از {who}",
+    "check_expired": "میعاد ختم",
+    "yes": "ہاں",
+    "no": "نہیں",
+    "closed_notice": "یہ کاروبار بند ہے۔ اس کی جانچ ماضی کے ریکارڈ کے طور پر دکھائی گئی ہے۔",
+    "addon_business_type": "کاروبار کی قسم",
+    "addon_product_categories": "مصنوعات",
+    "addon_year_established": "قیام",
+    "addon_years_exporting": "برآمد کے سال",
+    "addon_export_markets": "برآمدی منڈیاں",
+    "addon_certifications": "سرٹیفکیشن",
+    "addon_oem": "او ای ایم کام",
+    "addon_moq": "کم از کم آرڈر",
+    "enum_manufacturer": "صنعت کار",
+    "enum_trader": "تاجر",
+    "enum_wholesaler": "تھوک فروش",
+    "enum_exporter": "برآمد کنندہ",
+    "map_pin": "نقشے پر مقام",
+    "size": "سائز",
+    "markets": "برآمدی منڈیاں",
+    "min_order": "کم از کم آرڈر",
+    "social": "سوشل صفحات",
+    "title_entry": "{name} – {place} میں {list_type} – آل لسٹس",
+    "title_list": "{place} میں {list_type} – آل لسٹس",
+    "title_place": "{place} – فہرستیں – آل لسٹس",
+    "title_home": "آل لسٹس – ہر چیز کی فہرست، جانچی ہوئی اور تاریخ کے ساتھ",
 }
-STRINGS = {"en": EN, "ur": {**EN, **UR}}
 ```
 
 
 
 ---
 
-## 136. Software source: backend/lists/templates/lists/404.html
+## 107. Software source: backend/catalog/templates/catalog/404.html
 
 ```html
-{% extends "lists/base.html" %}{% block content %}<h1>{{ T.not_found }}</h1><p><a href="/">{{ T.home }}</a></p>{% endblock %}
+{% extends "catalog/base.html" %}{% load catalog_tags %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">{% tr 'not_found' %}</h1><p>{% tr 'not_found_body' %}</p><p><a class="btn" href="{% u '/' %}">{% tr 'home' %}</a></p>{% endblock %}
 ```
 
 
 
 ---
 
-## 137. Software source: backend/lists/templates/lists/_chip.html
+## 108. Software source: backend/catalog/templates/catalog/base.html
 
 ```html
-{% load lists_extras %}
-<span class="chip {% if level == 'surveyor' %}surveyor{% elif level == 'owner' %}owner{% elif level == 'ai' %}ai{% else %}none{% endif %}">{{ T|level_label:level }}</span>
-```
-
-
-
----
-
-## 138. Software source: backend/lists/templates/lists/_crumbs.html
-
-```html
-{% load lists_extras %}<nav class="crumbs" aria-label="Breadcrumb"><ol>
-{% for c in crumbs %}<li>{% if forloop.last and not link_last %}<strong aria-current="page">{% if lang == 'ur' and c.label_ur %}{{ c.label_ur }}{% else %}{{ c.label }}{% endif %}</strong>{% else %}<a href="{{ c.href }}">{% if lang == 'ur' and c.label_ur %}{{ c.label_ur }}{% else %}{{ c.label }}{% endif %}</a>{% endif %}</li>{% endfor %}
-</ol></nav>
-```
-
-
-
----
-
-## 139. Software source: backend/lists/templates/lists/_share.html
-
-```html
-<div class="actions" role="group" aria-label="{{ T.share }}">
-{% for ch in share_links %}{% if ch.group == "main" %}{% if ch.kind == "copy" %}<button class="btn" type="button" data-copy="{{ ch.copy }}">{{ ch.label }}</button>{% else %}<a class="btn" rel="noopener" target="_blank" href="{{ ch.href }}">{{ ch.label }}</a>{% endif %}{% endif %}{% endfor %}
-<details class="key"><summary>{{ T.share_more }}</summary>
-<div class="actions">{% for ch in share_links %}{% if ch.group == "more" %}<a class="btn" rel="noopener" target="_blank" href="{{ ch.href }}">{{ ch.label }}</a>{% endif %}{% endfor %}</div></details>
-</div>
-```
-
-
-
----
-
-## 140. Software source: backend/lists/templates/lists/base.html
-
-```html
-{% load static lists_extras %}<!doctype html>
-<html lang="{{ lang }}" dir="{{ dir }}"{% if theme %} data-theme="{{ theme }}"{% endif %}>
+{% load static catalog_tags %}<!doctype html>
+<html lang="{{ lang }}" dir="{{ dir }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{% block title %}{{ T.site }}{% endblock %}</title>
-<meta name="description" content="{% block desc %}{{ T.tagline }}{% endblock %}">
-<link rel="stylesheet" href="{% static 'lists/app.css' %}">
+<title>{{ title }}</title>
+<meta name="robots" content="{{ robots|default:'index,follow' }}">
+{% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
+{% for code, href in alternates %}<link rel="alternate" hreflang="{{ code }}" href="{{ href }}">
+{% endfor %}<meta name="description" content="{% tr 'tagline' %}">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="{% static 'catalog/app.css' %}">
+<script src="{% static 'catalog/theme.js' %}"></script>
+{% if jsonld %}<script type="application/ld+json">{{ jsonld|safe }}</script>{% endif %}
 </head>
 <body>
-<a class="skip" href="#main">{{ T.skip }}</a>
+<a class="skip" href="#results">{% tr 'skip' %}</a>
 <header class="site"><div class="wrap site-row">
-  <a class="logo" href="/">All<b>Lists</b></a>
-  <form class="search" action="" method="get" role="search">
-    {% block searchbox %}{% endblock %}
-  </form>
-  <form method="post" action="/prefs/" class="ctl">{% csrf_token %}
-    <input type="hidden" name="next" value="{{ request.get_full_path }}">
-    <button class="btn quiet" name="lang" value="{% if lang == 'en' %}ur{% else %}en{% endif %}">{% if lang == 'en' %}اردو{% else %}English{% endif %}</button>
-    <button class="btn quiet" name="theme" value="{% if theme == 'dark' %}light{% else %}dark{% endif %}">{{ T.theme }}</button>
-    {% if demo_mode %}<button class="btn quiet" name="plan" value="{% if subscriber %}free{% else %}subscriber{% endif %}">{{ T.demo_plan }}: {% if subscriber %}{{ T.plan_subscriber }}{% else %}{{ T.plan_free }}{% endif %}</button>{% endif %}
-  </form>
+  <a class="logo" href="{% u '/' %}">All<b>Lists</b></a>
+  <span class="grow"></span>
+  <a class="btn quiet" href="{{ alt_url }}" hreflang="{{ other_lang }}" lang="{{ other_lang }}">{% if lang == 'en' %}اردو{% else %}English{% endif %}</a>
+  <button class="btn quiet" type="button" data-theme-toggle>{% tr 'theme' %}</button>
 </div></header>
-<main id="main" class="wrap">
-{% for m in messages %}<p class="notice" role="status">{{ T|tr:m.message }}</p>{% endfor %}
+<main class="wrap">
+{% block crumbs %}{% include "catalog/includes/crumbs.html" %}{% endblock %}
+<div id="near-you" class="locbar-slot"></div>
 {% block content %}{% endblock %}
+<div id="sub-panel"></div>
+<div id="ad-slot"></div>
 </main>
-<footer class="legal wrap"><p>{{ T.legal }}</p></footer>
-{% block share_js %}<script src="{% static 'lists/app.js' %}" defer></script>{% endblock %}
+<footer class="legal wrap"><p>{% tr 'legal' %}</p><p><a href="{% u '/privacy/' %}">{% tr 'privacy' %}</a> · <a href="{% u '/terms/' %}">{% tr 'terms' %}</a></p></footer>
+{% if fragment %}<div id="page-fragments" data-fragment="{{ fragment }}" hidden></div>{% endif %}
+<div class="toast" role="status" aria-live="polite" id="toast"></div>
+<script src="{% static 'catalog/app.js' %}" defer data-copied="{% tr 'copied' %}"></script>
 </body>
 </html>
 ```
@@ -24575,43 +22632,38 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 141. Software source: backend/lists/templates/lists/entry.html
+## 109. Software source: backend/catalog/templates/catalog/entry.html
 
 ```html
-{% extends "lists/base.html" %}{% load lists_extras %}
-{% block title %}{{ e.name }} · {{ T.site }}{% endblock %}
+{% extends "catalog/base.html" %}{% load catalog_tags %}
+{% block crumbs %}{% include "catalog/includes/crumbs.html" with link_last=True %}{% endblock %}
 {% block content %}
-{% include "lists/_crumbs.html" with link_last=True %}
-<h1>{{ e.name }}</h1>{% if e.name_alt %}<p class="muted">{{ e.name_alt }}</p>{% endif %}
-<p>{% if e.is_company %}<span class="pill pill-co">{{ T.company }}</span>{% endif %}{% include "lists/_chip.html" with level=e.level %}
-{% if e.status != 'active' %}<span class="chip closed">{{ T|tr:e.status }}</span>{% endif %}</p>
-{% include "lists/_share.html" %}
-<section class="sec"><dl class="facts">
-<dt>{{ T.checked }}</dt><dd class="num">{% if e.last_checked %}{{ e.last_checked|date:"j M Y" }}{% else %}-{% endif %}</dd>
-<dt>{{ T.entries }}</dt><dd>{{ e.type }} · {% if lang == 'ur' and e.area_ur %}{{ e.area_ur }}{% else %}{{ e.area }}{% endif %}</dd>
-<dt>{{ T.specialities }}</dt><dd>{% for s in e.specialities %}<span class="pill">{{ s }}</span>{% endfor %}{% if e.more_specialities %}<span class="pill">+{{ e.more_specialities }} {{ T.more }}</span>{% endif %}</dd>
-{% if subscriber %}
-<dt>{{ T.address }}</dt><dd>{{ e.address }}</dd>
-{% if e.latitude %}<dt>{{ T.map }}</dt><dd class="mono num">{{ e.latitude }}, {{ e.longitude }}</dd>{% endif %}
-{% if e.website %}<dt>{{ T.website }}</dt><dd><a href="{{ e.website }}" rel="noopener nofollow">{{ e.website }}</a></dd>{% endif %}
-{% if e.size %}<dt>{{ T.size }}</dt><dd>{{ e.size }}</dd>{% endif %}
-{% if e.markets %}<dt>{{ T.markets }}</dt><dd>{{ e.markets }}</dd>{% endif %}
-{% if e.moq %}<dt>{{ T.moq }}</dt><dd>{{ e.moq }}</dd>{% endif %}
-{% if e.price_note %}<dt>{{ T.prices }}</dt><dd>{{ e.price_note }}</dd>{% endif %}
-{% if e.certificates %}<dt>{{ T.certificates }}</dt><dd>{{ e.certificates }}</dd>{% endif %}
-{% if e.services %}<dt>{{ T.services }}</dt><dd>{{ e.services|join:", " }}</dd>{% endif %}
-{% if e.socials %}<dt>{{ T.social }}</dt><dd>{% for s in e.socials %}<a href="{{ s.url }}" rel="noopener nofollow">{{ s.channel }}</a> {% endfor %}</dd>{% endif %}
-{% else %}<dt>{{ T.address }}</dt><dd class="muted">{{ T.locked }}</dd>{% endif %}
+<h1 id="results">{{ entry.name }}</h1>
+{% if alt %}<p class="muted" dir="auto"><bdi>{{ alt }}</bdi></p>{% endif %}
+<p><a href="{% u list_url %}">{% clabel concept %}</a>
+{% if company %}<span class="pill pill-co">{% tr 'company_page' %}</span>{% endif %}
+{% if status_label %}<span class="chip closed">{% if status_label == 'closed' %}{% tr 'closed' %}{% elif status_label == 'moved' %}{% tr 'moved' %}{% else %}{% tr 'temporarily_closed' %}{% endif %}</span>{% endif %}</p>
+{% if closed %}<div class="notice">{% tr 'closed_notice' %}</div>{% endif %}
+<section class="sec" aria-label="{% tr 'checks_title' %}">
+<h2>{% tr 'checks_title' %}</h2>
+{% include "catalog/includes/check_key.html" %}
+<ul class="records">
+{% for c in checks %}<li>{% include "catalog/includes/check_chip.html" with level=c.level %}
+ <span class="small muted num">{% date c.date as d %}{% age c.date as a %}{% tr 'checked_on' date=d age=a %}{% if c.who %} · {% tr 'check_by' who=c.who %}{% endif %}{% if c.expired %} · {% tr 'check_expired' %}{% endif %}</span></li>
+{% empty %}<li>{% include "catalog/includes/check_chip.html" with level='none' %}</li>{% endfor %}
+</ul></section>
+<div id="entry-actions" class="actions"></div>
+{% include "catalog/includes/share_bar.html" %}
+<section class="sec"><h2>{% tr 'key_facts' %}</h2><dl class="facts">
+<dt>{% tr 'area' %}</dt><dd><bdi>{% pname place %}</bdi></dd>
+<dt>{% tr 'category' %}</dt><dd>{% clabel concept %}</dd>
+{% for key, val in free_details %}<dt>{% addon_label key %}</dt><dd>{% if val is True %}{% tr 'yes' %}{% elif val is False %}{% tr 'no' %}{% else %}{% enum_label val %}{% endif %}</dd>{% endfor %}
+{% if specialities %}<dt>{% tr 'specialities' %}</dt><dd>{% for s in specialities %}<span class="pill">{{ s }}</span>{% endfor %}{% if more_specialities %}<span class="pill">{% tr 'more_n' n=more_specialities %}</span>{% endif %}</dd>{% endif %}
+{% if services %}<dt>{% tr 'services' %}</dt><dd>{{ services|join:", " }}</dd>{% endif %}
+{% if certs %}<dt>{% tr 'certificates' %}</dt><dd>{{ certs|join:", " }}</dd>{% endif %}
 </dl></section>
-{% if e.is_company and subscriber and e.company_profile %}<section class="sec"><h2>{{ T.company }}</h2><p class="provided-tag">{{ T.provided_by }}</p><p>{{ e.company_profile|linebreaksbr }}</p></section>{% endif %}
-<section class="sec"><h2>{{ T.checked }}</h2><ul class="records">{% for c in e.checks %}<li>{% include "lists/_chip.html" with level=c.level %} <span class="num small muted">{{ c.checked_on|date:"j M Y" }} · {{ c.field }}</span></li>{% empty %}<li class="muted">{{ T.level_none }}</li>{% endfor %}</ul></section>
-<section class="sec"><h2>{{ T.enquiry }}</h2><p class="muted small">{{ T.contact_note }}</p>
-{% if subscriber %}<form method="post" action="/enquiry/">{% csrf_token %}<input type="hidden" name="entries" value="{{ entry.pk }}"><input type="hidden" name="next" value="{{ request.path }}">
-<p><label>{{ T.your_email }}<br><input type="email" name="reply_to" required></label></p>
-<p><label>{{ T.message }}<br><textarea name="message" rows="4" maxlength="2000" required></textarea></label></p>
-<button class="btn primary">{{ T.send }}</button></form>{% else %}<p>{{ T.subscribers_only }} <a href="#">{{ T.subscribe }}</a></p>{% endif %}</section>
-<section class="sec"><form method="post" action="/e/{{ entry.pk }}/report/" class="ctl">{% csrf_token %}<input name="note" placeholder="{{ T.note }}" aria-label="{{ T.note }}"><button class="btn">{{ T.report }}</button></form>
-<form method="post" action="/e/{{ entry.pk }}/claim/" class="ctl">{% csrf_token %}<input name="contact" placeholder="{{ T.contact }}" aria-label="{{ T.contact }}"><button class="btn">{{ T.claim }}</button></form></section>
+<div id="entry-detail"></div>
+{% include "catalog/includes/something_wrong.html" %}
 {% endblock %}
 ```
 
@@ -24619,87 +22671,177 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 142. Software source: backend/lists/templates/lists/home.html
+## 110. Software source: backend/catalog/templates/catalog/fragments/entry_detail.html
 
 ```html
-{% extends "lists/base.html" %}{% load lists_extras %}
-{% block content %}
-<h1>{{ T.site }}</h1><p class="muted">{{ T.tagline }}</p>
-<section class="locbar" aria-label="{{ T.near_you }}">
-{% if near %}<span class="where">{{ T.near_you }}: <a href="{{ near.url }}">{% label near.place lang %}</a> <span class="num">({{ near.count }} {{ T.entries }})</span></span>
-<span class="muted small">{% if location_source == 'guess' %}{{ T.guess_note }}{% else %}{{ T.chosen_note }}{% endif %}</span>
-{% else %}<span class="where">{{ T.no_place }}</span>{% endif %}
-<form method="post" action="/prefs/" class="ctl">{% csrf_token %}<input type="hidden" name="next" value="/">
-<label for="pl" class="visually-hidden">{{ T.choose_place }}</label>
-<select id="pl" name="place">{% for p in all_places %}<option value="{{ p.pk }}"{% if my_place and my_place.pk == p.pk %} selected{% endif %}>{% label p lang %} ({{ p.kind }})</option>{% endfor %}</select>
-<button class="btn" type="submit">{{ T.choose_place }}</button></form>
-</section>
-<h2>{{ T.countries }}</h2>
-<ul class="tilegrid">{% for c in countries %}<li><a class="tile" href="/p/{{ c.slug }}/"><strong>{% label c lang %}</strong></a></li>{% empty %}<li class="empty">{{ T.empty_body }}</li>{% endfor %}</ul>
-{% endblock %}
+{% load catalog_tags %}<div id="entry-actions" class="actions">{% if can_message %}<a class="btn primary" href="{% u '/message/' %}{{ entry.uid }}/">{% tr 'message_business' %}</a>{% endif %}</div>
+{% if full %}<div id="entry-detail"><section class="sec"><dl class="facts">
+{% if entry.address_text %}<dt>{% tr 'address' %}</dt><dd><bdi>{{ entry.address_text }}</bdi></dd>{% endif %}
+{% if entry.lat %}<dt>{% tr 'map_pin' %}</dt><dd class="mono num">{{ entry.lat }}, {{ entry.lon }}</dd>{% endif %}
+{% if entry.website %}<dt>{% tr 'website' %}</dt><dd><a href="{{ entry.website }}" rel="nofollow noopener noreferrer">{{ entry.website }}</a></dd>{% endif %}
+{% if entry.size_band %}<dt>{% tr 'size' %}</dt><dd>{{ entry.size_band }}</dd>{% endif %}
+{% for key, val in addons_locked %}<dt>{% addon_label key %}</dt><dd>{% if val is True %}{% tr 'yes' %}{% elif val is False %}{% tr 'no' %}{% else %}{% enum_label val %}{% endif %}</dd>{% endfor %}
+{% if socials %}<dt>{% tr 'social' %}</dt><dd>{% for s in socials %}<a href="{{ s.handle_or_url }}" rel="nofollow noopener noreferrer">{{ s.platform }}</a> {% endfor %}</dd>{% endif %}
+{% for s in services %}{% if s.price_minor %}<dt>{{ s.name_text }}</dt><dd class="num">{{ s.currency }} {{ s.price_minor }}{% if s.price_date %} · {% date s.price_date %}{% endif %}</dd>{% endif %}{% endfor %}
+{% for i in identifiers %}<dt>{{ i.scheme }}</dt><dd>{{ i.value }}{% if i.register_url %} · <a href="{{ i.register_url }}" rel="nofollow noopener noreferrer">register</a>{% endif %}</dd>{% endfor %}
+</dl></section></div>
+{% else %}<div id="entry-detail"><div class="co-note"><strong>{% tr 'subscriber_panel_title' %}</strong> {% tr 'subscriber_panel_body' %} <a href="{% u '/plans/' %}">{% tr 'subscribe' %}</a></div></div>{% endif %}
+{% if ads %}<div id="ad-slot" class="ad"><span class="small">{% tr 'ad_label' %}</span></div>{% endif %}
 ```
 
 
 
 ---
 
-## 143. Software source: backend/lists/templates/lists/list.html
+## 111. Software source: backend/catalog/templates/catalog/fragments/list_detail.html
 
 ```html
-{% extends "lists/base.html" %}{% load lists_extras %}
-{% block title %}{% label ltype lang %} · {{ place.name }} · {{ T.site }}{% endblock %}
-{% block searchbox %}<input type="search" name="q" value="{{ q }}" placeholder="{{ T.search }}" aria-label="{{ T.search }}"><button class="btn primary">{{ T.search_go }}</button>{% endblock %}
-{% block content %}
-{% include "lists/_crumbs.html" %}
-<h1>{% label ltype lang %}: {% label place lang %}</h1>
-<section class="hero" aria-label="trust"><div class="hero-num num">{{ trust.pct }}%</div><div class="hero-body">
-<p>{{ T.trust }} <span class="muted num">({{ trust.total }} {{ T.entries }})</span></p>
-<div class="tbar" role="img" aria-label="{{ trust.pct }}%"><i class="t-s" style="--w:{{ trust.s }}%"></i><i class="t-o" style="--w:{{ trust.o }}%"></i><i class="t-a" style="--w:{{ trust.a }}%"></i></div>
-<div class="legend"><span><b class="t-s" style="background:var(--ok)"></b>{{ T.level_surveyor }}</span><span><b style="background:color-mix(in oklab,var(--ok) 55%,var(--surface))"></b>{{ T.level_owner }}</span><span><b></b>{{ T.level_ai }}</span></div></div></section>
-{% include "lists/_share.html" %}
-<div class="actions">
-<form method="get" class="ctl"><input type="hidden" name="q" value="{{ q }}">
-<label for="area" class="visually-hidden">{{ T.all_areas }}</label>
-<select id="area" name="area" onchange="this.form.submit()"><option value="">{{ T.all_areas }}</option>{% for a in areas %}<option value="{{ a.slug }}"{% if a.slug == area %} selected{% endif %}>{% label a lang %}</option>{% endfor %}</select>
-<label for="sort" class="visually-hidden">{{ T.sort }}</label>
-<select id="sort" name="sort" onchange="this.form.submit()"><option value="name"{% if sort == 'name' %} selected{% endif %}>{{ T.sort_name }}</option><option value="checked"{% if sort == 'checked' %} selected{% endif %}>{{ T.sort_checked }}</option></select></form>
-<form method="post" action="/prefs/" class="vt">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
-<button name="view" value="list" aria-pressed="{% if view_mode == 'list' %}true{% else %}false{% endif %}">{{ T.view_list }}</button><button name="view" value="cards" aria-pressed="{% if view_mode == 'cards' %}true{% else %}false{% endif %}">{{ T.view_cards }}</button></form>
+{% load catalog_tags %}{% for d in details %}{% if not names_only %}<span id="detail-{{ d.uid }}"> · {% clabel d.type %}{% for s in d.specs %} <span class="pill">{{ s }}</span>{% endfor %}{% if d.more %} <span class="pill">{% tr 'more_n' n=d.more %}</span>{% endif %}</span>{% endif %}{% endfor %}
+{% if names_only %}<div id="sub-panel" class="co-note">{% tr 'names_only_note' %} <a href="{% u '/plans/' %}">{% tr 'subscribe' %}</a></div>{% elif locked %}<div id="sub-panel" class="co-note"><strong>{% tr 'subscriber_panel_title' %}</strong> {% tr 'subscriber_panel_body' %} <a href="{% u '/plans/' %}">{% tr 'subscribe' %}</a></div>{% endif %}
+{% if ads %}<div id="ad-slot" class="ad"><span class="small">{% tr 'ad_label' %}</span></div>{% endif %}
+```
+
+
+
+---
+
+## 112. Software source: backend/catalog/templates/catalog/fragments/near_you.html
+
+```html
+{% load catalog_tags %}<div id="near-you" class="locbar">
+{% if place %}<span class="where">{% tr 'near_you' %}: <a href="{% u steps.0.url %}">{% pname place %}</a></span>
+<span class="small muted">{% if source == 'guess' %}{% pname place as pn %}{% tr 'near_you_guess' place=pn %}{% else %}{% pname place as pn %}{% tr 'near_you_chosen' place=pn %}{% endif %}</span>
+<span class="widen">{% for s in steps %}<a class="chip-link" href="{% u s.url %}">{% if s.place.level == 'world' %}{% tr 'home' %}{% else %}{% pname s.place %}{% endif %} <span class="num">({{ s.n }})</span></a> {% endfor %}</span>
+{% else %}<span class="where">{% tr 'near_you_none' %}</span>{% endif %}
+<form method="post" action="{% u '/prefs/' %}" class="ctl">{% csrf_token %}<input type="hidden" name="next" value="{{ request.META.HTTP_REFERER|default:'/' }}">
+<label for="pl" class="visually-hidden">{% tr 'change_place' %}</label>
+<select id="pl" name="place">{% for p in all_places %}<option value="{{ p.uid }}"{% if place and place.pk == p.pk %} selected{% endif %}>{{ p.path }}</option>{% endfor %}</select>
+<button class="btn" type="submit">{% tr 'change_place' %}</button>
+{% if demo_mode %}<button class="btn quiet" type="submit" name="plan" value="{% if demo_plan == 'subscriber' %}free{% else %}subscriber{% endif %}">{% tr 'demo_plan' %}: {% if demo_plan == 'subscriber' %}{% tr 'plan_subscriber' %}{% else %}{% tr 'plan_free' %}{% endif %}</button>{% endif %}</form>
 </div>
-{% if names_only %}<p class="co-note">{{ T.widen_note }} <a href="#">{{ T.subscribe }}</a></p>{% endif %}
-{% if rows %}
-<ul class="rows enter{% if view_mode == 'cards' %} cards{% endif %}">
-{% for r in rows %}<li class="row{% if r.sponsored %} sponsored-row{% endif %}" style="--i:{{ forloop.counter0 }}">
-<div><a class="nm" href="{{ r.url }}">{{ r.name }}</a>{% if r.name_alt %}<span class="alt">{{ r.name_alt }}</span>{% endif %}
-{% if r.is_company %}<span class="pill pill-co">{{ T.company }}</span>{% endif %}{% if r.sponsored %}<span class="sponsored-label">{{ T.sponsored }}</span>{% endif %}
-{% if r.status != 'active' %}<span class="chip closed">{{ T|tr:r.status }}</span>{% endif %}</div>
-<div class="muted">{% if lang == 'ur' and r.area_ur %}{{ r.area_ur }}{% else %}{{ r.area }}{% endif %}{% if r.type %} · {{ r.type }}{% endif %}
-{% for s in r.specialities %}<span class="pill">{{ s }}</span>{% endfor %}{% if r.more_specialities %}<span class="pill">+{{ r.more_specialities }} {{ T.more }}</span>{% endif %}</div>
-<div>{% include "lists/_chip.html" with level=r.level %}{% if r.last_checked %}<span class="small muted num">{{ T.checked }} {{ r.last_checked|date:"j M Y" }}</span>{% endif %}</div>
-</li>{% endfor %}
-</ul>
-{% if shown < total %}<p class="muted">{{ shown }} / {{ total }} · <a href="#">{{ T.subscribe }}</a></p>{% endif %}
-{% else %}<div class="empty"><strong>{{ T.empty_title }}</strong><p>{{ T.empty_body }}</p></div>{% endif %}
-<div class="ad">{{ T.ads }}</div>
-{% endblock %}
 ```
 
 
 
 ---
 
-## 144. Software source: backend/lists/templates/lists/place.html
+## 113. Software source: backend/catalog/templates/catalog/includes/check_chip.html
 
 ```html
-{% extends "lists/base.html" %}{% load lists_extras %}
-{% block title %}{{ place.name }} · {{ T.site }}{% endblock %}
+{% load catalog_tags %}<span class="chip {% if level == 'surveyor' %}surveyor{% elif level == 'owner' %}owner{% elif level == 'ai' %}ai{% else %}none{% endif %}" {% if level == 'surveyor' %}title="{% tr 'level_surveyor_help' %}"{% elif level == 'owner' %}title="{% tr 'level_owner_help' %}"{% elif level == 'ai' %}title="{% tr 'level_ai_help' %}"{% else %}title="{% tr 'level_none_help' %}"{% endif %}>{% if level == 'surveyor' %}{% tr 'level_surveyor' %}{% elif level == 'owner' %}{% tr 'level_owner' %}{% elif level == 'ai' %}{% tr 'level_ai' %}{% else %}{% tr 'level_none' %}{% endif %}</span>
+```
+
+
+
+---
+
+## 114. Software source: backend/catalog/templates/catalog/includes/check_key.html
+
+```html
+{% load catalog_tags %}<details class="key"><summary>{% tr 'check_key_title' %}</summary><dl>
+<dt>{% tr 'level_surveyor' %}</dt><dd>{% tr 'level_surveyor_help' %}</dd>
+<dt>{% tr 'level_owner' %}</dt><dd>{% tr 'level_owner_help' %}</dd>
+<dt>{% tr 'level_ai' %}</dt><dd>{% tr 'level_ai_help' %}</dd>
+<dt>{% tr 'level_none' %}</dt><dd>{% tr 'level_none_help' %}</dd>
+</dl></details>
+```
+
+
+
+---
+
+## 115. Software source: backend/catalog/templates/catalog/includes/crumbs.html
+
+```html
+{% load catalog_tags %}{% if crumbs %}<nav class="crumbs" aria-label="Breadcrumb"><ol>
+{% for c in crumbs %}<li>{% if forloop.last and not link_last %}<strong aria-current="page">{% pname c.place %}</strong>{% else %}<a href="{% u c.url %}">{% if c.place.level == 'world' %}{% tr 'home' %}{% else %}{% pname c.place %}{% endif %}</a>{% endif %}</li>{% endfor %}
+</ol></nav>{% endif %}
+```
+
+
+
+---
+
+## 116. Software source: backend/catalog/templates/catalog/includes/row.html
+
+```html
+{% load catalog_tags %}<li class="row{% if r.closed %} closed-row{% endif %}" style="--i:{{ forloop.counter0 }}">
+<div><a class="nm" href="{% u r.url %}">{{ r.name }}</a>{% if r.alt %}<span class="alt" dir="auto"><bdi>{{ r.alt }}</bdi></span>{% endif %}
+{% if r.company %}<span class="pill pill-co">{% tr 'company_page' %}</span>{% endif %}
+{% if r.status != 'open' %}<span class="chip closed">{% if r.status == 'permanently_closed' %}{% tr 'closed' %}{% elif r.status == 'moved' %}{% tr 'moved' %}{% else %}{% tr 'temporarily_closed' %}{% endif %}</span>{% endif %}</div>
+<div class="muted"><bdi>{% pname r.area %}</bdi><span id="detail-{{ r.uid }}"></span></div>
+<div>{% include "catalog/includes/check_chip.html" with level=r.level %}{% if r.checked %}<span class="small muted num"> {% date r.checked as d %}{% age r.checked as a %}{% tr 'checked_on' date=d age=a %}</span>{% endif %}</div>
+</li>
+```
+
+
+
+---
+
+## 117. Software source: backend/catalog/templates/catalog/includes/share_bar.html
+
+```html
+{% load catalog_tags %}{% if share_links %}<div class="actions" role="group" aria-label="{% tr 'share' %}">
+{% for ch in share_links %}{% if ch.group == 'main' %}{% if ch.kind == 'native' %}<button class="btn" type="button" data-native-share data-title="{{ ch.title }}" data-url="{{ ch.copy }}" hidden>{% tr 'share' %}</button>{% elif ch.kind == 'copy' %}<button class="btn" type="button" data-copy="{{ ch.copy }}">{% tr 'copy_link' %}</button>{% else %}<a class="btn" rel="noopener" target="_blank" href="{{ ch.href }}">{{ ch.label }}</a>{% endif %}{% endif %}{% endfor %}
+<details class="key more"><summary>{% tr 'share_more' %}</summary><div class="actions">{% for ch in share_links %}{% if ch.group == 'more' %}<a class="btn" rel="noopener" target="_blank" href="{{ ch.href }}">{{ ch.label }}</a>{% endif %}{% endfor %}</div></details>
+</div>{% endif %}
+```
+
+
+
+---
+
+## 118. Software source: backend/catalog/templates/catalog/includes/something_wrong.html
+
+```html
+{% load catalog_tags %}<section class="sec" id="something-wrong"><h2>{% tr 'something_wrong' %}</h2><p class="muted">{% tr 'something_wrong_body' %}</p></section>
+```
+
+
+
+---
+
+## 119. Software source: backend/catalog/templates/catalog/list.html
+
+```html
+{% extends "catalog/base.html" %}{% load catalog_tags %}
 {% block content %}
-{% include "lists/_crumbs.html" %}
-<h1>{% label place lang %}</h1><p class="muted num">{{ total }} {{ T.entries }}</p>
-{% if children %}<h2>{{ T.places_in }} {% label place lang %}</h2>
-<ul class="tilegrid">{% for c in children %}<li><a class="tile" href="{{ c.url }}"><strong>{% label c.p lang %}</strong><span class="big num">{{ c.n }}</span></a></li>{% endfor %}</ul>{% endif %}
-<h2>{{ T.lists_here }}</h2>
-<ul class="tilegrid">{% for t in types %}<li><a class="tile" href="{{ place_url }}l/{{ t.slug }}/"><strong>{% label t lang %}</strong><span class="big num">{{ t.n }}</span></a></li>{% empty %}<li class="empty"><strong>{{ T.empty_title }}</strong><p>{{ T.empty_body }}</p></li>{% endfor %}</ul>
+<h1>{% tr 'list_title' list_type=names.list_type place=names.place %}</h1>
+<p class="muted">{% tr 'scope_line' list_type=names.list_type place=names.place %}</p>
+{% if empty %}
+<div class="empty" id="results"><strong>{% tr 'empty_title' %}</strong>
+<p>{% tr 'empty_body' list_type=names.list_type place=names.place %}</p>
+<p><a class="btn primary" href="{% u '/add/' %}">{% tr 'add_entry' %}</a> <a class="btn" href="{% u '/add/area/' %}">{% tr 'suggest_area' %}</a></p></div>
+{% else %}
+<section class="hero" aria-label="{% tr 'trust_hero_label' %}">
+  <div class="hero-num num">{{ trust.pct }}%</div>
+  <div class="hero-body">
+    <p>{% tr 'trust_hero_label' %}</p>
+    <div class="tbar" role="img" aria-label="{{ trust.pct }}%"><i class="t-s" style="--w:{{ trust.s }}%"></i><i class="t-o" style="--w:{{ trust.o }}%"></i><i class="t-a" style="--w:{{ trust.a }}%"></i></div>
+    <div class="legend"><span><b style="background:var(--ok)"></b>{% tr 'legend_surveyor' %}</span><span><b style="background:color-mix(in oklab,var(--ok) 55%,var(--surface))"></b>{% tr 'legend_owner' %}</span><span><b></b>{% tr 'legend_ai' %}</span></div>
+    <p class="small muted">{% date last as d %}{% tr 'trust_line' published=published awaiting=awaiting date=d %}</p>
+  </div>
+</section>
+{% include "catalog/includes/check_key.html" %}
+{% include "catalog/includes/share_bar.html" %}
+{% if chips %}<nav class="chips" aria-label="{% tr 'areas' %}">
+  <a class="chip-link" href="{% u path %}" {% if not area %}aria-current="true"{% endif %}>{% tr 'all_areas' %}</a>
+  {% for c, n in chips %}<a class="chip-link" href="{% u path %}?area={{ c.slug }}" {% if area and area.pk == c.pk %}aria-current="true"{% endif %}>{% pname c as nm %}{% tr 'area_count' area=nm n=n %}</a>{% endfor %}
+</nav>{% endif %}
+<div class="actions">
+  <a class="btn quiet" href="{% u path %}{% if sort != 'checked' %}?sort=checked{% endif %}">{% if sort == 'checked' %}{% tr 'sort_name' %}{% else %}{% tr 'sort_checked' %}{% endif %}</a>
+  <span class="vt" role="group" aria-label="view"><button type="button" data-view="list" aria-pressed="true">{% tr 'view_list' %}</button><button type="button" data-view="cards" aria-pressed="false">{% tr 'view_cards' %}</button></span>
+  {% if area or sort %}<a class="btn quiet" href="{% u path %}">{% tr 'clear_filters' %}</a>{% endif %}
+</div>
+<ul class="rows enter" id="results" data-view-target>
+{% for r in rows %}{% include "catalog/includes/row.html" %}{% endfor %}
+</ul>
+{% if page.paginator.num_pages > 1 %}<nav class="actions pager" aria-label="pages">
+{% if page.has_previous %}<a class="btn" rel="prev" href="{% u path %}?page={{ page.previous_page_number }}{% if area %}&area={{ area.slug }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{% tr 'page_prev' %}</a>{% endif %}
+<span class="muted num">{% tr 'page_of' page=page.number pages=page.paginator.num_pages %}</span>
+{% if page.has_next %}<a class="btn" rel="next" href="{% u path %}?page={{ page.next_page_number }}{% if area %}&area={{ area.slug }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{% tr 'page_next' %}</a>{% endif %}</nav>{% endif %}
+{% endif %}
+{% include "catalog/includes/something_wrong.html" %}
 {% endblock %}
 ```
 
@@ -24707,7 +22849,26 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 145. Software source: backend/lists/templatetags/__init__.py
+## 120. Software source: backend/catalog/templates/catalog/place.html
+
+```html
+{% extends "catalog/base.html" %}{% load catalog_tags %}
+{% block content %}
+<h1>{% if is_world %}AllLists{% else %}{% pname place %}{% endif %}</h1>
+<p class="muted num">{% tr 'n_entries' n=total %}</p>
+{% if children %}<h2>{% if is_world %}{% tr 'countries' %}{% else %}{% pname place as pn %}{% tr 'places_in' place=pn %}{% endif %}</h2>
+<ul class="tilegrid">{% for c, n, url in children %}<li><a class="tile" href="{% u url %}"><strong>{% pname c %}</strong><span class="big num">{{ n }}</span></a></li>{% endfor %}</ul>{% endif %}
+<h2 id="results">{% tr 'lists_here' %}</h2>
+{% if tiles %}<ul class="tilegrid">{% for t in tiles %}<li><a class="tile" href="{% u t.url %}"><strong>{% clabel t.concept %}</strong><span class="big num">{{ t.n }}</span></a></li>{% endfor %}</ul>
+{% else %}<div class="empty"><strong>{% tr 'empty_title' %}</strong></div>{% endif %}
+{% endblock %}
+```
+
+
+
+---
+
+## 121. Software source: backend/catalog/templatetags/__init__.py
 
 ```py
 
@@ -24717,39 +22878,76 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 146. Software source: backend/lists/templatetags/lists_extras.py
+## 122. Software source: backend/catalog/templatetags/catalog_tags.py
 
 ```py
 from django import template
+from django.utils import timezone
+
+from catalog import format as fmt
+from catalog import strings
 
 register = template.Library()
 
 
-@register.filter
-def tr(strings, key):
-    return strings.get(key, key)
+@register.simple_tag(takes_context=True)
+def tr(context, key, **kw):
+    return strings.t(context["lang"], key, **kw)
+
+
+@register.simple_tag(takes_context=True)
+def u(context, path):
+    """Prefix an internal address with the language prefix."""
+    return context.get("prefix", "") + path
+
+
+@register.simple_tag(takes_context=True)
+def date(context, value):
+    return fmt.fmt_date(context["lang"], value)
+
+
+@register.simple_tag(takes_context=True)
+def age(context, value):
+    return fmt.age_text(context["lang"], value, timezone.now().date())
+
+
+@register.simple_tag(takes_context=True)
+def pname(context, place):
+    return place.name_for(context["lang"])
+
+
+@register.simple_tag(takes_context=True)
+def clabel(context, concept):
+    return concept.label(context["lang"])
 
 
 @register.filter
-def level_label(strings, level):
-    return strings.get("level_" + (level or "none"), level)
+def get(d, key):
+    return d.get(key, "") if hasattr(d, "get") else ""
 
 
 @register.filter
-def place_label(place, lang):
-    return place.label(lang)
+def humanize(key):
+    return str(key).replace("_", " ").capitalize()
 
 
-@register.simple_tag
-def label(obj, lang):
-    return obj.label(lang)
+@register.simple_tag(takes_context=True)
+def addon_label(context, key):
+    k = f"addon_{key}"
+    return strings.t(context["lang"], k) if k in strings.EN else str(key).replace("_", " ").capitalize()
+
+
+@register.simple_tag(takes_context=True)
+def enum_label(context, value):
+    k = f"enum_{value}"
+    return strings.t(context["lang"], k) if isinstance(value, str) and k in strings.EN else value
 ```
 
 
 
 ---
 
-## 147. Software source: backend/lists/tests/__init__.py
+## 123. Software source: backend/catalog/tests/__init__.py
 
 ```py
 
@@ -24759,192 +22957,420 @@ def label(obj, lang):
 
 ---
 
-## 148. Software source: backend/lists/tests/test_app.py
+## 124. Software source: backend/catalog/tests/test_pages.py
 
 ```py
-import datetime
+import json
+import re
 
 import pytest
-from django.contrib.auth.models import User
-from django.core.management import call_command
 from django.test import Client
 
-from lists.models import Check, Contribution, Enquiry, Entry, ListType, Place, Report, Sale
-from lists.share import build
+from core.models import CountrySwitch
+from entries import services as es
 
-LIST_URL = "/p/pakistan/punjab/sialkot/l/surgical-instrument-makers/"
+LIST = "/pk/punjab/sialkot/surgical-instrument-makers/"
+PHONE_PARTS = ("300 000 0000", "3000000000", "923000000000", "0300 000 0000")
 
 
 @pytest.fixture
-def demo(db):
-    call_command("seed_demo")
+def demo(settings):
+    settings.DEMO_MODE = True
 
 
-def sub_client():
+@pytest.fixture
+def world_data(tree, surgical, make_published, users):
+    a = make_published("Crescent Surgical Works", tree["paris"], phone="0300 000 0000")
+    b = make_published("Falcon Medical Instruments", tree["sialkot"], level="surveyor", phone="0300 000 0001")
+    return {"a": a, "b": b, **tree}
+
+
+def subscriber_client(settings):
     c = Client()
-    c.post("/prefs/", {"plan": "subscriber"})
+    c.post("/prefs/", {"plan": "subscriber", "next": "/"})
     return c
 
 
-def first_pk(name="Crescent Surgical Works"):
-    return Entry.objects.get(name=name).pk
-
-
-def test_demo_seed_is_idempotent(demo):
-    call_command("seed_demo")
-    assert Entry.objects.count() == 6
-
-
-def test_home_and_place_pages(demo):
+def own_place_client(place):
     c = Client()
-    assert b"Pakistan" in c.get("/").content
-    r = c.get("/p/pakistan/punjab/sialkot/")
-    assert r.status_code == 200 and b"Surgical instrument makers" in r.content
-    assert c.get("/p/nowhere/").status_code == 404
+    c.post("/prefs/", {"place": place.uid, "next": "/"})
+    return c
 
 
-def test_contacts_never_shown_to_anyone(demo, settings):
-    settings.DEMO_MODE = True
-    pk = first_pk()
-    for client in (Client(), sub_client()):
-        for url in (LIST_URL, f"/e/{pk}/"):
+def test_pages_render_and_resolve(world_data):
+    c = Client()
+    assert c.get("/").status_code == 200
+    assert c.get("/pk/").status_code == 200 and c.get("/pk/punjab/sialkot/").status_code == 200
+    assert c.get(LIST).status_code == 200
+    assert c.get("/pk/punjab/sialkot/nonsense/").status_code == 404
+    assert c.get("/zz/").status_code == 404
+    assert b"Page not found" in c.get("/zz/").content
+
+
+def test_titles_canonical_and_hreflang(world_data):
+    html = Client().get(LIST).content.decode()
+    assert "<title>Surgical instrument makers in Sialkot – AllLists</title>" in html
+    assert 'rel="canonical" href="http://testserver/pk/punjab/sialkot/surgical-instrument-makers/"' in html
+    assert 'hreflang="ur" href="http://testserver/ur/pk/punjab/sialkot/surgical-instrument-makers/"' in html
+    e = world_data["a"]
+    entry_html = Client().get(f"/e/{e.uid}/crescent-surgical-works/").content.decode()
+    assert "<title>Crescent Surgical Works – Surgical instrument makers in Paris Road – AllLists</title>" in entry_html
+
+
+def test_shell_identical_for_every_viewer_and_cacheable(world_data, demo, settings):
+    """R05: location and plan never change the bytes at an address."""
+    anon = Client().get(LIST)
+    sub = subscriber_client(settings)
+    guessed = Client()
+    a = anon.content
+    assert sub.get(LIST).content == a
+    assert guessed.get(LIST, HTTP_CF_IPCOUNTRY="PK", HTTP_CF_IPCITY="Sialkot").content == a
+    assert guessed.get(LIST, HTTP_CF_IPCOUNTRY="AE", HTTP_CF_IPCITY="Dubai").content == a
+    assert "Cookie" not in anon.get("Vary", "")
+    assert "public" in anon["Cache-Control"] and "s-maxage" in anon["Cache-Control"]
+    assert anon["X-Template-Version"] == "1"
+    etag = anon["ETag"]
+    again = Client().get(LIST, HTTP_IF_NONE_MATCH=etag)
+    assert again.status_code == 304
+
+
+def test_entry_shell_identical_for_every_viewer(world_data, demo, settings):
+    e = world_data["a"]
+    url = f"/e/{e.uid}/crescent-surgical-works/"
+    anon = Client().get(url).content
+    assert subscriber_client(settings).get(url).content == anon
+    assert "Cookie" not in Client().get(url).get("Vary", "")
+
+
+def test_no_redirect_by_location(world_data):
+    r = Client().get(LIST, HTTP_CF_IPCOUNTRY="AE", HTTP_CF_IPCITY="Dubai")
+    assert r.status_code == 200
+
+
+def test_contacts_never_rendered_anywhere(world_data, demo, settings):
+    e = world_data["a"]
+    sub = subscriber_client(settings)
+    urls = [
+        "/",
+        "/pk/",
+        LIST,
+        f"/e/{e.uid}/crescent-surgical-works/",
+        "/_f/list/?path=pk.punjab.sialkot&type=surgical-instrument-makers",
+        f"/_f/entry/{e.uid}/",
+        "/_f/near-you/",
+        "/ur" + LIST,
+    ]
+    for client in (Client(), sub):
+        for url in urls:
             body = client.get(url).content.decode()
-            assert "+92 300" not in body and "0000000" not in body
+            assert not any(p in body for p in PHONE_PARTS), url
+            assert "value_enc" not in body and "value_hash" not in body
 
 
-def test_free_viewer_sees_limited_fields(demo, settings):
-    settings.DEMO_MODE = True
-    pk = first_pk()
-    body = Client().get(f"/e/{pk}/").content.decode()
-    assert "Plot 10" not in body and "example.org" not in body
-    assert "+1 more" in body  # 4 specialities, free sees 3
-    sub = sub_client().get(f"/e/{pk}/").content.decode()
-    assert "Plot 10" in sub and "example.org" in sub and "Family firm" in sub
+def test_draft_hidden_and_counts_say_awaiting(world_data, tree, surgical, users):
+    from analytics.rollups import recount_all
+
+    draft = es.create_entry(
+        name="Hidden Draft Co",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
+    recount_all()
+    html = Client().get(LIST).content.decode()
+    assert "Hidden Draft Co" not in html
+    assert "2 published, 1 awaiting verification" in html
+    assert Client().get(f"/e/{draft.uid}/hidden-draft-co/").status_code == 404
 
 
-def test_company_page_extra_section_only_for_company(demo, settings):
-    settings.DEMO_MODE = True
-    basic = first_pk("Royal Steel Instruments")
-    assert b"Family firm" not in sub_client().get(f"/e/{basic}/").content
+def test_rows_have_no_position_numbers_and_no_not_stated(world_data):
+    html = Client().get(LIST).content.decode()
+    assert "<ol" not in html.split('id="results"')[1].split("</ul>")[0]
+    assert "Not stated" not in html and "not stated" not in html
+    assert re.search(r'class="nm"[^>]*>\s*\d+[.)]', html) is None
 
 
-def test_wider_list_is_names_only_for_free(demo, settings):
-    settings.DEMO_MODE = True
-    free = Client().get(LIST_URL).content.decode()  # no own place known: wider scope
-    assert "Crescent Surgical Works" in free and "Manufacturer" not in free
-    own = Client()
-    own.post("/prefs/", {"place": Place.objects.get(slug="sialkot").pk})
-    assert b"Manufacturer" in own.get(LIST_URL).content
+def test_list_shell_is_names_only_safe(world_data):
+    """The shared shell shows name, area and check; richer free fields arrive through the private fragment."""
+    html = Client().get(LIST).content.decode()
+    assert "Crescent Surgical Works" in html and "Paris Road" in html and "Surveyor-verified" in html
+    assert "scissors" not in html and "example.org" not in html
 
 
-def test_location_guess_from_edge_headers(demo):
-    r = Client().get("/", HTTP_CF_IPCOUNTRY="PK", HTTP_CF_IPCITY="Sialkot")
-    assert r.status_code == 200 and b"Guessed" in r.content
+def test_urdu_prefix_rtl_and_prefixed_links(world_data):
+    html = Client().get("/ur" + LIST).content.decode()
+    assert 'lang="ur"' in html and 'dir="rtl"' in html
+    assert 'href="/ur/pk/punjab/sialkot/"' in html or 'href="/ur/pk/"' in html
+    assert 'hreflang="en"' in html and 'href="/pk/punjab/sialkot/surgical-instrument-makers/"' in html  # switch back
+    assert Client().get("/ur/").status_code == 200
 
 
-def test_urdu_switch_sets_rtl(demo):
+def test_robots_meta_rules(world_data, tree, make_published, surgical):
     c = Client()
-    c.post("/prefs/", {"lang": "ur"})
-    assert 'dir="rtl"' in c.get("/").content.decode()
+    assert 'content="noindex,follow"' in c.get(LIST).content.decode()  # switch off
+    CountrySwitch.objects.create(country_code="PK", indexing_on=True)
+    assert 'content="noindex,follow"' in c.get(LIST).content.decode()  # only 2 verified, threshold 10
+    for i in range(9):
+        make_published(f"Maker {i} Works", tree["paris"], phone=f"0301 000 00{i}0", refresh=False)
+    from analytics.rollups import recount_all
+
+    recount_all()
+    html = c.get(LIST).content.decode()
+    assert 'content="index,follow"' in html
+    assert 'content="noindex,follow"' in c.get(LIST + "?sort=checked").content.decode()  # filters and sorts never index
+    assert 'content="noindex,follow"' in c.get(LIST + "?area=paris-road").content.decode()
 
 
-def test_prefs_rejects_open_redirect(demo):
-    r = Client().post("/prefs/", {"lang": "en", "next": "https://evil.example/"})
+def test_robots_txt_does_not_block_thin_pages(client):
+    body = client.get("/robots.txt").content.decode()
+    assert "Disallow: /_f/" in body and "Disallow: /admin/" in body
+    assert "Disallow: /pk" not in body and "Disallow: /\n" not in body and "Sitemap:" in body
+
+
+def test_sitemap_lists_only_indexable_pages(world_data, tree, make_published, client):
+    assert b"<loc>" not in client.get("/sitemap.xml").content
+    CountrySwitch.objects.create(country_code="PK", indexing_on=True)
+    for i in range(9):
+        make_published(f"Maker {i} Works", tree["paris"], phone=f"0301 000 00{i}0", refresh=False)
+    from analytics.rollups import recount_all
+
+    recount_all()
+    idx = client.get("/sitemap.xml").content.decode()
+    assert "/sitemaps/pk-1.xml" in idx
+    shard = client.get("/sitemaps/pk-1.xml").content.decode()
+    assert "http://testserver/pk/punjab/sialkot/surgical-instrument-makers/" in shard
+    assert client.get("/sitemaps/pk-2.xml").status_code == 404
+
+
+def test_fragments_are_private_noindex_and_never_cached(world_data):
+    r = Client().get("/_f/list/?path=pk.punjab.sialkot&type=surgical-instrument-makers")
+    assert r["Cache-Control"] == "private, no-store" and "Cookie" in r["Vary"] and r["X-Robots-Tag"] == "noindex"
+    assert Client().get("/_f/near-you/")["Cache-Control"] == "private, no-store"
+
+
+def test_wider_than_own_place_is_names_only_for_free(world_data):
+    path = "/_f/list/?path=pk.punjab.sialkot&type=surgical-instrument-makers"
+    free_no_place = Client().get(path).content.decode()
+    assert "names only" in free_no_place.lower() and "detail-" not in free_no_place
+    own = own_place_client(world_data["sialkot"]).get(path).content.decode()
+    assert "detail-" in own and "scissors" in own and "names only" not in own.lower()
+    other = (
+        own_place_client(world_data["sialkot"])
+        .get("/_f/list/?path=pk&type=surgical-instrument-makers")
+        .content.decode()
+    )
+    assert "names only" in other.lower()
+
+
+def test_subscriber_fragment_has_full_specialities_and_no_ads(world_data, demo, settings):
+    path = "/_f/list/?path=pk.punjab.sialkot&type=surgical-instrument-makers"
+    free = own_place_client(world_data["sialkot"]).get(path).content.decode()
+    assert 'id="ad-slot"' in free
+    sub = subscriber_client(settings).get(path).content.decode()
+    assert 'id="ad-slot"' not in sub
+
+
+def test_entry_fragment_free_locked_subscriber_sees_details_but_never_contacts(world_data, demo, settings):
+    e = world_data["a"]
+    free = Client().get(f"/_f/entry/{e.uid}/").content.decode()
+    assert "example.org" not in free and "What subscribers also see" in free
+    sub = subscriber_client(settings).get(f"/_f/entry/{e.uid}/").content.decode()
+    assert "https://example.org/crescent" in sub and "What subscribers also see" not in sub
+    assert not any(p in sub for p in PHONE_PARTS)
+    assert 'id="ad-slot"' not in sub
+
+
+def test_demo_plan_switch_is_off_outside_demo(world_data, settings):
+    settings.DEMO_MODE = False
+    c = Client()
+    c.post("/prefs/", {"plan": "subscriber", "next": "/"})
+    e = world_data["a"]
+    assert "example.org" not in c.get(f"/_f/entry/{e.uid}/").content.decode()
+
+
+def test_prefs_rejects_open_redirect(world_data):
+    r = Client().post("/prefs/", {"next": "https://evil.example/"})
     assert r["Location"] == "/"
 
 
-def test_plan_switch_disabled_outside_demo(demo, settings):
-    settings.DEMO_MODE = False
-    c = Client()
-    c.post("/prefs/", {"plan": "subscriber"})
-    assert b"Plot 10" not in c.get(f"/e/{first_pk()}/").content
+def test_near_you_uses_edge_guess_and_says_so(world_data):
+    html = Client().get("/_f/near-you/", HTTP_CF_IPCOUNTRY="PK", HTTP_CF_IPCITY="Sialkot").content.decode()
+    assert "guess from your connection" in html and "Sialkot" in html
+    assert "could not tell" in Client().get("/_f/near-you/").content.decode()
 
 
-def test_enquiry_requires_subscriber(demo, settings):
-    settings.DEMO_MODE = True
-    data = {"entries": str(first_pk()), "reply_to": "a@b.co", "message": "Need 500 scissors"}
-    Client().post("/enquiry/", data)
-    assert Enquiry.objects.count() == 0
-    sub_client().post("/enquiry/", data)
-    assert Enquiry.objects.count() == 1
+def test_closed_entry_shows_notice_and_no_message_button(world_data, users):
+    e = world_data["a"]
+    open_frag = Client().get(f"/_f/entry/{e.uid}/").content.decode()
+    assert "Message this business" in open_frag
+    es.update_entry(e, status="permanently_closed")
+    html = Client().get(f"/e/{e.uid}/crescent-surgical-works/").content.decode()
+    assert "This business is closed" in html
+    assert "Message this business" not in Client().get(f"/_f/entry/{e.uid}/").content.decode()
 
 
-def test_report_and_claim(demo):
-    c = Client()
-    pk = first_pk()
-    c.post(f"/e/{pk}/report/", {"note": "closed"})
-    c.post(f"/e/{pk}/claim/", {"contact": "me@x.co"})
-    assert Report.objects.filter(kind="report").count() == 1 and Report.objects.filter(kind="claim").count() == 1
-    assert c.post(f"/e/{pk}/bogus/").status_code == 404
+def test_old_slug_and_merged_entries_redirect(world_data, tree, surgical, users):
+    e, other = world_data["a"], world_data["b"]
+    assert Client().get(f"/e/{e.uid}/wrong-slug/").status_code == 301
+    assert Client().get(f"/e/{e.uid}/").status_code == 301
+    es.merge_entries(e, other)
+    r = Client().get(f"/e/{other.uid}/falcon-medical-instruments/")
+    assert r.status_code == 301 and r["Location"].startswith(f"/e/{e.uid}/")
 
 
-def test_search_and_area_filter(demo):
-    c = Client()
-    c.post("/prefs/", {"place": Place.objects.get(slug="sialkot").pk})
-    body = c.get(LIST_URL + "?q=falcon").content.decode()
-    assert "Falcon Medical" in body and "Crescent" not in body
-    body = c.get(LIST_URL + "?area=kashmir-road").content.decode()
-    assert "Falcon" in body and "Crescent" not in body
+def test_individual_entries_have_no_share_controls_and_no_index(world_data, tree, surgical, users, pk_open):
+    from analytics.rollups import recount_all
+
+    p = es.create_entry(
+        name="Dr Example",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        entity_type="person",
+        website="https://dr.example.org",
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
+    es.record_consent(p, status="consented", method="form", wording_version="v1")
+    es.record_verification(
+        p, field_group="identity", level="surveyor", actor=users["surveyor"], method="call", evidence="ok"
+    )
+    recount_all()
+    html = Client().get(f"/e/{p.uid}/dr-example/").content.decode()
+    assert "data-copy" not in html and "wa.me" not in html and 'content="noindex,follow"' in html
 
 
-def test_share_registry_adds_utm():
-    links = build("T", "line", "https://x.org/a", "list_share")
-    assert {"whatsapp", "copy", "facebook", "email", "linkedin", "x"} == {c["id"] for c in links}
-    assert all("utm_campaign=list_share" in c["copy"] for c in links)
-    assert not any(c["id"] == "x" for c in build("T", "l", "https://x.org", "c", hide=("x",)))
+def test_new_share_channel_appears_on_list_and_entry_without_template_change(world_data, monkeypatch):
+    """Rule R25: one registry row reaches every page."""
+    from catalog import share
+
+    monkeypatch.setattr(
+        share,
+        "CHANNELS",
+        share.CHANNELS
+        + [
+            {
+                "id": "telegram",
+                "label": "Telegram",
+                "group": "more",
+                "kind": "link",
+                "url": lambda c: "https://t.me/share/url?url=" + c["url"],
+            }
+        ],
+    )
+    e = world_data["a"]
+    for url in (LIST, f"/e/{e.uid}/crescent-surgical-works/"):
+        assert "t.me/share/url" in Client().get(url).content.decode()
 
 
-def test_contributor_rate_locked_and_sale_distribution(demo, settings):
-    e = Entry.objects.get(name="Crescent Surgical Works")
-    assert e.contribution.rate_percent == 50 and e.contribution.phase == 1
-    settings.CURRENT_PHASE = 3
-    lt = ListType.objects.get(slug="surgical-instrument-makers")
-    new = Entry.objects.create(name="Late Entry", place=e.place, entry_type="Trader")
-    new.list_types.add(lt)
-    Contribution.lock(new, User.objects.get(username="contributor1"))
-    assert new.contribution.rate_percent == 30 and Entry.objects.get(pk=e.pk).contribution.rate_percent == 50
-    sale = Sale.objects.create(place=Place.objects.get(slug="sialkot"), list_type=lt, amount_cents=70000)
-    lines = sale.distribute()
-    assert len(lines) == 7 and sale.distribute() == []
-    by_entry = {ln.entry_id: ln.amount_cents for ln in lines}
-    assert by_entry[e.pk] == 5000 and by_entry[new.pk] == 3000
+def test_jsonld_is_valid_and_has_no_contacts(world_data):
+    e = world_data["a"]
+    for url in (LIST, f"/e/{e.uid}/crescent-surgical-works/"):
+        html = Client().get(url).content.decode()
+        block = re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S).group(1)
+        data = json.loads(block)
+        assert data["@context"] == "https://schema.org"
+        assert not any(p in block for p in PHONE_PARTS) and "telephone" not in block
 
 
-def test_best_level(demo):
-    e = Entry.objects.get(name="Crescent Surgical Works")
-    Check.objects.create(entry=e, level="ai", checked_on=datetime.date.today())
-    assert e.best_level() == "surveyor"
-    assert Entry.objects.get(name="Unity Surgical Co").best_level() == "none"
+def test_list_page_queries_do_not_grow_with_rows(world_data, tree, make_published):
+    """No N+1: the query count is the same for 2 rows and for a full page of 25."""
+    from django.db import connection
+    from django.test.utils import CaptureQueriesContext
+    from analytics.rollups import recount_all
 
+    def count():
+        with CaptureQueriesContext(connection) as ctx:
+            r = Client().get(LIST)
+        return len(ctx), r
 
-def test_healthz_and_404(demo):
-    c = Client()
-    assert c.get("/healthz").content == b"ok"
-    assert c.get("/e/99999/").status_code == 404
+    few, _ = count()
+    for i in range(24):
+        make_published(f"Budget {i:02d} Works", tree["paris"], phone=f"0302 000 {i:04d}", refresh=False)
+    recount_all()
+    many, r = count()
+    assert many == few and many <= 25
+    html = r.content.decode()
+    assert html.count('class="nm"') == 25 and "page-fragments" in html and "Next page" in html
+    assert Client().get(LIST + "?page=2").status_code == 200
 ```
 
 
 
 ---
 
-## 149. Software source: backend/lists/urls.py
+## 125. Software source: backend/catalog/tests/test_strings.py
+
+```py
+from catalog import strings
+from catalog.strings.en import EN
+from catalog.strings.ur import UR
+
+
+def test_placeholders_match_between_languages():
+    assert strings.placeholder_mismatches() == []
+
+
+def test_no_stray_urdu_keys():
+    assert set(UR) <= set(EN)
+
+
+def test_plural_selection_and_fallback():
+    assert strings.t("en", "n_entries", n=1) == "1 entry" and strings.t("en", "n_entries", n=3) == "3 entries"
+    assert strings.t("ur", "n_entries", n=1) == "1 اندراج"
+    assert strings.t("ur", "addon_tax_ids") == strings.t("en", "addon_tax_ids")  # untranslated key falls back to English
+
+
+def test_titles_follow_the_specified_pattern():
+    assert (
+        strings.t("en", "title_entry", name="Acme", list_type="Surgical", place="Sialkot")
+        == "Acme – Surgical in Sialkot – AllLists"
+    )
+    assert strings.t("en", "title_list", list_type="Surgical", place="Sialkot") == "Surgical in Sialkot – AllLists"
+
+
+def test_all_labels_are_whole_sentences_with_named_placeholders():
+    for key, value in EN.items():
+        texts = value.values() if isinstance(value, dict) else [value]
+        for text in texts:
+            assert "{}" not in text and "%s" not in text, key
+
+
+def test_the_four_check_labels_only():
+    labels = {k: EN[k] for k in EN if k.startswith("level_") and not k.endswith("_help")}
+    assert labels == {
+        "level_surveyor": "Surveyor-verified",
+        "level_owner": "Owner-verified",
+        "level_ai": "AI-checked",
+        "level_none": "Not verified yet",
+    }
+    assert "Verified" not in {EN["level_ai"], EN["level_none"]}
+```
+
+
+
+---
+
+## 126. Software source: backend/catalog/urls.py
 
 ```py
 from django.urls import path, re_path
 
 from . import views
 
-handler404 = "lists.views.not_found"
-
 urlpatterns = [
-    path("", views.home, name="home"),
+    path("", views.world, name="world"),
     path("healthz", views.healthz),
+    path("robots.txt", views.robots_txt),
+    path("sitemap.xml", views.sitemap_index),
+    path("sitemaps/<str:cc>-<int:n>.xml", views.sitemap_shard),
     path("prefs/", views.prefs, name="prefs"),
-    path("enquiry/", views.enquiry, name="enquiry"),
-    path("e/<int:pk>/", views.entry_page, name="entry"),
-    path("e/<int:pk>/<str:kind>/", views.report, name="report"),
-    re_path(r"^p/(?P<path>[\w\-/]+?)/l/(?P<type_slug>[\w\-]+)/$", views.list_page, name="list"),
-    re_path(r"^p/(?P<path>[\w\-/]+)/$", views.place_page, name="place"),
+    path("_f/near-you/", views.frag_near_you),
+    path("_f/list/", views.frag_list),
+    path("_f/entry/<str:uid>/", views.frag_entry),
+    path("e/<str:uid>/", views.entry_page),
+    path("e/<str:uid>/<slug:slug>/", views.entry_page),
+    re_path(r"^(?P<path>[\w\-]+(?:/[\w\-]+)*)/$", views.dispatch, name="dispatch"),
 ]
 ```
 
@@ -24952,239 +23378,3767 @@ urlpatterns = [
 
 ---
 
-## 150. Software source: backend/lists/views.py
+## 127. Software source: backend/catalog/views.py
 
 ```py
+"""Public views. Shell views never read the session or cookies, so one address gives everyone the same bytes (R05).
+Personal parts (plan, location, ads, details) are served as private fragments under /_f/."""
+
+import hashlib
+
 from django.conf import settings
-from django.contrib import messages
-from django.db.models import Count, Q
+from django.core.paginator import Paginator
 from django.http import Http404, HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
+from django.utils import timezone
+from django.utils.cache import get_conditional_response
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
-from . import share
-from .models import Check, Entry, Enquiry, ListType, Place, Report
-from .visibility import entry_view, name_only
+from access.policy import Viewer, list_mode, visible
+from analytics.models import RollupCell
+from core.models import CountrySwitch
+from entries.models import Entry
+from places.models import Place
+from taxonomy.models import ListTypeSettings
+
+from . import format as fmt
+from . import queries, resolver, seo, share, strings
+from .location import viewer_place
+from .resolver import list_url, place_url
+
+CHECK_ORDER = {"surveyor": 0, "owner": 1, "ai": 2, "none": 3}
 
 
-def resolve_place(path):
-    node = Place.objects.filter(kind="world", parent=None).first()
-    if node is None:
+# ---- helpers -------------------------------------------------------------------------------------------------
+
+
+def shell(request, template, ctx, stamp):
+    """Render a shared page with an ETag from template version, language, path, query and data stamp."""
+    raw = "|".join(
+        [settings.TEMPLATE_VERSION, request.lang, request.path_info, request.META.get("QUERY_STRING", ""), stamp]
+    )
+    etag = '"' + hashlib.sha256(raw.encode()).hexdigest()[:24] + '"'
+    cond = get_conditional_response(request, etag=etag)
+    if cond is not None:
+        cond["ETag"] = etag
+        return cond
+    response = render(request, template, ctx)
+    response["ETag"] = etag
+    response["Cache-Control"] = "public, max-age=0, s-maxage=300, stale-while-revalidate=600"
+    return response
+
+
+def private(response):
+    response["Cache-Control"] = "private, no-store"
+    response["Vary"] = "Cookie"
+    response["X-Robots-Tag"] = "noindex"
+    return response
+
+
+def get_viewer(request):
+    """Fragments only. Subscriber access is the demo switch until real subscriptions exist (plan P3.04)."""
+    place, source = viewer_place(request)
+    sub = settings.DEMO_MODE and request.session.get("demo_plan") == "subscriber"
+    return Viewer(subscriber=bool(sub), own_path=place.path if place else None), place, source
+
+
+def breadcrumb(place):
+    return [{"place": p, "url": place_url(p)} for p in queries.ancestors_of(place)]
+
+
+def check_chips(entry, now):
+    """Current and past checks for an entry, best first, for display."""
+    rows = []
+    for v in entry.verification_current.all():
+        current = v.state == "verified" and v.expires_at and v.expires_at > now
+        rows.append(
+            {
+                "level": v.level,
+                "group": v.field_group,
+                "date": v.verified_at,
+                "who": v.actor_display,
+                "method": v.method,
+                "current": bool(current),
+                "expired": v.state == "expired" or (v.state == "verified" and not current),
+                "revoked": v.state == "revoked",
+            }
+        )
+    return sorted(rows, key=lambda r: (not r["current"], CHECK_ORDER.get(r["level"], 9)))
+
+
+def row_for(entry, lang, prefix, now):
+    level = queries.best_level(entry, now)
+    return {
+        "uid": entry.uid,
+        "name": entry.name,
+        "alt": queries.alt_name(entry, lang),
+        "level": level,
+        "checked": entry.last_verified_at,
+        "area": entry.place,
+        "type": entry.primary_concept,
+        "company": entry.listing_plan == "company",
+        "status": entry.status,
+        "closed": entry.status in ("permanently_closed",),
+        "url": f"/e/{entry.uid}/{_slug(entry.name)}/",
+    }
+
+
+def _slug(name):
+    from django.utils.text import slugify
+
+    return slugify(name)[:60] or "entry"
+
+
+def specialities_of(entry):
+    out = [s.concept.label("en") for s in entry.speciality_set.select_related("concept")]
+    cats = (entry.addons or {}).get("product_categories") or []
+    out += [c for c in cats if isinstance(c, str)]
+    return list(dict.fromkeys(out))
+
+
+# ---- pages ---------------------------------------------------------------------------------------------------
+
+
+@require_GET
+def world(request):
+    return place_page(request, resolver.world())
+
+
+def dispatch(request, path):
+    hit = resolver.resolve(path)
+    if hit is None:
         raise Http404
-    for slug in [s for s in path.split("/") if s]:
-        node = get_object_or_404(Place, parent=node, slug=slug)
-    return node
+    if hit[0] == "place":
+        return place_page(request, hit[1])
+    return list_page(request, hit[1], hit[2])
 
 
-def place_url(place):
-    return "/p/" + place.path if place.path else "/"
-
-
-def entries_under(place):
-    return Entry.objects.filter(place_id__in=place.descendant_ids()).select_related("place")
-
-
-def trust(entries):
-    total = entries.count()
-    if not total:
-        return {"total": 0, "s": 0, "o": 0, "a": 0, "pct": 0}
-    lv = {Check.Level.SURVEYOR: 0, Check.Level.OWNER: 0, Check.Level.AI: 0}
-    for e in entries.prefetch_related("checks"):
-        b = e.best_level()
-        if b in lv:
-            lv[b] += 1
-    s, o, a = (round(100 * lv[k] / total) for k in (Check.Level.SURVEYOR, Check.Level.OWNER, Check.Level.AI))
-    return {"total": total, "s": s, "o": o, "a": a, "pct": s + o}
-
-
-def crumbs(place):
-    return [{"label": p.name, "label_ur": p.name_ur, "href": place_url(p)} for p in place.ancestors()]
-
-
-def is_own_place(request, place):
-    mp = request.my_place
-    return bool(mp and (place.pk in mp.descendant_ids()))
-
-
-def home(request):
-    world = Place.objects.filter(kind="world", parent=None).first()
-    countries = world.children.filter(kind="country") if world else Place.objects.none()
-    near = None
-    if request.my_place:
-        near = {"place": request.my_place, "url": place_url(request.my_place),
-                "count": entries_under(request.my_place).count()}
-    return render(request, "lists/home.html", {"countries": countries, "near": near,
-                                                "all_places": Place.objects.exclude(kind="world").order_by("name")[:300]})
-
-
-def place_page(request, path):
-    place = resolve_place(path)
-    children = list(place.children.all())
-    types = (ListType.objects.filter(entries__place_id__in=place.descendant_ids())
-             .annotate(n=Count("entries", filter=Q(entries__place_id__in=place.descendant_ids()), distinct=True))
-             .order_by("name"))
-    return render(request, "lists/place.html", {
-        "place": place, "children": [{"p": c, "url": place_url(c), "n": entries_under(c).count()} for c in children],
-        "types": types, "crumbs": crumbs(place), "place_url": place_url(place),
-        "total": entries_under(place).count()})
-
-
-def list_page(request, path, type_slug):
-    place = resolve_place(path)
-    ltype = get_object_or_404(ListType, slug=type_slug)
-    qs = entries_under(place).filter(list_types=ltype).prefetch_related("checks", "socials", "services", "identifiers")
-    tr = trust(qs)
-    areas = list(Place.objects.filter(pk__in=qs.values_list("place_id", flat=True)).order_by("name"))
-    area = request.GET.get("area", "")
-    q = request.GET.get("q", "").strip()[:100]
-    sort = request.GET.get("sort", "name")
-    if area:
-        qs = qs.filter(place__slug=area)
-    if q:
-        qs = qs.filter(Q(name__icontains=q) | Q(name_alt__icontains=q) | Q(entry_type__icontains=q))
-    if sort == "checked":
-        qs = sorted(qs, key=lambda e: e.last_checked() or e.created_at.date(), reverse=True)
-    else:
-        qs = list(qs.order_by("-sponsored", "name"))
-    own = is_own_place(request, place)
-    names_only = not (request.subscriber or own)
-    total = len(qs)
-    if names_only:
-        rows = [name_only(e) for e in qs[:settings.FREE_PREVIEW_NAMES]]
-    else:
-        rows = [entry_view(e, request.subscriber) for e in qs]
-    for r in rows:
-        r["url"] = f"/e/{r['entry'].pk}/"
-    url = request.build_absolute_uri(request.path)
-    return render(request, "lists/list.html", {
-        "place": place, "ltype": ltype, "rows": rows, "total": total, "shown": len(rows), "trust": tr,
-        "areas": areas, "area": area, "q": q, "sort": sort, "names_only": names_only,
-        "crumbs": crumbs(place), "own": own,
-        "share_links": share.build(f"{ltype.name} in {place.name}", f"{total} listed.", url, "list_share")})
-
-
-def entry_page(request, pk):
-    e = get_object_or_404(Entry.objects.select_related("place"), pk=pk)
-    d = entry_view(e, request.subscriber)
-    d["checks"] = list(e.checks.all())
-    ltype = e.list_types.first()
-    url = request.build_absolute_uri(request.path)
-    return render(request, "lists/entry.html", {
-        "e": d, "entry": e, "crumbs": crumbs(e.place), "ltype": ltype,
-        "share_links": share.build(f"{e.name}, {e.entry_type}, {e.place.name}",
-                                   f"Last checked {d['last_checked']}." if d["last_checked"] else "Listed on AllLists.",
-                                   url, "entry_share")})
-
-
-@require_POST
-def enquiry(request):
-    if not request.subscriber:
-        messages.error(request, "subscribers_only")
-        return redirect(request.POST.get("next") or "/")
-    ids = [int(i) for i in request.POST.getlist("entries") if i.isdigit()][:50]
-    msg = request.POST.get("message", "").strip()[:2000]
-    mail = request.POST.get("reply_to", "").strip()[:200]
-    entries = Entry.objects.filter(pk__in=ids)
-    if not (entries and msg and "@" in mail):
-        return HttpResponse("Bad request", status=400)
-    enq = Enquiry.objects.create(sender=request.user if request.user.is_authenticated else None,
-                                 reply_to=mail, message=msg)
-    enq.entries.set(entries)
-    messages.success(request, "enquiry_sent")
-    return redirect(safe_next(request, "/"))
-
-
-@require_POST
-def report(request, pk, kind):
-    if kind not in ("report", "claim"):
+def place_page(request, place):
+    if place is None:
         raise Http404
-    e = get_object_or_404(Entry, pk=pk)
-    Report.objects.create(entry=e, kind=kind, note=request.POST.get("note", "")[:1000],
-                          contact=request.POST.get("contact", "")[:200])
-    messages.success(request, "submitted")
-    return redirect(f"/e/{e.pk}/")
+    children = queries.child_counts(place)
+    here = list(queries.lists_here(place))
+    from taxonomy.models import Concept
+
+    concepts = {
+        c.pk: c for c in Concept.objects.filter(pk__in=[h["concept_id"] for h in here]).prefetch_related("labels")
+    }
+    tiles = [
+        {"concept": concepts[h["concept_id"]], "n": h["n"], "url": list_url(place, concepts[h["concept_id"]])}
+        for h in here
+    ]
+    total = queries.place_total(place)
+    cell_stamp = (
+        RollupCell.objects.filter(place_path__startswith=place.path)
+        .order_by("-updated_at")
+        .values_list("updated_at", flat=True)
+        .first()
+    )
+    path = place_url(place)
+    ctx = {
+        "place": place,
+        "crumbs": breadcrumb(place),
+        "children": [(c, n, place_url(c)) for c, n in children if True],
+        "tiles": tiles,
+        "total": total,
+        "is_world": place.level == "world",
+        "path": path,
+        "title": strings.t(
+            request.lang, "title_home" if place.level == "world" else "title_place", place=place.name_for(request.lang)
+        ),
+        "robots": seo.robots_meta(False),
+        "alternates": seo.alternates(request, path),
+        "canonical": request.build_absolute_uri(request.prefix + path),
+        "fragment": request.prefix + "/_f/near-you/?path=" + place.path,
+    }
+    return shell(request, "catalog/place.html", ctx, queries.stamp(cell_stamp))
 
 
-def safe_next(request, default="/"):
-    nxt = request.POST.get("next", "")
-    ok = url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}, require_https=request.is_secure())
-    return nxt if nxt and ok else default
+def list_page(request, place, concept):
+    lang, now = request.lang, timezone.now()
+    cell = queries.rollup(place, concept)
+    area_slug = request.GET.get("area", "")
+    area_place = Place.objects.filter(parent=place, slug=area_slug, status="active").first() if area_slug else None
+    sort = request.GET.get("sort") if request.GET.get("sort") in ("name", "checked") else ""
+    qs = queries.list_rows_queryset(place, concept, area_place, sort or "name")
+    page = Paginator(qs, settings.PAGE_SIZE).get_page(request.GET.get("page"))
+    rows = [row_for(e, lang, request.prefix, now) for e in page]
+    chips = queries.area_chips(place, concept)
+    last = queries.last_checked(place, concept)
+    published, awaiting = cell["published"], max(cell["total"] - cell["published"], 0)
+    params = {"area": area_slug if area_place else "", "sort": sort, "page": page.number if page.number > 1 else 0}
+    path = list_url(place, concept)
+    names = {"list_type": concept.label(lang), "place": place.name_for(lang)}
+    cs = ListTypeSettings.objects.filter(concept=concept).first()
+    ctx = {
+        "place": place,
+        "concept": concept,
+        "crumbs": breadcrumb(place),
+        "rows": rows,
+        "page": page,
+        "chips": [(c, n) for c, n in chips],
+        "area": area_place,
+        "sort": sort,
+        "cell": cell,
+        "trust": queries.trust_split(cell),
+        "published": published,
+        "awaiting": awaiting,
+        "last": last,
+        "empty": published == 0,
+        "path": path,
+        "params": params,
+        "names": names,
+        "title": strings.t(lang, "title_list", **names),
+        "robots": seo.robots_meta(seo.indexable_list(place, concept, cell, request.GET)),
+        "canonical": request.build_absolute_uri(request.prefix + path),
+        "alternates": seo.alternates(request, path),
+        "share_links": share.build(
+            strings.t(lang, "list_title", **names),
+            strings.t(lang, "n_published", n=published),
+            request.build_absolute_uri(request.prefix + path),
+            "list_share",
+            hidden=bool(cs and cs.share_hidden),
+        ),
+        "jsonld": seo.list_jsonld(
+            lang, strings.t(lang, "list_title", **names), request.build_absolute_uri(request.prefix + path), rows
+        ),
+        "fragment": request.prefix
+        + "/_f/list/?"
+        + "&".join(
+            f"{k}={v}"
+            for k, v in {"path": place.path, "type": concept.slug, **{k: v for k, v in params.items() if v}}.items()
+        ),
+    }
+    stamp = queries.stamp(cell["updated_at"], last)
+    return shell(request, "catalog/list.html", ctx, stamp)
+
+
+def entry_page(request, uid, slug=None):
+    lang, now = request.lang, timezone.now()
+    entry = (
+        Entry.objects.select_related("place", "primary_concept")
+        .prefetch_related("verification_current", "namevariant_set", "speciality_set")
+        .filter(uid=uid, deleted_at__isnull=True)
+        .first()
+    )
+    if entry is None or entry.merged_into_id and entry.merged_into is None:
+        raise Http404
+    if entry.merged_into_id:
+        return redirect(request.prefix + f"/e/{entry.merged_into.uid}/{_slug(entry.merged_into.name)}/", permanent=True)
+    if entry.publish_state != Entry.PublishState.PUBLISHED:
+        raise Http404
+    canonical_slug = _slug(entry.name)
+    if slug != canonical_slug:
+        return redirect(request.prefix + f"/e/{entry.uid}/{canonical_slug}/", permanent=True)
+    level = queries.best_level(entry, now)
+    checks = check_chips(entry, now)
+    addons = entry.addons or {}
+    free_details = []
+    from taxonomy.models import AddonField
+
+    if entry.primary_concept.template_id:
+        for f in AddonField.objects.filter(
+            template_id=entry.primary_concept.template_id, deprecated_at__isnull=True
+        ).order_by("id"):
+            val = addons.get(f.key)
+            if f.show == "P" and val not in (None, "", [], {}) and f.type in ("enum", "bool", "number", "text"):
+                free_details.append((f.key, val))
+    locked_fields = (
+        [
+            f.key
+            for f in AddonField.objects.filter(
+                template_id=entry.primary_concept.template_id, show="L", deprecated_at__isnull=True
+            )
+        ]
+        if entry.primary_concept.template_id
+        else []
+    )
+    cs = ListTypeSettings.objects.filter(concept=entry.primary_concept).first()
+    hidden_share = bool(
+        (cs and cs.share_hidden) or entry.entity_type == "person" or "do_not_share" in (entry.visibility_flags or [])
+    )
+    path = f"/e/{entry.uid}/{canonical_slug}/"
+    url = request.build_absolute_uri(request.prefix + path)
+    list_type_name = entry.primary_concept.label(lang)
+    place_name = entry.place.name_for(lang)
+    last = max([c["date"] for c in checks if c["date"]], default=None)
+    ctx = {
+        "entry": entry,
+        "place": entry.place,
+        "concept": entry.primary_concept,
+        "alt": queries.alt_name(entry, lang),
+        "level": level,
+        "checks": checks,
+        "last": last,
+        "specialities": specialities_of(entry)[:3],
+        "more_specialities": max(len(specialities_of(entry)) - 3, 0),
+        "free_details": free_details,
+        "locked_fields": locked_fields,
+        "crumbs": breadcrumb(entry.place),
+        "path": path,
+        "list_url": list_url(entry.place, entry.primary_concept),
+        "closed": entry.status == "permanently_closed",
+        "status_label": {
+            "temporarily_closed": "temporarily_closed",
+            "moved": "moved",
+            "permanently_closed": "closed",
+        }.get(entry.status),
+        "company": entry.listing_plan == "company",
+        "services": [s.name_text for s in entry.service_set.all()],
+        "certs": [i.scheme for i in entry.identifier_set.all()],
+        "title": strings.t(lang, "title_entry", name=entry.name, list_type=list_type_name, place=place_name),
+        "robots": seo.robots_meta(seo.indexable_entry(entry, level)),
+        "canonical": url,
+        "alternates": seo.alternates(request, path),
+        "share_links": share.build(
+            f"{entry.name}, {list_type_name}, {place_name}",
+            strings.t(lang, "last_checked", date=fmt.fmt_date(lang, last)) if last else "",
+            url,
+            "entry_share",
+            hidden=hidden_share,
+        ),
+        "jsonld": seo.entry_jsonld(entry, entry.place, url),
+        "fragment": f"{request.prefix}/_f/entry/{entry.uid}/",
+    }
+    return shell(request, "catalog/entry.html", ctx, queries.stamp(entry.updated_at, entry.last_verified_at))
+
+
+# ---- fragments (private, never cached, never indexed) -----------------------------------------------------------
+
+
+@require_GET
+def frag_near_you(request):
+    viewer, place, source = get_viewer(request)
+    steps = []
+    if place:
+        for p in place.ancestors()[::-1]:
+            steps.append({"place": p, "url": place_url(p), "n": queries.place_total(p)})
+    resp = render(
+        request,
+        "catalog/fragments/near_you.html",
+        {
+            "place": place,
+            "source": source,
+            "steps": steps,
+            "demo_plan": "subscriber" if viewer.subscriber else "free",
+            "all_places": Place.objects.filter(status="active").exclude(level="world").order_by("path")[:300],
+        },
+    )
+    return private(resp)
+
+
+@require_GET
+def frag_list(request):
+    viewer, place, source = get_viewer(request)
+    lp = Place.objects.filter(path=request.GET.get("path", ""), status="active").first()
+    concept = resolve_concept(request.GET.get("type", ""))
+    if lp is None or concept is None:
+        return private(HttpResponse("", status=204))
+    mode = list_mode(viewer, lp.path)
+    area_slug = request.GET.get("area", "")
+    area_place = Place.objects.filter(parent=lp, slug=area_slug, status="active").first() if area_slug else None
+    sort = request.GET.get("sort") if request.GET.get("sort") in ("name", "checked") else "name"
+    qs = queries.list_rows_queryset(lp, concept, area_place, sort)
+    page = Paginator(qs, settings.PAGE_SIZE).get_page(request.GET.get("page"))
+    details = []
+    for e in page:
+        specs = specialities_of(e)
+        details.append(
+            {
+                "uid": e.uid,
+                "type": e.primary_concept,
+                "specs": specs if mode == "full" else specs[:3],
+                "more": 0 if mode == "full" else max(len(specs) - 3, 0),
+            }
+        )
+    resp = render(
+        request,
+        "catalog/fragments/list_detail.html",
+        {
+            "mode": mode,
+            "details": details,
+            "viewer": viewer,
+            "ads": visible("ads", viewer, lp.path) != "none",
+            "names_only": mode == "names",
+            "locked": mode != "full",
+        },
+    )
+    return private(resp)
+
+
+@require_GET
+def frag_entry(request, uid):
+    viewer, place, source = get_viewer(request)
+    entry = (
+        Entry.objects.select_related("place", "primary_concept")
+        .filter(uid=uid, publish_state="published", deleted_at__isnull=True)
+        .first()
+    )
+    if entry is None:
+        return private(HttpResponse("", status=204))
+    full = viewer.subscriber
+    ctx = {
+        "entry": entry,
+        "full": full,
+        "ads": visible("ads", viewer, entry.place_path) != "none",
+        "socials": list(entry.social_set.all()) if full else [],
+        "services": list(entry.service_set.all()) if full else [],
+        "identifiers": list(entry.identifier_set.all()) if full else [],
+        "addons_locked": [],
+        "can_message": entry.status != "permanently_closed"
+        and visible("enquiry_one", viewer, entry.place_path) != "none",
+    }
+    if full and entry.primary_concept.template_id:
+        from taxonomy.models import AddonField
+
+        for f in AddonField.objects.filter(
+            template_id=entry.primary_concept.template_id, show="L", deprecated_at__isnull=True
+        ):
+            val = (entry.addons or {}).get(f.key)
+            if val not in (None, "", [], {}):
+                ctx["addons_locked"].append((f.key, val))
+    return private(render(request, "catalog/fragments/entry_detail.html", ctx))
+
+
+def resolve_concept(slug):
+    from taxonomy.models import Concept
+
+    return Concept.objects.filter(kind="list_type", slug=slug, status="active").first()
+
+
+# ---- preferences (demo plan and place choice need the session; theme, view and language do not) ---------------------
 
 
 @require_POST
 def prefs(request):
-    resp = redirect(safe_next(request))
-    for key, allowed in (("lang", ("en", "ur")), ("theme", ("light", "dark", "")), ("view", ("list", "cards"))):
-        v = request.POST.get(key)
-        if v is not None and v in allowed:
-            resp.set_cookie(key, v, max_age=60 * 60 * 24 * 365, samesite="Lax", httponly=False)
+    nxt = request.POST.get("next", "/")
+    ok = url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}, require_https=request.is_secure())
+    resp = redirect(nxt if ok else "/")
     plan = request.POST.get("plan")
     if settings.DEMO_MODE and plan in ("free", "subscriber"):
         request.session["demo_plan"] = plan
-    pid = request.POST.get("place")
-    if pid and pid.isdigit() and Place.objects.filter(pk=pid).exists():
-        request.session["place_id"] = int(pid)
+    uid = request.POST.get("place")
+    if uid and Place.objects.filter(uid=uid, status="active").exists():
+        request.session["place_uid"] = uid
     return resp
 
 
+# ---- machine pages ---------------------------------------------------------------------------------------------
+
+
+@require_GET
+def robots_txt(request):
+    lines = [
+        "User-agent: *",
+        "Disallow: /_f/",
+        "Disallow: /admin/",
+        "Disallow: /staff/",
+        "Disallow: /account/",
+        "Disallow: /search/",
+        "Disallow: /prefs/",
+        "",
+        "# Thin pages are marked noindex in the page itself; they are not blocked here so the marker can be read.",
+        f"Sitemap: {request.build_absolute_uri('/sitemap.xml')}",
+    ]
+    return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
+
+
+SITEMAP_SIZE = 50000
+
+
+def indexable_list_cells(country_code):
+    switch = CountrySwitch.for_country(country_code)
+    if not switch.indexing_on:
+        return []
+    out = []
+    for c in (
+        RollupCell.objects.filter(country_code=country_code, concept__kind="list_type", place_path__gt="")
+        .select_related("concept")
+        .order_by("place_path", "concept_id")
+    ):
+        verified = c.by_level.get("surveyor", 0) + c.by_level.get("owner", 0)
+        cs = ListTypeSettings.objects.filter(concept=c.concept).first()
+        if verified >= (cs.index_threshold if cs else settings.INDEX_THRESHOLD):
+            out.append(c)
+    return out
+
+
+@require_GET
+def sitemap_index(request):
+    parts = []
+    for code in sorted(set(RollupCell.objects.values_list("country_code", flat=True))):
+        n = len(indexable_list_cells(code))
+        for i in range(max(1, -(-n // SITEMAP_SIZE)) if n else 0):
+            parts.append(request.build_absolute_uri(f"/sitemaps/{code.lower()}-{i + 1}.xml"))
+    xml = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    xml += [f"<sitemap><loc>{p}</loc></sitemap>" for p in parts]
+    xml.append("</sitemapindex>")
+    return HttpResponse("\n".join(xml), content_type="application/xml")
+
+
+@require_GET
+def sitemap_shard(request, cc, n):
+    cells = indexable_list_cells(cc.upper())
+    chunk = cells[(n - 1) * SITEMAP_SIZE : n * SITEMAP_SIZE]
+    if not chunk:
+        raise Http404
+    places = {p.path: p for p in Place.objects.filter(path__in={c.place_path for c in chunk})}
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for c in chunk:
+        p = places.get(c.place_path)
+        if p:
+            loc = request.build_absolute_uri(list_url(p, c.concept))
+            xml.append(f"<url><loc>{loc}</loc><lastmod>{c.updated_at.date().isoformat()}</lastmod></url>")
+    xml.append("</urlset>")
+    return HttpResponse("\n".join(xml), content_type="application/xml")
+
+
+@require_GET
 def healthz(request):
     return HttpResponse("ok", content_type="text/plain")
 
 
 def not_found(request, exception=None):
-    return render(request, "lists/404.html", status=404)
+    lang = getattr(request, "lang", "en")
+    return render(
+        request,
+        "catalog/404.html",
+        {
+            "lang": lang,
+            "dir": "rtl" if lang == "ur" else "ltr",
+            "prefix": getattr(request, "prefix", ""),
+            "title": strings.t(lang, "not_found"),
+        },
+        status=404,
+    )
 ```
 
 
 
 ---
 
-## 151. Software source: backend/lists/visibility.py
+## 128. Software source: backend/config/__init__.py
 
 ```py
-"""What a visitor may see. Free: names, area, up to 3 specialities, checks with dates.
-Subscriber: also address, exact pin, size, website, social links, markets, MOQ, prices, certificates,
-one enquiry to many. Phone, WhatsApp and email are never shown to anyone (outreach relay only)."""
-from django.conf import settings
 
-NEVER_SHOWN = ("phone", "whatsapp", "email")
-
-
-def entry_view(entry, subscriber):
-    d = {
-        "entry": entry,
-        "name": entry.name, "name_alt": entry.name_alt, "type": entry.entry_type,
-        "area": entry.place.name, "area_ur": entry.place.name_ur,
-        "specialities": list(entry.specialities)[: (None if subscriber else settings.FREE_MAX_SPECIALITIES)],
-        "more_specialities": 0 if subscriber else max(0, len(entry.specialities) - settings.FREE_MAX_SPECIALITIES),
-        "level": entry.best_level(), "last_checked": entry.last_checked(),
-        "status": entry.status, "is_company": entry.is_company, "sponsored": entry.sponsored,
-        "locked": not subscriber,
-    }
-    if subscriber:
-        d.update(address=entry.address, latitude=entry.latitude, longitude=entry.longitude,
-                 website=entry.website, size=entry.size, markets=entry.markets, moq=entry.moq,
-                 price_note=entry.price_note, certificates=entry.certificates,
-                 socials=list(entry.socials.all()), services=[s.text for s in entry.services.all()],
-                 identifiers=list(entry.identifiers.all()))
-        if entry.is_company:
-            d["company_profile"] = entry.company_profile
-    return d
-
-
-def name_only(entry):
-    return {"entry": entry, "name": entry.name, "name_alt": entry.name_alt, "area": entry.place.name,
-            "area_ur": entry.place.name_ur, "level": entry.best_level(), "last_checked": entry.last_checked(),
-            "specialities": [], "more_specialities": 0, "locked": True, "names_only": True,
-            "is_company": entry.is_company, "sponsored": entry.sponsored, "status": entry.status}
 ```
 
 
 
 ---
 
-## 152. Software source: backend/manage.py
+## 129. Software source: backend/config/settings/__init__.py
+
+```py
+"""Settings package. `config.settings` is the development default; production uses `config.settings.prod`."""
+
+from .base import *  # noqa: F401,F403
+```
+
+
+
+---
+
+## 130. Software source: backend/config/settings/base.py
+
+```py
+"""AllLists settings. Secure by default; everything environment-specific comes from env vars."""
+
+import os
+import sys
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+DEBUG = os.environ.get("DJANGO_DEBUG", "") == "1"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or ("dev-only-insecure-key" if DEBUG else "")
+if not SECRET_KEY:
+    if "pytest" in sys.modules or os.environ.get("DJANGO_ALLOW_TEST_KEY") == "1":
+        SECRET_KEY = "test-key-not-for-production"
+    else:
+        from django.core.exceptions import ImproperlyConfigured
+
+        raise ImproperlyConfigured("Set DJANGO_SECRET_KEY (or DJANGO_DEBUG=1 for local development).")
+ALLOWED_HOSTS = [h for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",") if h]
+CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o]
+
+# Demo switch lets a visitor flip between Free and Subscriber to preview. Never on in production.
+DEMO_MODE = os.environ.get("ALLLISTS_DEMO", "1" if DEBUG else "0") == "1"
+
+INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "core",
+    "places",
+    "taxonomy",
+    "entries",
+    "intake",
+    "analytics",
+    "access",
+    "catalog",
+]
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "catalog.middleware.LanguagePrefixMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "catalog.middleware.TemplateVersionMiddleware",
+]
+ROOT_URLCONF = "config.urls"
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "catalog.context.site",
+            ]
+        },
+    }
+]
+WSGI_APPLICATION = "config.wsgi.application"
+
+DATABASES = {
+    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.environ.get("ALLLISTS_DB", BASE_DIR / "db.sqlite3")}
+}
+if os.environ.get("POSTGRES_DB"):  # PostgreSQL in production (install psycopg)
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ["POSTGRES_DB"],
+        "USER": os.environ.get("POSTGRES_USER", ""),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+    }
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": f"django.contrib.auth.password_validation.{n}"}
+    for n in (
+        "UserAttributeSimilarityValidator",
+        "MinimumLengthValidator",
+        "CommonPasswordValidator",
+        "NumericPasswordValidator",
+    )
+]
+LANGUAGE_CODE = "en"
+TIME_ZONE = "UTC"
+USE_I18N = False
+USE_TZ = True
+
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT.mkdir(exist_ok=True)
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+}
+
+# Security headers and cookies
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "same-origin"
+X_FRAME_OPTIONS = "DENY"
+if not DEBUG:
+    SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE = os.environ.get("DJANGO_INSECURE_COOKIES", "") != "1"
+    SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_HSTS_SECONDS", "0"))
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Business rules (decisions Q-S15 and the 50/40/30 phase decision)
+CONTRIBUTOR_PHASE_RATES = {1: 50, 2: 40, 3: 30}
+CURRENT_PHASE = int(os.environ.get("ALLLISTS_PHASE", "1"))
+FREE_PREVIEW_NAMES = 25  # names-only preview beyond the visitor's own place
+FREE_MAX_SPECIALITIES = 3
+
+# Field encryption and keyed hashes (plan section 17). Dev values are throwaway; production sets real ones.
+FIELD_ENCRYPTION_KEYS = {}
+FIELD_ENCRYPTION_ACTIVE_KEY = os.environ.get("FIELD_ENCRYPTION_ACTIVE_KEY", "")
+for _item in [i for i in os.environ.get("FIELD_ENCRYPTION_KEYS", "").split(",") if i]:
+    _kid, _, _key = _item.partition(":")
+    FIELD_ENCRYPTION_KEYS[_kid] = _key
+CONTACT_HASH_PEPPER = os.environ.get("CONTACT_HASH_PEPPER", "")
+if not FIELD_ENCRYPTION_KEYS and (DEBUG or "pytest" in sys.modules):
+    from cryptography.fernet import Fernet  # noqa: E402
+
+    FIELD_ENCRYPTION_KEYS = {"dev": Fernet.generate_key().decode()}
+    FIELD_ENCRYPTION_ACTIVE_KEY = "dev"
+    CONTACT_HASH_PEPPER = CONTACT_HASH_PEPPER or "dev-pepper-not-secret"
+
+# Verification defaults (plan section 6.3, Q-T4): validity in days per level; grace before an expired entry returns to draft
+CHECK_VALIDITY_DAYS = {"surveyor": 365, "owner": 365, "ai": 180}
+GRACE_DAYS = 90
+INDEX_THRESHOLD = 10
+TEMPLATE_VERSION = "1"  # bump on any template change; part of cache keys and ETags (rule R25)
+PAGE_SIZE = 25
+```
+
+
+
+---
+
+## 131. Software source: backend/config/settings/prod.py
+
+```py
+"""Production settings: nothing here relaxes base; it only fails fast when required values are missing."""
+
+from django.core.exceptions import ImproperlyConfigured
+
+from .base import *  # noqa: F401,F403
+from .base import CONTACT_HASH_PEPPER, DEBUG, FIELD_ENCRYPTION_KEYS
+
+if DEBUG:
+    raise ImproperlyConfigured("DJANGO_DEBUG must be off in production")
+if not FIELD_ENCRYPTION_KEYS or not CONTACT_HASH_PEPPER:
+    raise ImproperlyConfigured("Set FIELD_ENCRYPTION_KEYS, FIELD_ENCRYPTION_ACTIVE_KEY and CONTACT_HASH_PEPPER")
+```
+
+
+
+---
+
+## 132. Software source: backend/config/urls.py
+
+```py
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", include("catalog.urls")),
+]
+
+handler404 = "catalog.views.not_found"
+```
+
+
+
+---
+
+## 133. Software source: backend/config/wsgi.py
+
+```py
+import os
+
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+application = get_wsgi_application()
+```
+
+
+
+---
+
+## 134. Software source: backend/conftest.py
+
+```py
+import datetime
+
+import pytest
+from django.contrib.auth.models import User
+from django.db import connection
+
+from core.models import CountrySwitch
+from entries import services as es
+from intake.models import Source
+from places.models import Place
+from places.services import create_place
+from taxonomy.models import Concept
+from taxonomy.services import create_concept, seed_manufacturer_template
+
+
+@pytest.fixture(autouse=True)
+def fast_hashers(settings):
+    settings.PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+
+
+@pytest.fixture
+def pg(db):
+    if connection.vendor != "postgresql":
+        pytest.skip("needs PostgreSQL (set POSTGRES_DB)")
+
+
+@pytest.fixture
+def tree(db):
+    world = create_place(parent=None, level=Place.Level.WORLD, name="World", slug="world")
+    pk = create_place(
+        parent=world, level=Place.Level.COUNTRY, name="Pakistan", country_code="PK", names=[("ur", "پاکستان")]
+    )
+    punjab = create_place(parent=pk, level=Place.Level.ADMIN1, name="Punjab")
+    sialkot = create_place(parent=punjab, level=Place.Level.CITY, name="Sialkot", names=[("ur", "سیالکوٹ")])
+    paris = create_place(parent=sialkot, level=Place.Level.AREA, name="Paris Road")
+    return dict(world=world, pk=pk, punjab=punjab, sialkot=sialkot, paris=paris)
+
+
+@pytest.fixture
+def surgical(db):
+    tpl = seed_manufacturer_template()
+    return create_concept(
+        kind=Concept.Kind.LIST_TYPE,
+        name="Surgical instrument makers",
+        template=tpl,
+        synonyms=["surgical instruments manufacturers"],
+    )
+
+
+@pytest.fixture
+def users(db):
+    return {
+        n: User.objects.create_user(n, f"{n}@example.org", "pw-for-tests-only")
+        for n in ("adder", "surveyor", "owner", "mod")
+    }
+
+
+@pytest.fixture
+def green(db):
+    return Source.objects.create(
+        name="Owner submissions", tier="green", allowed_uses=["import", "agent_fetch", "display"]
+    )
+
+
+@pytest.fixture
+def web_source(db):
+    return Source.objects.create(
+        name="Open web page check",
+        tier="amber",
+        allowed_uses=["agent_fetch", "display"],
+        reviewed_on=datetime.date(2026, 10, 1),
+    )
+
+
+@pytest.fixture
+def entry(tree, surgical, users):
+    return es.create_entry(
+        name="Crescent Surgical Works",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        website="https://example.org",
+        contacts=[("phone", "0300 123 4567")],
+        addons={"business_type": "manufacturer", "product_categories": ["scissors"]},
+    )
+
+
+@pytest.fixture
+def pk_open(db):
+    return CountrySwitch.objects.create(country_code="PK", named_individuals_on=True)
+
+
+@pytest.fixture
+def make_published(users, surgical):
+    from analytics.rollups import recount_all
+
+    def make(name, place, level="surveyor", phone="0300 000 0000", refresh=True, **kw):
+        e = es.create_entry(
+            name=name,
+            place=place,
+            primary_concept=kw.pop("concept", surgical),
+            created_by=users["adder"],
+            website=kw.pop("website", "https://example.org/" + name.split()[0].lower()),
+            contacts=[("phone", phone)],
+            addons=kw.pop("addons", {"business_type": "manufacturer", "product_categories": ["scissors"]}),
+            **kw,
+        )
+        es.record_verification(
+            e,
+            field_group="identity",
+            level=level,
+            actor=users["surveyor"],
+            method="call",
+            evidence="Phone answered, name matched",
+        )
+        e.refresh_from_db()
+        if refresh:
+            recount_all()
+        return e
+
+    return make
+```
+
+
+
+---
+
+## 135. Software source: backend/core/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 136. Software source: backend/core/admin.py
+
+```py
+from django.contrib import admin
+
+from .models import AuditLog, ChangeLog, CountrySwitch, FeatureFlag, RegistryVersion
+
+
+@admin.register(AuditLog)
+class AuditLogAdmin(admin.ModelAdmin):
+    list_display = ("id", "ts", "action", "object_type", "object_uid", "actor_id")
+    search_fields = ("action", "object_uid")
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(CountrySwitch)
+class CountrySwitchAdmin(admin.ModelAdmin):
+    list_display = ("country_code", "browsing_on", "indexing_on", "selling_on", "outreach_on", "ads_on", "cleared_by")
+
+
+admin.site.register([ChangeLog, FeatureFlag, RegistryVersion])
+```
+
+
+
+---
+
+## 137. Software source: backend/core/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class CoreConfig(AppConfig):
+    name = "core"
+```
+
+
+
+---
+
+## 138. Software source: backend/core/clock.py
+
+```py
+"""One clock so tests can set the time."""
+
+from django.utils import timezone
+
+_override = None
+
+
+def now():
+    return _override or timezone.now()
+
+
+def set_now(value):
+    global _override
+    _override = value
+
+
+def today():
+    return now().date()
+```
+
+
+
+---
+
+## 139. Software source: backend/core/crypto.py
+
+```py
+"""Field encryption with key versioning, and keyed hashes for lookup without decryption (plan sections 4.1, 17)."""
+
+import hashlib
+import hmac
+
+from cryptography.fernet import Fernet, InvalidToken
+from django.conf import settings
+from django.db import models
+
+
+class CryptoError(Exception):
+    pass
+
+
+def encrypt(plaintext: str) -> str:
+    kid = settings.FIELD_ENCRYPTION_ACTIVE_KEY
+    key = settings.FIELD_ENCRYPTION_KEYS.get(kid)
+    if not key:
+        raise CryptoError("no active encryption key configured")
+    return f"{kid}:{Fernet(key.encode()).encrypt(plaintext.encode()).decode()}"
+
+
+def decrypt(stored: str) -> str:
+    kid, _, token = stored.partition(":")
+    key = settings.FIELD_ENCRYPTION_KEYS.get(kid)
+    if not key:
+        raise CryptoError(f"unknown key id {kid!r}")
+    try:
+        return Fernet(key.encode()).decrypt(token.encode()).decode()
+    except InvalidToken as exc:
+        raise CryptoError("cannot decrypt value") from exc
+
+
+def keyed_hash(value: str) -> str:
+    """Stable keyed hash for de-duplication and suppression lists. Normalise before calling."""
+    pepper = settings.CONTACT_HASH_PEPPER
+    if not pepper:
+        raise CryptoError("CONTACT_HASH_PEPPER is not set")
+    return hmac.new(pepper.encode(), value.encode(), hashlib.sha256).hexdigest()
+
+
+class EncryptedTextField(models.TextField):
+    """Stores `key_id:ciphertext`. Never rendered to visitors (rule R02)."""
+
+    def get_prep_value(self, value):
+        if value is None:
+            return None
+        return encrypt(value)
+
+    def from_db_value(self, value, expression, connection):
+        return None if value is None else decrypt(value)
+```
+
+
+
+---
+
+## 140. Software source: backend/core/management/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 141. Software source: backend/core/management/commands/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 142. Software source: backend/core/management/commands/seed_demo_entries.py
+
+```py
+"""Development only: fictional published entries so pages can be looked at. Refuses to run unless DEBUG is on."""
+
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.management import call_command
+from django.core.management.base import BaseCommand, CommandError
+
+from analytics.rollups import recount_all
+from entries import services as es
+from entries.models import Entry, Service, Social
+from intake.models import Source
+from places.models import Place
+from taxonomy.models import Concept
+
+DEMO = [
+    (
+        "Demo Crescent Surgical Works",
+        "ڈیمو کریسنٹ سرجیکل ورکس",
+        "paris-road",
+        "surveyor",
+        ["scissors", "forceps", "needle holders", "retractors"],
+        "company",
+    ),
+    ("Demo Falcon Medical Instruments", "", "kashmir-road", "owner", ["dental", "forceps"], "company"),
+    ("Demo Royal Steel Instruments", "", "paris-road", "ai", ["scissors"], "basic"),
+    ("Demo Sialkot Precision Tools", "", "wazirabad-road", "surveyor", ["needle holders", "clamps"], "basic"),
+    ("Demo Unity Surgical Co", "", "kashmir-road", "surveyor", ["retractors", "speculums"], "basic"),
+    ("Demo Pioneer Instruments", "", "paris-road", "owner", ["forceps"], "basic"),
+]
+
+
+class Command(BaseCommand):
+    def handle(self, *args, **opts):
+        if not settings.DEBUG:
+            raise CommandError("demo entries are for development only (set DJANGO_DEBUG=1)")
+        call_command("seed_pilot")
+        adder, _ = User.objects.get_or_create(username="demo_adder")
+        surveyor, _ = User.objects.get_or_create(username="demo_surveyor")
+        owner, _ = User.objects.get_or_create(username="demo_owner")
+        web = Source.objects.get(name="Open web page check")
+        concept = Concept.objects.get(slug="surgical-instrument-makers")
+        for i, (name, alt, area, level, specs, plan) in enumerate(DEMO):
+            if Entry.objects.filter(name=name).exists():
+                continue
+            place = Place.objects.get(slug=area)
+            e = es.create_entry(
+                name=name,
+                place=place,
+                primary_concept=concept,
+                created_by=adder,
+                listing_plan=plan,
+                website=f"https://example.org/demo-{i}",
+                address_text=f"Plot {10 + i}, {place.slug}, Sialkot",
+                contacts=[("phone", f"0300 555 00{i:02d}")],
+                name_variants=[(alt, "ur", "trade")] if alt else [],
+                year_established=1980 + i,
+                addons={
+                    "business_type": "manufacturer",
+                    "product_categories": specs,
+                    "oem": i % 2 == 0,
+                    "moq": "100 pieces",
+                },
+            )
+            Social.objects.create(
+                entry=e, country_code="PK", platform="facebook", handle_or_url="https://facebook.com/example"
+            )
+            Service.objects.create(entry=e, country_code="PK", name_text="OEM and private label")
+            if level == "ai":
+                es.record_verification(
+                    e, field_group="identity", level="ai", source=web, evidence="Page lists same address", method="web"
+                )
+            elif level == "owner":
+                claim = es.start_claim(e, owner, "otp_phone", "OTP matched")
+                es.decide_claim(claim, actor=surveyor, approve=True)
+                owner = User.objects.get(username="demo_owner")
+            else:
+                es.record_verification(
+                    e, field_group="identity", level="surveyor", actor=surveyor, method="call", evidence="Answered"
+                )
+        recount_all()
+        self.stdout.write(f"{Entry.objects.filter(publish_state='published').count()} published demo entries")
+```
+
+
+
+---
+
+## 143. Software source: backend/core/management/commands/seed_pilot.py
+
+```py
+"""Seed the pilot structure: Pakistan to Sialkot, the surgical-instrument list type, and a starter source register.
+Safe to run twice. Entries are not created here; they come from imports and verification."""
+
+import datetime
+
+from django.core.management.base import BaseCommand
+
+from core.models import CountrySwitch
+from intake.models import Source
+from places.models import Place
+from places.services import create_place
+from taxonomy.models import Concept
+from taxonomy.services import create_concept, seed_manufacturer_template
+
+
+def get_or_create_place(parent, **kw):
+    existing = Place.objects.filter(parent=parent, slug=kw.get("slug") or kw["name"].lower().replace(" ", "-")).first()
+    return existing or create_place(parent=parent, **kw)
+
+
+class Command(BaseCommand):
+    def handle(self, *args, **opts):
+        world = Place.objects.filter(level="world").first() or create_place(
+            parent=None, level=Place.Level.WORLD, name="World", slug="world"
+        )
+        pk = Place.objects.filter(country_code="PK", level="country").first() or create_place(
+            parent=world, level=Place.Level.COUNTRY, name="Pakistan", country_code="PK", names=[("ur", "پاکستان")]
+        )
+        punjab = get_or_create_place(pk, level=Place.Level.ADMIN1, name="Punjab", names=[("ur", "پنجاب")])
+        city = get_or_create_place(punjab, level=Place.Level.CITY, name="Sialkot", names=[("ur", "سیالکوٹ")])
+        for area, ur in (("Paris Road", "پیرس روڈ"), ("Kashmir Road", "کشمیر روڈ"), ("Wazirabad Road", "وزیرآباد روڈ")):
+            get_or_create_place(city, level=Place.Level.AREA, name=area, names=[("ur", ur)])
+        tpl = seed_manufacturer_template()
+        if not Concept.objects.filter(kind="list_type", slug="surgical-instrument-makers").exists():
+            create_concept(
+                kind=Concept.Kind.LIST_TYPE,
+                name="Surgical instrument makers",
+                template=tpl,
+                natural_scale="national",
+                synonyms=[("surgical instruments manufacturers", "en"), ("جراحی آلات بنانے والے", "ur")],
+            )
+        Source.objects.get_or_create(
+            name="Owner and contributor submissions",
+            defaults=dict(
+                tier="green", allowed_uses=["import", "display"], attribution_text="Provided by contributors"
+            ),
+        )
+        Source.objects.get_or_create(
+            name="Open web page check",
+            defaults=dict(
+                tier="amber",
+                allowed_uses=["agent_fetch", "display"],
+                reviewed_on=datetime.date.today(),
+                personal_data_rules="Business facts only; no personal data",
+            ),
+        )
+        CountrySwitch.objects.get_or_create(country_code="PK")  # everything off except browsing until counsel clears it
+        self.stdout.write("pilot structure ready")
+```
+
+
+
+---
+
+## 144. Software source: backend/core/models.py
+
+```py
+"""Shared base models: ids, soft delete, audit hash chain, change log, flags, country switches (plan section 4.2.1)."""
+
+import hashlib
+import json
+
+from django.conf import settings
+from django.db import connection, models, transaction
+
+from . import clock
+from .ulid import new_ulid
+
+
+class UidModel(models.Model):
+    uid = models.CharField(max_length=26, unique=True, default=new_ulid, editable=False)
+
+    class Meta:
+        abstract = True
+
+
+class SoftDeleteModel(models.Model):
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    tombstone_reason = models.CharField(max_length=80, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class AuditLog(models.Model):
+    """Append-only, hash-chained: hash = sha256(prev_hash + canonical row). Written in the same transaction as the change."""
+
+    ts = models.DateTimeField()
+    actor_id = models.BigIntegerField(null=True, blank=True)
+    actor_role = models.CharField(max_length=40, blank=True)
+    action = models.CharField(max_length=80)
+    object_type = models.CharField(max_length=60, blank=True)
+    object_uid = models.CharField(max_length=40, blank=True)
+    country_code = models.CharField(max_length=2, blank=True)
+    ip_hash = models.CharField(max_length=64, blank=True)
+    payload = models.JSONField(default=dict, blank=True)
+    prev_hash = models.CharField(max_length=64, blank=True)
+    hash = models.CharField(max_length=64, unique=True)
+
+    class Meta:
+        ordering = ["id"]
+
+
+def _canonical(prev_hash, fields):
+    return prev_hash + json.dumps(fields, sort_keys=True, separators=(",", ":"), default=str)
+
+
+def audit(
+    action, *, actor=None, actor_role="", object_type="", object_uid="", country_code="", ip_hash="", payload=None
+):
+    """Append one audit row. Call inside the transaction that makes the change."""
+    with transaction.atomic():
+        if connection.vendor == "postgresql":
+            with connection.cursor() as cur:
+                cur.execute("SELECT pg_advisory_xact_lock(727001)")
+        last = AuditLog.objects.order_by("-id").first()
+        prev = last.hash if last else ""
+        ts = clock.now()
+        fields = {
+            "ts": ts.isoformat(),
+            "actor_id": getattr(actor, "pk", actor),
+            "actor_role": actor_role,
+            "action": action,
+            "object_type": object_type,
+            "object_uid": object_uid,
+            "country_code": country_code,
+            "ip_hash": ip_hash,
+            "payload": payload or {},
+        }
+        digest = hashlib.sha256(_canonical(prev, fields).encode()).hexdigest()
+        return AuditLog.objects.create(
+            ts=ts,
+            actor_id=fields["actor_id"],
+            actor_role=actor_role,
+            action=action,
+            object_type=object_type,
+            object_uid=object_uid,
+            country_code=country_code,
+            ip_hash=ip_hash,
+            payload=fields["payload"],
+            prev_hash=prev,
+            hash=digest,
+        )
+
+
+def verify_audit_chain():
+    """Returns None if the chain is intact, else the id of the first broken row."""
+    prev = ""
+    for row in AuditLog.objects.order_by("id").iterator():
+        fields = {
+            "ts": row.ts.isoformat(),
+            "actor_id": row.actor_id,
+            "actor_role": row.actor_role,
+            "action": row.action,
+            "object_type": row.object_type,
+            "object_uid": row.object_uid,
+            "country_code": row.country_code,
+            "ip_hash": row.ip_hash,
+            "payload": row.payload,
+        }
+        if row.prev_hash != prev or hashlib.sha256(_canonical(prev, fields).encode()).hexdigest() != row.hash:
+            return row.id
+        prev = row.hash
+    return None
+
+
+class ChangeLog(models.Model):
+    """One row per field change on an entry (append-only)."""
+
+    entry_id = models.BigIntegerField(db_index=True)
+    country_code = models.CharField(max_length=2)
+    field_key = models.CharField(max_length=60)
+    old = models.JSONField(null=True, blank=True)
+    new = models.JSONField(null=True, blank=True)
+    actor_id = models.BigIntegerField(null=True, blank=True)
+    source_id = models.BigIntegerField(null=True, blank=True)
+    ts = models.DateTimeField(default=clock.now)
+
+    class Meta:
+        ordering = ["id"]
+
+
+class FeatureFlag(models.Model):
+    key = models.CharField(max_length=60, unique=True)
+    description = models.CharField(max_length=200, blank=True)
+    enabled_default = models.BooleanField(default=False)
+    country_code = models.CharField(max_length=2, blank=True, help_text="Blank means every country")
+    rollout_percent = models.PositiveSmallIntegerField(default=100)
+
+
+class CountrySwitch(models.Model):
+    """Per-country control for rule R24. Everything except browsing defaults to off."""
+
+    country_code = models.CharField(max_length=2, unique=True)
+    browsing_on = models.BooleanField(default=True)
+    indexing_on = models.BooleanField(default=False)
+    selling_on = models.BooleanField(default=False)
+    outreach_on = models.BooleanField(default=False)
+    outreach_channels = models.JSONField(default=list, blank=True)
+    ads_on = models.BooleanField(default=False)
+    named_individuals_on = models.BooleanField(default=False)
+    health_prices_on = models.BooleanField(default=False)
+    child_services_on = models.BooleanField(default=False)
+    publish_cap_per_week = models.PositiveIntegerField(default=0)
+    legal_note = models.TextField(blank=True)
+    cleared_by = models.CharField(max_length=120, blank=True)
+    cleared_on = models.DateField(null=True, blank=True)
+
+    @classmethod
+    def for_country(cls, code):
+        """Unknown countries get the all-off default (browsing only)."""
+        return cls.objects.filter(country_code=code).first() or cls(country_code=code)
+
+
+class RegistryVersion(models.Model):
+    registry_key = models.CharField(max_length=60)
+    version = models.PositiveIntegerField()
+    changed_at = models.DateTimeField(default=clock.now)
+    changed_by = models.CharField(max_length=120, blank=True)
+
+    class Meta:
+        unique_together = [("registry_key", "version")]
+
+
+def flag_enabled(key, country_code=""):
+    f = FeatureFlag.objects.filter(key=key, country_code__in=[country_code, ""]).order_by("-country_code").first()
+    return bool(f and f.enabled_default and f.rollout_percent > 0)
+
+
+AUTH_USER = settings.AUTH_USER_MODEL
+```
+
+
+
+---
+
+## 145. Software source: backend/core/pg.py
+
+```py
+"""Helpers for PostgreSQL-only parts of migrations. SQLite (local demo) skips them."""
+
+from django.db import migrations
+
+
+def only_postgres(forward_sql, reverse_sql=""):
+    def forward(apps, schema_editor):
+        if schema_editor.connection.vendor == "postgresql":
+            schema_editor.execute(forward_sql, params=None)
+
+    def reverse(apps, schema_editor):
+        if reverse_sql and schema_editor.connection.vendor == "postgresql":
+            schema_editor.execute(reverse_sql, params=None)
+
+    return migrations.RunPython(forward, reverse)
+
+
+FORBID_FN = """
+CREATE OR REPLACE FUNCTION forbid_mutation() RETURNS trigger AS $$
+BEGIN
+  RAISE EXCEPTION 'table % is append-only: % is not allowed', TG_TABLE_NAME, TG_OP
+    USING ERRCODE = 'integrity_constraint_violation';
+END;
+$$ LANGUAGE plpgsql;
+"""
+DROP_FORBID_FN = "DROP FUNCTION IF EXISTS forbid_mutation();"
+
+
+def append_only(table):
+    return only_postgres(
+        f"CREATE TRIGGER {table}_append_only BEFORE UPDATE OR DELETE ON {table} "
+        "FOR EACH ROW EXECUTE FUNCTION forbid_mutation();",
+        f"DROP TRIGGER IF EXISTS {table}_append_only ON {table};",
+    )
+
+
+def trigram_index(table, column, name):
+    return only_postgres(
+        f"CREATE INDEX {name} ON {table} USING gin ({column} gin_trgm_ops);", f"DROP INDEX IF EXISTS {name};"
+    )
+```
+
+
+
+---
+
+## 146. Software source: backend/core/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 147. Software source: backend/core/tests/test_core.py
+
+```py
+import pytest
+from django.db import connection, transaction
+from django.db.utils import IntegrityError, InternalError
+
+from core import clock
+from core.crypto import CryptoError, decrypt, encrypt, keyed_hash
+from core.models import AuditLog, ChangeLog, audit, verify_audit_chain
+from core.textfold import fold
+from core.ulid import new_ulid
+
+
+def test_ulid_is_26_chars_unique_and_time_ordered():
+    a, b = new_ulid(1000), new_ulid(2000)
+    assert len(a) == 26 and a < b and new_ulid() != new_ulid()
+
+
+@pytest.mark.parametrize(
+    "a,b",
+    [
+        ("کراچی", "کراچی"),
+        ("ياسر", "یاسر"),  # Arabic yeh vs Farsi yeh
+        ("كراچی", "کراچی"),  # Arabic kaf vs keheh
+        ("آمین", "امین"),  # madda folds to alef
+        ("پاکستان‌", "پاکستان"),
+        ("سیالکوٹ ١٢٣", "سیالکوٹ 123"),  # Arabic-Indic digits
+        ("Paris  Road!", "paris road"),
+        ("ہوٹل", "ہوٹل"),
+    ],
+)
+def test_fold_unifies_variants(a, b):
+    assert fold(a) == fold(b)
+
+
+def test_fold_removes_marks_and_tatweel():
+    assert fold("مُحَمَّد") == fold("محمد")
+    assert fold("اللـه") == fold("الله")
+    assert fold("") == "" and fold(None) == ""
+
+
+def test_zwnj_becomes_space():
+    assert fold("ہوٹل‌سٹی") == "ہوٹل سٹی"
+
+
+def test_encrypt_roundtrip_and_key_rotation(settings):
+    from cryptography.fernet import Fernet
+
+    token = encrypt("+923001234567")
+    assert token.startswith("dev:") and "923001234567" not in token and decrypt(token) == "+923001234567"
+    settings.FIELD_ENCRYPTION_KEYS = {**settings.FIELD_ENCRYPTION_KEYS, "k2": Fernet.generate_key().decode()}
+    settings.FIELD_ENCRYPTION_ACTIVE_KEY = "k2"
+    assert encrypt("x").startswith("k2:") and decrypt(token) == "+923001234567"
+    with pytest.raises(CryptoError):
+        decrypt("nokey:abc")
+
+
+def test_keyed_hash_is_stable_and_keyed(settings):
+    h1 = keyed_hash("phone:+923001234567")
+    assert h1 == keyed_hash("phone:+923001234567") and len(h1) == 64
+    settings.CONTACT_HASH_PEPPER = "other"
+    assert keyed_hash("phone:+923001234567") != h1
+
+
+@pytest.mark.django_db
+def test_audit_chain_verifies_and_links():
+    a = audit("t.one")
+    b = audit("t.two", payload={"k": 1})
+    assert b.prev_hash == a.hash and verify_audit_chain() is None
+
+
+def test_audit_chain_detects_tamper(pg):
+    audit("t.one")
+    row = audit("t.two", payload={"k": 1})
+    with connection.cursor() as cur:
+        cur.execute("ALTER TABLE core_auditlog DISABLE TRIGGER core_auditlog_append_only")
+        cur.execute("UPDATE core_auditlog SET payload = '{\"k\": 2}' WHERE id = %s", [row.id])
+        cur.execute("ALTER TABLE core_auditlog ENABLE TRIGGER core_auditlog_append_only")
+    assert verify_audit_chain() == row.id
+
+
+@pytest.mark.parametrize("model", [AuditLog, ChangeLog])
+def test_append_only_tables_refuse_update_and_delete(pg, model):
+    if model is AuditLog:
+        obj = audit("t.one")
+    else:
+        obj = ChangeLog.objects.create(entry_id=1, country_code="PK", field_key="name", new="x")
+    for sql in (f"UPDATE {model._meta.db_table} SET country_code = 'AE'", f"DELETE FROM {model._meta.db_table}"):
+        with pytest.raises((InternalError, IntegrityError)), transaction.atomic():
+            with connection.cursor() as cur:
+                cur.execute(sql)
+    assert model.objects.filter(pk=obj.pk).exists()
+
+
+def test_clock_override():
+    import datetime
+    from django.utils import timezone
+
+    fixed = timezone.make_aware(datetime.datetime(2026, 1, 2, 3, 4))
+    clock.set_now(fixed)
+    try:
+        assert clock.now() == fixed
+    finally:
+        clock.set_now(None)
+
+
+def test_seed_pilot_is_idempotent_and_safe_by_default(db):
+    from django.core.management import call_command
+    from core.models import CountrySwitch
+    from places.models import Place
+    from taxonomy.models import Concept
+
+    call_command("seed_pilot")
+    call_command("seed_pilot")
+    assert Place.objects.filter(path="pk.punjab.sialkot").count() == 1
+    assert Place.objects.filter(parent__path="pk.punjab.sialkot").count() == 3
+    assert Concept.objects.filter(slug="surgical-instrument-makers").count() == 1
+    sw = CountrySwitch.objects.get(country_code="PK")
+    assert sw.browsing_on and not (sw.selling_on or sw.outreach_on or sw.indexing_on or sw.named_individuals_on)
+```
+
+
+
+---
+
+## 148. Software source: backend/core/textfold.py
+
+```py
+"""Search folding for Urdu, Arabic and Latin text (plan section 7.3).
+
+Unicode normalisation alone does not unify Urdu and Arabic letters: trigram similarity of the same name written with
+the two yeh forms was 0.54 before folding. This one function is used for names, place names, concept labels and queries.
+"""
+
+import re
+import unicodedata
+
+_MAP = {
+    0x064A: 0x06CC,
+    0x0649: 0x06CC,  # Arabic yeh, alef maksura -> Farsi yeh
+    0x0643: 0x06A9,  # Arabic kaf -> keheh
+    0x0647: 0x06C1,
+    0x06D5: 0x06C1,  # heh, ae -> heh goal
+    0x06BE: 0x06C1,  # heh doachashmee -> heh goal
+    0x0623: 0x0627,
+    0x0625: 0x0627,
+    0x0671: 0x0627,
+    0x0622: 0x0627,  # alef variants and madda -> alef
+    0x06C0: 0x06C1,
+    0x0624: 0x0648,  # heh with yeh above, waw with hamza
+    0x0626: 0x06CC,  # yeh with hamza
+}
+_REMOVE = {0x0640, 0x200C, 0x200D, 0x200E, 0x200F, 0x0670}
+_DIGITS = {**{0x0660 + i: ord("0") + i for i in range(10)}, **{0x06F0 + i: ord("0") + i for i in range(10)}}
+_PUNCT = re.compile(r"[^\w\s]", re.UNICODE)
+_SPACE = re.compile(r"\s+")
+
+
+def fold(text):
+    if not text:
+        return ""
+    text = unicodedata.normalize("NFKC", text)
+    out = []
+    for ch in text:
+        cp = ord(ch)
+        if cp == 0x200C:  # ZWNJ separates words in Urdu
+            out.append(" ")
+        elif cp in _REMOVE or 0x064B <= cp <= 0x065F:
+            continue
+        elif cp in _DIGITS:
+            out.append(chr(_DIGITS[cp]))
+        elif cp in _MAP:
+            out.append(chr(_MAP[cp]))
+        else:
+            out.append(ch)
+    text = "".join(out).lower()
+    text = _PUNCT.sub(" ", text)
+    return _SPACE.sub(" ", text).strip()
+```
+
+
+
+---
+
+## 149. Software source: backend/core/ulid.py
+
+```py
+"""ULID: 26 characters, time-ordered, never reused. Public ids in URLs (plan section 4.1)."""
+
+import os
+import time
+
+_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+
+
+def new_ulid(now_ms=None):
+    ms = int(time.time() * 1000) if now_ms is None else now_ms
+    value = (ms << 80) | int.from_bytes(os.urandom(10), "big")
+    out = []
+    for _ in range(26):
+        out.append(_ALPHABET[value & 31])
+        value >>= 5
+    return "".join(reversed(out))
+```
+
+
+
+---
+
+## 150. Software source: backend/entries/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 151. Software source: backend/entries/admin.py
+
+```py
+from django.contrib import admin
+
+from .models import (
+    Claim,
+    ConsentRecord,
+    Contact,
+    CreditEvent,
+    Entry,
+    Identifier,
+    NameVariant,
+    Service,
+    Social,
+    VerificationCurrent,
+)
+
+
+class NameVariantInline(admin.TabularInline):
+    model = NameVariant
+    extra = 0
+
+
+class SocialInline(admin.TabularInline):
+    model = Social
+    extra = 0
+
+
+class ServiceInline(admin.TabularInline):
+    model = Service
+    extra = 0
+
+
+class IdentifierInline(admin.TabularInline):
+    model = Identifier
+    extra = 0
+
+
+class CurrentInline(admin.TabularInline):
+    model = VerificationCurrent
+    extra = 0
+    can_delete = False
+    readonly_fields = ("field_group", "level", "state", "verified_at", "expires_at", "method", "actor_display")
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(Entry)
+class EntryAdmin(admin.ModelAdmin):
+    """Raw edits go through the service layer in the staff console (phase P2); admin is for staff inspection and seeding.
+    Contact values are deliberately not shown here: they are encrypted and relay-only (rule R02)."""
+
+    list_display = ("name", "country_code", "place_path", "publish_state", "claim_state", "created_via")
+    list_filter = ("country_code", "publish_state", "claim_state", "created_via", "entity_type")
+    search_fields = ("name", "name_fold", "uid")
+    readonly_fields = ("uid", "name_fold", "place_path", "created_at", "updated_at", "last_verified_at")
+    inlines = [NameVariantInline, SocialInline, ServiceInline, IdentifierInline, CurrentInline]
+
+
+admin.site.register([Claim, ConsentRecord, CreditEvent])
+admin.site.register(
+    Contact,
+    type(
+        "ContactAdmin",
+        (admin.ModelAdmin,),
+        {"list_display": ("entry", "kind", "label", "optin_state"), "exclude": ("value_enc", "value_hash")},
+    ),
+)
+```
+
+
+
+---
+
+## 152. Software source: backend/entries/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class EntriesConfig(AppConfig):
+    name = "entries"
+```
+
+
+
+---
+
+## 153. Software source: backend/entries/models.py
+
+```py
+"""Entries, child records, per-field provenance and verification (plan sections 4.2.4, 6)."""
+
+from django.conf import settings
+from django.db import models
+
+from core import clock
+from core.crypto import EncryptedTextField
+from core.models import SoftDeleteModel, UidModel
+
+
+class Entry(UidModel, SoftDeleteModel):
+    class EntityType(models.TextChoices):
+        BUSINESS = "business"
+        FACILITY = "facility"
+        PERSON = "person"
+        INSTITUTION = "institution"
+
+    class Status(models.TextChoices):
+        OPEN = "open"
+        TEMP_CLOSED = "temporarily_closed"
+        PERM_CLOSED = "permanently_closed"
+        MOVED = "moved"
+
+    class PublishState(models.TextChoices):
+        DRAFT = "draft"
+        REVIEW = "review"
+        PUBLISHED = "published"
+        SUPPRESSED = "suppressed"
+        TOMBSTONED = "tombstoned"
+
+    class ClaimState(models.TextChoices):
+        UNCLAIMED = "unclaimed"
+        PENDING = "pending"
+        CLAIMED = "claimed"
+
+    class CreatedVia(models.TextChoices):
+        CONTRIBUTOR = "contributor"
+        IMPORT = "import"
+        AGENT = "agent"
+        REGISTER = "register"
+        SELF = "self"
+
+    country_code = models.CharField(max_length=2, db_index=True)
+    entity_type = models.CharField(max_length=12, choices=EntityType.choices, default=EntityType.BUSINESS)
+    primary_concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
+    secondary_concepts = models.ManyToManyField("taxonomy.Concept", blank=True, related_name="secondary_entries")
+    name = models.CharField(max_length=250)
+    name_lang = models.CharField(max_length=10, default="en")
+    name_fold = models.CharField(max_length=250, db_index=True)
+    description = models.TextField(blank=True)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.OPEN)
+    status_date = models.DateField(null=True, blank=True)
+    publish_state = models.CharField(max_length=12, choices=PublishState.choices, default=PublishState.DRAFT)
+    address = models.JSONField(default=dict, blank=True)
+    address_text = models.CharField(max_length=400, blank=True)
+    place = models.ForeignKey("places.Place", on_delete=models.PROTECT, related_name="entries")
+    place_path = models.CharField(max_length=500)
+    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    precision_class = models.CharField(max_length=10, blank=True)
+    coord_source = models.CharField(max_length=40, blank=True)
+    coord_date = models.DateField(null=True, blank=True)
+    service_area = models.JSONField(default=dict, blank=True)
+    website = models.URLField(blank=True)
+    size_band = models.CharField(max_length=20, blank=True)
+    year_established = models.PositiveSmallIntegerField(null=True, blank=True)
+    parent_entry = models.ForeignKey(
+        "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="branches_of"
+    )
+    languages = models.JSONField(default=list, blank=True)
+    price_band = models.CharField(max_length=10, blank=True)
+    payment_methods = models.JSONField(default=list, blank=True)
+    addons = models.JSONField(default=dict, blank=True)
+    addon_template_version = models.PositiveIntegerField(null=True, blank=True)
+    claim_state = models.CharField(max_length=10, choices=ClaimState.choices, default=ClaimState.UNCLAIMED)
+    listing_plan = models.CharField(max_length=10, default="basic")
+    plan_valid_until = models.DateField(null=True, blank=True)
+    visibility_flags = models.JSONField(default=list, blank=True)  # do_not_share, noindex, suppressed
+    created_via = models.CharField(max_length=12, choices=CreatedVia.choices, default=CreatedVia.CONTRIBUTOR)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    phase_id = models.PositiveIntegerField(
+        null=True, blank=True
+    )  # locked rate phase (rule R11), set by the ledger module
+    created_at = models.DateTimeField(default=clock.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    last_verified_at = models.DateTimeField(null=True, blank=True)
+    merged_into = models.ForeignKey(
+        "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="merged_from"
+    )
+
+    class Meta:
+        verbose_name_plural = "entries"
+        indexes = [
+            models.Index(
+                fields=["country_code", "place_path", "primary_concept", "publish_state"], name="entry_list_query"
+            ),
+            models.Index(fields=["country_code", "claim_state"], name="entry_claim_idx"),
+        ]
+
+    def __str__(self):
+        return self.name
+
+
+# ---- child records (plan 4.2.4) ----------------------------------------------------------------------------
+
+
+class EntryChild(models.Model):
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="%(class)s_set")
+    country_code = models.CharField(max_length=2)
+
+    class Meta:
+        abstract = True
+
+
+class NameVariant(EntryChild):
+    text = models.CharField(max_length=250)
+    language = models.CharField(max_length=10, blank=True)
+    kind = models.CharField(max_length=15, default="trade")  # legal, trade, old, transliteration
+    text_fold = models.CharField(max_length=250, db_index=True)
+
+
+class Contact(EntryChild):
+    """Never rendered to anyone (rule R02). Value is encrypted; the keyed hash allows lookups and suppression."""
+
+    class Kind(models.TextChoices):
+        PHONE = "phone"
+        MOBILE = "mobile"
+        WHATSAPP = "whatsapp"
+        EMAIL = "email"
+        FAX = "fax"
+
+    kind = models.CharField(max_length=10, choices=Kind.choices)
+    value_enc = EncryptedTextField()
+    value_hash = models.CharField(max_length=64, db_index=True)
+    label = models.CharField(max_length=20, blank=True)
+    preferred_hours = models.CharField(max_length=60, blank=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    relay_only = models.BooleanField(default=True, editable=False)
+    optin_state = models.CharField(max_length=12, default="none")
+
+
+class Social(EntryChild):
+    platform = models.CharField(max_length=30)
+    handle_or_url = models.CharField(max_length=300)
+    owner_confirmed = models.BooleanField(default=False)
+    last_link_check = models.DateTimeField(null=True, blank=True)
+    link_status = models.CharField(max_length=10, blank=True)
+
+
+class Hours(EntryChild):
+    day_from = models.PositiveSmallIntegerField()
+    day_to = models.PositiveSmallIntegerField()
+    open_time = models.TimeField(null=True, blank=True)
+    close_time = models.TimeField(null=True, blank=True)
+    appointment_only = models.BooleanField(default=False)
+    confirmed_on = models.DateField(null=True, blank=True)
+    tz = models.CharField(max_length=40, blank=True)
+
+
+class Service(EntryChild):
+    concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    name_text = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    price_minor = models.BigIntegerField(null=True, blank=True)
+    currency = models.CharField(max_length=3, blank=True)
+    price_type = models.CharField(max_length=10, blank=True)  # fixed, from, hourly, per_visit
+    unit = models.CharField(max_length=40, blank=True)
+    price_date = models.DateField(null=True, blank=True)
+    prep_notes = models.CharField(max_length=300, blank=True)
+
+
+class Product(EntryChild):
+    concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    name_text = models.CharField(max_length=200)
+    brand = models.CharField(max_length=100, blank=True)
+    unit = models.CharField(max_length=40, blank=True)
+    price_band = models.CharField(max_length=10, blank=True)
+    availability_note = models.CharField(max_length=200, blank=True)
+    price_date = models.DateField(null=True, blank=True)
+
+
+class Speciality(EntryChild):
+    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
+    qualification = models.CharField(max_length=200, blank=True)
+    own_hours = models.CharField(max_length=120, blank=True)
+
+
+class Identifier(EntryChild):
+    """Store the fact and the register link, never a national ID number such as CNIC."""
+
+    scheme = models.CharField(max_length=30)
+    value = models.CharField(max_length=80)
+    issuer = models.CharField(max_length=120, blank=True)
+    valid_from = models.DateField(null=True, blank=True)
+    valid_to = models.DateField(null=True, blank=True)
+    last_checked = models.DateField(null=True, blank=True)
+    register_url = models.URLField(blank=True)
+
+
+class AreaServed(EntryChild):
+    place = models.ForeignKey("places.Place", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    radius_km = models.PositiveIntegerField(null=True, blank=True)
+    notes = models.CharField(max_length=200, blank=True)
+
+
+class Equipment(EntryChild):
+    type = models.CharField(max_length=80)
+    make_model = models.CharField(max_length=120, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
+    modality = models.CharField(max_length=60, blank=True)
+    installed_year = models.PositiveSmallIntegerField(null=True, blank=True)
+    services_supported = models.JSONField(default=list, blank=True)
+
+
+class Branch(EntryChild):
+    address_text = models.CharField(max_length=400, blank=True)
+    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+
+
+# ---- provenance and verification (plan 6) ------------------------------------------------------------------
+
+
+class ValueMeta(models.Model):
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="value_meta")
+    country_code = models.CharField(max_length=2)
+    field_key = models.CharField(max_length=60)
+    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    licence_text = models.CharField(max_length=200, blank=True)
+    retrieved_at = models.DateTimeField(default=clock.now)
+    level = models.CharField(max_length=10, default="none")
+    verified_by_id = models.BigIntegerField(null=True, blank=True)
+    method = models.CharField(max_length=40, blank=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    evidence_text = models.TextField(blank=True)
+    consent_ref = models.CharField(max_length=40, blank=True)
+    confidence = models.FloatField(null=True, blank=True)
+
+    class Meta:
+        unique_together = [("entry", "field_key")]
+
+
+class VerificationEvent(models.Model):
+    """Append-only (database trigger forbids update and delete)."""
+
+    class Level(models.TextChoices):
+        SURVEYOR = "surveyor"
+        OWNER = "owner"
+        AI = "ai"
+
+    class State(models.TextChoices):
+        PENDING = "pending"
+        VERIFIED = "verified"
+        EXPIRED = "expired"
+        REVOKED = "revoked"
+
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="verification_events")
+    country_code = models.CharField(max_length=2)
+    field_group = models.CharField(max_length=20)  # identity, location, contact, hours, services, certificates
+    level = models.CharField(max_length=10, choices=Level.choices)
+    state = models.CharField(max_length=10, choices=State.choices)
+    actor_id = models.BigIntegerField(null=True, blank=True)
+    method = models.CharField(max_length=40, blank=True)
+    evidence_text = models.TextField(blank=True)
+    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    ts = models.DateTimeField(default=clock.now)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    supersedes = models.ForeignKey("self", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+
+    class Meta:
+        ordering = ["id"]
+
+
+class VerificationCurrent(models.Model):
+    """Projection the pages read. Rebuilt from events."""
+
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="verification_current")
+    field_group = models.CharField(max_length=20)
+    level = models.CharField(max_length=10)
+    state = models.CharField(max_length=10)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    method = models.CharField(max_length=40, blank=True)
+    actor_display = models.CharField(max_length=80, blank=True)
+
+    class Meta:
+        unique_together = [("entry", "field_group", "level")]
+
+
+class Claim(models.Model):
+    class State(models.TextChoices):
+        PENDING = "pending"
+        APPROVED = "approved"
+        REJECTED = "rejected"
+
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="claims")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+")
+    method = models.CharField(max_length=20)  # otp_phone, otp_email, documents
+    state = models.CharField(max_length=10, choices=State.choices, default=State.PENDING)
+    evidence_text = models.TextField(blank=True)
+    created_at = models.DateTimeField(default=clock.now)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    decided_at = models.DateTimeField(null=True, blank=True)
+
+
+class ConsentRecord(models.Model):
+    """Append-only consent for individuals and contacts (rule R18)."""
+
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="consents")
+    subject_kind = models.CharField(max_length=10, default="entry")  # entry | contact
+    status = models.CharField(max_length=12)  # consented, withdrawn, takedown
+    method = models.CharField(max_length=40)
+    wording_version = models.CharField(max_length=20)
+    evidence_text = models.TextField(blank=True)
+    at = models.DateTimeField(default=clock.now)
+
+    class Meta:
+        ordering = ["id"]
+
+
+class CreditEvent(models.Model):
+    """Credit lives here, not on the entry, so duplicates can merge without losing first-adder credit (D6)."""
+
+    entry = models.ForeignKey(Entry, null=True, on_delete=models.SET_NULL, related_name="credit_events")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="+")
+    kind = models.CharField(max_length=20)  # added, verified, area_added, claimed_assist
+    eligible = models.BooleanField(default=False)
+    ineligible_reason = models.CharField(max_length=60, blank=True)
+    phase_id = models.PositiveIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(default=clock.now)
+    merged_from_id = models.BigIntegerField(null=True, blank=True)
+
+
+class MergeMap(models.Model):
+    """Append-only record of a merge (plan 6.7). The dropped entry redirects to the kept one."""
+
+    from_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
+    to_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
+    score = models.FloatField(null=True, blank=True)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    decided_at = models.DateTimeField(default=clock.now)
+```
+
+
+
+---
+
+## 154. Software source: backend/entries/services.py
+
+```py
+"""Entry service layer: creation, edits with change log, verification state machine, publish rules, claims, consent.
+
+Rules enforced here: R07 (independence, expiry), R08 (draft hidden, publish bar), R09 (credit eligibility),
+R18/R19 (person and child-facing gates), R21 (source gate), R02 (contacts encrypted, hashed)."""
+
+import re
+from datetime import timedelta
+
+from django.conf import settings
+from django.db import transaction
+
+from core import clock
+from core.crypto import keyed_hash
+from core.models import ChangeLog, CountrySwitch, audit
+from core.textfold import fold
+from intake.gate import SourceBlocked, assert_allowed
+from taxonomy.models import ListTypeSettings
+from taxonomy.services import validate_addons
+
+from .models import (
+    Claim,
+    ConsentRecord,
+    Contact,
+    CreditEvent,
+    Entry,
+    NameVariant,
+    VerificationCurrent,
+    VerificationEvent,
+)
+
+LEVEL_ORDER = ["surveyor", "owner", "ai"]
+EDITABLE = {
+    "name",
+    "description",
+    "address",
+    "address_text",
+    "website",
+    "size_band",
+    "year_established",
+    "languages",
+    "price_band",
+    "payment_methods",
+    "addons",
+    "status",
+    "status_date",
+    "lat",
+    "lon",
+    "precision_class",
+    "coord_source",
+    "coord_date",
+    "service_area",
+    "entity_type",
+    "place",
+}
+
+
+class EntryError(ValueError):
+    pass
+
+
+class GuardError(EntryError):
+    """A verification rule (independence, claim, evidence) was not met."""
+
+
+def normalize_contact(kind, value, country_code=""):
+    value = (value or "").strip()
+    if kind == "email":
+        return value.lower()
+    digits = re.sub(r"[^\d+]", "", value)
+    if digits.startswith("00"):
+        digits = "+" + digits[2:]
+    if not digits.startswith("+") and country_code == "PK" and digits.startswith("0"):
+        digits = "+92" + digits[1:]
+    return digits
+
+
+@transaction.atomic
+def create_entry(
+    *,
+    name,
+    place,
+    primary_concept,
+    created_by=None,
+    created_via=Entry.CreatedVia.CONTRIBUTOR,
+    source=None,
+    contacts=(),
+    name_variants=(),
+    **fields,
+):
+    if created_via in (Entry.CreatedVia.IMPORT, Entry.CreatedVia.AGENT, Entry.CreatedVia.REGISTER):
+        assert_allowed(source, "import" if created_via != Entry.CreatedVia.AGENT else "agent_fetch")
+    addons = fields.get("addons") or {}
+    if primary_concept.template_id:
+        problems = validate_addons(primary_concept.template, addons)
+        if problems:
+            raise EntryError(f"invalid add-on values: {problems}")
+        fields["addon_template_version"] = primary_concept.template.version
+    elif addons:
+        raise EntryError("this list type has no add-on template")
+    country = place.country_code or "ZZ"
+    entry = Entry.objects.create(
+        name=name,
+        name_fold=fold(name),
+        place=place,
+        place_path=place.path,
+        country_code=country,
+        primary_concept=primary_concept,
+        entity_type=fields.pop("entity_type", primary_concept.entity_type_default),
+        created_by=created_by,
+        created_via=created_via,
+        source=source,
+        **fields,
+    )
+    for text, lang, kind in name_variants:
+        NameVariant.objects.create(
+            entry=entry, country_code=country, text=text, language=lang, kind=kind, text_fold=fold(text)
+        )
+    for kind, value in contacts:
+        add_contact(entry, kind, value)
+    ChangeLog.objects.create(
+        entry_id=entry.pk,
+        country_code=country,
+        field_key="created",
+        new={"name": name},
+        actor_id=getattr(created_by, "pk", None),
+        source_id=getattr(source, "pk", None),
+    )
+    if created_by is not None:
+        CreditEvent.objects.create(
+            entry=entry, user=created_by, kind="added", eligible=False, ineligible_reason="unverified"
+        )
+    audit(
+        "entry.create",
+        actor=created_by,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=country,
+        payload={"via": created_via},
+    )
+    return entry
+
+
+def add_contact(entry, kind, value):
+    norm = normalize_contact(kind, value, entry.country_code)
+    return Contact.objects.create(
+        entry=entry, country_code=entry.country_code, kind=kind, value_enc=norm, value_hash=keyed_hash(f"{kind}:{norm}")
+    )
+
+
+@transaction.atomic
+def update_entry(entry, *, actor=None, **changes):
+    bad = set(changes) - EDITABLE
+    if bad:
+        raise EntryError(f"fields not editable here: {sorted(bad)}")
+    for key, new in changes.items():
+        old = getattr(entry, key)
+        if old == new:
+            continue
+        if key == "place":
+            entry.place_path = new.path
+            old, new_log = old.uid, new.uid
+        else:
+            new_log = new
+        setattr(entry, key, new)
+        if key == "name":
+            entry.name_fold = fold(new)
+        ChangeLog.objects.create(
+            entry_id=entry.pk,
+            country_code=entry.country_code,
+            field_key=key,
+            old=_jsonable(old),
+            new=_jsonable(new_log),
+            actor_id=getattr(actor, "pk", None),
+        )
+    entry.save()
+    audit(
+        "entry.update",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"fields": sorted(changes)},
+    )
+    return entry
+
+
+def _jsonable(v):
+    return v if isinstance(v, (str, int, float, bool, list, dict, type(None))) else str(v)
+
+
+# ---- verification -------------------------------------------------------------------------------------------
+
+
+def current_level(entry, now=None):
+    """Best unexpired check level, or "none". Levels are independent chips; this is the best one for list order."""
+    now = now or clock.now()
+    levels = {v.level for v in VerificationCurrent.objects.filter(entry=entry, state="verified", expires_at__gt=now)}
+    for lv in LEVEL_ORDER:
+        if lv in levels:
+            return lv
+    return "none"
+
+
+def current_levels(entry, now=None):
+    now = now or clock.now()
+    return {v.level for v in VerificationCurrent.objects.filter(entry=entry, state="verified", expires_at__gt=now)}
+
+
+@transaction.atomic
+def record_verification(entry, *, field_group, level, actor=None, method="", evidence="", source=None, now=None):
+    now = now or clock.now()
+    if level not in LEVEL_ORDER:
+        raise GuardError(f"unknown level {level!r}")
+    if level in ("surveyor", "owner"):
+        if actor is None:
+            raise GuardError("a person must record a surveyor or owner check")
+        if not method or not evidence.strip():
+            raise GuardError("method and evidence text are required")
+    if level == "surveyor" and entry.created_by_id and actor.pk == entry.created_by_id:
+        raise GuardError("a surveyor never verifies an entry they added (rule R07)")
+    if level == "owner":
+        if entry.claim_state != Entry.ClaimState.CLAIMED:
+            raise GuardError("owner check needs a successful claim")
+        if not Claim.objects.filter(entry=entry, user=actor, state=Claim.State.APPROVED).exists():
+            raise GuardError("actor is not the approved claimant")
+    if level == "ai":
+        if source is None:
+            raise GuardError("an AI check must name its source")
+        if entry.source_id is not None and source.pk == entry.source_id:
+            raise GuardError("an AI check must use a different source from the draft (rule R07)")
+        assert_allowed(source, "agent_fetch")
+        if not evidence.strip():
+            raise GuardError("an AI check must store its evidence")
+    days = settings.CHECK_VALIDITY_DAYS[level]
+    previous = (
+        VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
+    )
+    event = VerificationEvent.objects.create(
+        entry=entry,
+        country_code=entry.country_code,
+        field_group=field_group,
+        level=level,
+        state="verified",
+        actor_id=getattr(actor, "pk", None),
+        method=method,
+        evidence_text=evidence,
+        source=source,
+        ts=now,
+        expires_at=now + timedelta(days=days),
+        supersedes=previous,
+    )
+    VerificationCurrent.objects.update_or_create(
+        entry=entry,
+        field_group=field_group,
+        level=level,
+        defaults=dict(
+            state="verified",
+            verified_at=now,
+            expires_at=event.expires_at,
+            method=method,
+            actor_display=(getattr(actor, "username", "") or "")[:80],
+        ),
+    )
+    entry.last_verified_at = now
+    entry.save(update_fields=["last_verified_at"])
+    if level in ("surveyor", "owner"):
+        _mark_credit_eligible(entry)
+    audit(
+        "verification.record",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"level": level, "group": field_group},
+    )
+    try_publish(entry, actor=actor, now=now)
+    return event
+
+
+def _mark_credit_eligible(entry):
+    """R09: payout credit needs a surveyor or owner check. Self-listed and agent-made entries never earn."""
+    if entry.created_via in (Entry.CreatedVia.SELF, Entry.CreatedVia.AGENT):
+        CreditEvent.objects.filter(entry=entry, kind="added").update(
+            eligible=False, ineligible_reason=entry.created_via
+        )
+        return
+    CreditEvent.objects.filter(entry=entry, kind="added", eligible=False, ineligible_reason="unverified").update(
+        eligible=True, ineligible_reason=""
+    )
+
+
+@transaction.atomic
+def revoke_verification(entry, *, field_group, level, actor, reason):
+    previous = (
+        VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
+    )
+    VerificationEvent.objects.create(
+        entry=entry,
+        country_code=entry.country_code,
+        field_group=field_group,
+        level=level,
+        state="revoked",
+        actor_id=getattr(actor, "pk", None),
+        evidence_text=reason,
+        supersedes=previous,
+    )
+    VerificationCurrent.objects.filter(entry=entry, field_group=field_group, level=level).update(state="revoked")
+    audit(
+        "verification.revoke",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"level": level, "group": field_group, "reason": reason},
+    )
+
+
+@transaction.atomic
+def sweep_expired(now=None):
+    """Drop expired checks; return published entries that lost every check past the grace period to draft (R07, R08)."""
+    now = now or clock.now()
+    expired = list(VerificationCurrent.objects.select_for_update().filter(state="verified", expires_at__lte=now))
+    touched = set()
+    for cur in expired:
+        previous = (
+            VerificationEvent.objects.filter(entry_id=cur.entry_id, field_group=cur.field_group, level=cur.level)
+            .order_by("-id")
+            .first()
+        )
+        VerificationEvent.objects.create(
+            entry_id=cur.entry_id,
+            country_code=cur.entry.country_code,
+            field_group=cur.field_group,
+            level=cur.level,
+            state="expired",
+            ts=now,
+            supersedes=previous,
+        )
+        cur.state = "expired"
+        cur.save(update_fields=["state"])
+        touched.add(cur.entry_id)
+    returned = 0
+    grace = timedelta(days=settings.GRACE_DAYS)
+    for entry in Entry.objects.filter(publish_state=Entry.PublishState.PUBLISHED):
+        if current_level(entry, now) != "none":
+            continue
+        last_expiry = max((v.expires_at for v in entry.verification_current.all() if v.expires_at), default=None)
+        if last_expiry is None or now > last_expiry + grace:
+            entry.publish_state = Entry.PublishState.DRAFT
+            entry.save(update_fields=["publish_state"])
+            audit(
+                "entry.to_draft",
+                object_type="entry",
+                object_uid=entry.uid,
+                country_code=entry.country_code,
+                payload={"reason": "checks expired past grace"},
+            )
+            returned += 1
+    return {"expired": len(expired), "returned_to_draft": returned}
+
+
+# ---- publish bar ---------------------------------------------------------------------------------------------
+
+
+def quality_failures(entry, now=None):
+    """Why an entry may not be public yet (plan 6.1). Empty list means it clears the bar."""
+    fails = []
+    if not entry.name.strip():
+        fails.append("name missing")
+    if not entry.place_id:
+        fails.append("place missing")
+    if current_level(entry, now) == "none":
+        fails.append("needs at least an AI check")
+    if not (entry.website or entry.contact_set.exists()):
+        fails.append("needs a website or a contact")
+    if entry.source_id:
+        try:
+            assert_allowed(entry.source, "display")
+        except SourceBlocked as exc:
+            fails.append(str(exc))
+    switch = CountrySwitch.for_country(entry.country_code)
+    cs = ListTypeSettings.objects.filter(concept_id=entry.primary_concept_id).first()
+    if entry.entity_type == Entry.EntityType.PERSON:
+        if not switch.named_individuals_on:
+            fails.append("named individuals are off in this country")
+        latest = entry.consents.order_by("-id").first()
+        if not latest or latest.status != "consented":
+            fails.append("person needs recorded consent")
+    if cs and cs.is_child_facing and not switch.child_services_on:
+        fails.append("child-facing services are off in this country")
+    tpl = entry.primary_concept.template
+    if tpl:
+        for key, msg in validate_addons(tpl, entry.addons, for_publish=True):
+            fails.append(f"{key}: {msg}")
+    return fails
+
+
+def try_publish(entry, *, actor=None, now=None):
+    """Move draft or review to published when the bar is met. Returns the failure list (empty if published)."""
+    if entry.publish_state not in (Entry.PublishState.DRAFT, Entry.PublishState.REVIEW):
+        return []
+    fails = quality_failures(entry, now)
+    if not fails:
+        entry.publish_state = Entry.PublishState.PUBLISHED
+        entry.save(update_fields=["publish_state"])
+        audit("entry.publish", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code)
+    return fails
+
+
+# ---- claims and consent --------------------------------------------------------------------------------------
+
+
+@transaction.atomic
+def start_claim(entry, user, method, evidence=""):
+    if entry.claim_state == Entry.ClaimState.CLAIMED:
+        raise EntryError("entry is already claimed")
+    claim = Claim.objects.create(entry=entry, user=user, method=method, evidence_text=evidence)
+    entry.claim_state = Entry.ClaimState.PENDING
+    entry.save(update_fields=["claim_state"])
+    audit("claim.start", actor=user, object_type="entry", object_uid=entry.uid, country_code=entry.country_code)
+    return claim
+
+
+@transaction.atomic
+def decide_claim(claim, *, actor, approve, now=None):
+    now = now or clock.now()
+    if claim.state != Claim.State.PENDING:
+        raise EntryError("claim already decided")
+    claim.state = Claim.State.APPROVED if approve else Claim.State.REJECTED
+    claim.decided_by_id, claim.decided_at = actor.pk, now
+    claim.save()
+    entry = claim.entry
+    entry.claim_state = Entry.ClaimState.CLAIMED if approve else Entry.ClaimState.UNCLAIMED
+    entry.save(update_fields=["claim_state"])
+    audit(
+        "claim.decide",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"approved": approve},
+    )
+    if approve:
+        record_verification(
+            entry,
+            field_group="identity",
+            level="owner",
+            actor=claim.user,
+            method=claim.method,
+            evidence=claim.evidence_text or "claim approved",
+            now=now,
+        )
+    return claim
+
+
+def record_consent(entry, *, status, method, wording_version, evidence="", actor=None):
+    rec = ConsentRecord.objects.create(
+        entry=entry, status=status, method=method, wording_version=wording_version, evidence_text=evidence
+    )
+    audit(
+        "consent.record",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"status": status},
+    )
+    return rec
+
+
+# ---- merging (plan 6.7, rule D6) -----------------------------------------------------------------------------
+
+
+@transaction.atomic
+def merge_entries(keep, drop, *, actor=None, score=None):
+    """Merge `drop` into `keep`. Children move, credit events are re-pointed, the earliest added-credit survives,
+    the dropped entry is tombstoned with a redirect, and everything is logged."""
+    from .models import MergeMap
+
+    if keep.pk == drop.pk or drop.merged_into_id:
+        raise EntryError("cannot merge an entry into itself or merge twice")
+    if keep.country_code != drop.country_code:
+        raise EntryError("entries in different countries are never merged")
+    for rel in (
+        "namevariant_set",
+        "contact_set",
+        "social_set",
+        "hours_set",
+        "service_set",
+        "product_set",
+        "speciality_set",
+        "identifier_set",
+        "areaserved_set",
+        "equipment_set",
+        "branch_set",
+    ):
+        getattr(drop, rel).update(entry=keep)
+    NameVariant.objects.get_or_create(
+        entry=keep,
+        country_code=keep.country_code,
+        text=drop.name,
+        defaults=dict(language=drop.name_lang, kind="old", text_fold=drop.name_fold),
+    )
+    CreditEvent.objects.filter(entry=drop).update(entry=keep, merged_from_id=drop.pk)
+    added = list(CreditEvent.objects.filter(entry=keep, kind="added").order_by("created_at", "id"))
+    for later in added[1:]:
+        later.eligible, later.ineligible_reason = False, "duplicate"
+        later.save(update_fields=["eligible", "ineligible_reason"])
+    drop.merged_into = keep
+    drop.publish_state = Entry.PublishState.SUPPRESSED
+    drop.save(update_fields=["merged_into", "publish_state"])
+    MergeMap.objects.create(from_entry=drop, to_entry=keep, score=score, decided_by_id=getattr(actor, "pk", None))
+    ChangeLog.objects.create(
+        entry_id=keep.pk,
+        country_code=keep.country_code,
+        field_key="merged",
+        new={"from": drop.uid},
+        actor_id=getattr(actor, "pk", None),
+    )
+    audit(
+        "entry.merge",
+        actor=actor,
+        object_type="entry",
+        object_uid=keep.uid,
+        country_code=keep.country_code,
+        payload={"from": drop.uid, "score": score},
+    )
+    return keep
+```
+
+
+
+---
+
+## 155. Software source: backend/entries/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 156. Software source: backend/entries/tests/test_entries.py
+
+```py
+from datetime import timedelta
+
+import pytest
+from django.db import connection, transaction
+from django.db.utils import IntegrityError, InternalError
+
+from core import clock
+from core.models import ChangeLog, CountrySwitch, verify_audit_chain
+from entries import services as es
+from entries.models import Contact, CreditEvent, VerificationCurrent, VerificationEvent
+from intake.gate import SourceBlocked
+from intake.models import Source
+from taxonomy.models import ListTypeSettings
+
+
+def verify(entry, user, level="surveyor", **kw):
+    return es.record_verification(
+        entry,
+        field_group="identity",
+        level=level,
+        actor=user,
+        method=kw.pop("method", "call"),
+        evidence=kw.pop("evidence", "Phone answered, name matched"),
+        **kw
+    )
+
+
+# ---- creation, contacts, history (R02, R21) ------------------------------------------------------------------
+
+
+def test_create_is_draft_with_country_path_and_template_version(entry, tree):
+    assert entry.publish_state == "draft" and entry.country_code == "PK"
+    assert entry.place_path == tree["paris"].path and entry.addon_template_version == 1
+    assert ChangeLog.objects.filter(entry_id=entry.pk, field_key="created").exists()
+    assert verify_audit_chain() is None
+
+
+def test_contact_is_encrypted_at_rest_and_hashed(pg, entry):
+    c = Contact.objects.get(entry=entry)
+    with connection.cursor() as cur:
+        cur.execute("SELECT value_enc FROM entries_contact WHERE id=%s", [c.pk])
+        raw = cur.fetchone()[0]
+    assert "923001234567" not in raw and raw.startswith("dev:")
+    assert c.value_enc == "+923001234567" and c.relay_only is True
+    assert Contact.objects.filter(value_hash=c.value_hash).count() == 1
+
+
+def test_contact_normalisation_and_same_number_same_hash(entry):
+    es.add_contact(entry, "phone", "+92 (300) 123-4567")
+    assert Contact.objects.filter(entry=entry).values("value_hash").distinct().count() == 1
+    assert es.normalize_contact("email", " A@B.CO ") == "a@b.co"
+
+
+def test_invalid_addons_rejected(tree, surgical, users):
+    with pytest.raises(es.EntryError):
+        es.create_entry(
+            name="X",
+            place=tree["paris"],
+            primary_concept=surgical,
+            created_by=users["adder"],
+            addons={"business_type": "pirate"},
+        )
+
+
+def test_update_writes_change_log_and_refolds_name(entry, users):
+    es.update_entry(entry, actor=users["mod"], name="كريسنت Surgical", website="https://new.example.org")
+    rows = {r.field_key: r for r in ChangeLog.objects.filter(entry_id=entry.pk)}
+    assert rows["website"].old == "https://example.org" and rows["name"].new == "كريسنت Surgical"
+    entry.refresh_from_db()
+    assert "ک" in entry.name_fold
+    with pytest.raises(es.EntryError):
+        es.update_entry(entry, publish_state="published")
+
+
+def test_import_needs_an_allowed_source(tree, surgical, users, db):
+    red = Source.objects.create(name="Scraped maps", tier="red", allowed_uses=["import"])
+    with pytest.raises(SourceBlocked):
+        es.create_entry(
+            name="X",
+            place=tree["paris"],
+            primary_concept=surgical,
+            created_via="import",
+            source=red,
+            addons={"business_type": "trader", "product_categories": ["a"]},
+        )
+    with pytest.raises(SourceBlocked):
+        es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_via="import", source=None)
+
+
+# ---- verification guards (R07) -------------------------------------------------------------------------------
+
+
+def test_surveyor_never_verifies_own_entry(entry, users):
+    with pytest.raises(es.GuardError):
+        verify(entry, users["adder"])
+    assert verify(entry, users["surveyor"]).state == "verified"
+
+
+def test_surveyor_and_owner_need_method_and_evidence(entry, users):
+    with pytest.raises(es.GuardError):
+        verify(entry, users["surveyor"], evidence="  ")
+    with pytest.raises(es.GuardError):
+        verify(entry, users["surveyor"], method="")
+    with pytest.raises(es.GuardError):
+        es.record_verification(entry, field_group="identity", level="surveyor", actor=None, method="call", evidence="x")
+
+
+def test_owner_check_needs_approved_claim(entry, users):
+    with pytest.raises(es.GuardError):
+        verify(entry, users["owner"], level="owner")
+    claim = es.start_claim(entry, users["owner"], "otp_phone", "OTP matched stored phone")
+    with pytest.raises(es.GuardError):
+        verify(entry, users["owner"], level="owner")
+    es.decide_claim(claim, actor=users["mod"], approve=True)
+    entry.refresh_from_db()
+    assert entry.claim_state == "claimed" and es.current_level(entry) == "owner"
+
+
+def test_rejected_claim_leaves_entry_unclaimed(entry, users):
+    claim = es.start_claim(entry, users["owner"], "otp_phone")
+    es.decide_claim(claim, actor=users["mod"], approve=False)
+    entry.refresh_from_db()
+    assert entry.claim_state == "unclaimed"
+    with pytest.raises(es.EntryError):
+        es.decide_claim(claim, actor=users["mod"], approve=True)
+
+
+def test_ai_check_needs_different_source_and_evidence(entry, users, green, web_source):
+    es.update_entry(entry)  # no-op
+    entry.source = green
+    entry.save()
+    with pytest.raises(es.GuardError):
+        es.record_verification(entry, field_group="identity", level="ai", source=green, evidence="same", method="web")
+    with pytest.raises(es.GuardError):
+        es.record_verification(entry, field_group="identity", level="ai", source=None, evidence="x", method="web")
+    with pytest.raises(es.GuardError):
+        es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="", method="web")
+    ev = es.record_verification(
+        entry,
+        field_group="identity",
+        level="ai",
+        source=web_source,
+        evidence="Page lists the same address",
+        method="web",
+    )
+    assert ev.state == "verified"
+
+
+def test_ai_check_refuses_red_or_unreviewed_source(entry):
+    red = Source.objects.create(name="Bought list", tier="red", allowed_uses=["agent_fetch"])
+    with pytest.raises(SourceBlocked):
+        es.record_verification(entry, field_group="identity", level="ai", source=red, evidence="x", method="web")
+
+
+def test_levels_are_independent_chips(entry, users, web_source):
+    verify(entry, users["surveyor"])
+    es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="e", method="web")
+    assert es.current_levels(entry) == {"surveyor", "ai"} and es.current_level(entry) == "surveyor"
+
+
+def test_reverification_supersedes_and_keeps_history(entry, users):
+    e1 = verify(entry, users["surveyor"])
+    e2 = verify(entry, users["surveyor"])
+    assert e2.supersedes_id == e1.pk and VerificationEvent.objects.filter(entry=entry).count() == 2
+    assert VerificationCurrent.objects.filter(entry=entry).count() == 1
+
+
+def test_revoke(entry, users):
+    verify(entry, users["surveyor"])
+    es.revoke_verification(entry, field_group="identity", level="surveyor", actor=users["mod"], reason="report upheld")
+    assert es.current_level(entry) == "none"
+
+
+def test_append_only_verification_event(pg, entry, users):
+    ev = verify(entry, users["surveyor"])
+    with pytest.raises((InternalError, IntegrityError)), transaction.atomic():
+        with connection.cursor() as cur:
+            cur.execute("UPDATE entries_verificationevent SET method='x' WHERE id=%s", [ev.pk])
+
+
+# ---- expiry and grace (R07, R08) -----------------------------------------------------------------------------
+
+
+def test_checks_expire_then_grace_then_draft(entry, users, settings):
+    t0 = clock.now()
+    verify(entry, users["surveyor"], now=t0)
+    entry.refresh_from_db()
+    assert entry.publish_state == "published" and es.current_level(entry, t0) == "surveyor"
+    after = t0 + timedelta(days=settings.CHECK_VALIDITY_DAYS["surveyor"] + 1)
+    r = es.sweep_expired(after)
+    entry.refresh_from_db()
+    assert r == {"expired": 1, "returned_to_draft": 0} and entry.publish_state == "published"  # grace
+    assert es.current_level(entry, after) == "none"
+    later = after + timedelta(days=settings.GRACE_DAYS + 1)
+    assert es.sweep_expired(later)["returned_to_draft"] == 1
+    entry.refresh_from_db()
+    assert entry.publish_state == "draft"
+    assert VerificationEvent.objects.filter(entry=entry, state="expired").count() == 1
+
+
+def test_ai_check_expires_sooner_than_surveyor(settings):
+    assert settings.CHECK_VALIDITY_DAYS["ai"] < settings.CHECK_VALIDITY_DAYS["surveyor"]
+
+
+# ---- publish bar (R08, R18, R19, R21) -------------------------------------------------------------------------
+
+
+def test_draft_stays_draft_without_a_check(entry):
+    assert entry.publish_state == "draft"
+    assert "needs at least an AI check" in es.quality_failures(entry)
+
+
+def test_needs_website_or_contact(tree, surgical, users):
+    e = es.create_entry(
+        name="No Contact Co",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
+    verify(e, users["surveyor"])
+    e.refresh_from_db()
+    assert e.publish_state == "draft" and "needs a website or a contact" in es.quality_failures(e)
+
+
+def test_required_addon_fields_gate_publishing(tree, surgical, users):
+    e = es.create_entry(
+        name="Thin Co",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        website="https://t.example.org",
+    )
+    verify(e, users["surveyor"])
+    e.refresh_from_db()
+    assert e.publish_state == "draft"
+    fails = es.quality_failures(e)
+    assert any(f.startswith("business_type") for f in fails)
+
+
+def test_published_after_surveyor_check(entry, users):
+    verify(entry, users["surveyor"])
+    entry.refresh_from_db()
+    assert entry.publish_state == "published"
+
+
+def test_blocked_source_prevents_publish(entry, users, green):
+    entry.source = green
+    entry.save()
+    green.status = "paused"
+    green.save()
+    verify(entry, users["surveyor"])
+    entry.refresh_from_db()
+    assert entry.publish_state == "draft" and any("not active" in f for f in es.quality_failures(entry))
+
+
+def test_person_needs_switch_and_consent(tree, surgical, users, db):
+    e = es.create_entry(
+        name="Dr Example",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        entity_type="person",
+        website="https://dr.example.org",
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
+    verify(e, users["surveyor"])
+    e.refresh_from_db()
+    assert e.publish_state == "draft"
+    CountrySwitch.objects.create(country_code="PK", named_individuals_on=True)
+    assert es.quality_failures(e) == ["person needs recorded consent"]
+    es.record_consent(e, status="consented", method="signed form", wording_version="v1")
+    assert es.try_publish(e) == [] and e.publish_state == "published"
+    es.record_consent(e, status="withdrawn", method="email", wording_version="v1")
+    e.publish_state = "draft"
+    assert "person needs recorded consent" in es.quality_failures(e)
+
+
+def test_child_facing_list_type_off_by_default(entry, users):
+    ListTypeSettings.objects.filter(concept=entry.primary_concept).update(is_child_facing=True)
+    verify(entry, users["surveyor"])
+    entry.refresh_from_db()
+    assert entry.publish_state == "draft"
+    CountrySwitch.objects.create(country_code="PK", child_services_on=True)
+    assert es.try_publish(entry) == []
+
+
+def test_country_defaults_all_off_except_browsing(db):
+    s = CountrySwitch.for_country("ZZ")
+    assert s.browsing_on and not (s.indexing_on or s.selling_on or s.outreach_on or s.ads_on or s.named_individuals_on)
+
+
+# ---- credit eligibility (R09, D6) -----------------------------------------------------------------------------
+
+
+def test_credit_only_after_surveyor_or_owner_check(entry, users, web_source):
+    ce = CreditEvent.objects.get(entry=entry)
+    assert not ce.eligible and ce.ineligible_reason == "unverified"
+    es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="e", method="web")
+    ce.refresh_from_db()
+    assert not ce.eligible  # an AI check earns nothing
+    verify(entry, users["surveyor"])
+    ce.refresh_from_db()
+    assert ce.eligible
+
+
+def test_self_listed_never_earns(tree, surgical, users):
+    e = es.create_entry(
+        name="Self Listed",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        created_via="self",
+        website="https://s.example.org",
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
+    verify(e, users["surveyor"])
+    ce = CreditEvent.objects.get(entry=e)
+    assert not ce.eligible and ce.ineligible_reason == "self"
+
+
+def test_import_credit_waits_for_verification(tree, surgical, users, green):
+    e = es.create_entry(
+        name="Imported Co",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        created_via="import",
+        source=green,
+        website="https://i.example.org",
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
+    assert not CreditEvent.objects.get(entry=e).eligible
+    verify(e, users["surveyor"])
+    assert CreditEvent.objects.get(entry=e).eligible
+
+
+def test_agent_entries_have_no_human_credit(tree, surgical, web_source):
+    e = es.create_entry(
+        name="Agent Draft",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_via="agent",
+        source=web_source,
+        addons={"business_type": "trader", "product_categories": ["a"]},
+    )
+    assert not CreditEvent.objects.filter(entry=e).exists() and e.publish_state == "draft"
+```
+
+
+
+---
+
+## 157. Software source: backend/intake/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 158. Software source: backend/intake/admin.py
+
+```py
+from django.contrib import admin
+
+from .models import DedupeCandidate, ImportBatch, ImportRow, Source
+
+
+@admin.register(Source)
+class SourceAdmin(admin.ModelAdmin):
+    list_display = ("name", "tier", "status", "reviewed_on", "bulk_permission")
+    list_filter = ("tier", "status")
+
+
+admin.site.register([ImportBatch, ImportRow, DedupeCandidate])
+```
+
+
+
+---
+
+## 159. Software source: backend/intake/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class IntakeConfig(AppConfig):
+    name = "intake"
+```
+
+
+
+---
+
+## 160. Software source: backend/intake/dedupe.py
+
+```py
+"""Duplicate pipeline v1 (plan 7.4): block, score, decide. Scoped by place subtree and concept so it stays cheap."""
+
+import math
+from itertools import combinations
+
+from core.textfold import fold
+from entries.models import Contact, Entry
+
+AUTO_MERGE = 0.90
+REVIEW = 0.60
+WEIGHTS = {"phone": 0.50, "name": 0.30, "distance": 0.10, "address": 0.10}
+
+
+def trigrams(text):
+    padded = f"  {text} "
+    return {padded[i : i + 3] for i in range(len(padded) - 2)}
+
+
+def similarity(a, b):
+    """Jaccard similarity of trigrams of folded text, the same idea as pg_trgm."""
+    ta, tb = trigrams(fold(a)), trigrams(fold(b))
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / len(ta | tb)
+
+
+def haversine_m(lat1, lon1, lat2, lon2):
+    r = 6371000.0
+    p1, p2 = math.radians(float(lat1)), math.radians(float(lat2))
+    dphi, dl = p2 - p1, math.radians(float(lon2) - float(lon1))
+    h = math.sin(dphi / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return 2 * r * math.asin(math.sqrt(h))
+
+
+def features(a, b):
+    kinds = ["phone", "mobile", "whatsapp"]
+    phones_a = set(Contact.objects.filter(entry=a, kind__in=kinds).values_list("value_hash", flat=True))
+    phones_b = set(Contact.objects.filter(entry=b, kind__in=kinds).values_list("value_hash", flat=True))
+    f = {
+        "phone": 1.0 if phones_a & phones_b else 0.0,
+        "name": similarity(a.name, b.name),
+        "address": similarity(a.address_text, b.address_text) if a.address_text and b.address_text else 0.0,
+        "distance": 0.0,
+    }
+    if a.lat is not None and b.lat is not None:
+        d = haversine_m(a.lat, a.lon, b.lat, b.lon)
+        f["distance_m"] = round(d)
+        f["distance"] = 1.0 if d <= 100 else 0.0
+    return f
+
+
+def score(f):
+    s = sum(WEIGHTS[k] * f[k] for k in WEIGHTS)
+    # a shared phone plus a similar name is as good as a match; an exact name alone never auto-merges
+    if f["phone"] and f["name"] >= 0.5:
+        s = max(s, 0.92)
+    if f["distance"] and f["name"] >= 0.8:
+        s = max(s, 0.92)  # same name within 100 m
+    if f["name"] >= 0.8:
+        # near-identical names inside one place and concept block always reach review, never auto-merge alone
+        s = max(s, REVIEW + (f["name"] - 0.8) / 0.2 * 0.25)
+    return round(min(s, 1.0), 4)
+
+
+def candidates_for(entry):
+    """Blocking: same country and concept, within the same place subtree, or sharing a phone hash."""
+    base = Entry.objects.filter(
+        country_code=entry.country_code, deleted_at__isnull=True, merged_into__isnull=True
+    ).exclude(pk=entry.pk)
+    same_place = base.filter(primary_concept=entry.primary_concept, place_path__startswith=entry.place_path)
+    hashes = list(Contact.objects.filter(entry=entry).values_list("value_hash", flat=True))
+    same_phone = base.filter(contact_set__value_hash__in=hashes) if hashes else base.none()
+    seen, out = set(), []
+    for e in list(same_place) + list(same_phone):
+        if e.pk not in seen:
+            seen.add(e.pk)
+            out.append(e)
+    return out
+
+
+def scan_entry(entry):
+    """Return [(other, score, features)] at or above the review threshold, best first."""
+    found = []
+    for other in candidates_for(entry):
+        f = features(entry, other)
+        s = score(f)
+        if s >= REVIEW:
+            found.append((other, s, f))
+    return sorted(found, key=lambda t: -t[1])
+
+
+def scan_all(country_code=None):
+    """Batch scan of every pair inside each (place, concept) block. Returns the number of candidates stored."""
+    from .models import DedupeCandidate
+
+    qs = Entry.objects.filter(deleted_at__isnull=True, merged_into__isnull=True)
+    if country_code:
+        qs = qs.filter(country_code=country_code)
+    blocks = {}
+    for e in qs:
+        blocks.setdefault((e.country_code, e.place_id, e.primary_concept_id), []).append(e)
+    stored = 0
+    for group in blocks.values():
+        for a, b in combinations(sorted(group, key=lambda e: e.pk), 2):
+            f = features(a, b)
+            s = score(f)
+            if s >= REVIEW:
+                _, created = DedupeCandidate.objects.get_or_create(
+                    a_entry=a, b_entry=b, defaults=dict(score=s, features=f)
+                )
+                stored += int(created)
+    return stored
+```
+
+
+
+---
+
+## 161. Software source: backend/intake/gate.py
+
+```py
+"""Licence gate (rules R21, R22). A blocked source can never feed a published record."""
+
+from .models import Source
+
+
+class SourceBlocked(Exception):
+    pass
+
+
+def assert_allowed(source, use):
+    """Raise SourceBlocked unless `source` may be used for `use` ("import", "agent_fetch", "display")."""
+    if source is None:
+        raise SourceBlocked("every record needs a source")
+    if source.status != "active":
+        raise SourceBlocked(f"source {source.name!r} is not active")
+    if source.tier == Source.Tier.RED:
+        raise SourceBlocked(f"source {source.name!r} is red (scraping, logins or bought lists are never ingested)")
+    if use not in (source.allowed_uses or []):
+        raise SourceBlocked(f"source {source.name!r} does not allow {use!r}")
+    if use == "import" and source.tier == Source.Tier.AMBER and not source.reviewed_on:
+        raise SourceBlocked(f"amber source {source.name!r} has no recorded terms review")
+    return True
+```
+
+
+
+---
+
+## 162. Software source: backend/intake/importer.py
+
+```py
+"""Paste and CSV import (plan 7.2): parse, map columns, normalise, create drafts, check for duplicates.
+Imported entries are drafts and earn nothing until verified (rules R08, R09)."""
+
+import csv
+import io
+
+from django.db import transaction
+from django.utils import timezone
+
+from core.models import audit
+from core.textfold import fold
+from entries import services as es
+
+from . import dedupe
+from .gate import assert_allowed
+from .models import DedupeCandidate, ImportBatch, ImportRow
+
+# Header words in English, Urdu and Roman Urdu. Compared after folding.
+ALIASES = {
+    "name": [
+        "name",
+        "business name",
+        "company",
+        "company name",
+        "firm",
+        "shop",
+        "title",
+        "naam",
+        "نام",
+        "کمپنی",
+        "دکان",
+        "فرم",
+    ],
+    "phone": [
+        "phone",
+        "mobile",
+        "tel",
+        "telephone",
+        "contact",
+        "contact no",
+        "number",
+        "cell",
+        "whatsapp",
+        "raabta",
+        "فون",
+        "موبائل",
+        "نمبر",
+        "رابطہ",
+    ],
+    "email": ["email", "e-mail", "mail", "ای میل"],
+    "address": ["address", "location", "road", "street", "pata", "پتہ", "علاقہ", "سڑک"],
+    "website": ["website", "web", "url", "site", "ویب سائٹ"],
+    "specialities": ["products", "speciality", "specialities", "services", "items", "make", "پروڈکٹ", "مصنوعات"],
+}
+_FOLDED = {field: {fold(a) for a in words} for field, words in ALIASES.items()}
+
+
+class ImportError_(ValueError):
+    pass
+
+
+def parse_table(text):
+    """Pasted text or CSV to (headers, rows as dicts). Tab, comma, semicolon and pipe are detected."""
+    text = text.strip("﻿\n\r ")
+    if not text:
+        raise ImportError_("nothing to import")
+    sample = text[:2000]
+    delim = max(["\t", ",", ";", "|"], key=sample.count)
+    reader = csv.reader(io.StringIO(text), delimiter=delim)
+    rows = [r for r in reader if any(c.strip() for c in r)]
+    headers, body = [h.strip() for h in rows[0]], rows[1:]
+    return headers, [{headers[i]: (r[i].strip() if i < len(r) else "") for i in range(len(headers))} for r in body]
+
+
+def guess_mapping(headers):
+    mapping = {}
+    for h in headers:
+        for field, names in _FOLDED.items():
+            if fold(h) in names and field not in mapping.values():
+                mapping[h] = field
+                break
+    return mapping
+
+
+def normalise_row(raw, mapping, country_code):
+    out = {"name": "", "phones": [], "emails": [], "address": "", "website": "", "specialities": []}
+    for header, value in raw.items():
+        field = mapping.get(header)
+        value = (value or "").strip()
+        if not field or not value:
+            continue
+        if field == "name":
+            out["name"] = " ".join(value.split())
+        elif field == "phone":
+            for part in value.replace("/", ",").replace(";", ",").split(","):
+                n = es.normalize_contact("phone", part, country_code)
+                if len(n.lstrip("+")) >= 7:
+                    out["phones"].append(n)
+        elif field == "email":
+            out["emails"].append(es.normalize_contact("email", value))
+        elif field == "address":
+            out["address"] = value
+        elif field == "website":
+            out["website"] = value if value.startswith("http") else "https://" + value
+        elif field == "specialities":
+            out["specialities"] = [s.strip() for s in value.replace(";", ",").split(",") if s.strip()]
+    return out
+
+
+@transaction.atomic
+def run_import(batch, actor=None, addons=None):
+    """Create draft entries for every usable row. Returns the batch counts."""
+    if not batch.declared_rights:
+        raise ImportError_("the contributor must declare the right to share this list")
+    assert_allowed(batch.source, "import")
+    headers, rows = parse_table(batch.raw_text)
+    batch.mapping = batch.mapping or guess_mapping(headers)
+    if "name" not in batch.mapping.values():
+        batch.status = ImportBatch.Status.FAILED
+        batch.counts = {"error": "no name column found"}
+        batch.save()
+        raise ImportError_("could not find a name column; set the mapping")
+    country = batch.place.country_code
+    counts = {"rows": len(rows), "drafted": 0, "duplicate": 0, "possible_duplicate": 0, "error": 0}
+    for line_no, raw in enumerate(rows, start=2):
+        row = ImportRow.objects.create(batch=batch, line_no=line_no, raw=raw)
+        norm = normalise_row(raw, batch.mapping, country)
+        row.normalised = norm
+        if not norm["name"]:
+            row.status, row.message = ImportRow.Status.ERROR, "no name"
+            counts["error"] += 1
+            row.save()
+            continue
+        contacts = [("phone", p) for p in dict.fromkeys(norm["phones"])] + [("email", e) for e in norm["emails"]]
+        extra = {"addons": addons} if addons else {}
+        entry = es.create_entry(
+            name=norm["name"],
+            place=batch.place,
+            primary_concept=batch.concept,
+            created_by=batch.uploader,
+            created_via="import",
+            source=batch.source,
+            address_text=norm["address"],
+            website=norm["website"],
+            contacts=contacts,
+            **extra,
+        )
+        row.entry = entry
+        found = dedupe.scan_entry(entry)
+        if found and found[0][1] >= dedupe.AUTO_MERGE:
+            other, s, _ = found[0]
+            es.merge_entries(other, entry, actor=actor, score=s)
+            row.entry, row.status, row.message = other, ImportRow.Status.DUPLICATE, f"merged into {other.uid}"
+            counts["duplicate"] += 1
+        else:
+            row.status = ImportRow.Status.DRAFTED
+            if found:
+                for other, s, f in found:
+                    a, b = sorted([entry, other], key=lambda e: e.pk)
+                    DedupeCandidate.objects.get_or_create(a_entry=a, b_entry=b, defaults=dict(score=s, features=f))
+                row.message = "possible duplicate, queued for review"
+                counts["possible_duplicate"] += 1
+            counts["drafted"] += 1
+        row.save()
+    batch.status, batch.counts, batch.finished_at = ImportBatch.Status.DONE, counts, timezone.now()
+    batch.save()
+    audit(
+        "import.run",
+        actor=actor,
+        object_type="import_batch",
+        object_uid=str(batch.pk),
+        country_code=country,
+        payload=counts,
+    )
+    return counts
+```
+
+
+
+---
+
+## 163. Software source: backend/intake/models.py
+
+```py
+"""Source register (plan section 7.1). Every import and agent fetch references a source; the gate decides."""
+
+from django.db import models
+
+
+class Source(models.Model):
+    class Tier(models.TextChoices):
+        GREEN = "green"
+        AMBER = "amber"
+        RED = "red"
+
+    name = models.CharField(max_length=160, unique=True)
+    tier = models.CharField(max_length=6, choices=Tier.choices, default=Tier.AMBER)
+    licence_text = models.TextField(blank=True)
+    terms_url = models.URLField(blank=True)
+    robots_decision = models.CharField(max_length=60, blank=True)
+    allowed_uses = models.JSONField(default=list, blank=True)  # e.g. ["import", "agent_fetch", "display"]
+    bulk_permission = models.BooleanField(default=False)
+    personal_data_rules = models.TextField(blank=True)
+    attribution_text = models.CharField(max_length=300, blank=True)
+    reviewed_by = models.CharField(max_length=120, blank=True)
+    reviewed_on = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=10, default="active")
+
+    def __str__(self):
+        return self.name
+
+
+class ImportBatch(models.Model):
+    class Status(models.TextChoices):
+        UPLOADED = "uploaded"
+        MAPPED = "mapped"
+        DONE = "done"
+        FAILED = "failed"
+
+    source = models.ForeignKey(Source, on_delete=models.PROTECT, related_name="batches")
+    uploader = models.ForeignKey("auth.User", null=True, on_delete=models.SET_NULL, related_name="+")
+    declared_rights = models.BooleanField(default=False)  # contributor declares the right to share (D11)
+    place = models.ForeignKey("places.Place", on_delete=models.PROTECT, related_name="+")
+    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
+    raw_text = models.TextField()
+    mapping = models.JSONField(default=dict, blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.UPLOADED)
+    counts = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+
+
+class ImportRow(models.Model):
+    class Status(models.TextChoices):
+        NEW = "new"
+        DUPLICATE = "duplicate"
+        HELD = "held"
+        ERROR = "error"
+        DRAFTED = "drafted"
+
+    batch = models.ForeignKey(ImportBatch, on_delete=models.CASCADE, related_name="rows")
+    line_no = models.PositiveIntegerField()
+    raw = models.JSONField(default=dict)
+    normalised = models.JSONField(default=dict, blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
+    message = models.CharField(max_length=200, blank=True)
+    entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+
+
+class DedupeCandidate(models.Model):
+    class State(models.TextChoices):
+        PENDING = "pending"
+        AUTO_MERGED = "auto_merged"
+        REJECTED = "rejected"
+        MERGED = "merged"
+
+    a_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
+    b_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
+    score = models.FloatField()
+    features = models.JSONField(default=dict)
+    state = models.CharField(max_length=12, choices=State.choices, default=State.PENDING)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["a_entry", "b_entry"], name="uniq_dedupe_pair")]
+```
+
+
+
+---
+
+## 164. Software source: backend/intake/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 165. Software source: backend/intake/tests/test_gate.py
+
+```py
+import datetime
+
+import pytest
+
+from intake.gate import SourceBlocked, assert_allowed
+from intake.models import Source
+
+
+def mk(**kw):
+    base = dict(name="s", tier="green", allowed_uses=["import", "display"])
+    base.update(kw)
+    return Source(**base)
+
+
+def test_red_source_always_blocked():
+    for use in ("import", "agent_fetch", "display"):
+        with pytest.raises(SourceBlocked):
+            assert_allowed(mk(tier="red", allowed_uses=["import", "agent_fetch", "display"]), use)
+
+
+def test_missing_source_and_unallowed_use_blocked():
+    with pytest.raises(SourceBlocked):
+        assert_allowed(None, "import")
+    with pytest.raises(SourceBlocked):
+        assert_allowed(mk(), "agent_fetch")
+    with pytest.raises(SourceBlocked):
+        assert_allowed(mk(status="paused"), "import")
+
+
+def test_amber_import_needs_a_terms_review():
+    with pytest.raises(SourceBlocked):
+        assert_allowed(mk(tier="amber"), "import")
+    assert assert_allowed(mk(tier="amber", reviewed_on=datetime.date(2026, 10, 1)), "import")
+
+
+def test_green_allowed():
+    assert assert_allowed(mk(), "import")
+```
+
+
+
+---
+
+## 166. Software source: backend/intake/tests/test_import_dedupe.py
+
+```py
+import pytest
+
+from entries import services as es
+from entries.models import Contact, CreditEvent, Entry
+from intake import dedupe
+from intake.importer import ImportError_, guess_mapping, normalise_row, parse_table, run_import
+from intake.models import DedupeCandidate, ImportBatch, Source
+from intake.gate import SourceBlocked
+
+CSV = """Business Name,Mobile,Address,Products
+Crescent Surgical Works,0300-111-2222,Paris Road,"scissors, forceps"
+Falcon Medical Instruments,0301 333 4444 / 0302 555 6666,Kashmir Road,dental
+,0300 999 9999,Nowhere,
+"""
+
+
+def batch(tree, surgical, users, source, text=CSV, rights=True):
+    return ImportBatch.objects.create(
+        source=source,
+        uploader=users["adder"],
+        declared_rights=rights,
+        place=tree["sialkot"],
+        concept=surgical,
+        raw_text=text,
+    )
+
+
+def run(b, addons=True):
+    return run_import(b, addons={"business_type": "manufacturer", "product_categories": ["x"]} if addons else None)
+
+
+def test_parse_detects_delimiters():
+    h, rows = parse_table("name\tphone\nA\t0300 1\nB\t0300 2")
+    assert h == ["name", "phone"] and len(rows) == 2
+    h, rows = parse_table("name;phone\nA;1")
+    assert h == ["name", "phone"]
+    with pytest.raises(ImportError_):
+        parse_table("  ")
+
+
+def test_header_guess_english_urdu_roman_urdu():
+    assert guess_mapping(["Business Name", "Mobile", "Address", "Products"]) == {
+        "Business Name": "name",
+        "Mobile": "phone",
+        "Address": "address",
+        "Products": "specialities",
+    }
+    assert guess_mapping(["نام", "موبائل", "پتہ"]) == {"نام": "name", "موبائل": "phone", "پتہ": "address"}
+    assert guess_mapping(["Naam", "Raabta", "Pata"]) == {"Naam": "name", "Raabta": "phone", "Pata": "address"}
+    assert guess_mapping(["foo", "bar"]) == {}
+
+
+def test_normalise_row_phones_and_website():
+    m = {"N": "name", "P": "phone", "W": "website"}
+    out = normalise_row({"N": "  A   B ", "P": "0300-111-2222 / 042 111 222", "W": "a.example.org"}, m, "PK")
+    assert out["name"] == "A B" and out["phones"][0] == "+923001112222" and out["website"] == "https://a.example.org"
+
+
+def test_import_creates_drafts_with_provenance_and_no_earnings(tree, surgical, users, green):
+    counts = run(batch(tree, surgical, users, green))
+    assert counts["rows"] == 3 and counts["drafted"] == 2 and counts["error"] == 1
+    entries = Entry.objects.filter(created_via="import")
+    assert entries.count() == 2 and set(entries.values_list("publish_state", flat=True)) == {"draft"}
+    assert all(e.source_id == green.pk for e in entries)
+    assert Contact.objects.filter(entry__name="Falcon Medical Instruments").count() == 2
+    assert not CreditEvent.objects.filter(entry__in=entries, eligible=True).exists()
+
+
+def test_import_requires_rights_and_a_green_or_reviewed_source(tree, surgical, users, green):
+    with pytest.raises(ImportError_):
+        run(batch(tree, surgical, users, green, rights=False))
+    red = Source.objects.create(name="Scraped", tier="red", allowed_uses=["import"])
+    with pytest.raises(SourceBlocked):
+        run(batch(tree, surgical, users, red))
+    amber = Source.objects.create(name="Chamber list", tier="amber", allowed_uses=["import"])
+    with pytest.raises(SourceBlocked):
+        run(batch(tree, surgical, users, amber))
+
+
+def test_missing_name_column_fails_clearly(tree, surgical, users, green):
+    b = batch(tree, surgical, users, green, text="foo,bar\n1,2")
+    with pytest.raises(ImportError_):
+        run(b)
+
+
+def test_same_phone_similar_spelling_auto_merges_and_keeps_first_credit(tree, surgical, users, green):
+    first = es.create_entry(
+        name="Crescent Surgical Works",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        created_by=users["mod"],
+        contacts=[("phone", "0300 111 2222")],
+        addons={"business_type": "manufacturer", "product_categories": ["x"]},
+    )
+    counts = run(batch(tree, surgical, users, green, text="Name,Phone\nCrescent Surgical Work,+92 300 111 2222"))
+    assert counts["duplicate"] == 1 and Entry.objects.filter(merged_into=first).count() == 1
+    dropped = Entry.objects.get(merged_into=first)
+    assert dropped.publish_state == "suppressed"
+    adds = CreditEvent.objects.filter(entry=first, kind="added").order_by("created_at", "id")
+    assert adds.count() == 2 and adds[0].user == users["mod"]
+    assert adds[1].ineligible_reason == "duplicate" and not adds[1].eligible
+    assert Contact.objects.filter(entry=first).count() == 2
+
+
+def test_similar_name_without_phone_goes_to_review_not_merge(tree, surgical, users, green):
+    es.create_entry(
+        name="Royal Steel Instruments",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        created_by=users["mod"],
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
+    counts = run(batch(tree, surgical, users, green, text="Name,Address\nRoyal Steel Instrument,Paris Road"))
+    assert counts["possible_duplicate"] == 1 and counts["duplicate"] == 0
+    cand = DedupeCandidate.objects.get()
+    assert dedupe.REVIEW <= cand.score < dedupe.AUTO_MERGE and cand.state == "pending"
+
+
+def test_different_shops_same_road_are_not_candidates(tree, surgical, users, green):
+    es.create_entry(
+        name="Crescent Surgical Works",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        created_by=users["mod"],
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
+    counts = run(batch(tree, surgical, users, green, text="Name,Address\nUnity Medical Traders,Paris Road"))
+    assert counts["possible_duplicate"] == 0 and not DedupeCandidate.objects.exists()
+
+
+def test_urdu_spelling_variants_match_after_fold(tree, surgical, users, green):
+    a = "كريسنت سرجيكل"  # Arabic yeh and kaf
+    b = "کریسنت سرجیکل"  # Farsi yeh and keheh
+    assert dedupe.similarity(a, b) == 1.0
+    es.create_entry(
+        name=a,
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        created_by=users["mod"],
+        contacts=[("phone", "0300 000 1111")],
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
+    counts = run(batch(tree, surgical, users, green, text=f"Name,Phone\n{b},0300 000 1111"))
+    assert counts["duplicate"] == 1
+
+
+def test_distance_feature(tree, surgical, users):
+    from decimal import Decimal
+
+    addons = {"business_type": "trader", "product_categories": ["x"]}
+    a = es.create_entry(
+        name="A Shop",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        addons=addons,
+        lat=Decimal("32.5"),
+        lon=Decimal("74.5"),
+    )
+    b = es.create_entry(
+        name="B Shop",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        addons=addons,
+        lat=Decimal("32.5003"),
+        lon=Decimal("74.5"),
+    )
+    assert dedupe.features(a, b)["distance"] == 1.0 and dedupe.features(a, b)["distance_m"] < 100
+
+
+def test_merge_guards(tree, surgical, entry, users):
+    with pytest.raises(es.EntryError):
+        es.merge_entries(entry, entry)
+    other = es.create_entry(
+        name="Other",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
+    es.merge_entries(entry, other, actor=users["mod"])
+    with pytest.raises(es.EntryError):
+        es.merge_entries(entry, other)
+
+
+def test_scan_all_stores_candidates_once(tree, surgical, users):
+    for nm in ("Royal Steel Instruments", "Royal Steel Instrument"):
+        es.create_entry(
+            name=nm,
+            place=tree["sialkot"],
+            primary_concept=surgical,
+            created_by=users["mod"],
+            addons={"business_type": "trader", "product_categories": ["x"]},
+        )
+    assert dedupe.scan_all() == 1 and dedupe.scan_all() == 0
+```
+
+
+
+---
+
+## 167. Software source: backend/manage.py
 
 ```py
 #!/usr/bin/env python
@@ -25194,6 +27148,7 @@ import sys
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
     from django.core.management import execute_from_command_line
+
     execute_from_command_line(sys.argv)
 ```
 
@@ -25201,7 +27156,7 @@ if __name__ == "__main__":
 
 ---
 
-## 153. Software source: backend/places/__init__.py
+## 168. Software source: backend/places/__init__.py
 
 ```py
 
@@ -25211,7 +27166,7 @@ if __name__ == "__main__":
 
 ---
 
-## 154. Software source: backend/places/admin.py
+## 169. Software source: backend/places/admin.py
 
 ```py
 from django.contrib import admin
@@ -25239,7 +27194,7 @@ admin.site.register(PlaceProposal)
 
 ---
 
-## 155. Software source: backend/places/apps.py
+## 170. Software source: backend/places/apps.py
 
 ```py
 from django.apps import AppConfig
@@ -25253,10 +27208,11 @@ class PlacesConfig(AppConfig):
 
 ---
 
-## 156. Software source: backend/places/models.py
+## 171. Software source: backend/places/models.py
 
 ```py
 """Place tree (plan sections 4.2.2, 5.1). `path` makes "everything under Rawalpindi" one prefix range scan."""
+
 from django.db import models
 from django.db.models import Q
 
@@ -25344,6 +27300,7 @@ class PlaceName(models.Model):
 
 class PlaceProposal(models.Model):
     """A user-added area (Adyala Road, Abraham Street) waits here for approval (Q-O2 default)."""
+
     class State(models.TextChoices):
         PENDING = "pending"
         APPROVED = "approved"
@@ -25365,7 +27322,7 @@ class PlaceProposal(models.Model):
 
 ---
 
-## 157. Software source: backend/places/services.py
+## 172. Software source: backend/places/services.py
 
 ```py
 from django.db import transaction
@@ -25374,6 +27331,7 @@ from django.utils.text import slugify
 from core.models import audit
 from core.textfold import fold
 from taxonomy.models import ReservedSlug
+from taxonomy.services import SYSTEM_SLUGS
 
 from .models import Place, PlaceName, PlaceProposal
 
@@ -25397,6 +27355,8 @@ def create_place(*, parent, level, name, language="en", slug=None, country_code=
         country_code = parent.country_code
     if level == Place.Level.COUNTRY and not country_code:
         raise PlaceError("a country needs a country_code")
+    if slug in SYSTEM_SLUGS and level != Place.Level.WORLD:
+        raise PlaceError(f"slug {slug!r} is a system address")
     if ReservedSlug.objects.filter(slug=slug, kind="list_type").exists():
         raise PlaceError(f"slug {slug!r} is reserved by a list type")
     path = slug if parent is None or not parent.path else f"{parent.path}.{slug}"
@@ -25405,9 +27365,15 @@ def create_place(*, parent, level, name, language="en", slug=None, country_code=
     if level == Place.Level.COUNTRY:
         path = country_code.lower()
         slug = country_code.lower()
-    place = Place.objects.create(parent=parent, level=level, slug=slug, path=path,
-                                 depth=0 if parent is None else parent.depth + 1,
-                                 country_code=country_code.upper(), **extra)
+    place = Place.objects.create(
+        parent=parent,
+        level=level,
+        slug=slug,
+        path=path,
+        depth=0 if parent is None else parent.depth + 1,
+        country_code=country_code.upper(),
+        **extra,
+    )
     ReservedSlug.objects.get_or_create(slug=slug, kind="place")
     for lang, nm in [(language, name)] + list(names or []):
         PlaceName.objects.create(place=place, language=lang, name=nm, name_fold=fold(nm))
@@ -25426,10 +27392,14 @@ def propose_area(*, parent, name, language="en", proposer=None):
     """Match against existing areas first; a close match is returned as a duplicate hint."""
     folded = fold(name)
     existing = Place.objects.filter(parent=parent, names__name_fold=folded).first()
-    prop = PlaceProposal.objects.create(parent=parent, proposed_name=name, language=language,
-                                        proposer_id=getattr(proposer, "pk", None),
-                                        state=PlaceProposal.State.DUPLICATE if existing else PlaceProposal.State.PENDING,
-                                        duplicate_of=existing)
+    prop = PlaceProposal.objects.create(
+        parent=parent,
+        proposed_name=name,
+        language=language,
+        proposer_id=getattr(proposer, "pk", None),
+        state=PlaceProposal.State.DUPLICATE if existing else PlaceProposal.State.PENDING,
+        duplicate_of=existing,
+    )
     return prop
 
 
@@ -25437,8 +27407,14 @@ def propose_area(*, parent, name, language="en", proposer=None):
 def approve_proposal(proposal, *, actor, level=Place.Level.AREA, slug=None):
     if proposal.state != PlaceProposal.State.PENDING:
         raise PlaceError("only pending proposals can be approved")
-    place = create_place(parent=proposal.parent, level=level, name=proposal.proposed_name,
-                         language=proposal.language, slug=slug, actor=actor)
+    place = create_place(
+        parent=proposal.parent,
+        level=level,
+        name=proposal.proposed_name,
+        language=proposal.language,
+        slug=slug,
+        actor=actor,
+    )
     proposal.state = PlaceProposal.State.APPROVED
     proposal.decided_by = getattr(actor, "pk", None)
     proposal.save(update_fields=["state", "decided_by"])
@@ -25449,7 +27425,7 @@ def approve_proposal(proposal, *, actor, level=Place.Level.AREA, slug=None):
 
 ---
 
-## 158. Software source: backend/places/tests/__init__.py
+## 173. Software source: backend/places/tests/__init__.py
 
 ```py
 
@@ -25459,7 +27435,7 @@ def approve_proposal(proposal, *, actor, level=Place.Level.AREA, slug=None):
 
 ---
 
-## 159. Software source: backend/places/tests/test_places.py
+## 174. Software source: backend/places/tests/test_places.py
 
 ```py
 import pytest
@@ -25513,7 +27489,7 @@ def test_duplicate_proposal_is_flagged_and_pending_one_can_be_approved(tree):
 
 ---
 
-## 160. Software source: backend/requirements.txt
+## 175. Software source: backend/requirements.txt
 
 ```txt
 Django>=5.2,<5.3
@@ -25531,7 +27507,7 @@ hypothesis>=6.100
 
 ---
 
-## 161. Software source: backend/taxonomy/__init__.py
+## 176. Software source: backend/taxonomy/__init__.py
 
 ```py
 
@@ -25541,7 +27517,7 @@ hypothesis>=6.100
 
 ---
 
-## 162. Software source: backend/taxonomy/admin.py
+## 177. Software source: backend/taxonomy/admin.py
 
 ```py
 from django.contrib import admin
@@ -25580,7 +27556,7 @@ admin.site.register([ConceptCrosswalk, ListTypeSettings, ReservedSlug])
 
 ---
 
-## 163. Software source: backend/taxonomy/apps.py
+## 178. Software source: backend/taxonomy/apps.py
 
 ```py
 from django.apps import AppConfig
@@ -25594,10 +27570,11 @@ class TaxonomyConfig(AppConfig):
 
 ---
 
-## 164. Software source: backend/taxonomy/models.py
+## 179. Software source: backend/taxonomy/models.py
 
 ```py
 """Concepts (list types and more), labels, crosswalks, the add-on registry and list-type settings (plan sections 4.2.3, 5)."""
+
 from django.db import models
 
 from core import clock
@@ -25623,7 +27600,9 @@ class Concept(UidModel):
     slug = models.SlugField(max_length=120)
     entity_type_default = models.CharField(max_length=12, default="business")
     natural_scale = models.CharField(max_length=12, choices=Scale.choices, default=Scale.CITY)
-    template = models.ForeignKey("AddonTemplate", null=True, blank=True, on_delete=models.SET_NULL, related_name="concepts")
+    template = models.ForeignKey(
+        "AddonTemplate", null=True, blank=True, on_delete=models.SET_NULL, related_name="concepts"
+    )
     status = models.CharField(max_length=10, default="active")
     created_by_id = models.BigIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(default=clock.now)
@@ -25638,6 +27617,9 @@ class Concept(UidModel):
         labels = list(self.labels.all())
         for lb in labels:
             if lb.language == language and lb.kind == ConceptLabel.Kind.PREFERRED:
+                return lb.text
+        for lb in labels:
+            if lb.language == language:  # a synonym or local name in the page language beats an English preferred name
                 return lb.text
         for lb in labels:
             if lb.kind == ConceptLabel.Kind.PREFERRED:
@@ -25676,6 +27658,7 @@ class AddonTemplate(models.Model):
 
 class AddonField(models.Model):
     """Fields can be added or deprecated, never changed in meaning (spec rule 3)."""
+
     class Type(models.TextChoices):
         TEXT = "text"
         NUMBER = "number"
@@ -25724,6 +27707,7 @@ class ListTypeSettings(models.Model):
 
 class ReservedSlug(models.Model):
     """Place and list-type slugs share one URL namespace; this table keeps them from colliding (plan 8.2)."""
+
     slug = models.SlugField(max_length=120)
     kind = models.CharField(max_length=10)  # place | list_type | system
 
@@ -25735,7 +27719,7 @@ class ReservedSlug(models.Model):
 
 ---
 
-## 165. Software source: backend/taxonomy/services.py
+## 180. Software source: backend/taxonomy/services.py
 
 ```py
 from django.db import transaction
@@ -25746,8 +27730,29 @@ from core.textfold import fold
 
 from .models import AddonField, AddonTemplate, Concept, ConceptLabel, ListTypeSettings, ReservedSlug
 
-SYSTEM_SLUGS = {"e", "search", "add", "claim", "wrong", "message", "enquiry", "about", "terms", "privacy", "plans",
-                "sources", "me", "staff", "admin", "account", "ur", "prefs", "optout", "healthz", "static"}
+# Two-letter system slugs are avoided on purpose: country place slugs are ISO codes (for example "me" is Montenegro).
+SYSTEM_SLUGS = {
+    "e",
+    "search",
+    "add",
+    "claim",
+    "wrong",
+    "message",
+    "enquiry",
+    "about",
+    "terms",
+    "privacy",
+    "plans",
+    "sources",
+    "staff",
+    "admin",
+    "account",
+    "ur",
+    "prefs",
+    "optout",
+    "healthz",
+    "static",
+}
 
 
 class TaxonomyError(ValueError):
@@ -25781,7 +27786,9 @@ def find_concepts(query, kind=Concept.Kind.LIST_TYPE):
 def bump_template(template, changed_by=""):
     template.version += 1
     template.save(update_fields=["version"])
-    RegistryVersion.objects.create(registry_key=f"addon:{template.key}", version=template.version, changed_by=changed_by)
+    RegistryVersion.objects.create(
+        registry_key=f"addon:{template.key}", version=template.version, changed_by=changed_by
+    )
     return template.version
 
 
@@ -25835,25 +27842,61 @@ def _check_value(field, val):
 
 def seed_manufacturer_template():
     """The pilot add-on block (plan appendix C.8). Safe to run twice."""
-    tpl, _ = AddonTemplate.objects.get_or_create(key="manufacturers", defaults={"description": "Manufacturers and exporters"})
+    tpl, _ = AddonTemplate.objects.get_or_create(
+        key="manufacturers", defaults={"description": "Manufacturers and exporters"}
+    )
     spec = [
-        ("business_type", "enum", {"choices": ["manufacturer", "trader", "wholesaler", "exporter"]}, True, "P", True, True),
+        (
+            "business_type",
+            "enum",
+            {"choices": ["manufacturer", "trader", "wholesaler", "exporter"]},
+            True,
+            "P",
+            True,
+            True,
+        ),
         ("product_categories", "concept_list", {}, True, "P", True, False),
         ("tax_ids", "identifier_list", {}, False, "P", False, False),
         ("year_established", "number", {"min": 1800, "max": 2100}, False, "P", False, False),
         ("years_exporting", "number", {"min": 0, "max": 200}, False, "P", False, False),
         ("export_markets", "place_list", {}, False, "L", True, False),
         ("certifications", "identifier_list", {}, False, "L", True, False),
-        ("verification_tier", "enum", {"choices": ["none", "documents", "on_site", "third_party"]}, False, "P", True, False),
+        (
+            "verification_tier",
+            "enum",
+            {"choices": ["none", "documents", "on_site", "third_party"]},
+            False,
+            "P",
+            True,
+            False,
+        ),
         ("capacity_band", "enum", {"choices": ["small", "medium", "large"]}, False, "L", False, False),
-        ("workforce_band", "enum", {"choices": ["1-10", "11-50", "51-200", "201-1000", "1000+"]}, False, "L", False, False),
+        (
+            "workforce_band",
+            "enum",
+            {"choices": ["1-10", "11-50", "51-200", "201-1000", "1000+"]},
+            False,
+            "L",
+            False,
+            False,
+        ),
         ("oem", "bool", {}, False, "P", True, False),
         ("moq", "text", {"max_length": 80}, False, "L", False, False),
     ]
     for key, typ, validation, req, show, filt, row in spec:
-        AddonField.objects.get_or_create(template=tpl, key=key, defaults={
-            "label_key": f"addon.manufacturers.{key}", "type": typ, "validation": validation,
-            "required_for_publish": req, "show": show, "filterable": filt, "row_descriptor": row})
+        AddonField.objects.get_or_create(
+            template=tpl,
+            key=key,
+            defaults={
+                "label_key": f"addon.manufacturers.{key}",
+                "type": typ,
+                "validation": validation,
+                "required_for_publish": req,
+                "show": show,
+                "filterable": filt,
+                "row_descriptor": row,
+            },
+        )
     return tpl
 ```
 
@@ -25861,7 +27904,7 @@ def seed_manufacturer_template():
 
 ---
 
-## 166. Software source: backend/taxonomy/tests/__init__.py
+## 181. Software source: backend/taxonomy/tests/__init__.py
 
 ```py
 
@@ -25871,7 +27914,7 @@ def seed_manufacturer_template():
 
 ---
 
-## 167. Software source: backend/taxonomy/tests/test_taxonomy.py
+## 182. Software source: backend/taxonomy/tests/test_taxonomy.py
 
 ```py
 import pytest
@@ -25882,7 +27925,9 @@ from taxonomy.services import TaxonomyError, bump_template, create_concept, find
 
 
 def test_synonyms_find_one_concept(db):
-    c = create_concept(kind="list_type", name="Petrol pumps", synonyms=["gas station", "fuel station", "filling station"])
+    c = create_concept(
+        kind="list_type", name="Petrol pumps", synonyms=["gas station", "fuel station", "filling station"]
+    )
     for q in ("Gas Station", "FUEL  station", "petrol pumps"):
         assert list(find_concepts(q)) == [c]
     assert not find_concepts("hotel").exists()
@@ -25922,7 +27967,7 @@ def test_deprecated_field_rejected_and_version_bumped(surgical):
 
 ---
 
-## 168. Appendix: founder's messages, verbatim
+## 183. Appendix: founder's messages, verbatim
 
 ### Message 1
 
@@ -29722,3 +31767,7 @@ def test_deprecated_field_rejected_and_version_bumped(surgical):
 ### Message 55
 
 > ok start coding
+
+### Message 56
+
+> keep working on it.

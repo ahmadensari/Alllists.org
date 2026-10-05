@@ -15,8 +15,14 @@ Falcon Medical Instruments,0301 333 4444 / 0302 555 6666,Kashmir Road,dental
 
 
 def batch(tree, surgical, users, source, text=CSV, rights=True):
-    return ImportBatch.objects.create(source=source, uploader=users["adder"], declared_rights=rights, place=tree["sialkot"],
-                                      concept=surgical, raw_text=text)
+    return ImportBatch.objects.create(
+        source=source,
+        uploader=users["adder"],
+        declared_rights=rights,
+        place=tree["sialkot"],
+        concept=surgical,
+        raw_text=text,
+    )
 
 
 def run(b, addons=True):
@@ -34,7 +40,11 @@ def test_parse_detects_delimiters():
 
 def test_header_guess_english_urdu_roman_urdu():
     assert guess_mapping(["Business Name", "Mobile", "Address", "Products"]) == {
-        "Business Name": "name", "Mobile": "phone", "Address": "address", "Products": "specialities"}
+        "Business Name": "name",
+        "Mobile": "phone",
+        "Address": "address",
+        "Products": "specialities",
+    }
     assert guess_mapping(["نام", "موبائل", "پتہ"]) == {"نام": "name", "موبائل": "phone", "پتہ": "address"}
     assert guess_mapping(["Naam", "Raabta", "Pata"]) == {"Naam": "name", "Raabta": "phone", "Pata": "address"}
     assert guess_mapping(["foo", "bar"]) == {}
@@ -74,9 +84,14 @@ def test_missing_name_column_fails_clearly(tree, surgical, users, green):
 
 
 def test_same_phone_similar_spelling_auto_merges_and_keeps_first_credit(tree, surgical, users, green):
-    first = es.create_entry(name="Crescent Surgical Works", place=tree["sialkot"], primary_concept=surgical,
-                            created_by=users["mod"], contacts=[("phone", "0300 111 2222")],
-                            addons={"business_type": "manufacturer", "product_categories": ["x"]})
+    first = es.create_entry(
+        name="Crescent Surgical Works",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        created_by=users["mod"],
+        contacts=[("phone", "0300 111 2222")],
+        addons={"business_type": "manufacturer", "product_categories": ["x"]},
+    )
     counts = run(batch(tree, surgical, users, green, text="Name,Phone\nCrescent Surgical Work,+92 300 111 2222"))
     assert counts["duplicate"] == 1 and Entry.objects.filter(merged_into=first).count() == 1
     dropped = Entry.objects.get(merged_into=first)
@@ -88,8 +103,13 @@ def test_same_phone_similar_spelling_auto_merges_and_keeps_first_credit(tree, su
 
 
 def test_similar_name_without_phone_goes_to_review_not_merge(tree, surgical, users, green):
-    es.create_entry(name="Royal Steel Instruments", place=tree["sialkot"], primary_concept=surgical,
-                    created_by=users["mod"], addons={"business_type": "trader", "product_categories": ["x"]})
+    es.create_entry(
+        name="Royal Steel Instruments",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        created_by=users["mod"],
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
     counts = run(batch(tree, surgical, users, green, text="Name,Address\nRoyal Steel Instrument,Paris Road"))
     assert counts["possible_duplicate"] == 1 and counts["duplicate"] == 0
     cand = DedupeCandidate.objects.get()
@@ -97,37 +117,65 @@ def test_similar_name_without_phone_goes_to_review_not_merge(tree, surgical, use
 
 
 def test_different_shops_same_road_are_not_candidates(tree, surgical, users, green):
-    es.create_entry(name="Crescent Surgical Works", place=tree["sialkot"], primary_concept=surgical,
-                    created_by=users["mod"], addons={"business_type": "trader", "product_categories": ["x"]})
+    es.create_entry(
+        name="Crescent Surgical Works",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        created_by=users["mod"],
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
     counts = run(batch(tree, surgical, users, green, text="Name,Address\nUnity Medical Traders,Paris Road"))
     assert counts["possible_duplicate"] == 0 and not DedupeCandidate.objects.exists()
 
 
 def test_urdu_spelling_variants_match_after_fold(tree, surgical, users, green):
-    a = "كريسنت سرجيكل"            # Arabic yeh and kaf
-    b = "کریسنت سرجیکل"            # Farsi yeh and keheh
+    a = "كريسنت سرجيكل"  # Arabic yeh and kaf
+    b = "کریسنت سرجیکل"  # Farsi yeh and keheh
     assert dedupe.similarity(a, b) == 1.0
-    es.create_entry(name=a, place=tree["sialkot"], primary_concept=surgical, created_by=users["mod"],
-                    contacts=[("phone", "0300 000 1111")], addons={"business_type": "trader", "product_categories": ["x"]})
+    es.create_entry(
+        name=a,
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        created_by=users["mod"],
+        contacts=[("phone", "0300 000 1111")],
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
     counts = run(batch(tree, surgical, users, green, text=f"Name,Phone\n{b},0300 000 1111"))
     assert counts["duplicate"] == 1
 
 
 def test_distance_feature(tree, surgical, users):
     from decimal import Decimal
+
     addons = {"business_type": "trader", "product_categories": ["x"]}
-    a = es.create_entry(name="A Shop", place=tree["sialkot"], primary_concept=surgical, addons=addons,
-                        lat=Decimal("32.5"), lon=Decimal("74.5"))
-    b = es.create_entry(name="B Shop", place=tree["sialkot"], primary_concept=surgical, addons=addons,
-                        lat=Decimal("32.5003"), lon=Decimal("74.5"))
+    a = es.create_entry(
+        name="A Shop",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        addons=addons,
+        lat=Decimal("32.5"),
+        lon=Decimal("74.5"),
+    )
+    b = es.create_entry(
+        name="B Shop",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        addons=addons,
+        lat=Decimal("32.5003"),
+        lon=Decimal("74.5"),
+    )
     assert dedupe.features(a, b)["distance"] == 1.0 and dedupe.features(a, b)["distance_m"] < 100
 
 
 def test_merge_guards(tree, surgical, entry, users):
     with pytest.raises(es.EntryError):
         es.merge_entries(entry, entry)
-    other = es.create_entry(name="Other", place=tree["sialkot"], primary_concept=surgical,
-                            addons={"business_type": "trader", "product_categories": ["x"]})
+    other = es.create_entry(
+        name="Other",
+        place=tree["sialkot"],
+        primary_concept=surgical,
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
     es.merge_entries(entry, other, actor=users["mod"])
     with pytest.raises(es.EntryError):
         es.merge_entries(entry, other)
@@ -135,6 +183,11 @@ def test_merge_guards(tree, surgical, entry, users):
 
 def test_scan_all_stores_candidates_once(tree, surgical, users):
     for nm in ("Royal Steel Instruments", "Royal Steel Instrument"):
-        es.create_entry(name=nm, place=tree["sialkot"], primary_concept=surgical, created_by=users["mod"],
-                        addons={"business_type": "trader", "product_categories": ["x"]})
+        es.create_entry(
+            name=nm,
+            place=tree["sialkot"],
+            primary_concept=surgical,
+            created_by=users["mod"],
+            addons={"business_type": "trader", "product_categories": ["x"]},
+        )
     assert dedupe.scan_all() == 1 and dedupe.scan_all() == 0

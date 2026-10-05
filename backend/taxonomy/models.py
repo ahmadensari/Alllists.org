@@ -1,4 +1,5 @@
 """Concepts (list types and more), labels, crosswalks, the add-on registry and list-type settings (plan sections 4.2.3, 5)."""
+
 from django.db import models
 
 from core import clock
@@ -24,7 +25,9 @@ class Concept(UidModel):
     slug = models.SlugField(max_length=120)
     entity_type_default = models.CharField(max_length=12, default="business")
     natural_scale = models.CharField(max_length=12, choices=Scale.choices, default=Scale.CITY)
-    template = models.ForeignKey("AddonTemplate", null=True, blank=True, on_delete=models.SET_NULL, related_name="concepts")
+    template = models.ForeignKey(
+        "AddonTemplate", null=True, blank=True, on_delete=models.SET_NULL, related_name="concepts"
+    )
     status = models.CharField(max_length=10, default="active")
     created_by_id = models.BigIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(default=clock.now)
@@ -39,6 +42,9 @@ class Concept(UidModel):
         labels = list(self.labels.all())
         for lb in labels:
             if lb.language == language and lb.kind == ConceptLabel.Kind.PREFERRED:
+                return lb.text
+        for lb in labels:
+            if lb.language == language:  # a synonym or local name in the page language beats an English preferred name
                 return lb.text
         for lb in labels:
             if lb.kind == ConceptLabel.Kind.PREFERRED:
@@ -77,6 +83,7 @@ class AddonTemplate(models.Model):
 
 class AddonField(models.Model):
     """Fields can be added or deprecated, never changed in meaning (spec rule 3)."""
+
     class Type(models.TextChoices):
         TEXT = "text"
         NUMBER = "number"
@@ -125,6 +132,7 @@ class ListTypeSettings(models.Model):
 
 class ReservedSlug(models.Model):
     """Place and list-type slugs share one URL namespace; this table keeps them from colliding (plan 8.2)."""
+
     slug = models.SlugField(max_length=120)
     kind = models.CharField(max_length=10)  # place | list_type | system
 

@@ -1,4 +1,5 @@
 """Roll-up cells (plan 4.4). Each changed entry touches its place ancestors times its concept ancestors."""
+
 from datetime import timedelta
 
 from django.db import transaction
@@ -30,8 +31,11 @@ def _entries_in(path, concept_ids, country):
     if country:
         qs = qs.filter(country_code=country)
     if path:
-        qs = [e for e in qs.filter(place_path__startswith=path)
-              if e.place_path == path or e.place_path.startswith(path + ".")]
+        qs = [
+            e
+            for e in qs.filter(place_path__startswith=path)
+            if e.place_path == path or e.place_path.startswith(path + ".")
+        ]
     return list(qs)
 
 
@@ -59,10 +63,18 @@ def recount_cell(country, path, concept_id, now=None):
             verified_12m += 1
     with_contact = sum(1 for e in published if e.contact_set.exists())
     cell, _ = RollupCell.objects.update_or_create(
-        country_code=country, place_path=path, concept_id=concept_id,
-        defaults=dict(total=len(entries), published=len(published), by_level=by_level, verified_12m=verified_12m,
-                      with_contact_pct=round(100 * with_contact / len(published)) if published else 0,
-                      updated_at=now))
+        country_code=country,
+        place_path=path,
+        concept_id=concept_id,
+        defaults=dict(
+            total=len(entries),
+            published=len(published),
+            by_level=by_level,
+            verified_12m=verified_12m,
+            with_contact_pct=round(100 * with_contact / len(published)) if published else 0,
+            updated_at=now,
+        ),
+    )
     return cell
 
 

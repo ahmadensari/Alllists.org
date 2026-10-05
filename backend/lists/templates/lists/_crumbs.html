@@ -1,3 +1,0 @@
-{% load lists_extras %}<nav class="crumbs" aria-label="Breadcrumb"><ol>
-{% for c in crumbs %}<li>{% if forloop.last and not link_last %}<strong aria-current="page">{% if lang == 'ur' and c.label_ur %}{{ c.label_ur }}{% else %}{{ c.label }}{% endif %}</strong>{% else %}<a href="{{ c.href }}">{% if lang == 'ur' and c.label_ur %}{{ c.label_ur }}{% else %}{{ c.label }}{% endif %}</a>{% endif %}</li>{% endfor %}
-</ol></nav>

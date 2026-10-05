@@ -1,4 +1,5 @@
 """Field encryption with key versioning, and keyed hashes for lookup without decryption (plan sections 4.1, 17)."""
+
 import hashlib
 import hmac
 

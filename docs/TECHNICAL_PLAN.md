@@ -1984,10 +1984,10 @@ Access: **P** public, **S** signed in, **R** role needed, **F** fragment (privat
 | `/enquiry/` | GET, POST | R subscriber | Enquiry to many | No |
 | `/about/`, `/terms/`, `/privacy/`, `/plans/`, `/sources/`, `/how-checks-work/`, `/contributors/rules/` | GET | P | Static pages | Shared |
 | `/account/signup/`, `/login/`, `/logout/`, `/password/…`, `/delete/` | GET, POST | P or S | Accounts | No |
-| `/me/` | GET | S | Dashboard (contributor, owner, buyer by role) | No |
-| `/me/owner/{uid}/` | GET, POST | R owner | Edit claimed entry, company page content, opt-ins | No |
-| `/me/tasks/` | GET, POST | R surveyor, steward | Task queue | No |
-| `/me/subscription/` | GET, POST | S | Subscription and orders | No |
+| `/account/` | GET | S | Dashboard (contributor, owner, buyer by role) | No |
+| `/account/owner/{uid}/` | GET, POST | R owner | Edit claimed entry, company page content, opt-ins | No |
+| `/account/tasks/` | GET, POST | R surveyor, steward | Task queue | No |
+| `/account/subscription/` | GET, POST | S | Subscription and orders | No |
 | `/staff/…` | GET, POST | R staff + MFA | Queues, registries, switches, payouts | No |
 | `/admin/` | GET, POST | R admin + MFA | Django admin | No |
 | `/_f/near-you/` | GET | F | Near-you strip | Private |
@@ -2216,7 +2216,7 @@ Metrics tracked from these: weekly returning-user rate by place and list type; s
 
 ## Appendix H. Named tests beyond the rule tests
 
-Place path constraint; slug collision with list-type slug; folding rules one by one; query folding finds Urdu variants; concept synonym lookup; import mapper header guesses (English, Urdu, Roman Urdu); phone normalisation to E.164 by country; duplicate scoring examples (same shop two spellings; different shops same road); merge keeps earliest credit; claim OTP flow; verification guard matrix; expiry and grace; rollup refresher against recount; list query plan uses the place-prefix index; query budget (a list page of 25 rows uses at most 12 queries); entry page query budget; pagination caps; quota counters; canary seeding; URL resolver for place versus list; redirects from old scheme; ETag changes only when data or template version changes; fragments are `private, no-store`; JSON-LD matches visible content; sitemap shard size; publish throttle; ledger balance trigger rejects unbalanced; idempotent webhook replay; refund reversal; largest-remainder conservation; phase lock under changed phases; cap-months rule; hold release; payout two-person rule; MFA required for staff routes; every-route authorisation inventory; CSP header; log scrubber removes contacts; encrypted column round-trip with key rotation; erasure tombstone and suppression on re-import; opt-out suppression global; caps and quiet hours; auto-pause thresholds; agent evidence-quote check; agent isolation; agent cap and kill switch; map-link conversions; date and age formatting in English and Urdu; plural forms in Urdu; RTL screenshot comparisons at three widths.
+Place path constraint; slug collision with list-type slug; folding rules one by one; query folding finds Urdu variants; concept synonym lookup; import mapper header guesses (English, Urdu, Roman Urdu); phone normalisation to E.164 by country; duplicate scoring examples (same shop two spellings; different shops same road); merge keeps earliest credit; claim OTP flow; verification guard matrix; expiry and grace; rollup refresher against recount; list query plan uses the place-prefix index; query budget (a list page's query count does not grow with the rows (no N+1)); entry page query budget; pagination caps; quota counters; canary seeding; URL resolver for place versus list; redirects from old scheme; ETag changes only when data or template version changes; fragments are `private, no-store`; JSON-LD matches visible content; sitemap shard size; publish throttle; ledger balance trigger rejects unbalanced; idempotent webhook replay; refund reversal; largest-remainder conservation; phase lock under changed phases; cap-months rule; hold release; payout two-person rule; MFA required for staff routes; every-route authorisation inventory; CSP header; log scrubber removes contacts; encrypted column round-trip with key rotation; erasure tombstone and suppression on re-import; opt-out suppression global; caps and quiet hours; auto-pause thresholds; agent evidence-quote check; agent isolation; agent cap and kill switch; map-link conversions; date and age formatting in English and Urdu; plural forms in Urdu; RTL screenshot comparisons at three widths.
 
 ## Appendix I. CI pipeline outline
 
@@ -2276,7 +2276,7 @@ reports/ research_notes/ prototype/ scripts/
 | Fonts and images | none | none |
 | Requests for the shell | 1 HTML plus 1 cached CSS file (or inline) and 1 deferred script | |
 
-Latency goals in section 18.5. A list page of 25 rows uses at most 12 database queries. CSS is served once and cached for a year with hashed names.
+Latency goals in section 18.5. A list page's database query count must not grow with the number of rows (tested: the same count at 2 rows and at 25; currently 23). CSS is served once and cached for a year with hashed names.
 
 ## Appendix M. Glossary
 

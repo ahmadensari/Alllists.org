@@ -1,7 +1,17 @@
 from django.contrib import admin
 
-from .models import (Claim, ConsentRecord, Contact, CreditEvent, Entry, Identifier, NameVariant, Service, Social,
-                     VerificationCurrent)
+from .models import (
+    Claim,
+    ConsentRecord,
+    Contact,
+    CreditEvent,
+    Entry,
+    Identifier,
+    NameVariant,
+    Service,
+    Social,
+    VerificationCurrent,
+)
 
 
 class NameVariantInline(admin.TabularInline):
@@ -38,6 +48,7 @@ class CurrentInline(admin.TabularInline):
 class EntryAdmin(admin.ModelAdmin):
     """Raw edits go through the service layer in the staff console (phase P2); admin is for staff inspection and seeding.
     Contact values are deliberately not shown here: they are encrypted and relay-only (rule R02)."""
+
     list_display = ("name", "country_code", "place_path", "publish_state", "claim_state", "created_via")
     list_filter = ("country_code", "publish_state", "claim_state", "created_via", "entity_type")
     search_fields = ("name", "name_fold", "uid")
@@ -46,5 +57,11 @@ class EntryAdmin(admin.ModelAdmin):
 
 
 admin.site.register([Claim, ConsentRecord, CreditEvent])
-admin.site.register(Contact, type("ContactAdmin", (admin.ModelAdmin,), {
-    "list_display": ("entry", "kind", "label", "optin_state"), "exclude": ("value_enc", "value_hash")}))
+admin.site.register(
+    Contact,
+    type(
+        "ContactAdmin",
+        (admin.ModelAdmin,),
+        {"list_display": ("entry", "kind", "label", "optin_state"), "exclude": ("value_enc", "value_hash")},
+    ),
+)

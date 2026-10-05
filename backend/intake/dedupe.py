@@ -1,4 +1,5 @@
 """Duplicate pipeline v1 (plan 7.4): block, score, decide. Scoped by place subtree and concept so it stays cheap."""
+
 import math
 from itertools import combinations
 
@@ -12,7 +13,7 @@ WEIGHTS = {"phone": 0.50, "name": 0.30, "distance": 0.10, "address": 0.10}
 
 def trigrams(text):
     padded = f"  {text} "
-    return {padded[i:i + 3] for i in range(len(padded) - 2)}
+    return {padded[i : i + 3] for i in range(len(padded) - 2)}
 
 
 def similarity(a, b):
@@ -35,9 +36,12 @@ def features(a, b):
     kinds = ["phone", "mobile", "whatsapp"]
     phones_a = set(Contact.objects.filter(entry=a, kind__in=kinds).values_list("value_hash", flat=True))
     phones_b = set(Contact.objects.filter(entry=b, kind__in=kinds).values_list("value_hash", flat=True))
-    f = {"phone": 1.0 if phones_a & phones_b else 0.0, "name": similarity(a.name, b.name),
-         "address": similarity(a.address_text, b.address_text) if a.address_text and b.address_text else 0.0,
-         "distance": 0.0}
+    f = {
+        "phone": 1.0 if phones_a & phones_b else 0.0,
+        "name": similarity(a.name, b.name),
+        "address": similarity(a.address_text, b.address_text) if a.address_text and b.address_text else 0.0,
+        "distance": 0.0,
+    }
     if a.lat is not None and b.lat is not None:
         d = haversine_m(a.lat, a.lon, b.lat, b.lon)
         f["distance_m"] = round(d)
@@ -60,8 +64,9 @@ def score(f):
 
 def candidates_for(entry):
     """Blocking: same country and concept, within the same place subtree, or sharing a phone hash."""
-    base = Entry.objects.filter(country_code=entry.country_code, deleted_at__isnull=True, merged_into__isnull=True
-                                ).exclude(pk=entry.pk)
+    base = Entry.objects.filter(
+        country_code=entry.country_code, deleted_at__isnull=True, merged_into__isnull=True
+    ).exclude(pk=entry.pk)
     same_place = base.filter(primary_concept=entry.primary_concept, place_path__startswith=entry.place_path)
     hashes = list(Contact.objects.filter(entry=entry).values_list("value_hash", flat=True))
     same_phone = base.filter(contact_set__value_hash__in=hashes) if hashes else base.none()
@@ -87,6 +92,7 @@ def scan_entry(entry):
 def scan_all(country_code=None):
     """Batch scan of every pair inside each (place, concept) block. Returns the number of candidates stored."""
     from .models import DedupeCandidate
+
     qs = Entry.objects.filter(deleted_at__isnull=True, merged_into__isnull=True)
     if country_code:
         qs = qs.filter(country_code=country_code)
@@ -99,6 +105,8 @@ def scan_all(country_code=None):
             f = features(a, b)
             s = score(f)
             if s >= REVIEW:
-                _, created = DedupeCandidate.objects.get_or_create(a_entry=a, b_entry=b, defaults=dict(score=s, features=f))
+                _, created = DedupeCandidate.objects.get_or_create(
+                    a_entry=a, b_entry=b, defaults=dict(score=s, features=f)
+                )
                 stored += int(created)
     return stored

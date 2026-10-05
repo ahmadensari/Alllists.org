@@ -1,4 +1,5 @@
 """Helpers for PostgreSQL-only parts of migrations. SQLite (local demo) skips them."""
+
 from django.db import migrations
 
 
@@ -29,10 +30,11 @@ def append_only(table):
     return only_postgres(
         f"CREATE TRIGGER {table}_append_only BEFORE UPDATE OR DELETE ON {table} "
         "FOR EACH ROW EXECUTE FUNCTION forbid_mutation();",
-        f"DROP TRIGGER IF EXISTS {table}_append_only ON {table};")
+        f"DROP TRIGGER IF EXISTS {table}_append_only ON {table};",
+    )
 
 
 def trigram_index(table, column, name):
     return only_postgres(
-        f"CREATE INDEX {name} ON {table} USING gin ({column} gin_trgm_ops);",
-        f"DROP INDEX IF EXISTS {name};")
+        f"CREATE INDEX {name} ON {table} USING gin ({column} gin_trgm_ops);", f"DROP INDEX IF EXISTS {name};"
+    )

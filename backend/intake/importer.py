@@ -1,5 +1,6 @@
 """Paste and CSV import (plan 7.2): parse, map columns, normalise, create drafts, check for duplicates.
 Imported entries are drafts and earn nothing until verified (rules R08, R09)."""
+
 import csv
 import io
 
@@ -16,10 +17,36 @@ from .models import DedupeCandidate, ImportBatch, ImportRow
 
 # Header words in English, Urdu and Roman Urdu. Compared after folding.
 ALIASES = {
-    "name": ["name", "business name", "company", "company name", "firm", "shop", "title", "naam",
-             "نام", "کمپنی", "دکان", "فرم"],
-    "phone": ["phone", "mobile", "tel", "telephone", "contact", "contact no", "number", "cell", "whatsapp", "raabta",
-              "فون", "موبائل", "نمبر", "رابطہ"],
+    "name": [
+        "name",
+        "business name",
+        "company",
+        "company name",
+        "firm",
+        "shop",
+        "title",
+        "naam",
+        "نام",
+        "کمپنی",
+        "دکان",
+        "فرم",
+    ],
+    "phone": [
+        "phone",
+        "mobile",
+        "tel",
+        "telephone",
+        "contact",
+        "contact no",
+        "number",
+        "cell",
+        "whatsapp",
+        "raabta",
+        "فون",
+        "موبائل",
+        "نمبر",
+        "رابطہ",
+    ],
     "email": ["email", "e-mail", "mail", "ای میل"],
     "address": ["address", "location", "road", "street", "pata", "پتہ", "علاقہ", "سڑک"],
     "website": ["website", "web", "url", "site", "ویب سائٹ"],
@@ -106,9 +133,18 @@ def run_import(batch, actor=None, addons=None):
             continue
         contacts = [("phone", p) for p in dict.fromkeys(norm["phones"])] + [("email", e) for e in norm["emails"]]
         extra = {"addons": addons} if addons else {}
-        entry = es.create_entry(name=norm["name"], place=batch.place, primary_concept=batch.concept,
-                                created_by=batch.uploader, created_via="import", source=batch.source,
-                                address_text=norm["address"], website=norm["website"], contacts=contacts, **extra)
+        entry = es.create_entry(
+            name=norm["name"],
+            place=batch.place,
+            primary_concept=batch.concept,
+            created_by=batch.uploader,
+            created_via="import",
+            source=batch.source,
+            address_text=norm["address"],
+            website=norm["website"],
+            contacts=contacts,
+            **extra,
+        )
         row.entry = entry
         found = dedupe.scan_entry(entry)
         if found and found[0][1] >= dedupe.AUTO_MERGE:
@@ -128,6 +164,12 @@ def run_import(batch, actor=None, addons=None):
         row.save()
     batch.status, batch.counts, batch.finished_at = ImportBatch.Status.DONE, counts, timezone.now()
     batch.save()
-    audit("import.run", actor=actor, object_type="import_batch", object_uid=str(batch.pk), country_code=country,
-          payload=counts)
+    audit(
+        "import.run",
+        actor=actor,
+        object_type="import_batch",
+        object_uid=str(batch.pk),
+        country_code=country,
+        payload=counts,
+    )
     return counts

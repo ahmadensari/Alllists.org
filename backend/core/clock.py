@@ -1,4 +1,5 @@
 """One clock so tests can set the time."""
+
 from django.utils import timezone
 
 _override = None

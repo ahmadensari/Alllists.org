@@ -6,7 +6,9 @@ from taxonomy.services import TaxonomyError, bump_template, create_concept, find
 
 
 def test_synonyms_find_one_concept(db):
-    c = create_concept(kind="list_type", name="Petrol pumps", synonyms=["gas station", "fuel station", "filling station"])
+    c = create_concept(
+        kind="list_type", name="Petrol pumps", synonyms=["gas station", "fuel station", "filling station"]
+    )
     for q in ("Gas Station", "FUEL  station", "petrol pumps"):
         assert list(find_concepts(q)) == [c]
     assert not find_concepts("hotel").exists()

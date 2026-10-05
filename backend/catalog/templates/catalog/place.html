@@ -1,0 +1,10 @@
+{% extends "catalog/base.html" %}{% load catalog_tags %}
+{% block content %}
+<h1>{% if is_world %}AllLists{% else %}{% pname place %}{% endif %}</h1>
+<p class="muted num">{% tr 'n_entries' n=total %}</p>
+{% if children %}<h2>{% if is_world %}{% tr 'countries' %}{% else %}{% pname place as pn %}{% tr 'places_in' place=pn %}{% endif %}</h2>
+<ul class="tilegrid">{% for c, n, url in children %}<li><a class="tile" href="{% u url %}"><strong>{% pname c %}</strong><span class="big num">{{ n }}</span></a></li>{% endfor %}</ul>{% endif %}
+<h2 id="results">{% tr 'lists_here' %}</h2>
+{% if tiles %}<ul class="tilegrid">{% for t in tiles %}<li><a class="tile" href="{% u t.url %}"><strong>{% clabel t.concept %}</strong><span class="big num">{{ t.n }}</span></a></li>{% endfor %}</ul>
+{% else %}<div class="empty"><strong>{% tr 'empty_title' %}</strong></div>{% endif %}
+{% endblock %}

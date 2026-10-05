@@ -1,4 +1,5 @@
 """Entries, child records, per-field provenance and verification (plan sections 4.2.4, 6)."""
+
 from django.conf import settings
 from django.db import models
 
@@ -63,7 +64,9 @@ class Entry(UidModel, SoftDeleteModel):
     website = models.URLField(blank=True)
     size_band = models.CharField(max_length=20, blank=True)
     year_established = models.PositiveSmallIntegerField(null=True, blank=True)
-    parent_entry = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="branches_of")
+    parent_entry = models.ForeignKey(
+        "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="branches_of"
+    )
     languages = models.JSONField(default=list, blank=True)
     price_band = models.CharField(max_length=10, blank=True)
     payment_methods = models.JSONField(default=list, blank=True)
@@ -74,19 +77,26 @@ class Entry(UidModel, SoftDeleteModel):
     plan_valid_until = models.DateField(null=True, blank=True)
     visibility_flags = models.JSONField(default=list, blank=True)  # do_not_share, noindex, suppressed
     created_via = models.CharField(max_length=12, choices=CreatedVia.choices, default=CreatedVia.CONTRIBUTOR)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
-                                   related_name="+")
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
     source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
-    phase_id = models.PositiveIntegerField(null=True, blank=True)  # locked rate phase (rule R11), set by the ledger module
+    phase_id = models.PositiveIntegerField(
+        null=True, blank=True
+    )  # locked rate phase (rule R11), set by the ledger module
     created_at = models.DateTimeField(default=clock.now)
     updated_at = models.DateTimeField(auto_now=True)
     last_verified_at = models.DateTimeField(null=True, blank=True)
-    merged_into = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="merged_from")
+    merged_into = models.ForeignKey(
+        "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="merged_from"
+    )
 
     class Meta:
         verbose_name_plural = "entries"
         indexes = [
-            models.Index(fields=["country_code", "place_path", "primary_concept", "publish_state"], name="entry_list_query"),
+            models.Index(
+                fields=["country_code", "place_path", "primary_concept", "publish_state"], name="entry_list_query"
+            ),
             models.Index(fields=["country_code", "claim_state"], name="entry_claim_idx"),
         ]
 
@@ -95,6 +105,7 @@ class Entry(UidModel, SoftDeleteModel):
 
 
 # ---- child records (plan 4.2.4) ----------------------------------------------------------------------------
+
 
 class EntryChild(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="%(class)s_set")
@@ -113,6 +124,7 @@ class NameVariant(EntryChild):
 
 class Contact(EntryChild):
     """Never rendered to anyone (rule R02). Value is encrypted; the keyed hash allows lookups and suppression."""
+
     class Kind(models.TextChoices):
         PHONE = "phone"
         MOBILE = "mobile"
@@ -178,6 +190,7 @@ class Speciality(EntryChild):
 
 class Identifier(EntryChild):
     """Store the fact and the register link, never a national ID number such as CNIC."""
+
     scheme = models.CharField(max_length=30)
     value = models.CharField(max_length=80)
     issuer = models.CharField(max_length=120, blank=True)
@@ -210,6 +223,7 @@ class Branch(EntryChild):
 
 # ---- provenance and verification (plan 6) ------------------------------------------------------------------
 
+
 class ValueMeta(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="value_meta")
     country_code = models.CharField(max_length=2)
@@ -232,6 +246,7 @@ class ValueMeta(models.Model):
 
 class VerificationEvent(models.Model):
     """Append-only (database trigger forbids update and delete)."""
+
     class Level(models.TextChoices):
         SURVEYOR = "surveyor"
         OWNER = "owner"
@@ -262,6 +277,7 @@ class VerificationEvent(models.Model):
 
 class VerificationCurrent(models.Model):
     """Projection the pages read. Rebuilt from events."""
+
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="verification_current")
     field_group = models.CharField(max_length=20)
     level = models.CharField(max_length=10)
@@ -293,6 +309,7 @@ class Claim(models.Model):
 
 class ConsentRecord(models.Model):
     """Append-only consent for individuals and contacts (rule R18)."""
+
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="consents")
     subject_kind = models.CharField(max_length=10, default="entry")  # entry | contact
     status = models.CharField(max_length=12)  # consented, withdrawn, takedown
@@ -307,6 +324,7 @@ class ConsentRecord(models.Model):
 
 class CreditEvent(models.Model):
     """Credit lives here, not on the entry, so duplicates can merge without losing first-adder credit (D6)."""
+
     entry = models.ForeignKey(Entry, null=True, on_delete=models.SET_NULL, related_name="credit_events")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="+")
     kind = models.CharField(max_length=20)  # added, verified, area_added, claimed_assist
@@ -319,6 +337,7 @@ class CreditEvent(models.Model):
 
 class MergeMap(models.Model):
     """Append-only record of a merge (plan 6.7). The dropped entry redirects to the kept one."""
+
     from_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
     to_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
     score = models.FloatField(null=True, blank=True)

@@ -1,0 +1,7 @@
+{% load catalog_tags %}<li class="row{% if r.closed %} closed-row{% endif %}" style="--i:{{ forloop.counter0 }}">
+<div><a class="nm" href="{% u r.url %}">{{ r.name }}</a>{% if r.alt %}<span class="alt" dir="auto"><bdi>{{ r.alt }}</bdi></span>{% endif %}
+{% if r.company %}<span class="pill pill-co">{% tr 'company_page' %}</span>{% endif %}
+{% if r.status != 'open' %}<span class="chip closed">{% if r.status == 'permanently_closed' %}{% tr 'closed' %}{% elif r.status == 'moved' %}{% tr 'moved' %}{% else %}{% tr 'temporarily_closed' %}{% endif %}</span>{% endif %}</div>
+<div class="muted"><bdi>{% pname r.area %}</bdi><span id="detail-{{ r.uid }}"></span></div>
+<div>{% include "catalog/includes/check_chip.html" with level=r.level %}{% if r.checked %}<span class="small muted num"> {% date r.checked as d %}{% age r.checked as a %}{% tr 'checked_on' date=d age=a %}</span>{% endif %}</div>
+</li>

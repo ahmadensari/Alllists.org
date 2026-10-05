@@ -14,16 +14,19 @@ def test_ulid_is_26_chars_unique_and_time_ordered():
     assert len(a) == 26 and a < b and new_ulid() != new_ulid()
 
 
-@pytest.mark.parametrize("a,b", [
-    ("کراچی", "کراچی"),
-    ("ياسر", "یاسر"),          # Arabic yeh vs Farsi yeh
-    ("كراچی", "کراچی"),  # Arabic kaf vs keheh
-    ("آمین", "امین"),                                                   # madda folds to alef
-    ("پاکستان‌", "پاکستان"),
-    ("سیالکوٹ ١٢٣", "سیالکوٹ 123"),                                     # Arabic-Indic digits
-    ("Paris  Road!", "paris road"),
-    ("ہوٹل", "ہوٹل"),
-])
+@pytest.mark.parametrize(
+    "a,b",
+    [
+        ("کراچی", "کراچی"),
+        ("ياسر", "یاسر"),  # Arabic yeh vs Farsi yeh
+        ("كراچی", "کراچی"),  # Arabic kaf vs keheh
+        ("آمین", "امین"),  # madda folds to alef
+        ("پاکستان‌", "پاکستان"),
+        ("سیالکوٹ ١٢٣", "سیالکوٹ 123"),  # Arabic-Indic digits
+        ("Paris  Road!", "paris road"),
+        ("ہوٹل", "ہوٹل"),
+    ],
+)
 def test_fold_unifies_variants(a, b):
     assert fold(a) == fold(b)
 
@@ -40,6 +43,7 @@ def test_zwnj_becomes_space():
 
 def test_encrypt_roundtrip_and_key_rotation(settings):
     from cryptography.fernet import Fernet
+
     token = encrypt("+923001234567")
     assert token.startswith("dev:") and "923001234567" not in token and decrypt(token) == "+923001234567"
     settings.FIELD_ENCRYPTION_KEYS = {**settings.FIELD_ENCRYPTION_KEYS, "k2": Fernet.generate_key().decode()}
@@ -89,6 +93,7 @@ def test_append_only_tables_refuse_update_and_delete(pg, model):
 def test_clock_override():
     import datetime
     from django.utils import timezone
+
     fixed = timezone.make_aware(datetime.datetime(2026, 1, 2, 3, 4))
     clock.set_now(fixed)
     try:
@@ -102,6 +107,7 @@ def test_seed_pilot_is_idempotent_and_safe_by_default(db):
     from core.models import CountrySwitch
     from places.models import Place
     from taxonomy.models import Concept
+
     call_command("seed_pilot")
     call_command("seed_pilot")
     assert Place.objects.filter(path="pk.punjab.sialkot").count() == 1

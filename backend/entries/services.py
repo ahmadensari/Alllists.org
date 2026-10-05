@@ -2,6 +2,7 @@
 
 Rules enforced here: R07 (independence, expiry), R08 (draft hidden, publish bar), R09 (credit eligibility),
 R18/R19 (person and child-facing gates), R21 (source gate), R02 (contacts encrypted, hashed)."""
+
 import re
 from datetime import timedelta
 
@@ -16,13 +17,41 @@ from intake.gate import SourceBlocked, assert_allowed
 from taxonomy.models import ListTypeSettings
 from taxonomy.services import validate_addons
 
-from .models import (Claim, ConsentRecord, Contact, CreditEvent, Entry, NameVariant, VerificationCurrent,
-                     VerificationEvent)
+from .models import (
+    Claim,
+    ConsentRecord,
+    Contact,
+    CreditEvent,
+    Entry,
+    NameVariant,
+    VerificationCurrent,
+    VerificationEvent,
+)
 
 LEVEL_ORDER = ["surveyor", "owner", "ai"]
-EDITABLE = {"name", "description", "address", "address_text", "website", "size_band", "year_established", "languages",
-            "price_band", "payment_methods", "addons", "status", "status_date", "lat", "lon", "precision_class",
-            "coord_source", "coord_date", "service_area", "entity_type", "place"}
+EDITABLE = {
+    "name",
+    "description",
+    "address",
+    "address_text",
+    "website",
+    "size_band",
+    "year_established",
+    "languages",
+    "price_band",
+    "payment_methods",
+    "addons",
+    "status",
+    "status_date",
+    "lat",
+    "lon",
+    "precision_class",
+    "coord_source",
+    "coord_date",
+    "service_area",
+    "entity_type",
+    "place",
+}
 
 
 class EntryError(ValueError):
@@ -46,8 +75,18 @@ def normalize_contact(kind, value, country_code=""):
 
 
 @transaction.atomic
-def create_entry(*, name, place, primary_concept, created_by=None, created_via=Entry.CreatedVia.CONTRIBUTOR, source=None,
-                 contacts=(), name_variants=(), **fields):
+def create_entry(
+    *,
+    name,
+    place,
+    primary_concept,
+    created_by=None,
+    created_via=Entry.CreatedVia.CONTRIBUTOR,
+    source=None,
+    contacts=(),
+    name_variants=(),
+    **fields,
+):
     if created_via in (Entry.CreatedVia.IMPORT, Entry.CreatedVia.AGENT, Entry.CreatedVia.REGISTER):
         assert_allowed(source, "import" if created_via != Entry.CreatedVia.AGENT else "agent_fetch")
     addons = fields.get("addons") or {}
@@ -60,28 +99,52 @@ def create_entry(*, name, place, primary_concept, created_by=None, created_via=E
         raise EntryError("this list type has no add-on template")
     country = place.country_code or "ZZ"
     entry = Entry.objects.create(
-        name=name, name_fold=fold(name), place=place, place_path=place.path, country_code=country,
-        primary_concept=primary_concept, entity_type=fields.pop("entity_type", primary_concept.entity_type_default),
-        created_by=created_by, created_via=created_via, source=source, **fields)
+        name=name,
+        name_fold=fold(name),
+        place=place,
+        place_path=place.path,
+        country_code=country,
+        primary_concept=primary_concept,
+        entity_type=fields.pop("entity_type", primary_concept.entity_type_default),
+        created_by=created_by,
+        created_via=created_via,
+        source=source,
+        **fields,
+    )
     for text, lang, kind in name_variants:
-        NameVariant.objects.create(entry=entry, country_code=country, text=text, language=lang, kind=kind,
-                                   text_fold=fold(text))
+        NameVariant.objects.create(
+            entry=entry, country_code=country, text=text, language=lang, kind=kind, text_fold=fold(text)
+        )
     for kind, value in contacts:
         add_contact(entry, kind, value)
-    ChangeLog.objects.create(entry_id=entry.pk, country_code=country, field_key="created", new={"name": name},
-                             actor_id=getattr(created_by, "pk", None), source_id=getattr(source, "pk", None))
+    ChangeLog.objects.create(
+        entry_id=entry.pk,
+        country_code=country,
+        field_key="created",
+        new={"name": name},
+        actor_id=getattr(created_by, "pk", None),
+        source_id=getattr(source, "pk", None),
+    )
     if created_by is not None:
-        CreditEvent.objects.create(entry=entry, user=created_by, kind="added", eligible=False,
-                                   ineligible_reason="unverified")
-    audit("entry.create", actor=created_by, object_type="entry", object_uid=entry.uid, country_code=country,
-          payload={"via": created_via})
+        CreditEvent.objects.create(
+            entry=entry, user=created_by, kind="added", eligible=False, ineligible_reason="unverified"
+        )
+    audit(
+        "entry.create",
+        actor=created_by,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=country,
+        payload={"via": created_via},
+    )
     return entry
 
 
 def add_contact(entry, kind, value):
     norm = normalize_contact(kind, value, entry.country_code)
-    return Contact.objects.create(entry=entry, country_code=entry.country_code, kind=kind, value_enc=norm,
-                                  value_hash=keyed_hash(f"{kind}:{norm}"))
+    return Contact.objects.create(
+        entry=entry, country_code=entry.country_code, kind=kind, value_enc=norm, value_hash=keyed_hash(f"{kind}:{norm}")
+    )
 
 
 @transaction.atomic
@@ -101,11 +164,23 @@ def update_entry(entry, *, actor=None, **changes):
         setattr(entry, key, new)
         if key == "name":
             entry.name_fold = fold(new)
-        ChangeLog.objects.create(entry_id=entry.pk, country_code=entry.country_code, field_key=key,
-                                 old=_jsonable(old), new=_jsonable(new_log), actor_id=getattr(actor, "pk", None))
+        ChangeLog.objects.create(
+            entry_id=entry.pk,
+            country_code=entry.country_code,
+            field_key=key,
+            old=_jsonable(old),
+            new=_jsonable(new_log),
+            actor_id=getattr(actor, "pk", None),
+        )
     entry.save()
-    audit("entry.update", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
-          payload={"fields": sorted(changes)})
+    audit(
+        "entry.update",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"fields": sorted(changes)},
+    )
     return entry
 
 
@@ -114,6 +189,7 @@ def _jsonable(v):
 
 
 # ---- verification -------------------------------------------------------------------------------------------
+
 
 def current_level(entry, now=None):
     """Best unexpired check level, or "none". Levels are independent chips; this is the best one for list order."""
@@ -156,21 +232,47 @@ def record_verification(entry, *, field_group, level, actor=None, method="", evi
         if not evidence.strip():
             raise GuardError("an AI check must store its evidence")
     days = settings.CHECK_VALIDITY_DAYS[level]
-    previous = VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
+    previous = (
+        VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
+    )
     event = VerificationEvent.objects.create(
-        entry=entry, country_code=entry.country_code, field_group=field_group, level=level, state="verified",
-        actor_id=getattr(actor, "pk", None), method=method, evidence_text=evidence, source=source, ts=now,
-        expires_at=now + timedelta(days=days), supersedes=previous)
+        entry=entry,
+        country_code=entry.country_code,
+        field_group=field_group,
+        level=level,
+        state="verified",
+        actor_id=getattr(actor, "pk", None),
+        method=method,
+        evidence_text=evidence,
+        source=source,
+        ts=now,
+        expires_at=now + timedelta(days=days),
+        supersedes=previous,
+    )
     VerificationCurrent.objects.update_or_create(
-        entry=entry, field_group=field_group, level=level,
-        defaults=dict(state="verified", verified_at=now, expires_at=event.expires_at, method=method,
-                      actor_display=(getattr(actor, "username", "") or "")[:80]))
+        entry=entry,
+        field_group=field_group,
+        level=level,
+        defaults=dict(
+            state="verified",
+            verified_at=now,
+            expires_at=event.expires_at,
+            method=method,
+            actor_display=(getattr(actor, "username", "") or "")[:80],
+        ),
+    )
     entry.last_verified_at = now
     entry.save(update_fields=["last_verified_at"])
     if level in ("surveyor", "owner"):
         _mark_credit_eligible(entry)
-    audit("verification.record", actor=actor, object_type="entry", object_uid=entry.uid,
-          country_code=entry.country_code, payload={"level": level, "group": field_group})
+    audit(
+        "verification.record",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"level": level, "group": field_group},
+    )
     try_publish(entry, actor=actor, now=now)
     return event
 
@@ -178,21 +280,39 @@ def record_verification(entry, *, field_group, level, actor=None, method="", evi
 def _mark_credit_eligible(entry):
     """R09: payout credit needs a surveyor or owner check. Self-listed and agent-made entries never earn."""
     if entry.created_via in (Entry.CreatedVia.SELF, Entry.CreatedVia.AGENT):
-        CreditEvent.objects.filter(entry=entry, kind="added").update(eligible=False, ineligible_reason=entry.created_via)
+        CreditEvent.objects.filter(entry=entry, kind="added").update(
+            eligible=False, ineligible_reason=entry.created_via
+        )
         return
     CreditEvent.objects.filter(entry=entry, kind="added", eligible=False, ineligible_reason="unverified").update(
-        eligible=True, ineligible_reason="")
+        eligible=True, ineligible_reason=""
+    )
 
 
 @transaction.atomic
 def revoke_verification(entry, *, field_group, level, actor, reason):
-    previous = VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
-    VerificationEvent.objects.create(entry=entry, country_code=entry.country_code, field_group=field_group, level=level,
-                                     state="revoked", actor_id=getattr(actor, "pk", None), evidence_text=reason,
-                                     supersedes=previous)
+    previous = (
+        VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
+    )
+    VerificationEvent.objects.create(
+        entry=entry,
+        country_code=entry.country_code,
+        field_group=field_group,
+        level=level,
+        state="revoked",
+        actor_id=getattr(actor, "pk", None),
+        evidence_text=reason,
+        supersedes=previous,
+    )
     VerificationCurrent.objects.filter(entry=entry, field_group=field_group, level=level).update(state="revoked")
-    audit("verification.revoke", actor=actor, object_type="entry", object_uid=entry.uid,
-          country_code=entry.country_code, payload={"level": level, "group": field_group, "reason": reason})
+    audit(
+        "verification.revoke",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"level": level, "group": field_group, "reason": reason},
+    )
 
 
 @transaction.atomic
@@ -202,11 +322,20 @@ def sweep_expired(now=None):
     expired = list(VerificationCurrent.objects.select_for_update().filter(state="verified", expires_at__lte=now))
     touched = set()
     for cur in expired:
-        previous = VerificationEvent.objects.filter(entry_id=cur.entry_id, field_group=cur.field_group,
-                                                    level=cur.level).order_by("-id").first()
-        VerificationEvent.objects.create(entry_id=cur.entry_id, country_code=cur.entry.country_code,
-                                         field_group=cur.field_group, level=cur.level, state="expired", ts=now,
-                                         supersedes=previous)
+        previous = (
+            VerificationEvent.objects.filter(entry_id=cur.entry_id, field_group=cur.field_group, level=cur.level)
+            .order_by("-id")
+            .first()
+        )
+        VerificationEvent.objects.create(
+            entry_id=cur.entry_id,
+            country_code=cur.entry.country_code,
+            field_group=cur.field_group,
+            level=cur.level,
+            state="expired",
+            ts=now,
+            supersedes=previous,
+        )
         cur.state = "expired"
         cur.save(update_fields=["state"])
         touched.add(cur.entry_id)
@@ -219,13 +348,19 @@ def sweep_expired(now=None):
         if last_expiry is None or now > last_expiry + grace:
             entry.publish_state = Entry.PublishState.DRAFT
             entry.save(update_fields=["publish_state"])
-            audit("entry.to_draft", object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
-                  payload={"reason": "checks expired past grace"})
+            audit(
+                "entry.to_draft",
+                object_type="entry",
+                object_uid=entry.uid,
+                country_code=entry.country_code,
+                payload={"reason": "checks expired past grace"},
+            )
             returned += 1
     return {"expired": len(expired), "returned_to_draft": returned}
 
 
 # ---- publish bar ---------------------------------------------------------------------------------------------
+
 
 def quality_failures(entry, now=None):
     """Why an entry may not be public yet (plan 6.1). Empty list means it clears the bar."""
@@ -274,6 +409,7 @@ def try_publish(entry, *, actor=None, now=None):
 
 # ---- claims and consent --------------------------------------------------------------------------------------
 
+
 @transaction.atomic
 def start_claim(entry, user, method, evidence=""):
     if entry.claim_state == Entry.ClaimState.CLAIMED:
@@ -296,38 +432,75 @@ def decide_claim(claim, *, actor, approve, now=None):
     entry = claim.entry
     entry.claim_state = Entry.ClaimState.CLAIMED if approve else Entry.ClaimState.UNCLAIMED
     entry.save(update_fields=["claim_state"])
-    audit("claim.decide", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
-          payload={"approved": approve})
+    audit(
+        "claim.decide",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"approved": approve},
+    )
     if approve:
-        record_verification(entry, field_group="identity", level="owner", actor=claim.user, method=claim.method,
-                            evidence=claim.evidence_text or "claim approved", now=now)
+        record_verification(
+            entry,
+            field_group="identity",
+            level="owner",
+            actor=claim.user,
+            method=claim.method,
+            evidence=claim.evidence_text or "claim approved",
+            now=now,
+        )
     return claim
 
 
 def record_consent(entry, *, status, method, wording_version, evidence="", actor=None):
-    rec = ConsentRecord.objects.create(entry=entry, status=status, method=method, wording_version=wording_version,
-                                       evidence_text=evidence)
-    audit("consent.record", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
-          payload={"status": status})
+    rec = ConsentRecord.objects.create(
+        entry=entry, status=status, method=method, wording_version=wording_version, evidence_text=evidence
+    )
+    audit(
+        "consent.record",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"status": status},
+    )
     return rec
 
 
 # ---- merging (plan 6.7, rule D6) -----------------------------------------------------------------------------
+
 
 @transaction.atomic
 def merge_entries(keep, drop, *, actor=None, score=None):
     """Merge `drop` into `keep`. Children move, credit events are re-pointed, the earliest added-credit survives,
     the dropped entry is tombstoned with a redirect, and everything is logged."""
     from .models import MergeMap
+
     if keep.pk == drop.pk or drop.merged_into_id:
         raise EntryError("cannot merge an entry into itself or merge twice")
     if keep.country_code != drop.country_code:
         raise EntryError("entries in different countries are never merged")
-    for rel in ("namevariant_set", "contact_set", "social_set", "hours_set", "service_set", "product_set",
-                "speciality_set", "identifier_set", "areaserved_set", "equipment_set", "branch_set"):
+    for rel in (
+        "namevariant_set",
+        "contact_set",
+        "social_set",
+        "hours_set",
+        "service_set",
+        "product_set",
+        "speciality_set",
+        "identifier_set",
+        "areaserved_set",
+        "equipment_set",
+        "branch_set",
+    ):
         getattr(drop, rel).update(entry=keep)
-    NameVariant.objects.get_or_create(entry=keep, country_code=keep.country_code, text=drop.name,
-                                      defaults=dict(language=drop.name_lang, kind="old", text_fold=drop.name_fold))
+    NameVariant.objects.get_or_create(
+        entry=keep,
+        country_code=keep.country_code,
+        text=drop.name,
+        defaults=dict(language=drop.name_lang, kind="old", text_fold=drop.name_fold),
+    )
     CreditEvent.objects.filter(entry=drop).update(entry=keep, merged_from_id=drop.pk)
     added = list(CreditEvent.objects.filter(entry=keep, kind="added").order_by("created_at", "id"))
     for later in added[1:]:
@@ -337,8 +510,19 @@ def merge_entries(keep, drop, *, actor=None, score=None):
     drop.publish_state = Entry.PublishState.SUPPRESSED
     drop.save(update_fields=["merged_into", "publish_state"])
     MergeMap.objects.create(from_entry=drop, to_entry=keep, score=score, decided_by_id=getattr(actor, "pk", None))
-    ChangeLog.objects.create(entry_id=keep.pk, country_code=keep.country_code, field_key="merged",
-                             new={"from": drop.uid}, actor_id=getattr(actor, "pk", None))
-    audit("entry.merge", actor=actor, object_type="entry", object_uid=keep.uid, country_code=keep.country_code,
-          payload={"from": drop.uid, "score": score})
+    ChangeLog.objects.create(
+        entry_id=keep.pk,
+        country_code=keep.country_code,
+        field_key="merged",
+        new={"from": drop.uid},
+        actor_id=getattr(actor, "pk", None),
+    )
+    audit(
+        "entry.merge",
+        actor=actor,
+        object_type="entry",
+        object_uid=keep.uid,
+        country_code=keep.country_code,
+        payload={"from": drop.uid, "score": score},
+    )
     return keep

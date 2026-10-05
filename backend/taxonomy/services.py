@@ -6,8 +6,29 @@ from core.textfold import fold
 
 from .models import AddonField, AddonTemplate, Concept, ConceptLabel, ListTypeSettings, ReservedSlug
 
-SYSTEM_SLUGS = {"e", "search", "add", "claim", "wrong", "message", "enquiry", "about", "terms", "privacy", "plans",
-                "sources", "me", "staff", "admin", "account", "ur", "prefs", "optout", "healthz", "static"}
+# Two-letter system slugs are avoided on purpose: country place slugs are ISO codes (for example "me" is Montenegro).
+SYSTEM_SLUGS = {
+    "e",
+    "search",
+    "add",
+    "claim",
+    "wrong",
+    "message",
+    "enquiry",
+    "about",
+    "terms",
+    "privacy",
+    "plans",
+    "sources",
+    "staff",
+    "admin",
+    "account",
+    "ur",
+    "prefs",
+    "optout",
+    "healthz",
+    "static",
+}
 
 
 class TaxonomyError(ValueError):
@@ -41,7 +62,9 @@ def find_concepts(query, kind=Concept.Kind.LIST_TYPE):
 def bump_template(template, changed_by=""):
     template.version += 1
     template.save(update_fields=["version"])
-    RegistryVersion.objects.create(registry_key=f"addon:{template.key}", version=template.version, changed_by=changed_by)
+    RegistryVersion.objects.create(
+        registry_key=f"addon:{template.key}", version=template.version, changed_by=changed_by
+    )
     return template.version
 
 
@@ -95,23 +118,59 @@ def _check_value(field, val):
 
 def seed_manufacturer_template():
     """The pilot add-on block (plan appendix C.8). Safe to run twice."""
-    tpl, _ = AddonTemplate.objects.get_or_create(key="manufacturers", defaults={"description": "Manufacturers and exporters"})
+    tpl, _ = AddonTemplate.objects.get_or_create(
+        key="manufacturers", defaults={"description": "Manufacturers and exporters"}
+    )
     spec = [
-        ("business_type", "enum", {"choices": ["manufacturer", "trader", "wholesaler", "exporter"]}, True, "P", True, True),
+        (
+            "business_type",
+            "enum",
+            {"choices": ["manufacturer", "trader", "wholesaler", "exporter"]},
+            True,
+            "P",
+            True,
+            True,
+        ),
         ("product_categories", "concept_list", {}, True, "P", True, False),
         ("tax_ids", "identifier_list", {}, False, "P", False, False),
         ("year_established", "number", {"min": 1800, "max": 2100}, False, "P", False, False),
         ("years_exporting", "number", {"min": 0, "max": 200}, False, "P", False, False),
         ("export_markets", "place_list", {}, False, "L", True, False),
         ("certifications", "identifier_list", {}, False, "L", True, False),
-        ("verification_tier", "enum", {"choices": ["none", "documents", "on_site", "third_party"]}, False, "P", True, False),
+        (
+            "verification_tier",
+            "enum",
+            {"choices": ["none", "documents", "on_site", "third_party"]},
+            False,
+            "P",
+            True,
+            False,
+        ),
         ("capacity_band", "enum", {"choices": ["small", "medium", "large"]}, False, "L", False, False),
-        ("workforce_band", "enum", {"choices": ["1-10", "11-50", "51-200", "201-1000", "1000+"]}, False, "L", False, False),
+        (
+            "workforce_band",
+            "enum",
+            {"choices": ["1-10", "11-50", "51-200", "201-1000", "1000+"]},
+            False,
+            "L",
+            False,
+            False,
+        ),
         ("oem", "bool", {}, False, "P", True, False),
         ("moq", "text", {"max_length": 80}, False, "L", False, False),
     ]
     for key, typ, validation, req, show, filt, row in spec:
-        AddonField.objects.get_or_create(template=tpl, key=key, defaults={
-            "label_key": f"addon.manufacturers.{key}", "type": typ, "validation": validation,
-            "required_for_publish": req, "show": show, "filterable": filt, "row_descriptor": row})
+        AddonField.objects.get_or_create(
+            template=tpl,
+            key=key,
+            defaults={
+                "label_key": f"addon.manufacturers.{key}",
+                "type": typ,
+                "validation": validation,
+                "required_for_publish": req,
+                "show": show,
+                "filterable": filt,
+                "row_descriptor": row,
+            },
+        )
     return tpl

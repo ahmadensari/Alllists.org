@@ -9,8 +9,9 @@ def test_place_paths():
 
 
 def test_incremental_refresh_matches_recount(entry, tree, surgical, users):
-    es.record_verification(entry, field_group="identity", level="surveyor", actor=users["surveyor"], method="call",
-                           evidence="Answered")
+    es.record_verification(
+        entry, field_group="identity", level="surveyor", actor=users["surveyor"], method="call", evidence="Answered"
+    )
     entry.refresh_from_db()
     refresh_for_entry(entry)
     cities = RollupCell.objects.get(place_path=tree["sialkot"].path, concept=surgical)
@@ -31,8 +32,12 @@ def test_drafts_count_in_total_but_not_published(entry, tree, surgical):
 
 
 def test_merged_entries_leave_the_counts(entry, tree, surgical, users):
-    other = es.create_entry(name="Dup Co", place=tree["paris"], primary_concept=surgical,
-                            addons={"business_type": "trader", "product_categories": ["x"]})
+    other = es.create_entry(
+        name="Dup Co",
+        place=tree["paris"],
+        primary_concept=surgical,
+        addons={"business_type": "trader", "product_categories": ["x"]},
+    )
     recount_all()
     assert RollupCell.objects.get(place_path=tree["paris"].path, concept=surgical).total == 2
     es.merge_entries(entry, other)

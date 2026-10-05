@@ -27,8 +27,9 @@ def pg(db):
 @pytest.fixture
 def tree(db):
     world = create_place(parent=None, level=Place.Level.WORLD, name="World", slug="world")
-    pk = create_place(parent=world, level=Place.Level.COUNTRY, name="Pakistan", country_code="PK",
-                      names=[("ur", "پاکستان")])
+    pk = create_place(
+        parent=world, level=Place.Level.COUNTRY, name="Pakistan", country_code="PK", names=[("ur", "پاکستان")]
+    )
     punjab = create_place(parent=pk, level=Place.Level.ADMIN1, name="Punjab")
     sialkot = create_place(parent=punjab, level=Place.Level.CITY, name="Sialkot", names=[("ur", "سیالکوٹ")])
     paris = create_place(parent=sialkot, level=Place.Level.AREA, name="Paris Road")
@@ -38,35 +39,83 @@ def tree(db):
 @pytest.fixture
 def surgical(db):
     tpl = seed_manufacturer_template()
-    return create_concept(kind=Concept.Kind.LIST_TYPE, name="Surgical instrument makers", template=tpl,
-                          synonyms=["surgical instruments manufacturers"])
+    return create_concept(
+        kind=Concept.Kind.LIST_TYPE,
+        name="Surgical instrument makers",
+        template=tpl,
+        synonyms=["surgical instruments manufacturers"],
+    )
 
 
 @pytest.fixture
 def users(db):
-    return {n: User.objects.create_user(n, f"{n}@example.org", "pw-for-tests-only") for n in
-            ("adder", "surveyor", "owner", "mod")}
+    return {
+        n: User.objects.create_user(n, f"{n}@example.org", "pw-for-tests-only")
+        for n in ("adder", "surveyor", "owner", "mod")
+    }
 
 
 @pytest.fixture
 def green(db):
-    return Source.objects.create(name="Owner submissions", tier="green", allowed_uses=["import", "agent_fetch", "display"])
+    return Source.objects.create(
+        name="Owner submissions", tier="green", allowed_uses=["import", "agent_fetch", "display"]
+    )
 
 
 @pytest.fixture
 def web_source(db):
-    return Source.objects.create(name="Open web page check", tier="amber", allowed_uses=["agent_fetch", "display"],
-                                 reviewed_on=datetime.date(2026, 10, 1))
+    return Source.objects.create(
+        name="Open web page check",
+        tier="amber",
+        allowed_uses=["agent_fetch", "display"],
+        reviewed_on=datetime.date(2026, 10, 1),
+    )
 
 
 @pytest.fixture
 def entry(tree, surgical, users):
-    return es.create_entry(name="Crescent Surgical Works", place=tree["paris"], primary_concept=surgical,
-                           created_by=users["adder"], website="https://example.org",
-                           contacts=[("phone", "0300 123 4567")],
-                           addons={"business_type": "manufacturer", "product_categories": ["scissors"]})
+    return es.create_entry(
+        name="Crescent Surgical Works",
+        place=tree["paris"],
+        primary_concept=surgical,
+        created_by=users["adder"],
+        website="https://example.org",
+        contacts=[("phone", "0300 123 4567")],
+        addons={"business_type": "manufacturer", "product_categories": ["scissors"]},
+    )
 
 
 @pytest.fixture
 def pk_open(db):
     return CountrySwitch.objects.create(country_code="PK", named_individuals_on=True)
+
+
+@pytest.fixture
+def make_published(users, surgical):
+    from analytics.rollups import recount_all
+
+    def make(name, place, level="surveyor", phone="0300 000 0000", refresh=True, **kw):
+        e = es.create_entry(
+            name=name,
+            place=place,
+            primary_concept=kw.pop("concept", surgical),
+            created_by=users["adder"],
+            website=kw.pop("website", "https://example.org/" + name.split()[0].lower()),
+            contacts=[("phone", phone)],
+            addons=kw.pop("addons", {"business_type": "manufacturer", "product_categories": ["scissors"]}),
+            **kw,
+        )
+        es.record_verification(
+            e,
+            field_group="identity",
+            level=level,
+            actor=users["surveyor"],
+            method="call",
+            evidence="Phone answered, name matched",
+        )
+        e.refresh_from_db()
+        if refresh:
+            recount_all()
+        return e
+
+    return make

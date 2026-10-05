@@ -3,5 +3,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("lists.urls")),
+    path("", include("catalog.urls")),
 ]
+
+handler404 = "catalog.views.not_found"
