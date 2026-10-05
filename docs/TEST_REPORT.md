@@ -4,7 +4,7 @@ What was tested, how hard, what it found, and what is still untested. Written fo
 
 ## In one paragraph
 
-About 570 automated tests run against a real PostgreSQL 16 database on every change (Python 3.11, 3.12 and 3.13), in random order, with lint, a security scan and a migration forward and back check. Line coverage is 96 percent of the application code. Beyond ordinary tests there are six harder layers: a whole-site matrix, an authorization matrix for the staff console, property and fuzz tests, concurrency tests with real threads, a mutation check that breaks one rule at a time to prove the tests would notice, and runs against a real server and a real browser. These layers found and fixed about 25 defects, listed below. Nothing here has touched a real payment provider, a real messaging provider, a real domain or a production server; that is the next stage.
+About 620 automated tests run against a real PostgreSQL 16 database on every change (Python 3.11, 3.12 and 3.13), in random order, with lint, a security scan and a migration forward and back check. Line coverage is 97 percent of the application code. Beyond ordinary tests there are six harder layers: a whole-site matrix, an authorization matrix for the staff console, property and fuzz tests, concurrency tests with real threads, a mutation check that breaks one rule at a time to prove the tests would notice, and runs against a real server and a real browser. These layers found and fixed about 25 defects, listed below. Nothing here has touched a real payment provider, a real messaging provider, a real domain or a production server; that is the next stage.
 
 ## The layers
 
@@ -33,6 +33,19 @@ Operations: account, staff and form pages carried no cache header; production di
 ## What the mutation check showed about the tests themselves
 
 On the ledger, the paywall policy and the verification code, the first run left 8 to 9 of every 40 changes unnoticed (for example a revoked check still earning, entry counts wrong, the paywall rule's boundaries). Tests were added for each real gap; the policy file now has every code change noticed. The remaining unnoticed changes are inside comments and messages, which are harmless and are now skipped by the script.
+
+### Mutation check results (first pass, then tests added for every real gap)
+
+| File | Changes tried | Not noticed on the first pass | After new tests |
+|---|---|---|---|
+| `access/policy.py` (the paywall rule) | 19 | 8 | all code changes noticed; the rest were inside comments |
+| `ledger/services.py` (money) | 40 | 8 | revoked and expired checks, entry counts, negative fees, zero net now covered |
+| `entries/services.py` (verification, claims, stewards, services) | 40 | 14 | steward scope and expiry, health prices, price rules, company page rights, merge guards, grace edge now covered |
+| `outreach/services.py` (relay) | 30 | 6 | message length, 50 recipients, 20 a day, reply address edges now covered |
+| `accounts/views.py`, `accounts/throttle.py` | 38 | 12 | two-step edge cases, username rules, throttle reset, social link guard now covered |
+| `agents/fetcher.py` (outbound requests) | 38 | 15 | credentials, streaming, decoding and size edge now covered; the rest change nothing observable |
+
+Changes that remain unnoticed are of the kind that change nothing a user or a test can see (a message wording, `>=` against `>` where the two cannot differ, a flag that is already false). Rerun the script after any change to these files.
 
 ## Not tested, and why
 

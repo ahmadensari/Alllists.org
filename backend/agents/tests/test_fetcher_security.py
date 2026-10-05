@@ -34,7 +34,8 @@ class Resp:
         self.raw = io.BytesIO(body)
         self.raw.read_orig = self.raw.read
 
-        def read(n, decode_content=True):
+        def read(n, decode_content=None):
+            assert decode_content is True  # compressed pages are decoded before the size check and parsing
             return self.raw.read_orig(n)
 
         self.raw.read = read
@@ -48,6 +49,7 @@ class Http:
 
     def get(self, url, headers=None, timeout=None, stream=None, allow_redirects=None):
         assert allow_redirects is False and timeout and headers["User-Agent"].startswith("AllListsBot")
+        assert stream is True  # the body is streamed so a huge page is never loaded in full
         self.calls.append(url)
         host = url.split("/")[2]
         self.lookups.append(socket.getaddrinfo(host, 443)[0][4][0])
@@ -294,3 +296,18 @@ def test_pinned_lookup_only_answers_for_the_pinned_name(dns):
         assert len(fe._pinned_getaddrinfo("v6.example", 443)[0][4]) == 4  # IPv6 socket address shape
     finally:
         fe._local.pin = None
+
+
+def test_a_page_of_exactly_the_size_limit_is_accepted_and_one_byte_more_is_not(dns, monkeypatch):
+    monkeypatch.setattr(fe.time, "sleep", lambda s: None)
+    f, _ = make(
+        dns,
+        {
+            "https://public.example/robots.txt": ROBOTS_OPEN,
+            "https://public.example/edge": Resp(200, b"a" * fe.MAX_BYTES),
+            "https://public.example/over": Resp(200, b"a" * (fe.MAX_BYTES + 1)),
+        },
+    )
+    assert len(f.get("https://public.example/edge").text) == fe.MAX_BYTES
+    with pytest.raises(fe.FetchRefused, match="large"):
+        f.get("https://public.example/over")
