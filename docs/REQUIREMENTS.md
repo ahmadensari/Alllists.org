@@ -439,6 +439,8 @@ The owner's stated principles: **better usage and returning clients**, and **rev
 - **Q-S12** Sign-off of `docs/LIST_AND_ENTRY_COMPONENTS.md`: once approved, the core entry fields and child records are frozen for version 1 (add, never change meaning).
 - **Q-S13** Visibility of website and social media page links: they can reveal contacts. Suggested default: locked on the free view, shown on the paid view.
 - **Q-S14** Design system sign-off (`docs/DESIGN_SYSTEM.md`): Urdu type style (Naskh fallback or Nastaliq), native-speaker review of the Urdu wording, and number format by locale.
+- **Q-S15** Contributor share definition (from `reports/Project analysis.md`): apply the share to net revenue; cap how long an entry earns its phase rate (suggested 36 months); first-volunteer offer (fee plus share versus share only) to be tested in the pilot.
+- **Q-S16** One first trade in writing: the repository holds three candidate wedges (pharmacies in Lahore or Karachi, eye care in one city, Sialkot surgical instruments). The project analysis favours Sialkot surgical with a verified-supplier register.
 
 ## Next step
 

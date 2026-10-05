@@ -125,3 +125,5 @@ Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeri
 | Which proposed list types from the platform catalogue join the seed list | Take the report's top ranked group (urgent home and trade firms, health facilities and equipment, Sialkot-type clusters, importers and buy leads); delay children's services, health data, named individuals | Q-S8 |
 | Sign off the list and entry component specification (core fields frozen for version 1) | Approve `docs/LIST_AND_ENTRY_COMPONENTS.md` after reading section 10 | Q-S12 |
 | Website and social page links: public or locked | Locked on the free view | Q-S13 |
+| Choose one first trade in writing | Sialkot surgical instruments, as a verified-supplier register, tested for eight weeks first | Q-S16 |
+| How the contributor share is defined | Net revenue, with a time cap on each entry's phase rate (suggested 36 months) | Q-S15 |
