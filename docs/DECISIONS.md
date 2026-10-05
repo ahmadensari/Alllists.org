@@ -41,6 +41,7 @@ Last updated: 2026-10-05 (service-provider round).
 | Verification levels on every entry: owner-verified, surveyor-verified, AI-checked, not verified yet, with who, how, when and evidence stored | D19, D20 |
 | Topic lists that are not about places (apps, websites, books, tools) are in; they use a topic tree and are monetised by sponsorship, affiliate links and ads, not by list sales (working view) | C27 |
 | Text and numbers only for now: no pictures or videos | C29 |
+| Base structure: a few templates, shared parts and registries; one change reaches every page that uses it; no hand-made pages | C34 |
 | Every list type gets a complete entry template: a common core plus type-specific fields, based on what established platforms and registers hold (research under way) | C26 |
 | Keep adding data first (draft-first); reliability comes later through ownership and manual verification | D18 |
 

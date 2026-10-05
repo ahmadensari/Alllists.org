@@ -201,7 +201,7 @@ var EN = {
   openMap:"Open in Google Maps", notes:"Sample data. Share links are plain links: nothing loads from a social network until you click.",
   linkCopied:"Link copied", toastOutreach:"Demo: opens the channel picker. WhatsApp first, only to people who agreed, sent by AllLists.", toastPlans:"Demo: opens the plans page.", toastSave:"Demo: saved. Needs an account.", toastFollow:"Demo: we will tell you when it changes. Needs an account.",
   statusShown:"{n} businesses shown",
-  ago0:"today", agoD:"{d} days ago", agoW:"{w} weeks ago", agoM:"{m} months ago", mon_sat:"Mon to Sat"
+  ago0:"today", agoD:"{d} days ago", agoW:"{w} weeks ago", agoM:"{m} months ago", mon_sat:"Mon to Sat", x:"X", tg:"Telegram"
 };
 var UR = {
   proto:"فرضی ڈیٹا کے ساتھ نمونہ۔ کچھ بھی حقیقی نہیں۔", protoSummary:"نمونے کے کنٹرول", skip:"نتائج پر جائیں",
@@ -264,7 +264,6 @@ function D(w){return (lang==="ur"&&UR[w])||w;}   /* data words: translated where
 var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var TODAY=new Date("2026-10-05T00:00:00Z");
 function fmtDate(s){var p=s.split("-");return parseInt(p[2],10)+" "+D(MONTHS[parseInt(p[1],10)-1])+" "+p[0];}
-function fmtDateEn(s){var p=s.split("-");return parseInt(p[2],10)+" "+MONTHS[parseInt(p[1],10)-1]+" "+p[0];}
 function age(s){var d=Math.round((TODAY-new Date(s+"T00:00:00Z"))/86400000);if(d<=0)return T("ago0");if(d<14)return T("agoD",{d:d});if(d<60)return T("agoW",{w:Math.round(d/7)});return T("agoM",{m:Math.round(d/30)});}
 
 /* ---------- Sample data (invented) ---------- */
@@ -297,25 +296,41 @@ function altName(e){return lang==="ur"?e.name:e.urdu;}
 function mainName(e){return lang==="ur"?e.urdu:e.name;}
 function bdiName(s,l){return '<bdi lang="'+l+'">'+esc(s)+'</bdi>';}
 function utm(ch,camp,id){return CANON+(id?("/"+id):"")+"?utm_source="+ch+"&utm_medium=share&utm_campaign="+camp+"&utm_content="+(id||"list")+"&ref=DEMO";}
-function links(kind,e){
+/* Share channels: ONE list drives every share bar on every list and entry page.
+   To add a channel (for example Telegram) add one object here; no page template changes.
+   group "main" = shown as a button, "more" = under More options. hideFor(e) can switch a channel off for some entries. */
+var SHARE_CHANNELS=[
+  {id:"whatsapp",label:"wa",group:"main",kind:"link",url:function(c){return "https://wa.me/?text="+c.text("whatsapp");}},
+  {id:"copy",label:"copy",group:"main",kind:"copy"},
+  {id:"facebook",label:"fb",group:"more",kind:"link",url:function(c){return "https://www.facebook.com/sharer/sharer.php?u="+c.url("facebook");}},
+  {id:"email",label:"email",group:"more",kind:"mail",url:function(c){return "mailto:?subject="+encodeURIComponent(c.title)+"&body="+encodeURIComponent(c.line+" "+utm("email",c.camp,c.id));}},
+  {id:"linkedin",label:"li",group:"more",kind:"link",url:function(c){return "https://www.linkedin.com/sharing/share-offsite/?url="+c.url("linkedin");}},
+  {id:"x",label:"x",group:"more",kind:"link",url:function(c){return "https://x.com/intent/tweet?text="+encodeURIComponent(c.title)+"&url="+c.url("x");}}
+];
+function fmtDateEn(s){var p=s.split("-");return parseInt(p[2],10)+" "+MONTHS[parseInt(p[1],10)-1]+" "+p[0];}
+function shareContext(kind,e){
   var title=kind==="list"?EN.title:(e.name+", "+e.type.toLowerCase()+", "+e.area+", Sialkot");
   var line=kind==="list"?"7 businesses listed, last checked 18 Sep 2026.":("Last checked "+fmtDateEn(lastChecked(e))+".");
   var camp=kind==="list"?"list_share":"entry_share", id=kind==="list"?null:e.id;
-  function tx(ch){return encodeURIComponent(title+". "+line+" "+utm(ch,camp,id));}
-  return {wa:"https://wa.me/?text="+tx("whatsapp"),fb:"https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(utm("facebook",camp,id)),
-    li:"https://www.linkedin.com/sharing/share-offsite/?url="+encodeURIComponent(utm("linkedin",camp,id)),
-    x:"https://x.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(utm("x",camp,id)),
-    mail:"mailto:?subject="+encodeURIComponent(title)+"&body="+encodeURIComponent(line+" "+utm("email",camp,id)),
+  return {title:title,line:line,camp:camp,id:id,
+    text:function(ch){return encodeURIComponent(title+". "+line+" "+utm(ch,camp,id));},
+    url:function(ch){return encodeURIComponent(utm(ch,camp,id));},
     copy:CANON+(id?("/"+id):"")};
 }
+function channelHtml(ch,c){
+  if(ch.kind==="copy")return '<button class="btn" type="button" data-copy="'+esc(c.copy)+'">'+esc(T(ch.label))+'</button>';
+  var ext=ch.kind==="mail"?'':' target="_blank" rel="noopener noreferrer"';
+  return '<a class="btn" href="'+ch.url(c)+'"'+ext+'>'+esc(T(ch.label))+'</a>';
+}
 function shareBar(kind,e){
-  var s=links(kind,e), key=kind==="list"?"list":e.id;
+  var c=shareContext(kind,e), key=kind==="list"?"list":e.id;
+  var chans=SHARE_CHANNELS.filter(function(ch){return !(ch.hideFor&&ch.hideFor(e));});
+  var main=chans.filter(function(ch){return ch.group==="main";}), more=chans.filter(function(ch){return ch.group==="more";});
   return '<div class="actions" role="group" aria-label="'+esc(T("share"))+'">'
    +'<button class="btn" type="button" data-native="'+key+'" hidden>'+esc(T("share"))+'</button>'
-   +'<a class="btn" href="'+s.wa+'" target="_blank" rel="noopener noreferrer">'+esc(T("wa"))+'</a>'
-   +'<button class="btn" type="button" data-copy="'+esc(s.copy)+'">'+esc(T("copy"))+'</button>'
-   +'<button class="btn quiet" type="button" data-more="'+key+'" aria-expanded="false" aria-controls="menu-'+key+'">'+esc(T("more"))+'</button></div>'
-   +'<div class="menu" id="menu-'+key+'"><a class="btn" href="'+s.fb+'" target="_blank" rel="noopener noreferrer">'+esc(T("fb"))+'</a><a class="btn" href="'+s.mail+'">'+esc(T("email"))+'</a><a class="btn" href="'+s.li+'" target="_blank" rel="noopener noreferrer">'+esc(T("li"))+'</a><a class="btn" href="'+s.x+'" target="_blank" rel="noopener noreferrer">X</a></div>';
+   +main.map(function(ch){return channelHtml(ch,c);}).join("")
+   +(more.length?'<button class="btn quiet" type="button" data-more="'+key+'" aria-expanded="false" aria-controls="menu-'+key+'">'+esc(T("more"))+'</button>':'')+'</div>'
+   +(more.length?'<div class="menu" id="menu-'+key+'">'+more.map(function(ch){return channelHtml(ch,c);}).join("")+'</div>':'');
 }
 function crumbs(parts,last){
   return '<ol>'+parts.map(function(p){return '<li><a href="#/list">'+esc(p)+'</a></li>';}).join("")+(last?'<li aria-current="page"><strong>'+esc(last)+'</strong></li>':'')+'</ol>';

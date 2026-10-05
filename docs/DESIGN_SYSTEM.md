@@ -19,6 +19,7 @@ Status: v1 for owner sign-off (Q-S12). The Urdu wording is a draft that needs a 
 5. **Rows with no value are left out.** The page never says "Not stated".
 6. **Light by design.** System fonts, no third-party scripts, no images. A server-rendered list page of 25 rows should be about 11 KB compressed (budget in section 9).
 7. **Right-to-left from the start.** Logical CSS (start and end), never left and right.
+8. **Few templates, one change reaches every page.** See section 13.
 
 ## 3. Tokens (single source in the page's style block)
 
@@ -147,3 +148,57 @@ May vary by list type: the descriptor shown in a row, the details block, extra f
 | 2 | Accent colour and logo | Keep the blue accent; logo wordmark only until a name decision |
 | 3 | Wording of the four check labels | Keep the decided names; add the plain key |
 | 4 | Number format by locale | Western digits; grouping decided with the first priced list |
+
+## 13. Base structure: few templates, change once, applies everywhere (owner's principle)
+
+The owner's rule is that the app has only a few unique pages, and a change to one of them reaches every page that uses it, for example adding a new social media button. The design is built that way. No page is hand-written. Every page is a template filled with data.
+
+**The base templates** (about a dozen in all, five of them public):
+
+| Group | Template | Used for |
+|---|---|---|
+| Public | Place page | A place and the list types in it |
+| Public | List page | One list type at one place, including the empty state |
+| Public | Entry page | Every business, facility, person or institution; the type-specific block comes from the registry |
+| Public | Search results | Search |
+| Public | Topic list page | Apps, websites and other topic lists |
+| Pages | Static page | About, terms, privacy, plans |
+| Forms | One form template | Add an entry, claim, suggest a correction, report, remove my data |
+| Forms | Message form | Message a business, request a price |
+| Accounts | Dashboards | Contributor, owner, buyer, moderator and admin (four or five templates) |
+
+**Shared parts** used inside the templates: header, footer, breadcrumb, check labels and key, share bar, action row, filter bar, result row, key facts, subscriber panel, notices, sponsored and advertising slots.
+
+**Registries** (plain lists of settings; the templates read them):
+
+| Registry | What it holds |
+|---|---|
+| Share channels | Each share button: name, link format, group (main or More), which entries hide it |
+| Social platforms | The platforms a business or person can link to (facebook, instagram, linkedin and so on) |
+| Check labels | The four decided check names, their plain explanations and their shapes |
+| List types and add-on fields | Per list type: fields, filters, row descriptor, words for the kind of thing |
+| Plans and visibility | What free visitors and subscribers see, as one table |
+| Strings | All wording by language |
+| Feature flags | Switch parts on for a country or a group of users |
+
+**What a change touches**
+
+| Change wanted | Where it is made | What it reaches |
+|---|---|---|
+| Add a social share button | One new row in the share channels registry | Every list and entry page, except entries that hide it |
+| Let businesses link to a new social platform | One new row in the social platforms registry | Every entry form and every entry page |
+| Reword a check label or its explanation | Strings and check labels | Every row, label and key |
+| Move or add a section on the entry page | The entry template | Every entry |
+| Add a field for doctors | The doctor add-on in the registry | Doctor entries and forms only |
+| Change what free visitors see | The plans and visibility table | Every page, through one rule |
+| Change a colour or size | A token | Everything |
+| Add a language | A strings file and a direction setting | Every page |
+
+**Rules that keep this true**
+1. No hand-made pages. The only content unique to a list is its data and its short description.
+2. Exceptions are rules, not special pages. "No share button for named individuals" is a rule in the registry, not a different template.
+3. A page template change carries a version number. Every cached page records the version it was built from, so a new version replaces old pages as they are requested, with no rebuild of billions of pages. A purge by tag handles anything urgent.
+4. Every template change is checked on a fixed set of sample pages before release: each list type and each state (empty, closed, individual, children's service, long names, Urdu, dark theme). Risky changes go to a small share of visitors first.
+5. A rollback is a return to the previous template version.
+
+**Proof in the prototype.** The share buttons on every list and entry page come from one list of channels. A test added one new channel as a single object and it appeared on the list page, on every entry page and on the closed entry, with no template change.
