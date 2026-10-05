@@ -24,13 +24,13 @@ Nothing in "Decided" or "Agreed" in `docs/DECISIONS.md` is reopened here. Where 
 
 **3. Global talent (data scientists).** Only two sources have open reuse terms: the ORCID public data file and OpenAlex. Both cover researchers only. LinkedIn, Upwork, Google Scholar and most platform terms forbid scraping. GitHub bans selling user data to recruiters. So the safe design is a consent-based list: people register, prove they own their GitHub, Kaggle, Hugging Face or ORCID profile, and choose what buyers see.
 
-**4. How platforms earn.** Four forms carry most of the money: advertising or paid visibility, subscriptions to data or search tools, take rates on work done through a marketplace (Upwork 18.7%, Fiverr 27.7%), and data licences. Recruiter and employer products are the biggest earners among the talent platforms. Pure data subscriptions have high margins (ZoomInfo gross margin 84%) but weak retention. Selling raw name-and-address lists earns little, because free data sets the price near zero. Value sits in the verified layer: confirmed contact, category, freshness and territory.
+**4. How platforms earn.** This covers about 35 directory and lead platforms plus talent, data and marketplace platforms. Four forms carry most of the money: advertising or paid visibility, subscriptions to data or search tools, take rates on work done through a marketplace (Upwork 18.7%, Fiverr 27.7%), and data licences. Recruiter and employer products are the biggest earners among the talent platforms. Pure data subscriptions have high margins (ZoomInfo gross margin 84%) but weak retention. Selling raw name-and-address lists earns little, because free data sets the price near zero. Value sits in the verified layer: confirmed contact, category, freshness and territory.
 
 **5. What this means for AllLists.** The decided revenue model fits the evidence. Start with free pages, ads for free users, and paid outreach delivered by the platform. Add paid ranking and profile upgrades once there is traffic. Keep the USD 1,000 download as a protective price. Treat institutional licences and AI-data deals as later upside. Do not count on take rates yet, because they need payments and liquidity.
 
 **6. What each entry holds.** One common core for every entry (identity, category, location, service area, contact, hours, verification, source, consent, freshness, status, claim state) plus an add-on set per list type. Prices are the most valuable and the stalest field, so every price needs a currency and a date. Personal mobiles, home addresses, ID numbers, child-related data and health data are sensitive and need special handling.
 
-**7. What to decide now.** Section 6 lists eleven decisions, each with a suggested default. The main ones: the pilot city and first source pack (eye care in one city), whether registers are used to verify or to import, how individuals consent, and whether the talent list launches now or after a pilot.
+**7. What to decide now.** Section 6 lists twelve decisions, each with a suggested default. The main ones: the pilot city and first source pack (eye care in one city), whether registers are used to verify or to import, how individuals consent, and whether the talent list launches now or after a pilot.
 
 ---
 
@@ -361,9 +361,12 @@ This menu works inside the decisions already made. One adjustment: the data and 
 | 8 | Services: custom research, custom extracts | Not decided | Geofabrik and Definitive show services revenue from data. | Early cash, low scale. Needs a founder decision, see section 6. |
 | 9 | Metered API on verified fields | Not decided | Foursquare, OpenCorporates and Mapbox price this way. | Close to bulk access. Not at launch (section 6). |
 | 10 | Talent list: seat subscription at the low end (about USD 100 to 250 a month), intro or success fee, sponsored challenges | Not decided | Priced against Juicebox, SeekOut and hireEZ low tiers. Niche AI directories run on sponsors and events. | After a pilot and counsel. |
-| 11 | Marketplace listing (AWS, Datarade) | Not decided | AWS fee 3%, Datarade about 30% [unverified]. | Needs a deep audited data set. |
-| 12 | AI-data licences and agent access | Not decided | 4% to 5% of revenue at Wikimedia and Reddit. | Upside only. |
-| Not early | Transaction take rate; individual premium memberships | Later vision (V1 to V8) | Needs in-platform payments and liquidity. LinkedIn Premium works at huge member counts. | Revisit with payment partners. |
+| 11 | Per-listing fees for individuals in select types (jobs, property, vehicles) | Not decided | Craigslist charges only select categories (estimates, not company figures). Dubizzle and Zameen charge individuals per listing. | Could clash with free listing. See decision 12. |
+| 12 | Software bundle for retained businesses (profile, reviews, simple CRM) | Not decided | Thryv SaaS grew 34% in 2025 but only 5% in Q1 2026. Solocal Connect fell 15%. Mixed. | Years two to four. |
+| 13 | Marketplace listing (AWS, Datarade) | Not decided | AWS fee 3%, Datarade about 30% [unverified]. | Needs a deep audited data set. |
+| 14 | AI-data licences and agent access | Not decided | 4% to 5% of revenue at Wikimedia and Reddit. | Upside only. |
+| Not early | Transaction take rate; individual premium memberships | Later vision (V1 to V8) | Needs in-platform payments and liquidity. LinkedIn Premium works at huge member counts. Urban Company's commission model is still loss-making in some lines. | Revisit with payment partners. |
+| Avoid | Print directories, consumer subscriptions, daily deals, owning inventory | Not in the decisions | Thryv is selling its print arm. Tripadvisor Plus, Yelp Deals and Zillow Offers were dropped. | Do not build. |
 
 Pharmacies are a useful reminder that who pays matters more than the category. A shop may not pay for a listing, but a distributor may pay for the shop list (see `Which lists pay.md`).
 
@@ -471,6 +474,7 @@ Items already settled are not repeated. These are new or still open. Items marke
 | 9 | API and custom extracts | No API at launch, because it sits close to the no-download rule. Allow custom research for institutions case by case, priced like the download. |
 | 10 | Prices and health policy | Adopt the health rules in section 5 before collecting any price. |
 | 11 | Counsel | Book counsel for Pakistan and the Gulf before any messaging test, any list of individuals, any health or child data, and the talent list (EU, UK, California exposure from day one). |
+| 12 | Per-listing fees for individuals in select types (jobs, property, vehicles) | No fee at launch. Revisit once there is traffic and a paying agent base, since free listing is the funnel. |
 
 ---
 
