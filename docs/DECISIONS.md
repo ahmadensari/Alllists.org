@@ -6,7 +6,7 @@ The research reports are in `reports/`. Almost all figures in them come from sea
 
 **Rule:** nothing in "Decided" or "Agreed" is debated again unless the owner says so. Items in "Open" need an owner decision before the part they affect is built. No code is written until the owner asks.
 
-Last updated: 2026-10-05.
+Last updated: 2026-10-05 (service-provider round).
 
 ## 1. Vision and model
 
@@ -28,6 +28,7 @@ Last updated: 2026-10-05.
 | A list is a category at a place; higher levels roll up what is below | C12 |
 | Contributors add entries to any list and may add areas (Adyala Road, Abraham Street) | C13 |
 | People may own a segment of a list and correct it (details open) | C20 |
+| Each list type has a natural scale: hyper-local (plumbers, eye doctors and eye hospitals in a society), national (contractors) or global (data scientists); the place tree applies to all | C25 |
 
 ## 3. What an entry holds
 
@@ -37,6 +38,7 @@ Last updated: 2026-10-05.
 | Equipment and priced services can be part of an entry (MRI machines in Islamabad with services and prices) | C21 |
 | Skill-based lists of individuals at neighbourhood level are in (plumbers in Bankers Society, mobile phone repair services, Quran tutors in an area, and many more) | C22, C23 |
 | Verification levels on every entry: owner-verified, surveyor-verified, AI-checked, not verified yet, with who, how, when and evidence stored | D19, D20 |
+| Every list type gets a complete entry template: a common core plus type-specific fields, based on what established platforms and registers hold (research under way) | C26 |
 | Keep adding data first (draft-first); reliability comes later through ownership and manual verification | D18 |
 
 ## 4. Where data comes from
@@ -46,6 +48,7 @@ Last updated: 2026-10-05.
 | People who hold lists import them; businesses add themselves later and claim their entry | D1, B4 |
 | AI agents draft entries from many sources; owners and contributors verify | D14 |
 | Open baseline data is licensed in as the starting layer; unverified agent pages are not published at scale | D16 |
+| Service providers are identified from established sources first (professional and trade registers, licensing bodies, chambers, open data, talent platforms with open licences), then lists are built from them | D21 |
 | Every record keeps its source, licence, date and consent status | D17 |
 
 ## 5. Contributors and ownership
@@ -69,6 +72,7 @@ Last updated: 2026-10-05.
 | Businesses pay to rank higher; later they pay to be on the list (hidden or merely ranked lower is not decided) | E15, CP2 |
 | Do not charge to remove personal data; charge for visibility, ranking, badge, extra fields and leads | P17 |
 | Governments and institutions may buy lists or statistics | E16 |
+| Research how established platforms earn, to calibrate our revenue streams (under way) | E18 |
 | The platform is positioned as a cheaper, more targeted alternative to Google and Meta advertising (to be tested) | E17 |
 | Every access or pricing rule is judged on two tests: better usage and returning clients, and revenue | CP8 |
 
@@ -78,7 +82,7 @@ Demand intelligence, product requests from shops, product testing, direct sell o
 
 ## 8. Seed list types named by the owner (for seeding and testing)
 
-Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeries; mobile stores; mobile phone repair services; spare parts shops; furniture stores; medical stores and pharmacies; doctors, nurses, lawyers; bookshops; hardware shops; MRI machines with services and prices; plumbers and other skill-based lists; Quran tutors in an area; factories and suppliers; and personal lists (books read, belongings, classmates) that stay private by default. Research in `reports/Which lists pay.md` ranks which of these are likely to pay.
+Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeries; mobile stores; mobile phone repair services; spare parts shops; furniture stores; medical stores and pharmacies; doctors, nurses, lawyers; bookshops; hardware shops; MRI machines with services and prices; plumbers and other skill-based lists; Quran tutors in an area; eye doctors and eye hospitals in a society; contractors (national); data scientists (global); factories and suppliers; and personal lists (books read, belongings, classmates) that stay private by default. Research in `reports/Which lists pay.md` ranks which of these are likely to pay.
 
 ## 9. Open: owner decisions still needed (with my suggested defaults)
 
@@ -100,3 +104,4 @@ Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeri
 | Who may write reviewer rankings and how fake reviews are stopped | Verified users only, one per user, owner reply, separate from paid ranking | Q-P3 |
 | Who earns when a new list type or area is created | Platform prices; creator earns a small early-sales bonus | Q-O1 |
 | Code licence versus data licence | Code open; list data under terms | A3 |
+| Which registers may be used and how (terms, bulk or partnered access, personal data) | Email each body for written terms; start with facility and school registers, not individuals | Q-S3 |

@@ -82,6 +82,8 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | C22 | **Skill-based lists of individual tradespeople at neighbourhood level**, for example plumbers in Bankers Society, and many other skill-based lists | U (2026-10-05) | **Decided as an addition.** These lists are about individuals (often sole traders), so personal-data rules, identity checks, consent and review integrity matter more than for shops. The "area" level must reach housing societies and neighbourhoods (C13). Open: Q-S2 |
 | C23 | **More founder-named list types:** mobile phone repair services; Quran tutors in an area; and the rule that the founder will keep adding examples | U (2026-10-05) | **Decided as seed list types.** Notes: mobile repair is a service list that fits "services with prices" (C21) and sits in a category Justdial reportedly monetises ("repairs and services"). Quran tutors are individuals who teach children, so identity checks, safeguarding, consent and parent-written reviews matter more than for shops (see C22, Q-S2) |
 | C24 | **The owner asked that every idea and decision be recorded as the conversation goes on**, so that coding does not reopen debates. A short decision log is kept in `docs/DECISIONS.md` and the full register in this file | U (2026-10-05) | **Decided process rule** |
+| C25 | **Natural scale differs by list type.** Some lists are useful hyper-locally (plumbers in a housing society; eye doctors and eye hospitals in a society), some nationally (contractors) and some globally (data scientists). The place tree (C10) therefore applies to every list, but each list type has a natural scale where it is most useful and sold | U (2026-10-05) | **Decided as a design principle.** Use it to choose launch lists and the default level at which each list is previewed and priced. Research: `reports/Service provider sources.md` |
+| C26 | **Entry template per list type.** The owner wants every relevant detail added to each entry of a list, so each list type gets a complete set of fields (a common core plus type-specific add-ons), based on what established platforms and registers normally hold | U (2026-10-05) | **Decided as a requirement.** Research under way (`entry_attributes_by_list_type.md`). Open: which fields are launch-time and which later, and which are sensitive for individuals (C22) |
 
 ## D. Getting content in, and keeping it good
 
@@ -107,6 +109,7 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | D18 | **Draft-first: keep adding data initially; it becomes reliable later when it is owned and manually verified.** Agent-gathered entries go in at the "draft" state and move to "verified" and then "claimed" through owner claims and manual checks | U (2026-10-05) | **Decided as direction.** Conditions in P14 (what draft entries may and may not do) |
 | D19 | **Verification levels (trust categories) on every entry:** (a) verified by the owner, (b) verified by independent data surveyors, (c) verified by AI, (d) not verified yet, and others as needed. The level, who did it, the method, the date and the evidence are stored and shown | U (2026-10-05) | **Decided.** Design notes below |
 | D20 | Design notes for D19: **(1)** label the AI level "AI-checked", not "verified", so buyers are not misled; **(2)** an AI check should use different sources or methods from the AI draft, because the same model repeating its own error is not independent; **(3)** surveyors are independent of the contributor who added the entry, with seeded fake entries and sampled audits to catch cheating; **(4)** each level expires and must be re-checked (business data goes stale quickly); **(5)** an entry can hold several levels at once (for example owner and surveyor); **(6)** buyers can filter and price by level, and the whole-list statistics (E14) show counts per level; **(7)** only owner-confirmed entries are messageable (opt-in); **(8)** contributor payouts apply to surveyor and owner levels, not to AI-checked or unverified | my design (research notes) | Proposed |
+| D21 | **Identify service providers from established sources first, then build lists from them** (professional and trade registers, licensing bodies, chambers, open data, talent platforms with open licences), rather than starting from scraped map data | U (2026-10-05) | **Decided as sourcing approach.** Pakistan findings in `research_notes/Service provider sources/`: registers for doctors, facilities, schools and contractors exist but terms of use are unverified; no public register found for individual plumbers or electricians, so those lists rely on opt-in and housing-society partners. Terms and bulk-download rules must be checked with each body (Q-S3) |
 
 ## E. Products, access and pricing
 
@@ -129,6 +132,7 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | E15 | **Listed businesses pay to rank higher in a list** (paid position) | U (2026-10-05) | **Decided.** Needs: auction or fixed price, "sponsored" labelling, and who earns the revenue (Q-N2) |
 | E16 | **Government and institutions** (for example tax authorities) may buy lists or list statistics | U (2026-10-05) | **Decided in principle.** Needs a data-sharing policy disclosed to contributors and listed businesses (Q-N3) |
 | E17 | The platform is positioned as a cheaper, more targeted alternative to Google and Meta advertising for reaching businesses in a territory or trade | U (2026-10-05) | **Decided as positioning.** Must be tested: cost per reply or lead against Google and Meta (Q-N4) |
+| E18 | **Research how established platforms earn** (all revenue sources) for directories, marketplaces, talent and data platforms, to calibrate our streams | U (2026-10-05) | **Requested; research under way.** Result goes into `reports/Service provider sources.md` and updates E-section if new streams are found |
 
 ## F. Money: revenue sharing
 
@@ -413,6 +417,10 @@ The owner's stated principles: **better usage and returning clients**, and **rev
 | S5 | **Top priority: find out which lists (categories) pay at Justdial and IndiaMART, and what sells on other platforms; focus on those list types in all countries** | U (2026-10-05) | Research under way ("Which lists pay"). The result decides which list types are seeded and verified first |
 
 ---
+
+- **Q-S1** Health-sector advertising and price-display rules for doctors, hospitals and equipment prices (C21): to be checked with counsel per country.
+- **Q-S2** Individual tradespeople and tutors (C22, C23): identity checks, consent, safeguarding for tutors of children, who may write reviews.
+- **Q-S3** For each register or body used as a source (D21): written terms of use, whether bulk or partnered access is allowed, and personal-data rules. Registers fetched so far are unverified because official sites were blocked in this environment.
 
 ## Next step
 
