@@ -133,12 +133,7 @@ flowchart LR
 
 ### 3.4 Partitioning by country
 
-| Table | Partitioned by | Reason |
-|---|---|---|
-| `entry`, child tables, `entry_value_meta`, `change_log` | country (list partitions) | Matches law and switches; a country can be moved to its own server later; one partition's backup, restore or erasure does not touch others. In my test the partitioned page query ran in **0.16 ms against 1.7 ms**, but the planner also chose a different index, so the comparison is not clean [M]. |
-| `place`, `concept`, `source`, `user` | not partitioned (global, small) | Under 1 GB. |
-| Ledger, audit | by month, not by country | Money and audit are global and must stay in one consistent store. |
-| Global lists (data scientists) | the person's country of residence; the global page reads `rollup_cell` | Avoids a cross-partition scan. |
+`entry`, child tables, `entry_value_meta` and `change_log` are list-partitioned by country: this matches law and switches, lets one country move to its own server later, and keeps one country's backup, restore or erasure from touching others. In my test the partitioned page query ran in **0.16 ms against 1.7 ms**, but the planner also chose a different index, so the comparison is not clean [M]. `place`, `concept`, `source` and `user` are global and under 1 GB. Ledger and audit are partitioned by month, not country, because money and audit must stay in one consistent store. Global lists (data scientists) sit in the person's country; the global page reads `rollup_cell`.
 
 ### 3.5 Deployment topology by stage
 
@@ -216,11 +211,10 @@ Growth: three history rows per entry per year are included. Business data decays
 | 10 to 50 million | Fine on 32 to 64 GB RAM with country partitions | Live counts on large cells (use `rollup_cell`); unscoped fuzzy search; index builds and vacuum windows |
 | 50 to 100 million in one database | Possible but uncomfortable | Maintenance windows, restore time, noisy neighbours between countries |
 | Beyond 100 million, or a country above about 50 million | Split by country group | One server per country group; cross-country queries go through roll-ups |
-| Not a Postgres limit | Ledger (tens of millions of rows a month is easy), reads (CDN absorbs) | n/a |
 
 ### 4.6 Roll-up cost
 
-Each new entry touches about 31 counter cells (7 place levels times about 4.5 concept levels: its category, parents and secondary categories) [I]. At 500,000 new entries a day that is about 180 counter updates a second, trivial if done by a worker in batches, expensive if done synchronously. Plan: counters refreshed by a worker every few minutes, exact counts recomputed nightly, and the page shows "as of" time.
+Each new entry touches about 31 counter cells (7 place levels times about 4.5 concept levels) [I]; at 500,000 new entries a day that is about 180 updates a second, trivial in worker batches, costly if synchronous. Counters refresh every few minutes, exact counts nightly, and pages show an "as of" time.
 
 ### 4.7 The page-generation problem
 
@@ -235,15 +229,7 @@ Each new entry touches about 31 counter cells (7 place levels times about 4.5 co
 | Published list pages as a rule of thumb | about **1 to 2 per 100 entries** | From the two rows above [I] |
 | Sitemap files at 50,000 URLs each | 1 million pages needs 20 files; 10 million needs 200 | Search-engine limit [U] |
 
-Rules to build in, which also follow `docs/DECISIONS.md` and the AI report:
-
-| Rule | Mechanism |
-|---|---|
-| Index a list page only when it has at least N verified entries (start N = 10; to be tested, experiment 4 in the AI report) | `publish_state` computed from `rollup_cell`; the page sends `noindex,follow` and is left out of sitemaps otherwise. The empty page still loads and invites the first contributor. |
-| Never block thin pages in `robots.txt` | A blocked page cannot show its `noindex` [S, design review]. |
-| Entry pages are indexable only if verified and rich enough | Otherwise `noindex`. One page per entry would otherwise be 1 million thin pages. |
-| Filters and sorts are `noindex`, canonical to the plain list | Avoids facet explosion. |
-| Cap newly published pages per week | A throttle in the publisher, so a bug cannot publish a million pages overnight. |
+Rules to build in (they follow `docs/DECISIONS.md` and the AI report): index a list page only with at least N verified entries (start N = 10, tested by experiment 4 in the AI report) using `noindex,follow` and no sitemap entry otherwise; never block thin pages in `robots.txt`, because a blocked page cannot show its `noindex` [S, design review]; make entry pages indexable only when verified and rich, since one page per entry would be 1 million thin pages; mark filters and sorts `noindex` with a canonical to the plain list; and throttle newly published pages per week so a bug cannot publish a million overnight.
 
 ---
 
@@ -473,32 +459,32 @@ CI on every change: lint that blocks, tests on Postgres, coverage floor on new c
 
 ## 11. Technical risk register
 
-Likelihood (L) and impact (I) on a 1 to 5 scale; score is L times I. Ranked by score.
+Likelihood (L) and impact (I) from 1 to 5; score is L times I; ranked by score.
 
 | Rank | ID | Risk | L | I | Score | Mitigation | Early warning |
 |---|---|---|---|---|---|---|---|
-| 1 | R01 | Nobody pays for lists, so technical investment is wasted | 4 | 5 | 20 | Build only to P3 before a buyer pays for a sample; run the pilot first | No paying buyer 8 weeks into the pilot |
-| 2 | R02 | Thin pages not indexed ("discovered, not indexed"), no organic traffic | 4 | 4 | 16 | Publish only quality pages; 90-day watch; threshold rule | Under 20% of submitted pages indexed at day 90 |
-| 3 | R05 | Volunteers do not complete verification | 4 | 4 | 16 | Measure in the pilot; non-cash rewards; owner claims | Fewer than 30% of assigned checks done in 2 weeks |
-| 4 | R06 | Exposed secrets still live; repository public | 4 | 4 | 16 | Rotate now; secret scanning with push protection | Logins from unknown addresses |
-| 5 | R07 | Duplicates across scripts cause double entries and double payouts | 4 | 4 | 16 | Section 5.1; credit events; merge map | Reviewer rejects more than 10% of auto-merges |
+| 1 | R01 | Nobody pays for lists; build effort wasted | 4 | 5 | 20 | Build only to P3 before a buyer pays for a sample; pilot first | No paying buyer 8 weeks into the pilot |
+| 2 | R02 | Thin pages not indexed; no organic traffic | 4 | 4 | 16 | Quality pages only; 90-day watch | Under 20% of submitted pages indexed at day 90 |
+| 3 | R05 | Volunteers do not complete verification | 4 | 4 | 16 | Measure in the pilot; non-cash rewards; owner claims | Under 30% of assigned checks done in 2 weeks |
+| 4 | R06 | Exposed secrets still live; repository public | 4 | 4 | 16 | Rotate now; push protection | Logins from unknown addresses |
+| 5 | R07 | Cross-script duplicates cause double entries and payouts | 4 | 4 | 16 | 5.1; credit events; merge map | Reviewers reject over 10% of auto-merges |
 | 6 | R09 | Scrapers rebuild paid lists from free views | 4 | 4 | 16 | Names-only, quotas, canaries, price by size | One address over 500 list pages a day |
-| 7 | R14 | Scope creep: global, commerce and payouts built before proof | 4 | 4 | 16 | Phase gates in section 9; defer list in 3.6 | Work started with no exit criterion met |
-| 8 | R03 | Outreach breaks law or platform rules; sending number banned | 3 | 5 | 15 | Opt-in gate; counsel; one country; official API only | Opt-out above 2%; delivery failure above 10% |
-| 9 | R21 | Data decays; trust falls (about 7 to 9% yearly closures, more for phones) | 5 | 3 | 15 | Expiry on every chip; re-check scheduler; cheap signals | Share of expired chips above 25% |
-| 10 | R04 | AI drafts too inaccurate (under 80%) | 3 | 4 | 12 | Audit sample; quoted-evidence rule; humans verify before publish | Audit accuracy under 90% |
-| 11 | R13 | Key-person dependence; AI-written code debt | 4 | 3 | 12 | Two-person review for sensitive code; tests; documented decisions | Single reviewer on sensitive merges |
-| 12 | R15 | No usable payment collection route from Pakistan | 4 | 3 | 12 | Local licensed gateways; manual payments first; merchant-of-record later | No provider onboarded by week 8 |
-| 13 | R17 | Urdu search poor (spelling, Roman Urdu) | 4 | 3 | 12 | Folding, synonym table, review set | Zero-result rate above 15% |
-| 14 | R20 | Fake or colluding verifiers | 3 | 4 | 12 | Separation of duties; canaries; audits | Verifier audit accuracy under 80% |
-| 15 | R22 | AI summaries and map packs cut traffic | 4 | 3 | 12 | Statistics and dates on pages; owner claims; do not rely on search alone | Impressions flat while pages grow |
-| 16 | R08 | Ledger error causes wrong payouts | 2 | 5 | 10 | Section 5.4; reconciliation | Any reconciliation difference |
-| 17 | R10 | Personal-data breach | 2 | 5 | 10 | Encryption; least privilege; no PII in logs | Unusual exports |
-| 18 | R24 | Backups never restored when needed | 2 | 5 | 10 | Quarterly drill | Drill skipped |
+| 7 | R14 | Scope creep: global, commerce, payouts before proof | 4 | 4 | 16 | Phase gates (9.1); defer list (3.6) | Work started with no exit criterion met |
+| 8 | R03 | Outreach breaks law or platform rules; number banned | 3 | 5 | 15 | Opt-in gate; counsel; one country; official API | Opt-out over 2%; delivery failure over 10% |
+| 9 | R21 | Data decays (7 to 9% yearly closures, more for phones) | 5 | 3 | 15 | Expiry on every chip; re-check scheduler | Expired chips over 25% |
+| 10 | R04 | AI drafts under 80% accurate | 3 | 4 | 12 | Audit sample; quoted evidence; human verification before publish | Audit accuracy under 90% |
+| 11 | R13 | Key-person dependence; AI-code debt | 4 | 3 | 12 | Two reviewers on sensitive code; tests; decision records | One reviewer on sensitive merges |
+| 12 | R15 | No usable payment route from Pakistan | 4 | 3 | 12 | Local licensed gateways; manual first | No provider onboarded by week 8 |
+| 13 | R17 | Urdu search poor | 4 | 3 | 12 | Folding, synonyms, review set | Zero-result rate over 15% |
+| 14 | R20 | Fake or colluding verifiers | 3 | 4 | 12 | Separation of duties; canaries; audits | Verifier accuracy under 80% |
+| 15 | R22 | AI summaries and map packs cut traffic | 4 | 3 | 12 | Statistics and dates on pages; owner claims | Impressions flat as pages grow |
+| 16 | R08 | Ledger error causes wrong payouts | 2 | 5 | 10 | 5.1 tests; reconciliation | Any reconciliation difference |
+| 17 | R10 | Personal-data breach | 2 | 5 | 10 | Encryption; least privilege | Unusual exports |
+| 18 | R24 | Backups not restorable | 2 | 5 | 10 | Quarterly drill | Drill skipped |
 | 19 | R11 | AI spend overruns | 3 | 3 | 9 | Hard caps; dashboard | 80% of cap before month end |
-| 20 | R12 | Prompt injection via fetched pages | 3 | 3 | 9 | No credentials; staging only | Agent output with unexpected fields |
-| 21 | R18 | Postgres hot spots at 10 million or more (counts, unscoped search) | 3 | 3 | 9 | Roll-ups; scoped search; search engine when measured | 95th percentile search above 500 ms |
-| 22 | R26 | Registers' terms forbid bulk use | 3 | 3 | 9 | Written terms per body; start with facility and school registers | A refusal or a takedown letter |
+| 20 | R12 | Prompt injection via fetched pages | 3 | 3 | 9 | No credentials; staging only | Unexpected fields in agent output |
+| 21 | R18 | Postgres hot spots at 10 million or more | 3 | 3 | 9 | Roll-ups; scoped search; engine when measured | Search p95 over 500 ms |
+| 22 | R26 | Registers' terms forbid bulk use | 3 | 3 | 9 | Written terms per body; facility and school registers first | A refusal or letter |
 
 ---
 
@@ -513,19 +499,14 @@ Likelihood (L) and impact (I) on a 1 to 5 scale; score is L times I. Ranked by s
 | Database | Reuse | PostgreSQL (with PostGIS) | Managed service where possible |
 | Dedupe | Reuse plus build rules | `pg_trgm`, Splink (MIT) later | Folding and alias rules are ours |
 | Search | Reuse | Postgres first; Meilisearch CE later | Check the BUSL parts [S] |
-| Geocoding | Defer | Photon (Apache) or Pelias (MIT) later | Not needed at launch; surveyors supply points |
 | Login | Reuse | Django auth plus `django-allauth` | MFA package needed (`django-otp`, Memory) |
 | Ledger | **Build** (small) | Postgres double entry | Formance later only if needed |
 | Payments in | **Buy** | A licensed local gateway; merchant-of-record for foreign buyers | Stripe and PayPal not available to Pakistani businesses [S] |
 | Payouts | **Buy** | Local wallets and bank rails via a disbursement aggregator; manual first | Limits per wallet apply [S] |
 | Messaging | **Buy** | WhatsApp Business API through a provider; SMS and email providers | Official channels only |
-| Reply inbox | Reuse | Chatwoot (MIT) | Optional |
-| Email campaigns | Reuse, separate service | listmonk (AGPL-3.0) | Never copy its code into ours |
 | CDN, DNS, bot rules | **Buy** (free tier first) | Cloudflare or similar | |
 | Monitoring | **Buy** (free tier first) | Sentry, UptimeRobot, Grafana | |
 | AI models | **Buy** | A small, cheap model for extraction; a mid-size one for hard cases | Provider-neutral wrapper to switch |
-| Verification tooling | **Buy** | Phone-type lookup (about $0.008 each [S]) | Confirms a valid number, not ownership |
-| Front end | Build (minimal) | Server-rendered HTML, optional tiny scripts | Reuse the prototype's design tokens |
 
 ---
 
@@ -541,20 +522,17 @@ Likelihood (L) and impact (I) on a 1 to 5 scale; score is L times I. Ranked by s
 | Job queue | Postgres-backed queue (for example Django-native or Procrastinate, Memory) | No extra service; load is tiny (section 4.3) | Cheap |
 | Messaging provider | Bake-off of two WhatsApp providers that support Pakistan, plus an SMS aggregator, after counsel; score on price, template approval time, callbacks, data location | Rates and terms not verified at the source | Cheap until volume |
 | Map data | Store latitude and longitude only; generate map links at display time; no tiles at launch | Text-only scope; no provider's data copied; China conversion at link time only | Cheap |
-| Place and taxonomy data | GeoNames and Overture (permissive) as base; OpenStreetMap data as a separate share-alike layer | Licence hygiene [S] | Moderate |
 | Code licence (A3) | **Apache-2.0** for code; data under separate terms; counsel to confirm | The value is the verified data, not the code; permissive attracts contributors; AGPL is the alternative if you want to block closed clones | Hard once others contribute |
-| Provenance storage | Compact (defaults plus exceptions) | About 20% smaller; same queries [M, I] | Moderate |
-| Rate-phase trigger (F3, F4) | Date phases locked on each entry | Matches the suggested default | Hard once payouts start |
 
 ---
 
 ## 14. Evidence quality
 
-| Tag | What it covers | How much to trust it |
+| Tag | Covers | Weight |
 |---|---|---|
-| **[M] Measured** | Pytest, flake8, coverage, bandit and pip-audit results; git-history search for secrets; timing of the unauthenticated endpoints; Postgres 16 benchmark on 1,000,000 synthetic entries (sizes, query times, bulk insert, dump and restore, partitioned versus plain, Urdu trigram and normalisation behaviour, cell counts); the Python scale and cost arithmetic | Reliable for what it is. **Limits:** synthetic names and distributions; one machine; `fsync` off (so writes are faster than production); no PostGIS; no concurrency test; one partition test confounded by a different index choice; cell counts depend on my assumed skew. Use the **order of magnitude**, not the decimals. |
-| **[S] Sourced** | Repository documents and the AI report; GitHub Actions run history; web searches this session (Supabase and Neon prices, Hetzner prices, WhatsApp Pakistan rates, Meilisearch and Typesense licences, Sentry, Grafana and UptimeRobot free tiers); the design review's page-budget numbers | Search results were summaries, not primary pages. Prices move; the Hetzner and WhatsApp figures came from third-party pages and the WhatsApp Pakistan rate in particular is unverified at Meta. Ten searches were allowed; I used six. |
-| **[I] Inference** | Build-effort ranges, running costs above the sourced anchors, risk scores, traffic arithmetic, effort of AI assistance, "1 to 2 pages per 100 entries" | Judgment, built on stated assumptions. Treat effort ranges as plus or minus 50%. |
-| **[U] Unverified recall** | Place counts from GeoNames, sitemap limits, Python 3.9 end of life, domain prices, library licences marked Memory | Check before relying. |
+| **[M] Measured** | Pytest, flake8, coverage, bandit, pip-audit; the git-history search; endpoint timings; the Postgres 16 benchmark on 1,000,000 synthetic entries (sizes, query times, bulk insert, dump and restore, partitioned versus plain, Urdu trigram and normalisation behaviour, cell counts); the Python arithmetic | Reliable for what it is. **Limits:** synthetic names and skew; one machine; `fsync` off (writes faster than production); no PostGIS; no concurrency test; the partition comparison is confounded by a different index choice. Use orders of magnitude, not decimals. |
+| **[S] Sourced** | Repository documents and the AI report; GitHub Actions history; six web searches (Supabase and Neon prices, Hetzner prices, WhatsApp Pakistan rates, Meilisearch and Typesense licences, Sentry, Grafana and UptimeRobot free tiers); the design review's page budgets | Search summaries, not primary pages. Prices move. The WhatsApp Pakistan rate came from third-party pages and is unverified at Meta. |
+| **[I] Inference** | Effort ranges, running costs above the sourced anchors, risk scores, traffic arithmetic, "1 to 2 pages per 100 entries" | Judgment on stated assumptions; treat effort as plus or minus 50%. |
+| **[U] Unverified recall** | GeoNames-order place counts, sitemap limit, Python 3.9 end of life, domain prices, library licences marked Memory | Check before relying. |
 
-What I did **not** test: any real Urdu business data; transliteration quality; PostGIS; a managed Postgres service; a live payment or messaging provider; search-engine indexing; Postgres at 10 million rows. The five cheap experiments in `reports/AI agent populated lists.md` and the 1,000-record pilot are what turn these into evidence.
+**Not tested:** real Urdu business data; transliteration quality; PostGIS; a managed Postgres service; a live payment or messaging provider; search-engine indexing; Postgres at 10 million rows. The five cheap experiments in `reports/AI agent populated lists.md` and the 1,000-record pilot turn these into evidence.
