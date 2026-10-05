@@ -105,3 +105,17 @@ Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeri
 | Who earns when a new list type or area is created | Platform prices; creator earns a small early-sales bonus | Q-O1 |
 | Code licence versus data licence | Code open; list data under terms | A3 |
 | Which registers may be used and how (terms, bulk or partnered access, personal data) | Email each body for written terms; start with facility and school registers, not individuals | Q-S3 |
+
+### Added by the service-provider round (details in `reports/Service provider sources.md`, section 6)
+
+| Open item | Suggested default | Ref |
+|---|---|---|
+| Pilot city and first source pack | One city: eye hospitals and eye doctors first, then schools, then contractors | Q-P1 |
+| Named individuals (doctors, lawyers, tradespeople, tutors) | Only with the person's consent; contact through the platform; area only, no home address | Q-S2 |
+| Housing society partnership | One-society pilot; opt-in link; no fee, no recruitment commission | Q-P2 |
+| Child-facing tutors and Quran tutors | Not public until safeguarding and relay-only contact are designed; schools and centres first | Q-S2 |
+| Talent list (data scientists) timing | Design now; launch after a pilot of about 50 consented people and counsel review | |
+| API and custom extracts | No API at launch; custom research for institutions case by case | |
+| Per-listing fees for individuals in some types | None at launch; revisit with traffic | |
+| Health-sector rules for prices and ads | Adopt the report's health rules before collecting any price | Q-S1 |
+| Counsel | Book before any messaging test, list of individuals, health or child data, or talent list | |
