@@ -58,7 +58,7 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 
 | ID | Requirement | Source | Status |
 |---|---|---|---|
-| C1 | Lists start small (road/town) and are merged by the platform upward: road → city → district → division → province → country → region → world | U | Decided |
+| C1 | ~~Lists start small (road/town) and are merged upward~~ **Replaced on 2026-10-05 by the top-down model (C10 to C16).** Same hierarchy, opposite direction of creation | U | Superseded |
 | C2 | Hierarchy must also work for topics (e.g. AI tools → AI writing tools), not just places | U (my inference), C1 | Proposed |
 | C3 | Users can drill down ("go deeper") and zoom out between levels | C1 | Proposed |
 | C4 | Categories and subcategories (professionals, businesses, places, items) | C1 | Proposed |
@@ -66,7 +66,14 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | C6 | Entries carry contact info, location, description (existing schema) | R | Proposed |
 | C7 | A list can be merged into several parents? (e.g. both a city list and a category list) | none | **Open** |
 | C8 | Merge is performed by the platform, not by users | U | Decided |
-| C9 | Lists can be hierarchical by `parent_list_id` (existing schema) | R | Proposed (probably too simple) |
+| C9 | Lists can be hierarchical by `parent_list_id` (existing schema) | R | Superseded by C10 (a list is a category at a place, not a parent/child record) |
+| C10 | **Global from day one, top-down.** The place hierarchy runs global → region → country → state/province → division/district → city → area (road or street). Every list type exists at every place | U (2026-10-05) | **Decided** |
+| C11 | **Creating a list type in one place opens it everywhere.** A "petrol pumps" list created in Islamabad automatically exists, empty and open for contributions, in New York, Lagos and every other city | U (2026-10-05) | **Decided** |
+| C12 | A list is a pair: a category (e.g. petrol pumps) at a place (e.g. Islamabad). Higher-level lists are **roll-ups** of everything below them, not copies | U (2026-10-05), my design | **Decided** (roll-up mechanism is my design, proposed) |
+| C13 | Contributors add entries to any place's list, and **may add areas** (e.g. Adyala Road, Abraham Street) under a city | U (2026-10-05) | **Decided.** Needs rules for approving, naming and de-duplicating user-added areas (Q-O2) |
+| C14 | The place tree is seeded from open geographic data (e.g. GeoNames, CC-BY) so that top levels are not user-made; levels differ by country, so level types are generic, not fixed | my design, research notes | Proposed. Avoid GADM (non-commercial); treat OpenStreetMap-derived data under its share-alike licence |
+| C15 | A shared, multilingual category taxonomy with synonyms ("petrol pump", "gas station", "fuel station", "filling station" are one category) | my design | Proposed. Who may propose categories, and who approves, is open (Q-O3) |
+| C16 | Lists with too few entries are not indexed by search engines and show an invite to be the first contributor | my design (research report) | Proposed |
 
 ## D. Getting content in, and keeping it good
 
@@ -249,6 +256,9 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 |---|---|---|---|
 | P1 | ~~Buyers receive the data vs. view-only, no downloads~~ | U vs C3 | **Resolved 2026-10-05 (E13):** no download except at about USD 1,000; outreach and view-only access are the default |
 | P2 | ~~Messaging via WhatsApp/SMS with hidden contacts vs. email tools for buyers~~ | U vs C3 | **Resolved 2026-10-05 (E13, G2, G3):** the platform sends on the buyer's chosen method and contacts stay hidden |
+| P11 | **Global from day one** versus the research recommendation to start with one trade in a few cities | U (C10) vs research report | **Partly resolved.** The data model and place tree are global from day one (cheap to do). Marketing, selling and messaging are switched on country by country, because privacy, messaging and tax law differ per country. Contributions about businesses in any country raise that country's data-protection duties from the first entry |
+| P12 | Top-down generated lists (C10 to C12) versus "creators set the price of their own lists" (E1) | U vs U | **Open.** If every list at every place exists automatically, nobody "creates" a list to price. Decide whether the platform prices all lists (with E2) and whether the creator of a new list type or area earns anything beyond per-entry credit (Q-O1) |
+| P13 | Paid ranking (E15) at which level? | U (E15, C10) | **Open.** A business can rank at its area, its city, or higher; each level is a different price and a different audience (Q-O4) |
 | P8 | Outreach is now the main product, but the business-case research ranked message campaigns as the riskiest product and recommended launching them last | U (E13) vs research report | **Open.** Legal exposure moves to the platform as the sender (Pakistan's cybercrime law s.25, US TCPA and CAN-SPAM, EU ePrivacy and GDPR, WhatsApp opt-in). Decide the first country and channel with a lawyer before building |
 | P9 | Paid ranking (E15) versus contributors paid per verified entry, and versus the verified-quality promise | U (E15) | **Open.** Who earns paid-ranking revenue, and how paid positions are labelled |
 | P10 | Government as a buyer (E16) versus businesses' and contributors' willingness to list | U (E16) | **Open.** Disclose the policy; consider starting with aggregate statistics only |
@@ -309,6 +319,14 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 - **Q-N4.** How is "cheaper and more targeted than Google and Meta" measured: cost per reply, per lead, or per order? What is the target price per message or per reply?
 - **Q-N5.** Which outreach channels does the buyer choose from in the first country (WhatsApp, SMS, email, phone, in-app), and who bears the legal responsibility for message content?
 - **Q-N6.** Which country and which trade come first? This decides which messaging laws apply (see the business case report).
+
+**Added 2026-10-05 (from the top-down, global-from-day-one decision)**
+
+- **Q-O1.** Who earns when a brand-new list type is created, and who sets prices now that every list exists everywhere? Suggestion: the platform sets all prices; the creator of a new list type earns a small bonus on early sales; entry credit works as before.
+- **Q-O2.** Who may add an area (Adyala Road, Abraham Street)? Suggestion: any contributor may propose, a moderator or a duplicate check approves, and the name is matched against existing areas first.
+- **Q-O3.** Who may propose and approve categories (taxonomy)? Suggestion: seed from an open taxonomy, let contributors suggest, moderators approve, and merge synonyms.
+- **Q-O4.** At which level does a business pay to rank (area, city, country)? Suggestion: sell per level, with the city level as the first product.
+- **Q-O5.** In which countries is selling and outreach switched on first? (Structure is global, but each country needs legal clearance before messaging is enabled.)
 
 ---
 
