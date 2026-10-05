@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AllLists prototype: list and entry</title>
+<meta name="description" content="Design prototype of one list page and one entry page, with sample data.">
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --ink:#16202c; --muted:#5b6776; --line:#d9dee5;
+  --brand:#0b6b57; --brand-ink:#ffffff; --accent:#8a5a00; --warn-bg:#fff4d6; --warn-line:#e2b93b;
+  --lock-bg:#eef1f5; --ok:#0b6b57; --chip-bg:#e7f3ef;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#10161d; --card:#18212b; --ink:#e8edf2; --muted:#9aa7b5; --line:#2b3745;
+    --brand:#35b39a; --brand-ink:#08130f; --accent:#e0a93a; --warn-bg:#352b10; --warn-line:#9a7a1f;
+    --lock-bg:#212c38; --ok:#35b39a; --chip-bg:#1c3a33; }
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Noto Naskh Arabic",sans-serif;line-height:1.5}
+a{color:var(--brand)}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+.banner{background:var(--warn-bg);border-bottom:1px solid var(--warn-line);padding:8px 0;font-size:.9rem}
+header.site{background:var(--card);border-bottom:1px solid var(--line)}
+.site-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 0}
+.logo{font-weight:700;font-size:1.25rem;color:var(--brand);text-decoration:none}
+.search{flex:1 1 100%;min-width:0;display:flex;gap:8px}
+@media (min-width:700px){.search{flex:1 1 240px}}
+.search input{flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+.plan{display:flex;gap:6px;align-items:center;font-size:.9rem;color:var(--muted)}
+button,.btn{font:inherit;cursor:pointer}
+.btn{display:inline-block;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);text-decoration:none}
+.btn.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);font-weight:600}
+.btn.small{padding:5px 9px;font-size:.88rem}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:0;padding:6px 10px;background:var(--card);color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink);font-weight:600}
+nav.crumbs{font-size:.9rem;color:var(--muted);padding:12px 0 0}
+nav.crumbs a{color:var(--muted)}
+nav.crumbs span.sep{margin:0 6px}
+h1{font-size:1.6rem;line-height:1.25;margin:8px 0 4px}
+h2{font-size:1.1rem;margin:0 0 8px}
+.tag{display:inline-block;font-size:.78rem;padding:2px 8px;border:1px solid var(--line);border-radius:99px;color:var(--muted);margin-right:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.muted{color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:700px){.grid2{grid-template-columns:1fr}}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:.85rem}
+.chip{display:inline-block;font-size:.78rem;padding:2px 8px;border-radius:99px;border:1px solid var(--line);background:var(--lock-bg);margin:2px 4px 2px 0;white-space:nowrap}
+.chip.l-owner{background:var(--chip-bg);border-color:var(--ok);color:var(--ok);font-weight:600}
+.chip.l-surveyor{background:var(--chip-bg);border-color:var(--ok);color:var(--ok);font-weight:600}
+.chip.l-ai{border-style:dashed}
+.chip.l-none{color:var(--muted);border-style:dotted}
+.lock{display:inline-block;background:var(--lock-bg);color:var(--muted);border:1px dashed var(--line);border-radius:4px;padding:0 6px;font-size:.8rem}
+.entry-row{display:grid;grid-template-columns:2fr 1.2fr 1.4fr auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line)}
+.entry-row:last-child{border-bottom:0}
+.entry-row .name a{font-weight:600;text-decoration:none}
+@media (max-width:700px){.entry-row{grid-template-columns:1fr}}
+.share{position:relative}
+.sharebar{display:flex;gap:6px;flex-wrap:wrap}
+.menu{display:none;margin-top:6px}
+.menu.open{display:flex;gap:6px;flex-wrap:wrap}
+.spons{border:1px dashed var(--accent);background:var(--warn-bg);padding:10px;border-radius:8px;margin:10px 0;font-size:.92rem}
+.ad{border:1px dashed var(--line);background:var(--lock-bg);padding:10px;border-radius:8px;margin:10px 0;color:var(--muted);font-size:.9rem}
+dl.facts{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}
+dl.facts dt{color:var(--muted)}
+dl.facts dd{margin:0}
+footer.legal{font-size:.85rem;color:var(--muted);padding:16px 0 40px}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:6px;display:none}
+.toast.show{display:block}
+.rtl{direction:rtl;unicode-bidi:isolate;font-size:1.05rem}
+.small{font-size:.88rem}
+.visually-hidden{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<div class="banner"><div class="wrap"><strong>Prototype.</strong> Design mock-up with sample data. The businesses, numbers, certificates and dates below are invented for the demo and are not real. No server, no database, nothing is sent anywhere.</div></div>
+<header class="site"><div class="wrap site-row">
+  <a class="logo" href="#/list">AllLists</a>
+  <form class="search" role="search" onsubmit="return false"><label class="visually-hidden" for="q">Search</label><input id="q" type="search" placeholder="Search lists and places (demo, not connected)"><button class="btn" type="submit">Search</button></form>
+  <div class="plan" role="group" aria-label="Viewing as">Viewing as
+    <span class="seg"><button id="planFree" aria-pressed="true" type="button">Free visitor</button><button id="planSub" aria-pressed="false" type="button">Subscriber</button></span>
+  </div>
+</div></header>
+<main class="wrap" id="app" aria-live="polite"></main>
+<div class="wrap"><footer class="legal" id="legal"></footer></div>
+<div class="toast" id="toast" role="status">Link copied</div>
+
+<script>
+"use strict";
+/* ---------- Sample data (invented) ---------- */
+var LIST = {
+  type: "Surgical instrument makers",
+  place: ["Global","Pakistan","Punjab","Sialkot"],
+  crumbsType: ["Business and trade","Manufacturers","Surgical instrument makers"],
+  scale: "National export cluster",
+  updated: "2026-10-05",
+  steward: null,
+  contributors: [["Contributor A (sample)",14],["Contributor B (sample)",9],["Contributor C (sample)",3]]
+};
+var LEVEL = {
+  none:{label:"Not verified yet",cls:"l-none"},
+  ai:{label:"AI-checked",cls:"l-ai"},
+  owner:{label:"Owner-verified",cls:"l-owner"},
+  surveyor:{label:"Surveyor-verified",cls:"l-surveyor"}
+};
+var ENTRIES = [
+  {id:"e1",name:"Demo Surgical Works",urdu:"ڈیمو سرجیکل ورکس",area:"Paris Road",levels:[{k:"surveyor",by:"Surveyor S-101",when:"2026-09-18",how:"Visit, checklist 12 of 12"},{k:"owner",by:"Owner",when:"2026-09-02",how:"OTP to stored number"}],type:"Manufacturer",spec:["General surgery","Dental"],cert:"ISO 13485 (sample ID DEMO-0001, valid to 2027-03)",moq:"500 pieces",band:"Staff 50 to 100",rank:1,lat:32.4945,lng:74.5229,year:1998,markets:"Germany, UK, UAE",oem:true},
+  {id:"e2",name:"Sample Instruments Co.",urdu:"سیمپل انسٹرومنٹس",area:"Kashmir Road",levels:[{k:"owner",by:"Owner",when:"2026-08-21",how:"OTP to stored number"},{k:"ai",by:"AllLists agent",when:"2026-08-22",how:"2 sources matched, confidence 0.82"}],type:"Manufacturer",spec:["Orthopaedic"],cert:"CE self-declaration on file (no certificate to look up)",moq:"300 pieces",band:"Staff 20 to 50",rank:2,lat:32.4960,lng:74.5300,year:2005,markets:"Gulf, Africa",oem:true},
+  {id:"e3",name:"Demo Dental Tools",urdu:"ڈیمو ڈینٹل ٹولز",area:"Daska Road",levels:[{k:"ai",by:"AllLists agent",when:"2026-09-29",how:"3 sources matched, confidence 0.77"}],type:"Manufacturer",spec:["Dental"],cert:"Not checked",moq:"1,000 pieces",band:"Staff 10 to 20",rank:3,lat:32.4800,lng:74.5100,year:2012,markets:"Not stated",oem:false},
+  {id:"e4",name:"Example Veterinary Instruments",urdu:"ایگزیمپل ویٹرنری انسٹرومنٹس",area:"Industrial Estate",levels:[{k:"surveyor",by:"Surveyor S-114",when:"2026-07-11",how:"Visit, checklist 10 of 12"}],type:"Manufacturer",spec:["Veterinary"],cert:"ISO 9001 (sample ID DEMO-0042, valid to 2026-12)",moq:"200 pieces",band:"Staff 20 to 50",rank:4,lat:32.5010,lng:74.5400,year:2009,markets:"EU",oem:true},
+  {id:"e5",name:"Placeholder Trading Co.",urdu:"پلیس ہولڈر ٹریڈنگ",area:"Paris Road",levels:[{k:"ai",by:"AllLists agent",when:"2026-09-10",how:"Trader, not a maker (website says exports only)"}],type:"Trader",spec:["General surgery"],cert:"Not checked",moq:"Not stated",band:"Staff under 10",rank:5,lat:32.4950,lng:74.5240,year:2016,markets:"Not stated",oem:false},
+  {id:"e6",name:"Fictional Beauty Instruments",urdu:"فکشنل بیوٹی انسٹرومنٹس",area:"Kashmir Road",levels:[{k:"owner",by:"Owner",when:"2026-06-30",how:"OTP to stored number"}],type:"Manufacturer",spec:["Beauty","Nail care"],cert:"Not checked",moq:"1,000 pieces",band:"Staff 10 to 20",rank:6,lat:32.4970,lng:74.5310,year:2019,markets:"Gulf",oem:true},
+  {id:"e7",name:"Mock Forceps Works",urdu:"ماک فورسیپس ورکس",area:"Daska Road",levels:[{k:"none",by:"Import",when:"2026-10-01",how:"Source recorded only"}],type:"Manufacturer",spec:["General surgery"],cert:"Not checked",moq:"Not stated",band:"Not stated",rank:null,lat:32.4810,lng:74.5120,year:null,markets:"Not stated",oem:false},
+  {id:"e8",name:"Test Scissors and Clamps",urdu:"ٹیسٹ سیزرز اینڈ کلیمپس",area:"Industrial Estate",levels:[{k:"ai",by:"AllLists agent",when:"2026-09-25",how:"2 sources matched, confidence 0.71"}],type:"Manufacturer",spec:["General surgery","Veterinary"],cert:"Not checked",moq:"500 pieces",band:"Staff 20 to 50",rank:7,lat:32.5020,lng:74.5410,year:2011,markets:"Not stated",oem:false}
+];
+var CANON = "https://alllists.org/pk/punjab/sialkot/surgical-instrument-makers"; /* domain still open */
+var state = {plan:"free", level:"all", sort:"ranked", showUnverified:false};
+
+/* ---------- Helpers ---------- */
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function topLevel(e){var order=["surveyor","owner","ai","none"];for(var i=0;i<order.length;i++){for(var j=0;j<e.levels.length;j++){if(e.levels[j].k===order[i])return order[i];}}return "none";}
+function published(e){return topLevel(e)!=="none";}
+function chips(e,detail){
+  return e.levels.map(function(l){
+    var L=LEVEL[l.k];
+    var t=detail?(" ("+esc(l.by)+", "+esc(l.when)+")"):"";
+    return '<span class="chip '+L.cls+'" title="'+esc(l.by+", "+l.when+", "+l.how)+'">'+esc(L.label)+t+'</span>';
+  }).join("");
+}
+function lockSpan(text){return '<span class="lock" title="Unlocked on a subscriber plan">Locked: '+esc(text)+'</span>';}
+function utm(channel,campaign,id){return CANON+(id?("/"+id):"")+"?utm_source="+channel+"&utm_medium=share&utm_campaign="+campaign+"&utm_content="+(id||"list")+"&ref=DEMO";}
+function shareLinks(kind,e){
+  var title=kind==="list"?(LIST.type+" in "+LIST.place[3]):(e.name+" ("+e.type.toLowerCase()+", "+e.area+", Sialkot)");
+  var line=kind==="list"?"Names free, details by account.":("Verification: "+LEVEL[topLevel(e)].label);
+  var camp=kind==="list"?"list_share":"entry_share", id=kind==="list"?null:e.id;
+  function text(ch){return encodeURIComponent(title+". "+line+" "+utm(ch,camp,id));}
+  return {
+    whatsapp:"https://wa.me/?text="+text("whatsapp"),
+    facebook:"https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(utm("facebook",camp,id)),
+    linkedin:"https://www.linkedin.com/sharing/share-offsite/?url="+encodeURIComponent(utm("linkedin",camp,id)),
+    x:"https://x.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(utm("x",camp,id)),
+    email:"mailto:?subject="+encodeURIComponent(title)+"&body="+encodeURIComponent(line+" "+utm("email",camp,id)),
+    copy:utm("copy",camp,id), title:title, line:line
+  };
+}
+function shareBar(kind,e){
+  var s=shareLinks(kind,e);
+  var key=kind==="list"?"list":e.id;
+  var noShare = false; /* for named individuals without consent the bar would be hidden */
+  if(noShare) return '';
+  return '<div class="share" data-share="'+key+'"><div class="sharebar" role="group" aria-label="Share">'
+   +'<button class="btn small" type="button" data-native="'+key+'" hidden>Share</button>'
+   +'<a class="btn small" href="'+s.whatsapp+'" target="_blank" rel="noopener noreferrer">WhatsApp</a>'
+   +'<button class="btn small" type="button" data-copy="'+esc(s.copy)+'">Copy link</button>'
+   +'<a class="btn small" href="'+s.facebook+'" target="_blank" rel="noopener noreferrer">Facebook</a>'
+   +'<a class="btn small" href="'+s.email+'">Email</a>'
+   +'<a class="btn small" href="'+s.linkedin+'" target="_blank" rel="noopener noreferrer">LinkedIn</a>'
+   +'<button class="btn small" type="button" data-more="'+key+'" aria-expanded="false">More</button></div>'
+   +'<div class="menu" id="menu-'+key+'"><a class="btn small" href="'+s.x+'" target="_blank" rel="noopener noreferrer">X</a><span class="muted small">Telegram, QR code and embed come later.</span></div></div>';
+}
+function mapLinks(e){
+  var ll=e.lat+","+e.lng;
+  return '<a href="https://www.google.com/maps/search/?api=1&amp;query='+ll+'" target="_blank" rel="noopener noreferrer">Google Maps</a> · '
+   +'<a href="https://www.openstreetmap.org/?mlat='+e.lat+'&amp;mlon='+e.lng+'#map=15/'+e.lat+'/'+e.lng+'" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> · '
+   +'<span class="muted">Baidu and Amap links need a coordinate conversion and are not shown here</span>';
+}
+function outreach(label){return '<button class="btn primary" type="button" data-outreach>'+(label||"Contact through AllLists")+'</button>';}
+
+/* ---------- List page ---------- */
+function renderList(){
+  var sub=state.plan==="sub";
+  var all=ENTRIES.filter(function(e){return state.showUnverified||published(e);});
+  var rows=all.filter(function(e){return state.level==="all"||e.levels.some(function(l){return l.k===state.level;});});
+  rows=rows.slice().sort(function(a,b){
+    if(state.sort==="az")return a.name.localeCompare(b.name);
+    if(state.sort==="recent"){var da=a.levels.map(function(l){return l.when;}).sort().pop(),db=b.levels.map(function(l){return l.when;}).sort().pop();return db.localeCompare(da);}
+    return (a.rank||99)-(b.rank||99);
+  });
+  var pub=ENTRIES.filter(published).length, wait=ENTRIES.length-pub;
+  var counts={surveyor:0,owner:0,ai:0}, byArea={};
+  ENTRIES.filter(published).forEach(function(e){e.levels.forEach(function(l){if(counts[l.k]!==undefined)counts[l.k]++;});byArea[e.area]=(byArea[e.area]||0)+1;});
+  var withCert=ENTRIES.filter(function(e){return published(e)&&/^(ISO|CE)/.test(e.cert);}).length;
+  var h='';
+  h+='<nav class="crumbs" aria-label="Place">'+LIST.place.map(function(p,i){return i<LIST.place.length-1?'<a href="#/list">'+esc(p)+'</a><span class="sep">&gt;</span>':'<strong>'+esc(p)+'</strong>';}).join("")+'</nav>';
+  h+='<nav class="crumbs" aria-label="List type">'+LIST.crumbsType.map(function(p,i){return i<LIST.crumbsType.length-1?'<a href="#/list">'+esc(p)+'</a><span class="sep">&gt;</span>':'<strong>'+esc(p)+'</strong>';}).join("")+'</nav>';
+  h+='<h1>'+esc(LIST.type)+' in '+esc(LIST.place[3])+'</h1>';
+  h+='<p><span class="tag">'+esc(LIST.scale)+'</span><span class="tag">Sample list</span></p>';
+  h+='<p><strong>'+pub+' published</strong>, '+wait+' awaiting verification (not shown). Last updated '+esc(LIST.updated)+'.</p>';
+  h+='<div class="card"><div class="row">'+outreach("Reach this list")+'<button class="btn" type="button" data-save>Follow list</button>'+shareBar("list")+'<a class="btn small" href="#/report">Report list</a></div></div>';
+  h+='<div class="card"><h2>About this list</h2><p>Makers of surgical, dental, veterinary and beauty instruments based in Sialkot. Traders and agents are listed separately and marked as traders. Each entry shows what was checked, by whom and when.</p><p class="small muted">Sources: sample data only. In the real product this line lists each source, its licence and the retrieval date.</p></div>';
+  h+='<div class="card"><h2>Statistics for the whole list</h2><table><tbody>'
+    +'<tr><th scope="row">Published entries</th><td>'+pub+'</td></tr>'
+    +'<tr><th scope="row">Entries with a surveyor check</th><td>'+counts.surveyor+'</td></tr>'
+    +'<tr><th scope="row">Entries with an owner check</th><td>'+counts.owner+'</td></tr>'
+    +'<tr><th scope="row">Entries with an AI check</th><td>'+counts.ai+'</td></tr>'
+    +'<tr><th scope="row">With a checkable certificate</th><td>'+(sub?withCert:lockSpan("subscribers"))+'</td></tr>'
+    +'<tr><th scope="row">Verified in the last 12 months</th><td>'+(sub?pub:lockSpan("subscribers"))+'</td></tr>'
+    +'</tbody></table><p class="small muted">An entry can hold several checks, so these rows can add up to more than the published total.</p></div>';
+  h+='<div class="card"><h2>Areas in this list</h2><table><thead><tr><th>Area</th><th>Entries</th></tr></thead><tbody>'
+    +Object.keys(byArea).sort().map(function(a){return '<tr><td><a href="#/list">'+esc(a)+'</a></td><td>'+byArea[a]+'</td></tr>';}).join("")
+    +'</tbody></table></div>';
+  h+='<div class="card"><div class="row"><label for="fl">Verification</label><select id="fl"><option value="all">All levels</option>'
+    +['surveyor','owner','ai'].map(function(k){return '<option value="'+k+'"'+(state.level===k?' selected':'')+'>'+LEVEL[k].label+'</option>';}).join("")
+    +'</select><label for="so">Sort</label><select id="so"><option value="ranked"'+(state.sort==="ranked"?' selected':'')+'>Ranked</option><option value="az"'+(state.sort==="az"?' selected':'')+'>Name A to Z</option><option value="recent"'+(state.sort==="recent"?' selected':'')+'>Recently verified</option></select>'
+    +'<label><input type="checkbox" id="uv"'+(state.showUnverified?' checked':'')+'> Show entries not verified yet (moderator view)</label></div>'
+    +'<p class="small muted">Order: by position in the list, where the position reflects verification and completeness. Paid placement, when it exists, appears only in the labelled slot below.</p></div>';
+  h+='<div class="spons"><strong>Sponsored (example slot, empty until sold).</strong> This slot is labelled, capped at one or two, and never changes the verification order.</div>';
+  h+='<div class="card" aria-label="Results"><h2>'+rows.length+' of '+all.length+' shown</h2>';
+  rows.forEach(function(e){
+    h+='<div class="entry-row"><div class="name"><a href="#/entry/'+e.id+'">'+esc(e.name)+'</a><div class="small muted rtl" lang="ur">'+esc(e.urdu)+'</div></div>'
+      +'<div class="small">'+esc(e.type)+'<br>'+esc(e.area)+(e.rank?'<br>Position '+e.rank+' of '+pub:'<br>Not ranked yet')+'</div>'
+      +'<div>'+chips(e,false)+(sub?'<div class="small">'+esc(e.spec.join(", "))+'<br>'+esc(e.cert)+'<br>Minimum order: '+esc(e.moq)+'</div>':'<div class="small">'+lockSpan("specialities, certificate, minimum order")+'</div>')+'</div>'
+      +'<div><a class="btn small" href="#/entry/'+e.id+'">Open</a></div></div>';
+  });
+  if(!rows.length)h+='<p>No entries match this filter.</p>';
+  h+='</div>';
+  if(!sub){
+    h+='<div class="card"><h2>What a subscriber plan unlocks</h2><ul><li>Specialities, certificate details and minimum orders on every row</li><li>Statistics about certificates and freshness</li><li>Exact map pins and the outreach tools for the whole list</li></ul><p class="small muted">Phone numbers, WhatsApp numbers and emails are never shown to anyone. Messages go through the Contact button (decision E13). Switch to Subscriber at the top to see the difference.</p></div>';
+    h+='<div class="ad">Advertisement (example). Free visitors see ads; subscribers do not.</div>';
+  }
+  h+='<div class="card"><h2>Help build this list</h2><div class="row"><a class="btn" href="#/add">Add an entry</a><a class="btn" href="#/add">Suggest an area</a><a class="btn" href="#/claim">Is this your business? Claim it</a></div></div>';
+  h+='<div class="grid2"><div class="card"><h2>Related lists</h2><ul><li><a href="#/list">Sports goods makers in Sialkot</a> (sample link)</li><li><a href="#/list">Surgical instrument makers in Punjab</a> (parent roll-up, sample link)</li><li><a href="#/list">Surgical instrument makers in Karachi</a> (sample link)</li></ul></div>'
+    +'<div class="card"><h2>Contributors and steward</h2><ul>'+LIST.contributors.map(function(c){return '<li>'+esc(c[0])+': '+c[1]+' verified entries</li>';}).join("")+'</ul><p class="small">Steward: none. <a href="#/steward">Apply to steward this list</a></p></div></div>';
+  h+='<div class="card"><h2>Where this data comes from</h2><p class="small">In the real product: each source, its licence, collection dates, how verification works and a link to the change log appear here.</p></div>';
+  return h;
+}
+
+/* ---------- Entry page ---------- */
+function renderEntry(id){
+  var e=ENTRIES.filter(function(x){return x.id===id;})[0]; if(!e) return '<p>Entry not found. <a href="#/list">Back to the list</a></p>';
+  var sub=state.plan==="sub";
+  var pub=ENTRIES.filter(published).length;
+  var h='';
+  h+='<nav class="crumbs" aria-label="Breadcrumb">'+LIST.place.map(function(p){return '<a href="#/list">'+esc(p)+'</a><span class="sep">&gt;</span>';}).join("")+'<a href="#/list">'+esc(LIST.type)+'</a><span class="sep">&gt;</span><strong>'+esc(e.name)+'</strong></nav>';
+  h+='<h1>'+esc(e.name)+'</h1>';
+  h+='<p class="rtl muted" lang="ur">'+esc(e.urdu)+'</p>';
+  h+='<p><span class="tag">'+esc(e.type)+'</span><span class="tag">Business</span><span class="tag">Open</span></p>';
+  h+='<div class="card"><h2>Trust</h2><div>'+chips(e,true)+'</div>'
+    +'<ul class="small"><li>'+e.levels.map(function(l){return esc(LEVEL[l.k].label)+': '+esc(l.how)+', '+esc(l.when);}).join('</li><li>')+'</li></ul>'
+    +'<p class="small muted">Claimed: '+(e.levels.some(function(l){return l.k==="owner";})?'yes':'no')+'. Last updated: '+esc(e.levels.map(function(l){return l.when;}).sort().pop())+'. Badge wording says what was checked, by whom and when. It never claims "guaranteed genuine".</p></div>';
+  h+='<div class="card"><div class="row">'+outreach()+'<button class="btn" type="button" data-quote>Request a quote</button><button class="btn" type="button" data-save>Save</button>'+shareBar("entry",e)+'<a class="btn small" href="#/report">Report entry</a></div><p class="small muted">Phone, WhatsApp and email are stored but never shown. Messages are delivered by AllLists (decision E13).</p></div>';
+  h+='<div class="grid2"><div class="card"><h2>Key facts</h2><dl class="facts">'
+    +'<dt>Area</dt><dd>'+esc(e.area)+', Sialkot, Punjab, Pakistan</dd>'
+    +'<dt>Address</dt><dd>'+(sub?'Street address (sample, not real)':lockSpan("street address"))+'</dd>'
+    +'<dt>Map pin</dt><dd>'+(sub?e.lat.toFixed(4)+', '+e.lng.toFixed(4)+' (exact pin, WGS-84)<br>'+mapLinks(e):'Area level only. '+lockSpan("exact pin"))+'</dd>'
+    +'<dt>Hours</dt><dd>Mon to Sat 09:00 to 18:00 (confirmed '+esc(e.levels[0].when)+')</dd>'
+    +'<dt>Languages</dt><dd>Urdu, English</dd>'
+    +'<dt>Established</dt><dd>'+(e.year?e.year:'Not stated')+'</dd>'
+    +'<dt>Size</dt><dd>'+(sub?esc(e.band):lockSpan("size"))+'</dd>'
+    +'<dt>Website</dt><dd>'+(sub?'demo-instruments.example (sample)':lockSpan("website"))+'</dd>'
+    +'<dt>Social pages</dt><dd>'+(sub?'<a href="#/entry/'+e.id+'" rel="nofollow noopener noreferrer">Facebook</a>, <a href="#/entry/'+e.id+'" rel="nofollow noopener noreferrer">LinkedIn</a>, <a href="#/entry/'+e.id+'" rel="nofollow noopener noreferrer">Instagram</a> (sample links)':lockSpan("social pages"))+'</dd>'
+    +'<dt>Contact</dt><dd>Through AllLists only</dd></dl></div>'
+    +'<div class="card"><h2>About</h2><p>Sample description of the business, 150 to 600 characters in the real product. Specialities and products are searchable tags.</p>'
+    +'<p><strong>Specialities:</strong> '+esc(e.spec.join(", "))+'</p><p class="small muted">Alternate names and other scripts are stored and searched.</p></div></div>';
+  h+='<div class="card"><h2>'+esc(e.type)+' details</h2><dl class="facts">'
+    +'<dt>Business type</dt><dd>'+esc(e.type)+' (a trader is not shown as a maker)</dd>'
+    +'<dt>Product categories</dt><dd>'+esc(e.spec.join(", "))+' (HS code in the real product)</dd>'
+    +'<dt>Export markets</dt><dd>'+(sub?esc(e.markets):lockSpan("export markets"))+'</dd>'
+    +'<dt>OEM or private label</dt><dd>'+(e.oem?'Yes':'No or not stated')+'</dd>'
+    +'<dt>Minimum order</dt><dd>'+(sub?esc(e.moq):lockSpan("minimum order"))+'</dd>'
+    +'<dt>Verification tier</dt><dd>'+esc(LEVEL[topLevel(e)].label)+'</dd></dl></div>';
+  h+='<div class="grid2"><div class="card"><h2>Services and products</h2><table><thead><tr><th>Item</th><th>Price</th><th>Price date</th></tr></thead><tbody>'
+    +'<tr><td>Forceps, standard range (sample)</td><td>'+(sub?'From USD 1.20 each':lockSpan("price"))+'</td><td>'+(sub?esc(e.levels[0].when):'')+'</td></tr>'
+    +'<tr><td>Custom engraving, private label (sample)</td><td>'+(sub?'On request':lockSpan("price"))+'</td><td></td></tr></tbody></table>'
+    +'<p class="small muted">Every price carries a currency and a date. Prices appear only once the sector rules are set.</p></div>'
+    +'<div class="card"><h2>Registrations and certificates</h2><table><thead><tr><th>Scheme</th><th>Value</th><th>Checked</th></tr></thead><tbody>'
+    +'<tr><td>Quality or CE</td><td>'+(sub?esc(e.cert):lockSpan("details"))+'</td><td>'+esc(e.levels[0].when)+'</td></tr>'
+    +'<tr><td>Company registration</td><td>'+(sub?'Sample number, with link to the register':lockSpan("details"))+'</td><td></td></tr></tbody></table>'
+    +'<p class="small muted">Numbers link to the public register. National ID numbers are never stored.</p></div></div>';
+  h+='<div class="grid2"><div class="card"><h2>Rankings and reviews</h2><p>No rankings yet. When reviewer rankings start, this block states who may write them and how they are checked.</p></div>'
+    +'<div class="card"><h2>In this list</h2><p>'+(e.rank?'Position <strong>'+e.rank+' of '+pub+'</strong> in '+esc(LIST.type)+' in Sialkot. Ordered by verification and completeness.':'Not ranked yet.')+'</p><p class="small"><a href="#/list">Back to the list</a></p></div></div>';
+  h+='<div class="card"><h2>Where this came from</h2><ul class="small"><li>Source: sample data. In the real product: source, licence, retrieval date.</li><li>Added by: Contributor A (sample). Last checked by: '+esc(e.levels[0].by)+'.</li><li>Last three changes: shown here in the real product.</li></ul></div>';
+  h+='<div class="card"><h2>Correct or claim this entry</h2><div class="row"><a class="btn" href="#/claim">Is this yours? Claim</a><a class="btn" href="#/edit">Suggest an edit</a><a class="btn" href="#/remove">Not you? Remove or correct this entry</a></div><p class="small muted">Removal of personal data is free.</p></div>';
+  return h;
+}
+
+/* ---------- Small pages ---------- */
+function renderStub(kind){
+  var m={report:"Report a problem: wrong scope, duplicate, abuse or fake entry. In the real product this opens a form that records the entry and the reason.",
+    add:"Add an entry or suggest an area. In the real product this is a short form that creates a draft.",
+    claim:"Claim this business: a one-time code goes to a stored contact, then optional documents are checked.",
+    edit:"Suggest an edit: any signed-in user can propose a correction; it enters a review queue.",
+    remove:"Remove or correct this entry: free for personal data. The request is logged and answered within a fixed time.",
+    steward:"Apply to steward this list: a revocable role that lets you correct entries in this segment."};
+  return '<div class="card"><h1>Prototype page</h1><p>'+esc(m[kind]||"")+'</p><p><a class="btn" href="#/list">Back to the list</a></p></div>';
+}
+
+/* ---------- Router and events ---------- */
+function render(){
+  var hash=location.hash||"#/list"; var app=document.getElementById("app"); var html;
+  var m=hash.match(/^#\/entry\/(\w+)/);
+  if(m)html=renderEntry(m[1]);
+  else if(/^#\/(report|add|claim|edit|remove|steward)$/.test(hash))html=renderStub(hash.slice(2));
+  else html=renderList();
+  app.innerHTML=html;
+  document.getElementById("planFree").setAttribute("aria-pressed",state.plan==="free");
+  document.getElementById("planSub").setAttribute("aria-pressed",state.plan==="sub");
+  document.getElementById("legal").innerHTML='Listings are shown as submitted and checked; they are not endorsements. <a href="#/remove">Privacy and opt-out</a> · <a href="#/report">Report</a> · Advertising is labelled · Sample data only in this prototype. Share links are plain links: nothing loads from a social network until you click.';
+  window.scrollTo(0,0);
+  /* native share only where supported */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-native]"),function(b){if(navigator.share){b.hidden=false;}});
+}
+function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.className="toast show";setTimeout(function(){t.className="toast";},1600);}
+document.addEventListener("click",function(ev){
+  var t=ev.target.closest("button"); if(!t)return;
+  if(t.id==="planFree"){state.plan="free";render();return;}
+  if(t.id==="planSub"){state.plan="sub";render();return;}
+  if(t.hasAttribute("data-copy")){var u=t.getAttribute("data-copy");
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){toast("Link copied");},function(){toast("Copy failed: "+u);});}else{toast("Copy not available here");}return;}
+  if(t.hasAttribute("data-native")){var k=t.getAttribute("data-native");var title=k==="list"?(LIST.type+" in Sialkot"):"Entry on AllLists";
+    navigator.share({title:title,text:title,url:CANON+"?utm_source=native&utm_medium=share&ref=DEMO"}).catch(function(){});return;}
+  if(t.hasAttribute("data-more")){var key=t.getAttribute("data-more");var m=document.getElementById("menu-"+key);var open=m.classList.toggle("open");t.setAttribute("aria-expanded",open);return;}
+  if(t.hasAttribute("data-outreach")){toast("Demo: this would open the channel picker (WhatsApp first, opt-in, platform-sent)");return;}
+  if(t.hasAttribute("data-quote")){toast("Demo: request-a-quote form");return;}
+  if(t.hasAttribute("data-save")){toast("Demo: saved to your list (needs an account)");return;}
+});
+document.addEventListener("change",function(ev){
+  if(ev.target.id==="fl"){state.level=ev.target.value;render();}
+  if(ev.target.id==="so"){state.sort=ev.target.value;render();}
+  if(ev.target.id==="uv"){state.showUnverified=ev.target.checked;render();}
+});
+window.addEventListener("hashchange",render);
+render();
+</script>
+</body>
+</html>

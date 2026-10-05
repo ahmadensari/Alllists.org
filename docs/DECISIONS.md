@@ -123,3 +123,5 @@ Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeri
 | Health-sector rules for prices and ads | Adopt the report's health rules before collecting any price | Q-S1 |
 | Counsel | Book before any messaging test, list of individuals, health or child data, or talent list | |
 | Which proposed list types from the platform catalogue join the seed list | Take the report's top ranked group (urgent home and trade firms, health facilities and equipment, Sialkot-type clusters, importers and buy leads); delay children's services, health data, named individuals | Q-S8 |
+| Sign off the list and entry component specification (core fields frozen for version 1) | Approve `docs/LIST_AND_ENTRY_COMPONENTS.md` after reading section 10 | Q-S12 |
+| Website and social page links: public or locked | Locked on the free view | Q-S13 |
