@@ -323,17 +323,37 @@ What this note adds to the first one:
 
 ### Where the notes are thin
 
-No figure exists for any Pakistani or South Asian buyer. Revenue is not disclosed for Kaggle, Toptal (verified), Foursquare, Mapbox, Crunchbase or Glassdoor alone. `revenue_streams_directories.md` was not in the research folder when this report was written. Directory revenue evidence therefore comes only from `Which lists pay.md`.
+No figure exists for any Pakistani or South Asian buyer. Revenue is not disclosed for Kaggle, Toptal (verified), Foursquare, Mapbox, Crunchbase or Glassdoor alone. Every figure in this section was read through search summaries, so re-check against the filings before external use.
+
+### Reconciling the two research menus with the decisions
+
+Two notes each ended with a ranked menu. They differ in order, and one point conflicts with a decision.
+
+| Point | Directory note | Data and talent note | How this report settles it |
+|---|---|---|---|
+| What comes first | Paid visibility: claimed profile and featured placement, sold per advertiser, years 0 to 2 | Self-serve export credits and a low-priced seat, then a metered API, then paid visibility | The decided model applies. Free pages, ads and delivered outreach first. Paid ranking and upgrades next, sold to a few high-ticket types in the biggest cities. Both notes agree visibility needs an audience before it sells. |
+| Export credits | Not proposed | Proposed as stream 1 | Conflicts with E13 (no download except at about USD 1,000). Credits buy delivered outreach instead. |
+| API | Year 3 and later, with no small-platform evidence | Stream 2, after the data is stable | Not at launch. It sits close to bulk access. Flagged as decision 9 below. |
+| Verified badge | Stream 3, years 1 to 2 | Not listed separately | Fits P17 (charge for badge, ranking, extra fields, leads). Included. |
+| Per-listing fees for individuals (jobs, property, vehicles) | Stream 2, years 0 to 2 | Not listed | Not in the decisions. It could clash with free listing. Flagged as decision 12 below. |
+| Job postings | Stream 5, years 1 to 3 | Recruiter products are the biggest talent earners | Only relevant to the talent list. Later. |
+| Software bundle for businesses | Years 2 to 4, mixed evidence | Not listed | Later. Not decided. |
+| Institutional licences, data licensing | Year 3 and later | Year 2 onward | Both say later. The decided E16 (governments and institutions) fits. Aggregate statistics first. |
+| AI-data licensing | Not ranked | Upside only | Upside only. Both agree small and lumpy. |
+| Transaction commission | Year 3 and later, capital heavy | Not early | Both agree not early. Matches the later vision. |
+| Consumer subscriptions, print | Avoid | Not early | Both agree. Decision E7 (low recurring fee for live access) is a business-facing subscription and still stands, but the evidence for individual subscribers is weak, so test it with institutions first. |
+
+Both notes also agree that the free layer is the audience and data asset, not the revenue, and that conversion will be low (1% to 3%).
 
 ### Ranked menu of revenue streams for AllLists
 
-This menu works inside the decisions already made. One adjustment: the research notes put "self-serve export credits" first. The decision log says no download except at a heavy price, so credits here buy delivered outreach, not files.
+This menu works inside the decisions already made. One adjustment: the data and talent note put "self-serve export credits" first. The decision log says no download except at a heavy price, so credits here buy delivered outreach, not files.
 
 | Rank | Stream | Status in decisions | Evidence | Timing and risk |
 |---|---|---|---|---|
 | 1 | Free list pages: first few entries plus statistics, advertisements for free users | Decided (E14, CP5) | Free listings are 97% to 99% of listings at Justdial and IndiaMART. | From day one. Builds the audience everything else needs. Ad prices in our markets unknown. |
 | 2 | Paid outreach delivered by the platform: opt-in, per enquiry or in credit packs, contacts hidden | Decided (E13) | Closest to lead pricing: IndiaMART lead Rs 22 to 33 versus US leads USD 39 to 150 (different products). Lead quality is the standing complaint at both Indian platforms. | First paid product. Needs opt-in, delivery proof, and counsel on WhatsApp. |
-| 3 | Paid visibility: ranking, badge, extra fields, leads. City level first | Decided (E15, P17) | Revenue sits in a thin top tier. Sell first in high-ticket types in the biggest cities. Do not raise the entry price sharply. | Needs traffic and claimed listings. Pay-to-rank can harm trust, so label it and keep it apart from verification. |
+| 3 | Paid visibility: ranking, verified badge, extra fields, leads. City level first | Decided (E15, P17) | Revenue sits in a thin top tier. Rightmove's agency subscriptions are 72% of revenue at a 70% margin. IndiaMART sells verified-exporter plans at Rs 1.15 to 6.5 lakh a year. Sell first in high-ticket types in the biggest cities. Do not raise the entry price sharply: IndiaMART's Silver rise cut paying suppliers for three quarters. | Needs traffic and claimed listings. Pay-to-rank can harm trust, so label it and keep it apart from verification. |
 | 4 | Subscription for live access at a low recurring fee | Decided (E7) | Seat evidence is weak: ZoomInfo retention 89%, PitchBook lost small clients. | Test with institutions before individuals. |
 | 5 | Depth upcharge: verified owner contact, equipment and priced-service fields | Within E13 and P17 | Foursquare charges 25% to 40% more for richer fields. | Once verified data exists. |
 | 6 | Heavy download, about USD 1,000 minimum | Decided (E13) | Only plausible for large verified niche lists: about USD 0.20 a record at 5,000 entries, USD 2 at 500. | Keep as a protective test price. |
