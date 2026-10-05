@@ -371,6 +371,33 @@ The owner's longer-term vision: lists of salons, spare-parts shops, bakeries, mo
 
 ---
 
+## Contributor pay, access tiers and revenue streams (decisions of 2026-10-05)
+
+The owner's stated principles: **better usage and returning clients**, and **revenue streams**, to be designed together.
+
+| ID | Decision or idea | Source | Status |
+|---|---|---|---|
+| M1 | **People are not paid up front. Contributors get their share only when a list is sold.** Many volunteers (students and others) are expected to contribute | U | **Decided.** This replaces my earlier suggestion of fixed cash bounties per verified entry. Risk: early revenue is zero, so motivation must come from non-cash rewards (see M9) |
+| M2 | **Businesses will eventually pay to be on the list**, once the platform is well known. Whether unpaid businesses are **hidden or merely ranked lower** is still to be explored | U | **Decided in principle, mechanism open** (Q-R1) |
+| M3 | **Access depends on level.** Small segments (for example schools on one road) may be free; larger roll-ups (for example schools in a city) require payment | U | **Decided as direction** (reading of an ambiguous sentence, please confirm, Q-R2). Risk in P15 |
+| M4 | **A free preview shows names only; the other fields appear after payment** | U | **Decided as an option to test.** Consistent with E14 |
+| M5 | **Free users see advertisements; subscribers see none** | U | **Decided as an option to test** (Q-R3: which ads, and who earns ad revenue) |
+| M6 | **Governments and institutions may buy lists** | U | Already recorded as E16 |
+| M7 | Revenue streams considered so far: list purchases, subscriptions, outreach delivered by the platform, paid ranking and listing by businesses, advertising to free users, the heavy-price download, institutional sales | U, earlier decisions | The mix and the order are to be strategised (see strategy table in the chat summary and Q-R4) |
+| M8 | Every access or pricing rule is judged on two tests: **does it improve usage and bring clients back**, and **does it add revenue** | U | **Decided as the design test** |
+| M9 | Non-cash contributor rewards to keep volunteers: reputation levels, certificates or letters useful for students' CVs, visible credit on the entries and segments they own, and free or discounted access to data in proportion to verified contributions ("give to get") | my design | Proposed (Q-R5) |
+| P15 | **Free small segments versus paid roll-ups:** if every road is free, a visitor can collect all roads and rebuild the paid city list | my analysis | **Open.** Mitigations to decide: names-only on free views, account and rate limits, daily caps, anti-bot checks, terms of use, watermarking, and charging more as the list gets bigger |
+| P16 | **No cash payments** (M1) versus the verification levels (D19) that need people to verify entries: surveyor verification is unpaid | U vs U | **Open.** Verification capacity will depend on volunteers and on owners; the 1,000-record pilot should measure how many checks volunteers actually complete |
+| P17 | **Charging businesses to appear (M2)** versus rules that let people remove or correct their own data for free (sole traders' personal data) and consumer-protection rules on directory fees | my analysis | **Open, needs counsel.** Do not charge a fee for removing personal data; charge for visibility, ranking and extra features instead |
+
+- **Q-R1.** If businesses pay to be listed: is the list hidden for unpaid businesses, or are they shown lower with fewer fields? Suggested starting point: all listed, free basic entry, paid for rank, badge, extra fields and leads, and decide on hiding only after traffic exists.
+- **Q-R2.** Please confirm the reading of "Adyala Road free, Rawalpindi paid": small segments free (names only), city and larger roll-ups paid.
+- **Q-R3.** Which ads do free users see (platform-sold supplier ads in the relevant trade and place, or general ad networks), and does any ad revenue go to contributors and segment owners?
+- **Q-R4.** Which revenue streams switch on first, and at what traffic level do paywalls and business fees start?
+- **Q-R5.** Which non-cash rewards will you offer volunteers?
+
+---
+
 ## Strategy decisions recorded 2026-10-05
 
 | ID | Decision | Source | Note |
