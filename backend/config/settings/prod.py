@@ -27,6 +27,6 @@ SECURE_HSTS_PRELOAD = False
 # manifest. If it was forgotten, pages fall back to the plain file name instead of failing (deploy.sh always runs it).
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+    "staticfiles": {"BACKEND": "config.storage.SafeManifestStaticFilesStorage"},
 }
 WHITENOISE_MANIFEST_STRICT = False

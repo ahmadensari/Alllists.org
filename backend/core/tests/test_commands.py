@@ -288,3 +288,14 @@ def test_production_requires_the_active_key_to_be_one_of_the_keys():
     env["FIELD_ENCRYPTION_ACTIVE_KEY"] = "k9"
     r = run_prod("import django; django.setup()", **env)
     assert r.returncode != 0 and "ACTIVE_KEY" in r.stderr
+
+
+def test_production_pages_work_even_if_collectstatic_was_never_run(tmp_path):
+    code = (
+        "import django; django.setup();"
+        "from django.conf import settings; settings.STATIC_ROOT = %r;"
+        "from django.templatetags.static import static;"
+        "print(static('catalog/app.css'))"
+    ) % str(tmp_path / "empty")
+    r = run_prod(code, **good_env())
+    assert r.returncode == 0 and r.stdout.strip() == "/static/catalog/app.css", r.stderr[-600:]
