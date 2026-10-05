@@ -3,7 +3,7 @@ import os
 import sys
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "") == "1"
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or ("dev-only-insecure-key" if DEBUG else "")
@@ -22,7 +22,8 @@ DEMO_MODE = os.environ.get("ALLLISTS_DEMO", "1" if DEBUG else "0") == "1"
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
-    "lists",
+    "core", "places", "taxonomy", "entries", "intake",
+    "lists",  # legacy demo app, replaced by catalog in phase P2
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -49,7 +50,8 @@ TEMPLATES = [{
 }]
 WSGI_APPLICATION = "config.wsgi.application"
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.environ.get("ALLLISTS_DB", BASE_DIR / "db.sqlite3")}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3",
+                         "NAME": os.environ.get("ALLLISTS_DB", BASE_DIR / "db.sqlite3")}}
 if os.environ.get("POSTGRES_DB"):  # PostgreSQL in production (install psycopg)
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql", "NAME": os.environ["POSTGRES_DB"],
@@ -89,3 +91,21 @@ CONTRIBUTOR_PHASE_RATES = {1: 50, 2: 40, 3: 30}
 CURRENT_PHASE = int(os.environ.get("ALLLISTS_PHASE", "1"))
 FREE_PREVIEW_NAMES = 25          # names-only preview beyond the visitor's own place
 FREE_MAX_SPECIALITIES = 3
+
+# Field encryption and keyed hashes (plan section 17). Dev values are throwaway; production sets real ones.
+FIELD_ENCRYPTION_KEYS = {}
+FIELD_ENCRYPTION_ACTIVE_KEY = os.environ.get("FIELD_ENCRYPTION_ACTIVE_KEY", "")
+for _item in [i for i in os.environ.get("FIELD_ENCRYPTION_KEYS", "").split(",") if i]:
+    _kid, _, _key = _item.partition(":")
+    FIELD_ENCRYPTION_KEYS[_kid] = _key
+CONTACT_HASH_PEPPER = os.environ.get("CONTACT_HASH_PEPPER", "")
+if not FIELD_ENCRYPTION_KEYS and (DEBUG or "pytest" in sys.modules):
+    from cryptography.fernet import Fernet  # noqa: E402
+    FIELD_ENCRYPTION_KEYS = {"dev": Fernet.generate_key().decode()}
+    FIELD_ENCRYPTION_ACTIVE_KEY = "dev"
+    CONTACT_HASH_PEPPER = CONTACT_HASH_PEPPER or "dev-pepper-not-secret"
+
+# Verification defaults (plan section 6.3, Q-T4): validity in days per level; grace before an expired entry returns to draft
+CHECK_VALIDITY_DAYS = {"surveyor": 365, "owner": 365, "ai": 180}
+GRACE_DAYS = 90
+INDEX_THRESHOLD = 10

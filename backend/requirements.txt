@@ -4,3 +4,6 @@ whitenoise>=6.7
 pytest>=8
 pytest-django>=4.8
 # production database: add psycopg[binary] and set DATABASE_URL-style env (see config/settings.py)
+psycopg[binary]>=3.2
+cryptography>=43
+hypothesis>=6.100

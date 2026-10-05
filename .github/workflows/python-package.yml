@@ -1,41 +1,67 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Python package
+name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "claude/**" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  build:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m pip install --upgrade pip flake8
+      - name: flake8 (blocking)
+        run: flake8 backend scripts --count --show-source --statistics
 
+  test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
-
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: alllists
+          POSTGRES_USER: alllists
+          POSTGRES_PASSWORD: alllists
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U alllists" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      POSTGRES_DB: alllists
+      POSTGRES_USER: alllists
+      POSTGRES_PASSWORD: alllists
+      POSTGRES_HOST: localhost
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install flake8 pytest
-        :
-        if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --exclude=prototype --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pytest
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "${{ matrix.python-version }}" }
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r backend/requirements.txt
+      - name: Migrations apply, reverse and apply again
+        working-directory: backend
+        env: { DJANGO_ALLOW_TEST_KEY: "1" }
+        run: |
+          python manage.py migrate --noinput
+          python manage.py migrate core zero --noinput
+          python manage.py migrate --noinput
+      - name: pytest on PostgreSQL
+        run: pytest -q --maxfail=20
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r backend/requirements.txt bandit pip-audit
+      - name: bandit (application code, medium and above)
+        run: bandit -q -r backend -x backend/lists,"*/tests/*","*/migrations/*" -ll
+      - name: pip-audit
+        run: pip-audit -r backend/requirements.txt
