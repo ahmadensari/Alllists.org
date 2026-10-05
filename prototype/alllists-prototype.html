@@ -142,6 +142,14 @@ footer.legal{border-block-start:1px solid var(--rule);margin-block-start:var(--s
 .tbar .t-a{background:repeating-linear-gradient(45deg,var(--ink-2) 0 3px,var(--surface) 3px 6px)}
 .legend{display:flex;flex-wrap:wrap;gap:var(--s1) var(--s4);font-size:var(--t-sm);color:var(--ink-2)}
 .legend b{display:inline-block;width:.8rem;height:.8rem;border-radius:3px;vertical-align:-1px;margin-inline-end:var(--s1);border:1px solid var(--control)}
+.locbar{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:center;padding:var(--s3) var(--s4);border:1px solid var(--rule);border-radius:12px;background:var(--surface);margin-block:var(--s3)}
+.locbar .where{font-weight:600}
+.tilegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:var(--s3);list-style:none;margin:0;padding:0}
+.tile{display:block;border:1px solid var(--rule);border-radius:12px;padding:var(--s4);background:var(--surface);color:var(--ink);text-decoration:none;transition:transform .15s ease,box-shadow .15s ease}
+.tile:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(16,24,40,.12)}
+.tile strong{display:block;font-size:var(--t-lg)}
+.tile .big{font-size:1.75rem;font-weight:700;color:var(--accent);letter-spacing:-.02em}
+.widen{margin-block:var(--s3)}
 .chips{display:flex;gap:var(--s2);overflow-x:auto;padding-block:var(--s1) var(--s2);scrollbar-width:thin}
 .chips button{flex:none;min-height:var(--tap);padding:var(--s1) var(--s4);border:1px solid var(--control);border-radius:99px;background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;transition:background-color .15s ease,color .15s ease,transform .1s ease}
 .chips button:hover{background:var(--lock)}
@@ -184,10 +192,10 @@ footer.legal{border-block-start:1px solid var(--rule);margin-block-start:var(--s
   <span class="ctl"><span id="lblView"></span><span class="seg" role="group" aria-labelledby="lblView"><button id="planFree" type="button"></button><button id="planSub" type="button"></button></span></span>
   <span class="ctl"><span id="lblTheme"></span><span class="seg" role="group" aria-labelledby="lblTheme"><button data-theme-btn="system" type="button"></button><button data-theme-btn="light" type="button"></button><button data-theme-btn="dark" type="button"></button></span></span>
   <span class="ctl"><span id="lblLang"></span><span class="seg" role="group" aria-labelledby="lblLang"><button data-lang-btn="en" type="button" lang="en">English</button><button data-lang-btn="ur" type="button" lang="ur">اردو</button></span></span>
-  <span class="ctl"><a href="#/list" id="navList"></a> · <a href="#/empty" id="navEmpty"></a> · <a href="#/system" id="navSys"></a></span>
+  <span class="ctl"><a href="#/home" id="navHome"></a> · <a href="#/place/world" id="navPlaces"></a> · <a href="#/list" id="navList"></a> · <a href="#/empty" id="navEmpty"></a> · <a href="#/system" id="navSys"></a></span>
 </div></details>
 <header class="site"><div class="wrap site-row">
-  <a class="logo" href="#/list">All<b>Lists</b></a>
+  <a class="logo" href="#/home">All<b>Lists</b></a>
   <form class="search" role="search" onsubmit="return false"><label class="visually-hidden" for="q" id="lblSearch"></label><input id="q" type="search"><button class="btn" type="submit" id="btnSearch"></button></form>
 </div></header>
 <main class="wrap" id="app"></main>
@@ -242,12 +250,19 @@ var EN = {
   addr:"Street address", pin:"Map pin", size:"Staff", web:"Website", social:"Social pages", markets:"Export markets", moq:"Minimum order", prices:"Prices", cert:"Certificate",
   priceDate:"price date {date}", onRequest:"On request", passed:"Checks passed: {n}.",
   closedNote:"This business has closed. We keep the page so old links still work.", closedPast:"Was checked before it closed",
-  emptyTitle:"No entries yet", emptyBody:"Nobody has listed surgical instrument makers in Gujrat yet. Know one? Add it.", viewSialkot:"See Sialkot (7 businesses)",
+  emptyTitle:"No entries yet", emptyBody:"Nobody has listed surgical instrument makers in Gujrat yet. Know one? Add it.", emptyBody2:"No list exists here yet. Add the first entry.", viewSialkot:"See Sialkot (7 businesses)",
   legal:"A check is a record, not a guarantee. Listings are not endorsements.", privacy:"Privacy and opt-out", report:"Report",
   openMap:"Open in Google Maps", notes:"Sample data. Share links are plain links: nothing loads from a social network until you click.",
   linkCopied:"Link copied", toastOutreach:"Demo: opens the channel picker. WhatsApp first, only to people who agreed, sent by AllLists.", toastPlans:"Demo: opens the plans page.", toastSave:"Demo: saved. Needs an account.", toastFollow:"Demo: we will tell you when it changes. Needs an account.",
   statusShown:"{n} businesses shown",
   ago0:"today", agoD:"{d} days ago", agoW:"{w} weeks ago", agoM:"{m} months ago", mon_sat:"Mon to Sat", x:"X", tg:"Telegram", viewList:"List", viewCards:"Cards", viewLbl:"View", copied:"Copied", areaLbl2:"Area", legendS:"Surveyor", legendO:"Owner", legendA:"Computer",
+  bizWord:"businesses", homeTitle:"Find any list, anywhere", homeSub:"Lists of businesses, services and people, from the whole world down to your street.", logoHome:"Home",
+  locGuess:"We think you are in {place}. This is a guess from your connection and is not stored.", useExact:"Use my exact location", changePlace:"Change place", locFound:"Found you near {place}.", locOff:"Location is off or blocked. Pick your place from the list instead.",
+  listsIn:"Lists in {place}", listsHere:"Lists here", placesInside:"Places inside {place}", browsePlaces:"Browse by place", nBiz:"{n} businesses", nLists:"{n} lists",
+  widenTo:"Widen the search", scCity:"Your place", scProvince:"Region", scCountry:"Country", scWorld:"World", scopeShowing:"Showing {place}",
+  widerNote:"Wider than your place: names are free to preview, the full list is for subscribers.", fullList:"The full {place} list has {n} businesses. A preview of names is free. The full list and enquiry tools are for subscribers.",
+  noListYet:"No list for “{q}” in {place} yet.", noListBody:"Every list exists everywhere, empty until someone adds it. Start this one.", startList:"Start this list", searchHomePh:"Search lists, for example plumbers, pharmacies, fan makers",
+  demoStub:"The real list has {n} entries here. This demo only has sample rows for Surgical instrument makers in Sialkot.", backHome:"Back to home", nearYou:"Near you",
   companyPage:"Company page", provided:"Provided by the company", providedNote:"This page is provided by the company. AllLists checks are shown separately and cannot be bought.",
   coAbout:"About the company", coProducts:"Products and services", coCerts:"Certificates the company lists", coCapacity:"Capacity and facilities", coTerms:"Terms and samples", coFaq:"Questions buyers ask",
   basicNote:"This is the basic page. The company can add a full page with products, certificates, capacity and more.", addCompanyPage:"Add a company page",
@@ -296,12 +311,19 @@ var UR = {
   addr:"پورا پتہ", pin:"نقشے پر مقام", size:"عملہ", web:"ویب سائٹ", social:"سوشل صفحات", markets:"برآمدی منڈیاں", moq:"کم از کم آرڈر", prices:"قیمتیں", cert:"سرٹیفکیٹ",
   priceDate:"قیمت کی تاریخ {date}", onRequest:"درخواست پر", passed:"کامیاب جانچ: {n}۔",
   closedNote:"یہ کاروبار بند ہو چکا ہے۔ ہم صفحہ رکھتے ہیں تاکہ پرانے لنک کام کرتے رہیں۔", closedPast:"بند ہونے سے پہلے جانچا گیا تھا",
-  emptyTitle:"ابھی کوئی اندراج نہیں", emptyBody:"گجرات میں ابھی کسی نے سرجیکل آلات بنانے والے درج نہیں کیے۔ کوئی جانتے ہیں؟ شامل کریں۔", viewSialkot:"سیالکوٹ دیکھیں (7 کاروبار)",
+  emptyTitle:"ابھی کوئی اندراج نہیں", emptyBody:"گجرات میں ابھی کسی نے سرجیکل آلات بنانے والے درج نہیں کیے۔ کوئی جانتے ہیں؟ شامل کریں۔", emptyBody2:"یہاں ابھی کوئی فہرست نہیں۔ پہلا اندراج شامل کریں۔", viewSialkot:"سیالکوٹ دیکھیں (7 کاروبار)",
   legal:"جانچ ایک ریکارڈ ہے، ضمانت نہیں۔ فہرست میں شامل ہونا سفارش نہیں۔", privacy:"رازداری اور اخراج", report:"رپورٹ کریں",
   openMap:"گوگل میپس میں کھولیں", notes:"نمونہ ڈیٹا۔ شیئر لنک سادہ لنک ہیں: آپ کے کلک کرنے تک کسی سوشل نیٹ ورک سے کچھ لوڈ نہیں ہوتا۔",
   linkCopied:"لنک کاپی ہو گیا", toastOutreach:"نمونہ: چینل منتخب کرنے کی سکرین کھلے گی۔ پہلے واٹس ایپ، صرف ان لوگوں کو جو راضی ہوں، آل لسٹس کی طرف سے۔", toastPlans:"نمونہ: پلان کا صفحہ کھلے گا۔", toastSave:"نمونہ: محفوظ ہو گیا۔ اکاؤنٹ درکار ہے۔", toastFollow:"نمونہ: بدلنے پر ہم بتائیں گے۔ اکاؤنٹ درکار ہے۔",
   statusShown:"{n} کاروبار دکھائے گئے",
-  ago0:"آج", agoD:"{d} دن پہلے", agoW:"{w} ہفتے پہلے", agoM:"{m} مہینے پہلے", mon_sat:"پیر تا ہفتہ", viewList:"فہرست", viewCards:"کارڈز", viewLbl:"منظر", copied:"کاپی ہو گیا", areaLbl2:"علاقہ", legendS:"سروے کار", legendO:"مالک", legendA:"کمپیوٹر",companyPage:"کمپنی کا صفحہ", provided:"کمپنی کی فراہم کردہ معلومات", providedNote:"یہ صفحہ کمپنی نے فراہم کیا ہے۔ آل لسٹس کی جانچ الگ دکھائی جاتی ہے اور خریدی نہیں جا سکتی۔",
+  ago0:"آج", agoD:"{d} دن پہلے", agoW:"{w} ہفتے پہلے", agoM:"{m} مہینے پہلے", mon_sat:"پیر تا ہفتہ", viewList:"فہرست", viewCards:"کارڈز", viewLbl:"منظر", copied:"کاپی ہو گیا", areaLbl2:"علاقہ", legendS:"سروے کار", legendO:"مالک", legendA:"کمپیوٹر",
+  bizWord:"کاروبار", homeTitle:"کوئی بھی فہرست، کہیں بھی", homeSub:"کاروباروں، خدمات اور لوگوں کی فہرستیں، پوری دنیا سے لے کر آپ کی گلی تک۔", logoHome:"ہوم",
+  locGuess:"ہمارا اندازہ ہے کہ آپ {place} میں ہیں۔ یہ آپ کے کنکشن سے لگایا گیا اندازہ ہے اور محفوظ نہیں کیا جاتا۔", useExact:"میرا درست مقام استعمال کریں", changePlace:"جگہ بدلیں", locFound:"آپ {place} کے قریب ملے۔", locOff:"مقام بند یا روکا ہوا ہے۔ فہرست سے اپنی جگہ چنیں۔",
+  listsIn:"{place} میں فہرستیں", listsHere:"یہاں کی فہرستیں", placesInside:"{place} کے اندر مقامات", browsePlaces:"مقام کے ذریعے دیکھیں", nBiz:"{n} کاروبار", nLists:"{n} فہرستیں",
+  widenTo:"تلاش وسیع کریں", scCity:"آپ کی جگہ", scProvince:"علاقہ", scCountry:"ملک", scWorld:"دنیا", scopeShowing:"{place} دکھایا جا رہا ہے",
+  widerNote:"آپ کی جگہ سے وسیع: نام دیکھنا مفت ہے، مکمل فہرست سبسکرائبرز کے لیے ہے۔", fullList:"{place} کی مکمل فہرست میں {n} کاروبار ہیں۔ ناموں کی جھلک مفت ہے۔ مکمل فہرست اور پیغام کے اوزار سبسکرائبرز کے لیے ہیں۔",
+  noListYet:"“{q}” کی {place} میں ابھی کوئی فہرست نہیں۔", noListBody:"ہر فہرست ہر جگہ موجود ہے، جب تک کوئی شامل نہ کرے خالی رہتی ہے۔ یہ فہرست شروع کریں۔", startList:"یہ فہرست شروع کریں", searchHomePh:"فہرستیں تلاش کریں، مثلاً پلمبر، فارمیسی، پنکھے بنانے والے",
+  demoStub:"اصل فہرست میں یہاں {n} اندراجات ہیں۔ اس نمونے میں صرف سیالکوٹ کے سرجیکل آلات بنانے والوں کی نمونہ قطاریں ہیں۔", backHome:"ہوم پر واپس", nearYou:"آپ کے قریب",companyPage:"کمپنی کا صفحہ", provided:"کمپنی کی فراہم کردہ معلومات", providedNote:"یہ صفحہ کمپنی نے فراہم کیا ہے۔ آل لسٹس کی جانچ الگ دکھائی جاتی ہے اور خریدی نہیں جا سکتی۔",
   coAbout:"کمپنی کے بارے میں", coProducts:"مصنوعات اور خدمات", coCerts:"کمپنی کے بتائے ہوئے سرٹیفکیٹ", coCapacity:"پیداواری صلاحیت اور سہولیات", coTerms:"شرائط اور نمونے", coFaq:"خریداروں کے عام سوالات",
   basicNote:"یہ بنیادی صفحہ ہے۔ کمپنی مصنوعات، سرٹیفکیٹ، صلاحیت اور مزید کے ساتھ مکمل صفحہ شامل کر سکتی ہے۔", addCompanyPage:"کمپنی کا صفحہ شامل کریں",
   checkedByUs:"آل لسٹس نے جانچا", companySays:"کمپنی کا دعویٰ", workers:"عملہ", capacityLbl:"ماہانہ صلاحیت", areaLbl:"فیکٹری کا رقبہ", updatedLbl:"کمپنی نے {date} کو اپ ڈیٹ کیا", moqLbl:"کم از کم آرڈر",
@@ -351,8 +373,42 @@ var ENTRIES=[
  {id:"e8",name:"Test Scissors and Clamps",urdu:"ٹیسٹ سیزرز اینڈ کلیمپس",area:"Industrial Estate",status:"open",levels:[{k:"ai",when:"2026-09-25",n:"2"}],type:"Manufacturer",spec:["General surgery","Veterinary"],cert:"",moq:"500 pieces",band:"20 to 50",rank:7,lat:32.5020,lng:74.5410,year:2011,markets:[],oem:false,hours:false},
  {id:"e9",name:"Former Sample Works",urdu:"سابقہ سیمپل ورکس",area:"Paris Road",status:"closed",levels:[{k:"owner",when:"2025-11-02"}],type:"Manufacturer",spec:["General surgery"],cert:"",moq:"",band:"",rank:null,lat:32.4948,lng:74.5231,year:2001,markets:[],oem:false,hours:false}
 ];
+/* Places and list types (invented counts). Surgical instrument makers in Sialkot is the one list with real sample rows. */
+var PLACES={
+ world:{n:"Global",ur:"دنیا",parent:null,kids:["pk","ae","uk"]},
+ pk:{n:"Pakistan",ur:"پاکستان",parent:"world",kids:["punjab","sindh"]},
+ ae:{n:"United Arab Emirates",ur:"متحدہ عرب امارات",parent:"world",kids:[]},
+ uk:{n:"United Kingdom",ur:"برطانیہ",parent:"world",kids:[]},
+ punjab:{n:"Punjab",ur:"پنجاب",parent:"pk",kids:["sialkot","lahore","gujrat"]},
+ sindh:{n:"Sindh",ur:"سندھ",parent:"pk",kids:["karachi"]},
+ sialkot:{n:"Sialkot",ur:"سیالکوٹ",parent:"punjab",kids:["paris","kashmir","daska","industrial"],lat:32.4945,lng:74.5229},
+ lahore:{n:"Lahore",ur:"لاہور",parent:"punjab",kids:[],lat:31.5204,lng:74.3587},
+ gujrat:{n:"Gujrat",ur:"گجرات",parent:"punjab",kids:[],lat:32.5742,lng:74.0754},
+ karachi:{n:"Karachi",ur:"کراچی",parent:"sindh",kids:[],lat:24.8607,lng:67.0011},
+ paris:{n:"Paris Road",ur:"پیرس روڈ",parent:"sialkot",kids:[]},
+ kashmir:{n:"Kashmir Road",ur:"کشمیر روڈ",parent:"sialkot",kids:[]},
+ daska:{n:"Daska Road",ur:"ڈسکہ روڈ",parent:"sialkot",kids:[]},
+ industrial:{n:"Industrial Estate",ur:"انڈسٹریل اسٹیٹ",parent:"sialkot",kids:[]}
+};
+var LISTTYPES=[
+ {id:"surgical",n:"Surgical instrument makers",ur:"سرجیکل آلات بنانے والے"},
+ {id:"sports",n:"Sports goods makers",ur:"کھیلوں کا سامان بنانے والے"},
+ {id:"fans",n:"Fan makers",ur:"پنکھے بنانے والے"},
+ {id:"eye",n:"Eye hospitals",ur:"آنکھوں کے ہسپتال"},
+ {id:"pharmacy",n:"Pharmacies",ur:"فارمیسیاں"}
+];
+var COUNTS={sialkot:{sports:12,pharmacy:41,eye:3},lahore:{surgical:5,pharmacy:380,eye:14,fans:9},gujrat:{surgical:3,fans:38,pharmacy:22},karachi:{surgical:2,pharmacy:520,eye:21},ae:{pharmacy:210,eye:12},uk:{surgical:4,eye:60}};
+COUNTS.sialkot.surgical=ENTRIES.filter(function(e){return e.status==="open"&&e.levels.some(function(l){return l.k!=="none";});}).length;
+function totalFor(id,type){var t=(COUNTS[id]&&COUNTS[id][type])||0;PLACES[id].kids.forEach(function(k){t+=totalFor(k,type);});return t;}
+function totalAll(id){var t=0;LISTTYPES.forEach(function(lt){t+=totalFor(id,lt.id);});return t;}
+function listsAt(id){return LISTTYPES.filter(function(lt){return totalFor(id,lt.id)>0;});}
+function pName(id){return lang==="ur"?PLACES[id].ur:PLACES[id].n;}
+function tName(lt){return lang==="ur"?lt.ur:lt.n;}
+function chain(id){var c=[],x=id;while(x){c.unshift(x);x=PLACES[x].parent;}return c;}
+function chainCrumbs(id,includeSelf){var c=chain(id);if(!includeSelf)c=c.slice(0,-1);return c.map(function(x){return {label:pName(x),href:"#/place/"+x};});}
+function nearestCity(lat,lng){var best=null,bd=1e9;["sialkot","lahore","gujrat","karachi"].forEach(function(id){var p=PLACES[id];var dx=(p.lat-lat),dy=(p.lng-lng)*Math.cos(lat*Math.PI/180);var d=dx*dx+dy*dy;if(d<bd){bd=d;best=id;}});return best;}
 var LK={surveyor:"lSurveyor",owner:"lOwner",ai:"lAi",none:"lNone"}, GK={surveyor:"gSurveyor",owner:"gOwner",ai:"gAi",none:"gNone"};
-var state={plan:"free",area:"all",level:"all",sort:"ranked",count:5,theme:"system",q:"",view:"list"};
+var state={plan:"free",area:"all",level:"all",sort:"ranked",count:5,theme:"system",q:"",view:"list",loc:"sialkot",scope:0};
 
 /* ---------- Helpers ---------- */
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
@@ -405,9 +461,9 @@ function shareBar(kind,e){
    +(more.length?'<div class="menu" id="menu-'+key+'">'+more.map(function(ch){return channelHtml(ch,c);}).join("")+'</div>':'');
 }
 function crumbs(parts,last){
-  return '<ol>'+parts.map(function(p){return '<li><a href="#/list">'+esc(p)+'</a></li>';}).join("")+(last?'<li aria-current="page"><strong>'+esc(last)+'</strong></li>':'')+'</ol>';
+  return '<ol>'+parts.map(function(p){var o=(typeof p==="string")?{label:p,href:"#/list"}:p;return '<li><a href="'+o.href+'">'+esc(o.label)+'</a></li>';}).join("")+(last?'<li aria-current="page"><strong>'+esc(last)+'</strong></li>':'')+'</ol>';
 }
-function placeCrumbs(){return [T("global"),T("pakistan"),T("punjab")];}
+function placeCrumbs(){return chainCrumbs("punjab",true);}
 function keyBlock(){
   return '<details class="key"><summary>'+esc(T("howTitle"))+'</summary><dl>'
    +['surveyor','owner','ai','none'].map(function(k){return '<dt>'+esc(T(LK[k]))+'</dt><dd>'+esc(T(GK[k]))+'</dd>';}).join("")+'</dl></details>';
@@ -434,7 +490,7 @@ function renderList(){
     if(state.sort==="recent")return lastChecked(b).localeCompare(lastChecked(a));
     return (a.rank||99)-(b.rank||99);
   });
-  var rows=rowsAll.slice(0,state.count);
+  var rows=rowsAll.slice(0,(state.scope>0&&!sub)?5:state.count);
   var c={surveyor:0,owner:0,ai:0};pubList.forEach(function(e){c[topLevel(e)]++;});
   var latest=pubList.map(lastChecked).sort().pop();
   var filtered=state.area!=="all"||state.level!=="all"||state.q!=="";
@@ -444,14 +500,17 @@ function renderList(){
   h+='<p>'+esc(T("scope"))+'</p>';
   h+='<ul class="tags"><li class="tag">'+esc(T("fam"))+' / '+esc(T("fam2"))+'</li><li class="tag">'+esc(T("scale"))+'</li></ul>';
   var tot=Math.max(pubList.length,1);
-  h+='<div class="hero"><div class="hero-num num" aria-hidden="true">'+pubList.length+'</div><div class="hero-body"><strong class="num">'+esc(T("summary",{n:pubList.length,date:fmtDate(latest)}))+'</strong>'
-    +'<div class="tbar" role="img" aria-label="'+esc(T("trustLine",{a:c.surveyor,b:c.owner,c:c.ai}))+'"><i class="t-s" style="--w:'+(100*c.surveyor/tot)+'%"></i><i class="t-o" style="--w:'+(100*c.owner/tot)+'%"></i><i class="t-a" style="--w:'+(100*c.ai/tot)+'%"></i></div>'
-    +'<div class="legend num"><span><b class="t-s" style="background:var(--ok)"></b>'+esc(T("legendS"))+' '+c.surveyor+'</span><span><b style="background:color-mix(in oklab,var(--ok) 55%,var(--surface))"></b>'+esc(T("legendO"))+' '+c.owner+'</span><span><b style="background:repeating-linear-gradient(45deg,var(--ink-2) 0 3px,var(--surface) 3px 6px)"></b>'+esc(T("legendA"))+' '+c.ai+'</span></div></div></div>';
+  var sc=state.scope, scopeIds=scopeChain("sialkot"), scopeCount=totalFor(scopeIds[sc],"surgical"), totalShown=sc>0?scopeCount:rowsAll.length;
+  h+='<div class="hero"><div class="hero-num num" aria-hidden="true">'+(sc>0?scopeCount:pubList.length)+'</div><div class="hero-body"><strong class="num">'+esc(T("summary",{n:(sc>0?scopeCount:pubList.length),date:fmtDate(latest)}))+'</strong>'
+    +(sc>0?'':'<div class="tbar" role="img" aria-label="'+esc(T("trustLine",{a:c.surveyor,b:c.owner,c:c.ai}))+'"><i class="t-s" style="--w:'+(100*c.surveyor/tot)+'%"></i><i class="t-o" style="--w:'+(100*c.owner/tot)+'%"></i><i class="t-a" style="--w:'+(100*c.ai/tot)+'%"></i></div>'
+    +'<div class="legend num"><span><b class="t-s" style="background:var(--ok)"></b>'+esc(T("legendS"))+' '+c.surveyor+'</span><span><b style="background:color-mix(in oklab,var(--ok) 55%,var(--surface))"></b>'+esc(T("legendO"))+' '+c.owner+'</span><span><b style="background:repeating-linear-gradient(45deg,var(--ink-2) 0 3px,var(--surface) 3px 6px)"></b>'+esc(T("legendA"))+' '+c.ai+'</span></div>')+'</div></div>';
+  h+=widenBar("sialkot",function(pid){return totalFor(pid,"surgical");});
+  if(sc>0)h+='<p class="muted small">'+esc(T("widerNote"))+'</p>';
   h+=keyBlock();
   h+='<div class="actions"><button class="btn primary" type="button" data-outreach>'+esc(T("enquiry"))+(sub?'':' <span class="xs">('+esc(T("forSubs"))+')</span>')+'</button><button class="btn" type="button" data-follow>'+esc(T("follow"))+'</button></div>';
   h+='<div style="margin-block-start:var(--s3)">'+shareBar("list")+'</div>';
-  h+='<section class="sec" id="results" tabindex="-1" aria-label="'+esc(T("shown",{n:rows.length,m:rowsAll.length}))+'" style="margin-block-start:var(--s4)">';
-  h+='<div class="chips" role="group" aria-label="'+esc(T("area"))+'"><button type="button" data-area="all" aria-pressed="'+(state.area==="all")+'"'+(state.area==="all"?' id="fa"':'')+'>'+esc(T("allAreas"))+' ('+pubList.length+')</button>'
+  h+='<section class="sec" id="results" tabindex="-1" aria-label="'+esc(T("shown",{n:rows.length,m:totalShown}))+'" style="margin-block-start:var(--s4)">';
+  if(sc===0)h+='<div class="chips" role="group" aria-label="'+esc(T("area"))+'"><button type="button" data-area="all" aria-pressed="'+(state.area==="all")+'"'+(state.area==="all"?' id="fa"':'')+'>'+esc(T("allAreas"))+' ('+pubList.length+')</button>'
     +Object.keys(areas).sort().map(function(a){return '<button type="button" data-area="'+esc(a)+'" aria-pressed="'+(state.area===a)+'"'+(state.area===a?' id="fa"':'')+'>'+esc(D(a))+' ('+areas[a]+')</button>';}).join("")+'</div>';
   h+='<div class="actions">'
     +'<label for="fl">'+esc(T("verification"))+'</label><select id="fl"><option value="all">'+esc(T("allChecks"))+'</option>'
@@ -460,7 +519,7 @@ function renderList(){
     +'<span class="vt" role="group" aria-label="'+esc(T("viewLbl"))+'"><button type="button" data-view="list" aria-pressed="'+(state.view==="list")+'">'+esc(T("viewList"))+'</button><button type="button" data-view="cards" aria-pressed="'+(state.view==="cards")+'">'+esc(T("viewCards"))+'</button></span>'
     +(filtered?'<button class="btn quiet" type="button" data-clear>'+esc(T("clear"))+'</button>':'')+'</div>';
   h+='<p class="muted xs" style="margin-block-start:var(--s2)">'+esc(T("order"))+' <a href="#/system">'+esc(T("howOrder"))+'</a></p>';
-  h+='<h2 class="num">'+esc(T("shown",{n:rows.length,m:rowsAll.length}))+'</h2><ol class="rows'+(state.view==="cards"?' cards':'')+'">';
+  h+='<h2 class="num">'+esc(T("shown",{n:rows.length,m:totalShown}))+'</h2><ol class="rows'+(state.view==="cards"?' cards':'')+'">';
   rows.forEach(function(e,i){
     h+='<li class="row" style="--i:'+i+';view-transition-name:r-'+e.id+'"><div><a class="nm" href="#/entry/'+e.id+'">'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</a><span class="alt">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</span></div>'
       +'<div class="small">'+esc(D(e.type))+' · '+esc(D(e.area))+'<div style="margin-block-start:var(--s1)">'+specText(e,3)+(e.paid?'<span class="pill pill-co">'+esc(T("companyPage"))+'</span>':'')+'</div></div>'
@@ -468,8 +527,9 @@ function renderList(){
   });
   h+='</ol>';
   if(!rows.length)h+='<p>'+esc(T("noMatch"))+'</p>';
-  if(rowsAll.length>rows.length)h+='<p><button class="btn" type="button" data-more-rows>'+esc(T("showMore",{n:rowsAll.length-rows.length}))+'</button></p>';
+  if(rowsAll.length>rows.length&&!(sc>0&&!sub))h+='<p><button class="btn" type="button" data-more-rows>'+esc(T("showMore",{n:rowsAll.length-rows.length}))+'</button></p>';
   h+='</section>';
+  if(sc>0&&!sub)h+='<div class="panel"><p>'+esc(T("fullList",{place:pName(scopeIds[sc]),n:scopeCount}))+'</p><button class="btn primary" type="button" data-plans>'+esc(T("plans"))+'</button></div>';
   if(!sub){
     h+='<div class="panel"><h2>'+esc(T("subsTitle"))+'</h2><p>'+esc(T("subsBody"))+'</p><button class="btn primary" type="button" data-plans>'+esc(T("plans"))+'</button></div>';
     h+='<div class="ad">'+esc(T("ad"))+'</div>';
@@ -481,6 +541,57 @@ function renderList(){
   return h;
 }
 
+/* ---------- Home: where am I, what is near me, widen step by step ---------- */
+function scopeChain(id){var c=chain(id).slice().reverse();return [c[0],c[1]||"world",c[2]||"world","world"];}
+function scopeLabel(i){return T(["scCity","scProvince","scCountry","scWorld"][i]);}
+function widenBar(id,total){
+  var sc=scopeChain(id);
+  return '<div class="widen"><span class="muted small">'+esc(T("widenTo"))+'</span><div class="chips" role="group" aria-label="'+esc(T("widenTo"))+'">'
+    +sc.map(function(pid,i){return '<button type="button" data-scope="'+i+'" aria-pressed="'+(state.scope===i)+'"'+(state.scope===i?' id="sc"':'')+'>'+esc(pName(pid))+' ('+total(pid)+')</button>';}).join("")+'</div></div>';
+}
+function renderHome(){
+  var id=state.loc, sc=scopeChain(id), at=sc[state.scope], q=state.q.toLowerCase();
+  var types=listsAt(at).filter(function(lt){return !q||lt.n.toLowerCase().indexOf(q)!==-1||lt.ur.indexOf(state.q)!==-1;});
+  var where=chain(id).slice().reverse().slice(0,-1).map(pName).join(lang==="ur"?"، ":", ");
+  var h='<h1>'+esc(T("homeTitle"))+'</h1><p>'+esc(T("homeSub"))+'</p>';
+  h+='<div class="locbar"><span><span class="where">'+esc(where)+'</span><br><span class="muted small">'+esc(T("locGuess",{place:pName(id)}))+'</span></span>'
+    +'<button class="btn" type="button" data-locate>'+esc(T("useExact"))+'</button>'
+    +'<label class="small">'+esc(T("changePlace"))+' <select id="locsel">'+["sialkot","lahore","gujrat","karachi"].map(function(c){return '<option value="'+c+'"'+(id===c?' selected':'')+'>'+esc(pName(c))+'</option>';}).join("")+'</select></label></div>';
+  h+=widenBar(id,totalAll);
+  if(state.scope>0)h+='<p class="muted small">'+esc(T("widerNote"))+'</p>';
+  h+='<h2>'+esc(T("listsIn",{place:pName(at)}))+'</h2>';
+  if(types.length){
+    h+='<ul class="tilegrid">'+types.map(function(lt){return '<li><a class="tile" href="#/lt/'+at+'/'+lt.id+'"><strong>'+esc(tName(lt))+'</strong><span class="big num">'+totalFor(at,lt.id)+'</span><span class="muted small">'+esc(T("bizWord"))+'</span></a></li>';}).join("")+'</ul>';
+  }else{
+    h+='<div class="empty"><h2>'+esc(T("noListYet",{q:state.q,place:pName(at)}))+'</h2><p>'+esc(T("noListBody"))+'</p><a class="btn primary" href="#/add">'+esc(T("startList"))+'</a></div>';
+  }
+  h+='<p style="margin-block-start:var(--s4)"><a class="btn" href="#/place/world">'+esc(T("browsePlaces"))+'</a></p>';
+  return h;
+}
+/* ---------- Place page: world, country, region, city, area, until a list is reached ---------- */
+function renderPlace(id){
+  if(!PLACES[id])return '<p><a href="#/home">'+esc(T("backHome"))+'</a></p>';
+  var pl=PLACES[id], h='';
+  h+='<nav class="crumbs" aria-label="'+esc(T("area"))+'">'+crumbs(chainCrumbs(id,false),pName(id))+'</nav>';
+  h+='<h1>'+esc(pName(id))+'</h1><p class="num"><strong>'+esc(T("nBiz",{n:totalAll(id)}))+'</strong> · '+esc(T("nLists",{n:listsAt(id).length}))+'</p>';
+  if(pl.kids.length){
+    h+='<section class="sec"><h2>'+esc(T("placesInside",{place:pName(id)}))+'</h2><ul class="tilegrid">'+pl.kids.map(function(k){return '<li><a class="tile" href="#/place/'+k+'"><strong>'+esc(pName(k))+'</strong><span class="big num">'+totalAll(k)+'</span><span class="muted small">'+esc(T("nLists",{n:listsAt(k).length}))+'</span></a></li>';}).join("")+'</ul></section>';
+  }
+  var lts=listsAt(id);
+  h+='<section class="sec"><h2>'+esc(T("listsHere"))+'</h2>';
+  if(lts.length)h+='<ul class="tilegrid">'+lts.map(function(lt){return '<li><a class="tile" href="#/lt/'+id+'/'+lt.id+'"><strong>'+esc(tName(lt))+'</strong><span class="big num">'+totalFor(id,lt.id)+'</span><span class="muted small">'+esc(T("bizWord"))+'</span></a></li>';}).join("")+'</ul>';
+  else h+='<div class="empty"><h2>'+esc(T("emptyTitle"))+'</h2><p>'+esc(T("emptyBody2"))+'</p><a class="btn primary" href="#/add">'+esc(T("add"))+'</a></div>';
+  h+='</section>';
+  return h;
+}
+function renderLtStub(pid,tid){
+  var lt=LISTTYPES.filter(function(x){return x.id===tid;})[0];
+  if(!PLACES[pid]||!lt)return '<p><a href="#/home">'+esc(T("backHome"))+'</a></p>';
+  var n=totalFor(pid,tid);
+  return '<nav class="crumbs">'+crumbs(chainCrumbs(pid,false),pName(pid))+'</nav><h1>'+esc(tName(lt))+' · '+esc(pName(pid))+'</h1>'
+   +'<div class="hero"><div class="hero-num num" aria-hidden="true">'+n+'</div><div class="hero-body"><strong>'+esc(T("nBiz",{n:n}))+'</strong></div></div>'
+   +'<p class="muted">'+esc(T("demoStub",{n:n}))+'</p><div class="actions"><a class="btn" href="#/home">'+esc(T("backHome"))+'</a><a class="btn" href="#/place/'+pid+'">'+esc(pName(pid))+'</a></div>';
+}
 /* ---------- Empty list ---------- */
 function renderEmpty(){
   return '<nav class="crumbs">'+crumbs(placeCrumbs(),T("gujrat"))+'</nav><h1>'+esc(T("titleEmpty"))+'</h1>'
@@ -493,7 +604,7 @@ function renderEntry(id){
   var e=ENTRIES.filter(function(x){return x.id===id;})[0]; if(!e) return '<p><a href="#/list">'+esc(T("backList"))+'</a></p>';
   var sub=state.plan==="sub", live=isOpen(e);
   var h='';
-  h+='<nav class="crumbs">'+crumbs(placeCrumbs().concat([T("sialkot")]),mainName(e))+'</nav>';
+  h+='<nav class="crumbs">'+crumbs(chainCrumbs("sialkot",true),mainName(e))+'</nav>';
   h+='<h1>'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</h1>';
   h+='<p class="muted">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</p>';
   h+='<p class="small">'+esc(D(e.type))+' · '+esc(D(e.area))+', '+esc(T("sialkot"))+'</p>';
@@ -584,9 +695,9 @@ function setRobots(v){var m=document.querySelector('meta[name="robots"]');if(m)m
 function chrome(){
   document.documentElement.lang=lang; document.documentElement.dir=lang==="ur"?"rtl":"ltr";
   function s(id,k){document.getElementById(id).textContent=T(k);}
-  s("protoNote","proto");s("protoSummary","protoSummary");s("lblView","viewing");s("lblTheme","theme");s("lblLang","lang");s("navList","navList");s("navEmpty","navEmpty");s("navSys","navSys");
+  s("protoNote","proto");s("protoSummary","protoSummary");s("lblView","viewing");s("lblTheme","theme");s("lblLang","lang");s("navList","navList");s("navEmpty","navEmpty");s("navSys","navSys");s("navHome","logoHome");s("navPlaces","browsePlaces");
   s("planFree","free");s("planSub","sub");s("lblSearch","search");s("btnSearch","search");s("skip","skip");
-  document.getElementById("q").placeholder=T("searchPh");
+  document.getElementById("q").placeholder=T((location.hash==="#/home"||!location.hash)?"searchHomePh":"searchPh");
   document.getElementById("planFree").setAttribute("aria-pressed",String(state.plan==="free"));
   document.getElementById("planSub").setAttribute("aria-pressed",String(state.plan==="sub"));
   Array.prototype.forEach.call(document.querySelectorAll("[data-theme-btn]"),function(b){var k=b.getAttribute("data-theme-btn");b.textContent=T(k);b.setAttribute("aria-pressed",String(state.theme===k));});
@@ -594,8 +705,11 @@ function chrome(){
   document.getElementById("legal").innerHTML=esc(T("legal"))+' <a href="#/remove">'+esc(T("privacy"))+'</a> · <a href="#/report">'+esc(T("report"))+'</a><br>'+esc(T("notes"));
 }
 function routeInfo(){
-  var hash=location.hash||"#/list", m=hash.match(/^#\/entry\/(\w+)/);
+  var hash=location.hash||"#/home", m=hash.match(/^#\/entry\/(\w+)/);
   if(m){var e=ENTRIES.filter(function(x){return x.id===m[1];})[0];return {kind:"entry",id:m[1],title:(e?e.name:"Entry")+" – "+EN.title+" – AllLists",robots:"noindex"};}
+  if(hash==="#/home"||hash==="")return {kind:"home",title:"AllLists – find any list, anywhere",robots:"noindex"};
+  var pm=hash.match(/^#\/place\/(\w+)/); if(pm)return {kind:"place",id:pm[1],title:(PLACES[pm[1]]?PLACES[pm[1]].n:"Place")+" – AllLists",robots:"noindex"};
+  var lm=hash.match(/^#\/lt\/(\w+)\/(\w+)/); if(lm)return {kind:"lt",pid:lm[1],tid:lm[2],title:"AllLists",robots:"noindex"};
   if(hash==="#/empty")return {kind:"empty",title:EN.titleEmpty+" – AllLists",robots:"noindex,follow"};
   if(hash==="#/system")return {kind:"system",title:"Design system – AllLists",robots:"noindex"};
   var s=hash.match(/^#\/(report|add|claim|edit|remove|steward)$/);
@@ -604,7 +718,9 @@ function routeInfo(){
 }
 function render(keepScroll){
   var r=routeInfo(), html;
-  if(r.kind==="entry")html=renderEntry(r.id); else if(r.kind==="empty")html=renderEmpty(); else if(r.kind==="system")html=renderSystem(); else if(r.kind==="stub")html=renderStub(r.id); else html=renderList();
+  if(r.kind==="home")html=renderHome(); else if(r.kind==="place")html=renderPlace(r.id);
+  else if(r.kind==="lt"){var si=scopeChain("sialkot").indexOf(r.pid);if(r.tid==="surgical"&&si>=0){if(!keepScroll)state.scope=si;r.title=EN.title+" – AllLists";html=renderList();}else{html=renderLtStub(r.pid,r.tid);}}
+  else if(r.kind==="entry")html=renderEntry(r.id); else if(r.kind==="empty")html=renderEmpty(); else if(r.kind==="system")html=renderSystem(); else if(r.kind==="stub")html=renderStub(r.id); else html=renderList();
   chrome(); var appEl=document.getElementById("app"); appEl.innerHTML=html; appEl.classList.toggle("enter",!keepScroll); document.title=r.title; setRobots(r.robots);
   if(!keepScroll)window.scrollTo(0,0);
   Array.prototype.forEach.call(document.querySelectorAll("[data-native]"),function(b){if(navigator.share){b.hidden=false;}});
@@ -629,6 +745,11 @@ document.addEventListener("click",function(ev){
   if(t.id==="planSub"){state.plan="sub";rerender("planSub");return;}
   if(t.hasAttribute("data-theme-btn")){state.theme=t.getAttribute("data-theme-btn");applyTheme();chrome();return;}
   if(t.hasAttribute("data-lang-btn")){lang=t.getAttribute("data-lang-btn");render(true);var lb=document.querySelector('[data-lang-btn="'+lang+'"]');if(lb)lb.focus();return;}
+  if(t.hasAttribute("data-scope")){state.scope=parseInt(t.getAttribute("data-scope"),10);state.count=5;rerender("sc");return;}
+  if(t.hasAttribute("data-locate")){
+    if(!navigator.geolocation){toast(T("locOff"));return;}
+    navigator.geolocation.getCurrentPosition(function(pos){state.loc=nearestCity(pos.coords.latitude,pos.coords.longitude);state.scope=0;rerender("sc");toast(T("locFound",{place:pName(state.loc)}));},function(){toast(T("locOff"));},{timeout:8000,maximumAge:600000});
+    return;}
   if(t.hasAttribute("data-area")){state.area=t.getAttribute("data-area");state.count=5;rerender("fa",T("statusShown",{n:visibleCount()}));return;}
   if(t.hasAttribute("data-view")){state.view=t.getAttribute("data-view");rerender(null);var vb=document.querySelector('[data-view="'+state.view+'"]');if(vb)vb.focus();return;}
   if(t.hasAttribute("data-copy")){var u=t.getAttribute("data-copy");var oldLabel=t.textContent;
@@ -645,6 +766,7 @@ document.addEventListener("click",function(ev){
 });
 document.addEventListener("change",function(ev){
   var id=ev.target.id;
+  if(id==="locsel"){state.loc=ev.target.value;state.scope=0;rerender("locsel");return;}
   if(id==="fa"){state.area=ev.target.value;state.count=5;}
   else if(id==="fl"){state.level=ev.target.value;state.count=5;}
   else if(id==="so"){state.sort=ev.target.value;}
@@ -655,7 +777,8 @@ window.addEventListener("hashchange",function(){withTransition(function(){render
 /* Search as you type: filters the list live without leaving the search box. */
 document.getElementById("q").addEventListener("input",function(ev){
   state.q=ev.target.value.trim();state.count=5;
-  if(routeInfo().kind!=="list"){location.hash="#/list";return;}
+  var rk=routeInfo().kind;
+  if(rk!=="list"&&rk!=="home"){location.hash="#/home";return;}
   rerender(null,T("statusShown",{n:visibleCount()}));
 });
 try{var st=localStorage.getItem("al-theme");if(st==="light"||st==="dark"){state.theme=st;applyTheme();}}catch(x){}

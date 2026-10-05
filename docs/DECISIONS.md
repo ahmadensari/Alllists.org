@@ -40,6 +40,8 @@ Last updated: 2026-10-05 (service-provider round).
 | Skill-based lists of individuals at neighbourhood level are in (plumbers in Bankers Society, mobile phone repair services, Quran tutors in an area, and many more) | C22, C23 |
 | Verification levels on every entry: owner-verified, surveyor-verified, AI-checked, not verified yet, with who, how, when and evidence stored | D19, D20 |
 | Topic lists that are not about places (apps, websites, books, tools) are in; they use a topic tree and are monetised by sponsorship, affiliate links and ads, not by list sales (working view) | C27 |
+| Browsing path: world page, then country, then each next level, until the list is reached; addresses follow the place tree | C38 |
+| Automatic location: find the user's place, show lists there first, let them widen or search country-wide, then apply the payment policy; addresses stay the same for everyone | C39 |
 | Text and numbers only for now: no pictures or videos | C29 |
 | Modern, dynamic page of 2026: CSS-first motion and server-rendered pages with small interaction; libraries only where CSS cannot do the job; motion respects reduced-motion settings (working view) | C36 |
 | Base structure: a few templates, shared parts and registries; one change reaches every page that uses it; no hand-made pages | C34 |
@@ -130,3 +132,4 @@ Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeri
 | Website and social page links: public or locked | Locked on the free view | Q-S13 |
 | Choose one first trade in writing | Sialkot surgical instruments, as a verified-supplier register, tested for eight weeks first | Q-S16 |
 | How the contributor share is defined | Net revenue, with a time cap on each entry's phase rate (suggested 36 months) | Q-S15 |
+| The name and domain | Keep AllLists; check alllists.org ownership; price alllists.com; protect .app, .io and .pk; fallback ListAtlas | Q-S19 |
