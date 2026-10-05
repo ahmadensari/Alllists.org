@@ -250,6 +250,25 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 
 ---
 
+## O2. Commerce layer (vision stated 2026-10-05; staged, not for version 1)
+
+The owner's longer-term vision: lists of salons, spare-parts shops, bakeries, mobile stores and so on become a way for factories to reach shops directly, with no middlemen, shipping from factory to shop. It is described as a "reverse Alibaba" or a "specialised Amazon" with very targeted marketing.
+
+| ID | Capability | Source | Status |
+|---|---|---|---|
+| V1 | **Demand intelligence:** companies see what is in demand in a trade and place (counts, searches, requests), built from aggregate list data | U | Vision. First step is the whole-list statistics already decided in E14 |
+| V2 | **Product requests:** shops post what they want and companies receive the requests (request for quotation) | U | Vision. Asset-light, can follow the outreach product |
+| V3 | **Product testing:** companies pilot or test new products with a targeted set of shops (samples, surveys, trial orders) | U | Vision |
+| V4 | **Direct sell offers** to shops, with no middlemen | U | Vision. The outreach product (E13) is the first step |
+| V5 | **Direct shipping** from factory to shop through the platform | U | Vision. Needs payments, escrow, logistics partners, returns, disputes, import/export and tax compliance |
+| V6 | Very targeted audience: ads reach only shops in the relevant trade and place, instead of broad Google and Meta advertising | U | Decided as positioning (E17) |
+| V7 | Shop-side controls: topics, channels and frequency caps, so many companies do not flood the same shops | my design | Proposed. Needed from the first outreach campaign |
+| V8 | Verified factory and shop accounts (KYC) before offers and orders | my design | Proposed |
+
+**Staging proposed:** (1) directory plus statistics plus paid outreach; (2) product requests and test panels, still data and messaging only; (3) transactions through partners for payments and logistics. The platform should own logistics or credit only if the earlier stages show demand. Each stage is gated on evidence (reply rates, repeat buyers, shops asking to order).
+
+---
+
 ## P. Conflicts that need a decision
 
 | # | Conflict | Sources | My recommendation |
