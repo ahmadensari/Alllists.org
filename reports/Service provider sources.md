@@ -257,11 +257,12 @@ All figures are as shown in search summaries. No filing was opened. Directory fi
 
 | Platform type | Platform | How it earns | Figures cited in the notes |
 |---|---|---|---|
-| **Directories** | Justdial, IndiaMART | Businesses pay for ranking, campaigns and tiers. | Only about 1% to 3% of listings pay; revenue sits in a thin top tier and the entry tier churns. See `Which lists pay.md`. |
+| **Directories** | Justdial, IndiaMART | Businesses pay for ranking, campaigns and tiers. | Only about 1% to 3% of listings pay; revenue sits in a thin top tier and the entry tier churns. See `Which lists pay.md`. Fuller detail for 35 directory and lead platforms is in the next table. |
 | | Zameen, Dubizzle | Agency subscriptions, paid listings, developer deals. | Dubizzle revenue USD 183M in 2024, recurring 12-month packages. See `Which lists pay.md`. |
 | | Yelp | Advertising from service businesses. | Services advertising USD 947.6M, up 8%. See `Which lists pay.md`. |
-| | Urban Company, Thumbtack | Commission or platform fee, or a price per lead. | Urban Company 73.4% of revenue from commissions and platform fees. Thumbtack leads about USD 8 to 25 for cleaning and handyman work, more for large jobs [unverified, vendor blogs]. |
-| | Zocdoc | Fee per new patient booking. | No figure cited. |
+| | Urban Company | Commission or platform fee. | 73.4% of revenue from commissions and platform fees. |
+| | Thumbtack | Fee per lead, Pro subscription, booking commission. | Lead prices about USD 8 to 150 or more by job size [V, vendor blogs]. Revenue figures for Thumbtack are not usable and are left out. |
+| | Zocdoc | Fee per new patient booking. | USD 35 to 110 per booking by specialty and location (Zocdoc pages via search). |
 | **Talent and jobs** | LinkedIn | Marketing, talent, premium and sales products. | FY2025 revenue USD 17.81B, up 9% (one summary). FY2026 growth 11%. Premium over USD 2B [secondary]. Dollar splits by line are inconsistent and unusable [unverified]. |
 | | LinkedIn Recruiter | Seat subscription. | Recruiter Lite about USD 170 a month; full Recruiter roughly USD 8,000 to 15,000 per seat a year [unverified, third-party blogs]. |
 | | Indeed, Glassdoor (Recruit) | Employers pay for sponsored jobs. | US revenue up 19% to USD 1.41B in January to March 2026 while postings fell about 7%. Employers pay more per job on fewer jobs. |
@@ -284,6 +285,31 @@ All figures are as shown in search summaries. No filing was opened. Directory fi
 | **Data marketplaces** | AWS Data Exchange | Small seller fee. | 3% on public offers, 1.5% on large private offers and renewals. |
 | | Datarade | Provider subscriptions plus commission. | 30% commission reported [unverified]. |
 | | Snowflake Marketplace | Indirect, through buyers' compute. | A 25% to 30% fee circulates [unverified]. Not found in Snowflake's own pages. |
+
+### Directory, local-search and lead platforms: the second note
+
+A separate note covers 35 directory, review, lead and classifieds platforms. Its flags are kept here: [derived] means our arithmetic from cited numbers, [V] means a vendor, agency or aggregator blog, and [unverified] means no trustworthy source or sources conflict. Every figure comes from a search summary of a filing or article. No primary document was opened. The figures that note marks as unusable are not used: Thumbtack revenue, G2 revenue, Sulekha revenue, the Jiji revenue split, Zocdoc enterprise revenue, Yelp's paying-location count and the Europages price.
+
+| Stream | Who uses it | Figures cited |
+|---|---|---|
+| Subscription or annual package for agents, dealers and advertisers | Justdial, IndiaMART, Rightmove, Dubizzle, Property Finder, Solocal, Thryv, Trustpilot | Rightmove 2025 revenue GBP 425.1M, agency 71.7% of it, underlying operating margin 70%, average GBP 1,530 per agency branch per month [derived monthly basis]. Dubizzle UAE adjusted EBITDA margin 46% in H1 2025 (IPO and press figure, not audited). Property Finder UAE EBITDA margin above 60% in H1 2025 (press). Solocal 2025 revenue EUR 324.5M, with its Priority Listing product about 37% of group revenue [derived]. Trustpilot 2025 revenue USD 261.1M, one stream (business subscriptions), average contract USD 9,781. |
+| Pay per click or performance advertising | Yelp, Tripadvisor hotels, Zomato, Nextdoor, Google Local Services Ads | Yelp 2025 advertising USD 1,391.3M, about 95% of net revenue [derived]. Tripadvisor hotel click advertising USD 550.3M. Nextdoor 2025 revenue USD 257.6M, mostly advertising. |
+| Pay per lead or contact credit | IndiaMART, Angi, Thumbtack, Clutch, Google LSA, Property Finder | Clutch from USD 25 per lead with a USD 1,000 monthly minimum. Google LSA about USD 53 per lead on average, plumbing 57 [V]. Angi's network leads fell 79% in 2025 after a "homeowner choice" change, while its own-site leads rose 23%. |
+| Paid verification or trust badge | IndiaMART TrustSEAL and Verified Exporter, Alibaba.com, Google, Meta Verified | IndiaMART Verified Exporter Rs 1.15 to 6.5 lakh a year. Alibaba Verified about USD 12,500 a year [V]. Meta Verified USD 21.99 a month per page at launch (current price not confirmed). |
+| Commission or booking fee | Urban Company, Zomato, Viator, Zocdoc, Zillow Flex | Urban Company revenue about 36% of transaction value [derived], loss-making in Q1 FY27. Viator about 20% of booking value [derived]. Zillow Flex 20% to 40% of agent commission on closed deals. |
+| Software bundled for businesses | Thryv, Solocal, Yelp, Zillow, IndiaMART (Busy), Practo | Thryv SaaS revenue USD 461.0M, up 34.2% in 2025 but up only 5% in Q1 2026. Solocal's Connect product fell 15% in 2025. |
+| Data licensing and API | Dun & Bradstreet, Yelp, Kompass | Yelp data licensing is small (inside about USD 65M to 75M of "Other" revenue [derived]) but grew above 30% in Q4 2025. |
+| Job postings | Glassdoor, Naukri, Craigslist, OLX | Craigslist jobs about 35.6% of estimated revenue (estimates only, not company figures). |
+
+What this note adds to the first one:
+
+- **The free-to-paid pattern is the same everywhere.** About 1.2% of Justdial's listings are paid campaigns and about 2.6% of IndiaMART's storefronts [derived]. Trustpilot is about 2% of its businesses [derived, rough]. Revenue sits in a thin premium tier.
+- **Margins are best where the platform is dominant in a local market and sells annual subscriptions to agents and dealers.** Rightmove 70%, OLX 49% EBITDA in H1 FY26, Dubizzle UAE 46%. Commission models earn much less (Practo about 6% [derived]). Margins are company-level, not per stream.
+- **Growth now comes from add-ons to an existing audience,** such as messaging, rentals, mortgages, data and AI-answer visibility. Rightmove shifted growth away from raising core prices. IndiaMART's Silver price rise backfired.
+- **Pay-for-outcome pricing is rising where the platform can see the outcome** (a booking, a closed sale, a completed job). Subscriptions persist where the outcome happens off the platform (property agents, dealers, small shops).
+- **What failed:** print directories (Thryv is selling its print arm for USD 142M), daily deals, consumer subscriptions (Tripadvisor Plus shut after about three years), buying inventory (Zillow Offers), and food delivery for Yelp (Eat24). 
+- **Realised revenue per paying customer is low for small-business directories:** about Rs 19,000 a year at Justdial [derived], Rs 67,000 to 69,000 at IndiaMART, against about GBP 18,400 per agency branch at Rightmove [derived]. High-ticket sellers pay more.
+- **Gaps:** no platform discloses stream-level margin, churn or revenue by customer size except IndiaMART. No evidence exists on how a contributor-built directory earns in its first two years, or on what Pakistani businesses would pay.
 
 ### What the evidence says across the table
 
