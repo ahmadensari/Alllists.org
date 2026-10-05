@@ -63,7 +63,10 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | C3 | Users can drill down ("go deeper") and zoom out between levels | C1 | Proposed |
 | C4 | Categories and subcategories (professionals, businesses, places, items) | C1 | Proposed |
 | C5 | Lists have different fields (phone, address, location, ratings, business size, and whatever else a list needs) | U | Decided |
-| C6 | Entries carry contact info, location, description (existing schema) | R | Proposed |
+| C6 | ~~Entries carry contact info, location, description~~ **Superseded on 2026-10-05 by C17** | R | Superseded |
+| C17 | **An entry has these fields:** (1) name, (2) address, (3) owner, (4) phone number, (5) WhatsApp number, (6) social media page, (7) rankings by reviewers, (8) size, (9) available goods, (10) services, and others as each list needs (C5) | U (2026-10-05) | **Decided.** Privacy and quality conditions below (C18, C19) |
+| C18 | The **owner** field and any personal phone number are personal data in many countries (especially sole traders). They are shown or used only with the owner's claim or a lawful basis; agents do not collect named-owner data without one. Buyers never see contact fields (E13) | my design (legal research) | Proposed. Needs counsel per launch country |
+| C19 | **Rankings by reviewers** need rules: who may review (customers, buyers, both), one review per verified user, fake-review detection, owner reply, and a clear separation from paid ranking (E15). Rules on fake and undisclosed paid reviews exist in several markets | my design | Proposed. Open: who reviews and how (Q-P3) |
 | C7 | A list can be merged into several parents? (e.g. both a city list and a category list) | none | **Open** |
 | C8 | Merge is performed by the platform, not by users | U | Decided |
 | C9 | Lists can be hierarchical by `parent_list_id` (existing schema) | R | Superseded by C10 (a list is a category at a place, not a parent/child record) |
@@ -74,6 +77,7 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | C14 | The place tree is seeded from open geographic data (e.g. GeoNames, CC-BY) so that top levels are not user-made; levels differ by country, so level types are generic, not fixed | my design, research notes | Proposed. Avoid GADM (non-commercial); treat OpenStreetMap-derived data under its share-alike licence |
 | C15 | A shared, multilingual category taxonomy with synonyms ("petrol pump", "gas station", "fuel station", "filling station" are one category) | my design | Proposed. Who may propose categories, and who approves, is open (Q-O3) |
 | C16 | Lists with too few entries are not indexed by search engines and show an invite to be the first contributor | my design (research report) | Proposed |
+| C20 | **People may own a segment of a list and correct it** (for example the petrol pumps on one road, or bakeries in one district). Ownership grants the right to verify and correct entries in that segment | U (2026-10-05) | **Decided in principle.** Open: exclusive or shared, how a segment is claimed, how it lapses if the owner goes inactive, how disputes and abuse are handled, whether owners are paid as agents (Q-P2). Being researched |
 
 ## D. Getting content in, and keeping it good
 
@@ -92,6 +96,10 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | D11 | Contributors declare they have the right to share an imported list; takedown process | my design | Proposed |
 | D12 | Entry data must not be copied from sources whose terms forbid it (e.g. Google Maps) | my design | Proposed |
 | D13 | Report-an-error flow for any entry | my design | Proposed |
+| D14 | **AI agents draft lists from many sources**, then owners and contributors verify. Starting launch markets are places where business data is poor (Pakistan, the Middle East and other countries to be researched) | U (2026-10-05) | **Decided** as direction |
+| D15 | Agent source list proposed by the founder: chambers of commerce, trade associations, people's own listings, Google Maps, Facebook, Baidu Maps, general internet research. **Research so far puts the last three scraping routes in the "do not use" tier** (terms and case law), while chambers, associations, owner submissions, government registries and open datasets are the safe tiers. A per-source permission table is being researched | U, legal research | **Open: needs the source-permission table and counsel** |
+| D16 | Open baseline data (Overture, Foursquare Open Source Places, government registries) is licensed in as the starting layer; agent output stays private and unindexed until verified; unverified agent pages are not published at scale | U (2026-10-05, agrees with report), AI report | **Decided** |
+| D17 | Every record stores its source, licence, collection date, robots decision and consent status | my design (legal research) | Proposed |
 
 ## E. Products, access and pricing
 
@@ -346,6 +354,14 @@ The owner's longer-term vision: lists of salons, spare-parts shops, bakeries, mo
 - **Q-O3.** Who may propose and approve categories (taxonomy)? Suggestion: seed from an open taxonomy, let contributors suggest, moderators approve, and merge synonyms.
 - **Q-O4.** At which level does a business pay to rank (area, city, country)? Suggestion: sell per level, with the city level as the first product.
 - **Q-O5.** In which countries is selling and outreach switched on first? (Structure is global, but each country needs legal clearance before messaging is enabled.)
+
+**Added 2026-10-05 (from the launch-market, source and entry-field decisions)**
+
+- **Q-P1.** Which countries and trades come first? Pakistan and the Middle East are named; a research round on data-poor launch markets is under way.
+- **Q-P2.** How does segment ownership work: exclusive or shared, how claimed, how lost, and are owners paid (fixed fee per verified entry, share of sales, or both)?
+- **Q-P3.** Who may write the "rankings by reviewers" on entries (customers, buyers, both), and how are fake reviews prevented?
+- **Q-P4.** Which of the founder's agent sources are used (chambers, associations, owner submissions, registries, open data) and which are excluded (Google Maps, Facebook and Baidu Maps scraping), after counsel reviews the permission table?
+- **Q-P5.** Are agent networks really free? Being tested: open-weight models and agent frameworks cut model costs, but proxies, verification and human review remain.
 
 ---
 
