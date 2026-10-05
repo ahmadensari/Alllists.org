@@ -1,128 +1,111 @@
-> **Note:** the Flask draft this guide described was replaced by the Django app in `backend/`. See `backend/README.md` for current run and production settings. The text below is the earlier untested draft.
+# Deployment guide
 
-# Deployment guide (draft, untested)
+How AllLists runs in production, written for the founder and whoever the founder hires. Every file named here is in the repository: `deploy/`, `scripts/`, `docs/runbooks/`. Nothing in this guide has been run on a real server yet; the first run is the staging rehearsal (section 9).
 
-Target: one Ubuntu server running Nginx, Gunicorn (as a systemd service) and PostgreSQL, with HTTPS.
-Prerequisite: the backend must first be repaired so it starts (see "Current state" in README.md).
-It must expose a WSGI entry point `wsgi:app` (an app factory is recommended).
+## 1. Shape of the system
 
-None of these commands have been run against a real server. Test on a throwaway VM first.
+Reverse proxy (Caddy, or Nginx) → Gunicorn (Django) → PostgreSQL 16. A scheduler runs every five minutes and does whatever is due (roll-ups, expiry, holds, reconciliation, alerts). A second timer sends approved outreach campaigns. A nightly timer takes the backup. No Redis, no Celery, no search engine at the start (the plan's stage S1); each is added only when a measurement says so.
 
-## 1. System packages and firewall
+Stages (plan 3.5): S0 one small server; S1 managed PostgreSQL plus one app server behind a CDN; S2 a read replica and a worker server; later stages in the plan.
 
-```
-sudo apt update && sudo apt install -y python3 python3-venv nginx postgresql
-sudo ufw allow OpenSSH && sudo ufw allow 'Nginx Full' && sudo ufw enable
-```
+## 2. What you need to decide or buy first (the founder)
 
-Only ports 22, 80 and 443 are open. The app port (5000) is never exposed.
+1. **Domain and name.** Confirm the owner of `alllists.org`; consider `alllists.com` and `.pk`.
+2. **Hosting.** One server in a region close to most users plus managed backups, or a managed platform. The plan assumes Ubuntu 24.04, 2 vCPU, 4 GB RAM, 80 GB disk to start.
+3. **CDN and DNS** (Cloudflare free plan is enough at the start). It also supplies the visitor's country header the app reads.
+4. **Email sender** (a transactional email service) for sign-up codes, enquiry relay and alerts.
+5. **Payment provider** for the local currency and a foreign route. Until chosen, payments are recorded by hand in `/staff/orders/`.
+6. **Counsel** before any messaging campaign, any list of named people, or any child-facing list.
+7. **Rotate the secrets that were pasted into chat** (`docs/runbooks/secret-rotation.md`). Do this before anything goes on a real server.
 
-## 2. Database
-
-```
-sudo -u postgres psql -c "CREATE USER alllists WITH PASSWORD '<generate-a-long-password>';"
-sudo -u postgres psql -c "CREATE DATABASE alllists OWNER alllists;"
-```
-
-## 3. App code and virtual environment
+## 3. Prepare the server
 
 ```
-sudo mkdir -p /srv/alllists && sudo chown $USER /srv/alllists
-git clone <repo-url> /srv/alllists/app && cd /srv/alllists/app/backend
-python3 -m venv /srv/alllists/venv
-/srv/alllists/venv/bin/pip install -r requirements.txt gunicorn
+sudo apt update && sudo apt install -y python3.12 python3.12-venv postgresql-16 postgresql-client-16 caddy git
+sudo useradd --system --create-home --shell /usr/sbin/nologin alllists
+sudo mkdir -p /srv/alllists/releases /var/lib/alllists/extracts /var/backups/alllists /var/log/alllists /etc/alllists
+sudo chown -R alllists:alllists /srv/alllists /var/lib/alllists /var/backups/alllists /var/log/alllists
+sudo ufw allow OpenSSH && sudo ufw allow 80,443/tcp && sudo ufw enable
+python3.12 -m venv /srv/alllists/venv
+git clone --mirror <repository-url> /srv/alllists/repo.git
 ```
 
-## 4. Secrets (never committed)
+Only ports 22, 80 and 443 are open; the app port is bound to 127.0.0.1.
 
-Create `/etc/alllists.env`, readable only by the service user (`chmod 600`):
-
-```
-SECRET_KEY=<random 64+ chars>
-DATABASE_URL=postgresql://alllists:<password>@localhost/alllists
-```
-
-## 5. Database migrations
-
-Use Flask-Migrate, and make sure `Migrate(app, db)` is actually created in the app code:
+## 4. Database
 
 ```
-export FLASK_APP=wsgi:app
-/srv/alllists/venv/bin/flask db init      # first time only
-/srv/alllists/venv/bin/flask db migrate -m "initial"
-/srv/alllists/venv/bin/flask db upgrade
+sudo -u postgres createdb alllists
+sudo -u postgres psql -v app_pw="'<long random>'" -v ro_pw="'<long random>'" -f deploy/db_roles.sql alllists
 ```
 
-## 6. Gunicorn as a service
+The application connects as `alllists_app`, which can insert into the append-only tables (audit log, change log, verification events, consent records, ledger) but cannot update, delete or truncate them. `alllists_readonly` is for analysts and replicas and cannot read the sensitive tables (contacts, payout details, sessions, users). Migrations run as the owner; after each migrating deploy run `python manage.py db_roles --apply` as the owner, and `python manage.py db_roles --check` to confirm the grants are as designed.
 
-`/etc/systemd/system/alllists.service`:
+PostgreSQL settings worth setting at once: `shared_buffers` 25% of RAM, `log_min_duration_statement = 500`, `wal_level = replica`, and WAL archiving to a different account or region (`archive_mode = on`, `archive_command` pointing at your object store with a tool such as `pgBackRest` or `wal-g`). The nightly dump in `scripts/backup.sh` is the floor; WAL archiving is what gets the loss window down to minutes at stage S2.
 
-```
-[Unit]
-Description=AllLists API
-After=network.target postgresql.service
+## 5. Configuration
 
-[Service]
-User=www-data
-WorkingDirectory=/srv/alllists/app/backend
-EnvironmentFile=/etc/alllists.env
-ExecStart=/srv/alllists/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 wsgi:app
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
+Copy `deploy/env.example` to `/etc/alllists/alllists.env` (mode 600, owner `alllists`). Generate:
 
 ```
-sudo systemctl daemon-reload && sudo systemctl enable --now alllists
+python3 -c "import secrets; print(secrets.token_urlsafe(64))"                           # DJANGO_SECRET_KEY
+python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"  # one field-encryption key
+python3 -c "import secrets; print(secrets.token_hex(32))"                                # CONTACT_HASH_PEPPER
 ```
 
-## 7. Nginx and HTTPS
+`FIELD_ENCRYPTION_KEYS` is written as `k1:<key>` (more keys separated by commas) and `FIELD_ENCRYPTION_ACTIVE_KEY=k1`. Keep an offline copy of these in a password manager: **losing the keys makes every contact and payout detail unreadable, and losing the pepper breaks the do-not-contact list.** Production refuses to start without them.
 
-`/etc/nginx/sites-available/alllists`:
-
-```
-server {
-    listen 80;
-    server_name alllists.org www.alllists.org;
-
-    location /api/ {
-        proxy_pass http://127.0.0.1:5000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    location / {
-        root /srv/alllists/app/frontend;
-        index index.html;
-        try_files $uri $uri/ /index.html;
-    }
-}
-```
+## 6. First release
 
 ```
-sudo ln -s /etc/nginx/sites-available/alllists /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d alllists.org -d www.alllists.org
+scripts/deploy.sh <tag-or-commit>        # builds the release, migrates, collects static files, restarts, smoke tests
+cd /srv/alllists/current/backend && set -a && . /etc/alllists/alllists.env && set +a
+../../venv/bin/python manage.py seed_pilot          # Sialkot structure, first list type, sources, country switch (everything off but browsing)
+../../venv/bin/python manage.py seed_taxonomy       # all list types and the add-on families
+../../venv/bin/python manage.py createsuperuser     # the first admin; then turn on two-step sign-in at /account/security/
 ```
 
-If the frontend becomes a server-rendered app (Next.js), Nginx proxies `/` to it instead of serving static files.
-
-## 8. Check
+Install the units and timers and the proxy configuration:
 
 ```
-curl -i https://alllists.org/api/
-sudo journalctl -u alllists -n 50
+sudo cp deploy/systemd/* /etc/systemd/system/ && sudo systemctl daemon-reload
+sudo systemctl enable --now alllists-web alllists-scheduler.timer alllists-backup.timer
+sudo systemctl enable alllists-campaigns.timer         # start it only when counsel has cleared a country
+sudo cp deploy/Caddyfile /etc/caddy/Caddyfile && sudo systemctl reload caddy
 ```
 
-## Updating
+Caddy obtains HTTPS certificates by itself once the DNS name points at the server. With Nginx use `deploy/nginx.conf` and certbot.
 
-```
-cd /srv/alllists/app && git pull
-/srv/alllists/venv/bin/pip install -r backend/requirements.txt
-FLASK_APP=wsgi:app /srv/alllists/venv/bin/flask db upgrade
-sudo systemctl restart alllists
-```
+## 7. Everyday operation
+
+| Task | How |
+|---|---|
+| Deploy | `scripts/deploy.sh <tag>` (`docs/runbooks/deploy-rollback.md`) |
+| Roll back | `scripts/rollback.sh` |
+| Health | `/staff/metrics/` (red rows are also emailed to `ALERT_EMAILS`, once a day each) and `/healthz` for an uptime monitor |
+| Scheduled jobs | `/staff/jobs/` shows each job, its last run and last error |
+| Backup | nightly by timer; copy `/var/backups/alllists` to another account or region |
+| Restore drill | quarterly, `scripts/restore_drill.sh` |
+| Money | `/staff/ledger/` reconciliation; `docs/runbooks/payout-cycle.md` |
+| Incidents | `docs/runbooks/README.md` |
+
+## 8. Container option
+
+`deploy/Dockerfile` builds the same app as an image (`docker build -f deploy/Dockerfile -t alllists:TAG .`). Run one container for the web process and the same image with the command `python manage.py run_scheduled` on a five-minute schedule. Pass the environment from the platform's secret store. The database is a managed PostgreSQL instance.
+
+## 9. Staging rehearsal (before the first real release)
+
+1. Build a second small server the same way with `staging` hosts and payment sandboxes.
+2. Deploy a tag, load the pilot data and the demo entries (`seed_demo_entries`), click through the sample pages in light and dark, English and Urdu.
+3. Run the load script (`scripts/loadtest.py`, section 10) at three times the expected peak.
+4. Run `scripts/restore_drill.sh`, time it and record it in `docs/runbooks/restore.md`.
+5. Practise one rollback and one secret rotation.
+6. Only then point the real domain at production.
+
+## 10. Load tests and scale-up
+
+`scripts/loadtest.py` replays a realistic mix (list pages, entry pages, search, fragments) against a base URL and reports p50/p95/p99 and error rate; the targets are in plan section 18.5 (shared pages from cache in under 200 ms, p95 of the private parts under 400 ms). When the targets are missed the order of remedies is: CDN cache rules, indexes, a read replica for list queries (`DATABASES["replica"]` and a router), partitioning the entry tables by country (the schema keeps `country_code` on every row for this), then a search engine behind the search service interface (`catalog/search_backend.py`).
+
+## 11. What stays manual on purpose
+
+Approving payout batches, approving message templates, turning a country on, and rotating secrets. Each needs a person, and the system will not do them by itself.

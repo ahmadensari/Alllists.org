@@ -14,8 +14,9 @@ from access.models import Ad
 from accounts.roles import has_cap
 from core.models import AuditLog, CountrySwitch, audit, verify_audit_chain
 from entries import services as es
-from entries.models import Claim, CompanySection
+from entries.models import Claim, CompanySection, ConsentRecord
 from intake.models import DedupeCandidate, ImportBatch, Source
+from moderation import privacy
 from moderation import services as mod
 from moderation.models import Report, SuggestedEdit, Takedown
 from outreach import campaigns
@@ -144,6 +145,16 @@ queue(
     describe=lambda k: f"{k.user.username}: {k.country_code}, {k.method} (account details are shown only to the bank step)",
 )
 queue(
+    key="consent",
+    title="Consent register (people)",
+    cap="takedown",
+    actions=(("withdraw", "Record withdrawal and take down"),),
+    items=lambda: [
+        r for r in privacy.consent_register() if r.status == "consented" and r.entry.publish_state != "suppressed"
+    ][:100],
+    describe=lambda r: f"{r.entry.uid} {r.entry.name}: consented {r.at:%Y-%m-%d} by {r.method} ({r.wording_version})",
+)
+queue(
     key="takedowns",
     title="Removal and erasure requests",
     cap="takedown",
@@ -222,6 +233,7 @@ def act(request, key, pk, action):
             "templates": MessageTemplate,
             "ads": Ad,
             "kyc": PayoutProfile,
+            "consent": ConsentRecord,
         }[key]
         .objects.filter(pk=pk)
         .first()
@@ -257,6 +269,8 @@ def act(request, key, pk, action):
             campaigns.decide_supplier(obj, actor=actor, approve=action == "approve", note=note)
         elif key == "campaigns":
             campaigns.approve_campaign(obj, actor=actor)
+        elif key == "consent":
+            privacy.withdraw_consent(obj.entry, actor=actor)
         elif key == "kyc":
             ledger_services.decide_kyc(obj, actor=actor, approve=action == "approve", note=note)
         elif key == "ads":
@@ -623,5 +637,55 @@ def ledger_page(request):
             "batches": [(b, list(b.payouts.select_related("user"))) for b in batches],
             "robots": "noindex,nofollow",
             "title": "Ledger",
+        },
+    )
+
+
+def subject_access(request):
+    """Staff-run subject access (plan P3.14). Needs a contact value the requester has proven they hold."""
+    denied = _gate(request, "takedown")
+    if denied:
+        return denied
+    report = None
+    if request.method == "POST":
+        kind = request.POST.get("kind", "phone")
+        if kind not in ("phone", "email"):
+            kind = "phone"
+        report = privacy.subject_access_report(kind, request.POST.get("value", ""), request.POST.get("country", "PK"))
+        if request.POST.get("format") == "json":
+            from django.http import HttpResponse
+
+            resp = HttpResponse(privacy.subject_access_json(report), content_type="application/json; charset=utf-8")
+            resp["Content-Disposition"] = 'attachment; filename="subject-access.json"'
+            resp["Cache-Control"] = "private, no-store"
+            return resp
+    return render(
+        request,
+        "catalog/staff/subject_access.html",
+        {
+            "report": privacy.subject_access_json(report) if report else None,
+            "robots": "noindex,nofollow",
+            "title": "Subject access",
+        },
+    )
+
+
+def metrics_page(request):
+    """Health of the whole service on one page (plan 18.3). Red rows are also emailed by the hourly alert job."""
+    from core import monitoring
+
+    denied = _gate(request, "view_audit")
+    if denied:
+        return denied
+    ms = monitoring.collect()
+    return render(
+        request,
+        "catalog/staff/table.html",
+        {
+            "title": "Service health",
+            "head": ["Area", "Check", "Value", "State", "Note"],
+            "rows": [[m.area, m.name, m.value, m.state.upper() if m.state != "ok" else "ok", m.note] for m in ms],
+            "robots": "noindex,nofollow",
+            "note": f"{sum(1 for m in ms if m.state == 'alert')} alerts, {sum(1 for m in ms if m.state == 'warn')} warnings.",
         },
     )

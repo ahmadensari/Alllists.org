@@ -11,7 +11,8 @@ def test_due_jobs_run_once_per_interval_and_record_results(db):
     assert set(first) == set(jobs.JOBS) and all(not v.startswith("RuntimeError") for v in first.values())
     assert jobs.run_due() == {}  # nothing is due a moment later
     later = clock.now() + timedelta(hours=2)
-    assert set(jobs.run_due(now=later)) == {"expiry_sweeper", "placement_expiry"}  # only the hourly job
+    hourly = {n for n, (every, _) in jobs.JOBS.items() if every == jobs.HOUR}
+    assert set(jobs.run_due(now=later)) == hourly  # only the hourly jobs
     assert set(jobs.run_due(now=clock.now() + timedelta(days=2))) >= {
         "rollup_recount",
         "hold_release",

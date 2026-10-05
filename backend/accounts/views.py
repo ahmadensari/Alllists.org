@@ -15,7 +15,8 @@ from core import clock
 from core.models import audit
 
 from . import throttle, totp
-from .models import EmailToken, Profile, RecoveryCode, TOTPDevice
+from . import social
+from .models import EmailToken, Profile, RecoveryCode, SocialIdentity, TOTPDevice
 from .roles import needs_mfa, user_roles
 
 User = get_user_model()
@@ -137,7 +138,11 @@ def login_view(request):
             login(request, user)
             audit("account.login", actor=user, object_type="user", object_uid=str(user.pk))
             return redirect(_safe_next(request))
-    return render(request, "accounts/login.html", _ctx(request, error=error, next=_safe_next(request)))
+    return render(
+        request,
+        "accounts/login.html",
+        _ctx(request, error=error, next=_safe_next(request), providers=social.enabled_providers()),
+    )
 
 
 @require_POST
@@ -272,3 +277,161 @@ def delete_account(request):
                 _ctx(request, heading="Account deleted", body="Your personal details were removed."),
             )
     return render(request, "accounts/delete.html", _ctx(request, error=error))
+
+
+# ---- security page, optional two-step for everyone, and social sign-in (plan P6.02) -------------------------------------
+
+
+@login_required(login_url="/account/login/")
+@require_http_methods(["GET", "POST"])
+def security(request):
+    user = request.user
+    dev = getattr(user, "totp", None)
+    has_mfa = bool(dev and dev.confirmed)
+    forced = bool(user_roles(user) & {"moderator", "finance", "admin", "surveyor_lead"}) or user.is_staff
+    error = ""
+    if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "enable_mfa" and not has_mfa:
+            request.session["pre_mfa_next"] = "/account/security/"
+            return redirect("/account/mfa/setup/")
+        if action == "disable_mfa" and has_mfa:
+            step = totp.verify(dev.secret_enc, request.POST.get("code", ""), last_step=dev.last_step)
+            if forced:
+                error = "Your role requires two-step sign-in; it cannot be turned off."
+            elif not user.check_password(request.POST.get("password", "")) or step is None:
+                error = "Enter your password and a current code to turn it off."
+            else:
+                dev.delete()
+                RecoveryCode.objects.filter(user=user).delete()
+                audit("account.mfa_disabled", actor=user, object_type="user", object_uid=str(user.pk))
+                return redirect("/account/security/")
+        if action == "unlink":
+            ident = SocialIdentity.objects.filter(pk=request.POST.get("id") or 0, user=user).first()
+            if ident and user.has_usable_password():
+                ident.delete()
+                audit("account.social_unlink", actor=user, object_type="user", object_uid=str(user.pk))
+            else:
+                error = "Set a password before removing your only way to sign in."
+    return render(
+        request,
+        "accounts/security.html",
+        _ctx(
+            request,
+            has_mfa=has_mfa,
+            forced=forced,
+            error=error,
+            linked=list(SocialIdentity.objects.filter(user=user)),
+            available=[
+                (n, lbl)
+                for n, lbl in social.enabled_providers()
+                if not SocialIdentity.objects.filter(user=user, provider=n).exists()
+            ],
+        ),
+    )
+
+
+def _redirect_uri(request, name):
+    return request.build_absolute_uri(f"/account/social/{name}/callback/")
+
+
+def social_start(request, provider):
+    if not social.enabled(provider):
+        raise Http404
+    url, saved = social.start(provider, _redirect_uri(request, provider))
+    saved["link_user"] = request.user.pk if request.user.is_authenticated and request.GET.get("link") else None
+    saved["next"] = _safe_next(request)
+    request.session["social"] = saved
+    return redirect(url)
+
+
+def social_callback(request, provider):
+    if not social.enabled(provider):
+        raise Http404
+    saved = request.session.pop("social", None)
+    try:
+        who = social.finish(
+            provider, request.GET.get("code", ""), saved, request.GET.get("state", ""), _redirect_uri(request, provider)
+        )
+    except social.SocialError as exc:
+        return render(
+            request, "accounts/message.html", _ctx(request, heading="Sign-in failed", body=str(exc)), status=400
+        )
+    ident = SocialIdentity.objects.filter(provider=provider, subject=who["subject"]).select_related("user").first()
+    if saved.get("link_user") and request.user.is_authenticated and request.user.pk == saved["link_user"]:
+        if ident and ident.user_id != request.user.pk:
+            return render(
+                request,
+                "accounts/message.html",
+                _ctx(request, heading="Already linked", body="That account is linked to another AllLists account."),
+                status=409,
+            )
+        SocialIdentity.objects.get_or_create(user=request.user, provider=provider, subject=who["subject"])
+        audit(
+            "account.social_link",
+            actor=request.user,
+            object_type="user",
+            object_uid=str(request.user.pk),
+            payload={"provider": provider},
+        )
+        return redirect("/account/security/")
+    if ident is None:
+        user = _social_user(request, provider, who)
+        if user is None:
+            return render(
+                request,
+                "accounts/message.html",
+                _ctx(
+                    request,
+                    heading="Use your password first",
+                    body=(
+                        "An account with this email already exists and its email is not confirmed here. "
+                        "Sign in with your password, then link this provider from Security."
+                    ),
+                ),
+                status=409,
+            )
+    else:
+        user = ident.user
+    if not user.is_active:
+        raise Http404
+    if needs_mfa(user):
+        request.session["pre_mfa_user"] = user.pk
+        request.session["pre_mfa_next"] = saved.get("next", "/account/")
+        return redirect(
+            "/account/mfa/verify/" if hasattr(user, "totp") and user.totp.confirmed else "/account/mfa/setup/"
+        )
+    login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+    audit(
+        "account.login_social", actor=user, object_type="user", object_uid=str(user.pk), payload={"provider": provider}
+    )
+    return redirect(saved.get("next", "/account/"))
+
+
+@transaction.atomic
+def _social_user(request, provider, who):
+    """Find or make the account for a first-time provider sign-in. Never takes over an account by an unconfirmed email."""
+    existing = User.objects.filter(email__iexact=who["email"]).first() if who["email"] else None
+    if existing is not None:
+        confirmed = Profile.objects.filter(user=existing, email_verified=True).exists()
+        if not (confirmed and who["email_verified"]):
+            return None
+        user = existing
+    else:
+        base = f"{provider[:1]}-{who['subject'].replace('-', '')[-10:]}".lower()
+        username, n = base, 1
+        while User.objects.filter(username__iexact=username).exists():
+            n += 1
+            username = f"{base}{n}"
+        user = User.objects.create_user(username, who["email"] if who["email_verified"] else "")
+        user.set_unusable_password()
+        user.save(update_fields=["password"])
+        Profile.objects.create(
+            user=user,
+            lang=getattr(request, "lang", "en"),
+            email_verified=bool(who["email_verified"]),
+            display_name=who["name"][:60],
+        )
+        audit("account.signup", actor=user, object_type="user", object_uid=str(user.pk), payload={"provider": provider})
+    SocialIdentity.objects.create(user=user, provider=provider, subject=who["subject"])
+    return user

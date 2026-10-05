@@ -92,10 +92,15 @@ def complete_task(task, *, user, outcome, evidence="", method="call", minutes=No
     task.save()
     prof = ensure_profile(user)
     prof.points += 1
+    before = prof.level
     prof.level = max(i for i, n in enumerate(LEVEL_STEPS) if prof.points >= n or i == 0)
     if task.canary:
         _score_canary(prof, task, outcome)
     prof.save()
+    if prof.level > before:
+        from . import rewards
+
+        rewards.on_level_change(user, prof.level, place_path=task.entry.place_path if task.entry_id else "")
     audit("task.complete", actor=user, object_type="task", object_uid=str(task.pk), payload={"outcome": outcome})
     return task
 

@@ -180,3 +180,12 @@ class JobRun(models.Model):
     last_run = models.DateTimeField(null=True, blank=True)
     last_result = models.CharField(max_length=200, blank=True)
     last_error = models.CharField(max_length=300, blank=True)
+
+
+class OpsRecord(models.Model):
+    """Operational facts the monitor needs: a backup taken, a restore drill done, an alert already sent (plan 18.3, 18.4)."""
+
+    kind = models.CharField(max_length=30, db_index=True)  # backup, restore_drill, alert_sent
+    key = models.CharField(max_length=120, blank=True)
+    detail = models.CharField(max_length=300, blank=True)
+    at = models.DateTimeField(default=clock.now)

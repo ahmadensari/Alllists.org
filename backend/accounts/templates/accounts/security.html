@@ -1,0 +1,14 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Security</h1>
+{% if error %}<div class="notice" role="alert">{{ error }}</div>{% endif %}
+<h2>Two-step sign-in</h2>
+{% if has_mfa %}<p>On. You are asked for a code from your authenticator app each time you sign in.{% if forced %} Your role requires it.{% endif %}</p>
+{% if not forced %}<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="disable_mfa">
+<p class="field"><label for="p">Password</label><input id="p" name="password" type="password" autocomplete="current-password" required></p>
+<p class="field"><label for="c">Current code</label><input id="c" name="code" inputmode="numeric" autocomplete="one-time-code" required></p>
+<button class="btn">Turn off</button></form>{% endif %}
+{% else %}<p>Off. Turn it on to protect your account, your payout details and your entries.</p>
+<form method="post">{% csrf_token %}<button class="btn primary" name="action" value="enable_mfa">Turn on</button></form>{% endif %}
+<h2>Sign-in providers</h2>
+<ul class="records">{% for i in linked %}<li>{{ i.provider }} <form method="post" style="display:inline">{% csrf_token %}<input type="hidden" name="action" value="unlink"><input type="hidden" name="id" value="{{ i.pk }}"><button class="btn quiet">Unlink</button></form></li>{% empty %}<li>None linked.</li>{% endfor %}
+{% for n, label in available %}<li><a href="/account/social/{{ n }}/?link=1">Link {{ label }}</a></li>{% endfor %}</ul>{% endblock %}

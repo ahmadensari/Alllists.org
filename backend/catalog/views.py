@@ -328,7 +328,10 @@ def entry_page(request, uid, slug=None):
     list_type_name = entry.primary_concept.label(lang)
     place_name = entry.place.name_for(lang)
     last = max([c["date"] for c in checks if c["date"]], default=None)
+    from volunteers.rewards import credit_line
+
     ctx = {
+        "credit": credit_line(entry),
         "entry": entry,
         "place": entry.place,
         "concept": entry.primary_concept,
@@ -446,6 +449,43 @@ def frag_list(request):
         },
     )
     return private(resp)
+
+
+@require_GET
+def frag_ref(request):
+    """Count one visit that arrived through a contributor's share link (plan P2.24). Called by the page's own script,
+    so the cached page stays the same for everyone. Once per visitor per code per day."""
+    import re
+
+    from access.models import QuotaCounter
+    from access.quotas import subject_for
+    from analytics import events
+    from volunteers.models import ContributorProfile
+
+    code = request.GET.get("ref", "")
+    if not re.fullmatch(r"[0-9a-f]{4,12}", code) or not ContributorProfile.objects.filter(ref_code=code).exists():
+        return private(HttpResponse("", status=204))
+    row, created = QuotaCounter.objects.get_or_create(
+        subject=subject_for(request)[0], key=f"ref:{code}", day=timezone.now().date(), defaults={"count": 1}
+    )
+    if created:
+        events.emit("ref_visit", request, ref=code, path=request.GET.get("path", "")[:200])
+    return private(HttpResponse("", status=204))
+
+
+@require_GET
+def healthz(request):
+    """For the deploy smoke test and uptime monitors: the app answers and the database is reachable. No data in it."""
+    from django.db import connection
+
+    try:
+        with connection.cursor() as cur:
+            cur.execute("select 1")
+        resp = HttpResponse("ok", content_type="text/plain")
+    except Exception:  # noqa: BLE001 - any failure is "down"
+        resp = HttpResponse("database unreachable", status=503, content_type="text/plain")
+    resp["Cache-Control"] = "no-store"
+    return resp
 
 
 @require_GET
@@ -619,11 +659,6 @@ def sitemap_shard(request, cc, n):
             xml.append(f"<url><loc>{loc}</loc><lastmod>{c.updated_at.date().isoformat()}</lastmod></url>")
     xml.append("</urlset>")
     return HttpResponse("\n".join(xml), content_type="application/xml")
-
-
-@require_GET
-def healthz(request):
-    return HttpResponse("ok", content_type="text/plain")
 
 
 def not_found(request, exception=None):

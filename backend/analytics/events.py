@@ -22,6 +22,7 @@ NAMES = {
     "entry_added",
     "task_completed",
     "verification_recorded",
+    "ref_visit",
 }
 
 

@@ -362,6 +362,11 @@ def test_tasks_never_go_to_the_adder_and_need_evidence(entry, users):
 def test_task_screens_and_audited_contact_reveal(entry, users):
     vs.queue_verification(entry)
     u, c = login("sv1", role="surveyor")
+    from volunteers import onboarding
+
+    onboarding.submit(
+        u, {"contacts": "b", "rights": "a", "independence": "b", "evidence": "a", "people": "a"}, declared_rights=True
+    )
     assert Client().get("/account/tasks/")["Location"].startswith("/account/login/")
     r = c.post("/account/tasks/", {"action": "take"})
     assert r.status_code == 302

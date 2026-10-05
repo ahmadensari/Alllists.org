@@ -45,12 +45,15 @@ class ContributorProfile(models.Model):
     suspended = models.BooleanField(default=False)
     onboarded_at = models.DateTimeField(null=True, blank=True)
     declared_rights_at = models.DateTimeField(null=True, blank=True)
+    quiz_score = models.PositiveSmallIntegerField(null=True, blank=True)
+    show_credit = models.BooleanField(default=False)  # name the contributor on entries they added (visible credit)
 
 
 class Reward(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="rewards")
     kind = models.CharField(max_length=20)  # certificate, visible_credit, access_credit
     detail = models.CharField(max_length=120, blank=True)
+    code = models.CharField(max_length=24, blank=True, db_index=True)  # certificates carry a code anyone can check
     granted_at = models.DateTimeField(default=clock.now)
 
 

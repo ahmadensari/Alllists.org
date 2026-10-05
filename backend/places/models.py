@@ -103,3 +103,14 @@ class PlaceProposal(models.Model):
     decided_by = models.BigIntegerField(null=True, blank=True)
     reason = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(default=clock.now)
+
+
+class PlaceExternalId(models.Model):
+    """A place's id in an open dataset (Overture, GeoNames, Wikidata), so a repeat load updates instead of duplicating."""
+
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name="external_ids")
+    scheme = models.CharField(max_length=20)
+    value = models.CharField(max_length=80)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["scheme", "value"], name="uniq_place_external_id")]

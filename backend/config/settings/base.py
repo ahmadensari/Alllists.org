@@ -87,6 +87,15 @@ if os.environ.get("POSTGRES_DB"):  # PostgreSQL in production (install psycopg)
         "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
         "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
+if os.environ.get("DATABASE_REPLICA_HOST") and os.environ.get("POSTGRES_DB"):  # read replica (plan P6.03)
+    DATABASES["replica"] = {
+        **DATABASES["default"],
+        "HOST": os.environ["DATABASE_REPLICA_HOST"],
+        "USER": os.environ.get("POSTGRES_REPLICA_USER", DATABASES["default"]["USER"]),
+        "PASSWORD": os.environ.get("POSTGRES_REPLICA_PASSWORD", DATABASES["default"]["PASSWORD"]),
+        "TEST": {"MIRROR": "default"},
+    }
+    DATABASE_ROUTERS = ["config.dbrouter.ReplicaRouter"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -156,6 +165,12 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
 ]
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "1") == "1"
+EXTRACT_DIR = os.environ.get("EXTRACT_DIR", str(BASE_DIR / "var" / "extracts"))
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "AllLists <no-reply@alllists.org>")
 LOGIN_MAX_PER_ACCOUNT = 5
 LOGIN_MAX_PER_ADDRESS = 20
@@ -188,6 +203,16 @@ AI_MONTHLY_CAP_MINOR = int(os.environ.get("AI_MONTHLY_CAP_MINOR", "0"))
 AI_JOB_CAP_MINOR = int(os.environ.get("AI_JOB_CAP_MINOR", "50"))
 
 # Subscription allocation (plan 12.2, F8): weight 1.0 plus a bonus for entries re-verified recently
+# Social sign-in (plan P6.02): a provider is on only when its client id and secret are set.
+SOCIAL_PROVIDERS = {
+    name: {
+        "client_id": os.environ.get(f"{name.upper()}_CLIENT_ID", ""),
+        "client_secret": os.environ.get(f"{name.upper()}_CLIENT_SECRET", ""),
+    }
+    for name in ("google", "orcid")
+    if os.environ.get(f"{name.upper()}_CLIENT_ID")
+}
+ALERT_EMAILS = [e for e in os.environ.get("ALERT_EMAILS", "").split(",") if e]  # who is told when a check turns red
 FRESHNESS_BONUS = "0.25"
 FRESHNESS_DAYS = 90
 PLACEMENT_SLOTS = 2  # sponsored slots per list (Q-T8)

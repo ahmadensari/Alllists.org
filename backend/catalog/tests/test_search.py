@@ -9,6 +9,12 @@ from taxonomy.services import create_concept
 SCOPE = "pk.punjab.sialkot"
 
 
+@pytest.fixture(autouse=True, params=["catalog.search_backend.ModelBackend", "catalog.search_backend.MemoryBackend"])
+def backend(request, settings):
+    """Every test in this file runs on both implementations: the contract is the interface (plan P6.01)."""
+    settings.SEARCH_BACKEND = request.param
+
+
 @pytest.fixture
 def data(tree, surgical, make_published, db):
     a = make_published("Crescent Surgical Works", tree["paris"], phone="0300 000 0001")

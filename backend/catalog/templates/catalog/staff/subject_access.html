@@ -1,0 +1,9 @@
+{% extends "catalog/base.html" %}{% block crumbs %}<nav class="crumbs"><a href="/staff/">Staff</a></nav>{% endblock %}
+{% block content %}<h1 id="results">Subject access</h1>
+<p>Use only after the requester has shown they hold the phone number or email. Stored contact values are never displayed; the report names what we hold and where.</p>
+<form method="post" class="form">{% csrf_token %}
+<p class="field"><label for="k">Kind</label><select id="k" name="kind"><option value="phone">phone</option><option value="email">email</option></select></p>
+<p class="field"><label for="v">Value</label><input id="v" name="value" required></p>
+<p class="field"><label for="c">Country</label><input id="c" name="country" value="PK" maxlength="2"></p>
+<button class="btn" name="format" value="html">Show</button> <button class="btn" name="format" value="json">Download file for the requester</button></form>
+{% if report %}<pre class="mono" dir="ltr">{{ report }}</pre>{% endif %}{% endblock %}

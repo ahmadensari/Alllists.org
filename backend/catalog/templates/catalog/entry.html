@@ -24,7 +24,7 @@
 {% if specialities %}<dt>{% tr 'specialities' %}</dt><dd>{% for s in specialities %}<span class="pill">{{ s }}</span>{% endfor %}{% if more_specialities %}<span class="pill">{% tr 'more_n' n=more_specialities %}</span>{% endif %}</dd>{% endif %}
 {% if services %}<dt>{% tr 'services' %}</dt><dd>{{ services|join:", " }}</dd>{% endif %}
 {% if certs %}<dt>{% tr 'certificates' %}</dt><dd>{{ certs|join:", " }}</dd>{% endif %}
-</dl></section>
+</dl>{% if credit %}<p class="small muted">{% tr 'added_by' name=credit %}</p>{% endif %}</section>
 {% if company_sections or company_certs %}<section class="sec company" id="company-page">
 <p class="provided-tag">{% tr 'provided_by' %}{% if company_updated %} · {% date company_updated as cu %}{% tr 'company_updated' date=cu %}{% endif %}</p>
 {% for kind, label_key in company_kinds %}{% with secs=company_sections|get:kind %}{% if secs %}<h2>{% tr label_key %}</h2>

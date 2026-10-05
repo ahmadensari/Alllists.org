@@ -11,6 +11,9 @@ urlpatterns = [
     path("mfa/setup/", views.mfa_setup),
     path("mfa/verify/", views.mfa_verify),
     path("delete/", views.delete_account),
+    path("security/", views.security),
+    path("social/<str:provider>/", views.social_start),
+    path("social/<str:provider>/callback/", views.social_callback),
     path(
         "password/reset/",
         auth_views.PasswordResetView.as_view(

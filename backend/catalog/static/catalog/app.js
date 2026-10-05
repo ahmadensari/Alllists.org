@@ -53,6 +53,32 @@
     navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function () { toast(copied); });
   });
 
+
+  /* contributor share links (plan P2.24): count a visit that came with ?ref=, and add the reader's own code to shares.
+     Both stay in the browser so cached pages are identical for everyone. */
+  try {
+    var refm = location.search.match(/[?&]ref=([0-9a-f]{4,12})/);
+    if (refm && window.fetch && !sessionStorage.getItem("al-ref-sent")) {
+      sessionStorage.setItem("al-ref-sent", "1");
+      fetch("/_f/ref/?ref=" + refm[1] + "&path=" + encodeURIComponent(location.pathname), { credentials: "same-origin" }).catch(function () {});
+    }
+    var mine = doc.querySelector("[data-ref-code]");
+    if (mine) { localStorage.setItem("al-myref", mine.getAttribute("data-ref-code")); }
+    var myref = localStorage.getItem("al-myref");
+    if (myref) {
+      doc.addEventListener("click", function (ev) {
+        var a = ev.target.closest("a[href*='utm_medium%3Dshare'],a[href*='utm_medium=share']");
+        if (a && a.href.indexOf("ref%3D") < 0 && a.href.indexOf("ref=") < 0) {
+          a.href = a.href.replace(/(%3F|%26)utm_source%3D/g, "$1ref%3D" + myref + "%26utm_source%3D");
+        }
+        var c = ev.target.closest("[data-copy]");
+        if (c && c.getAttribute("data-copy").indexOf("ref=") < 0) {
+          c.setAttribute("data-copy", c.getAttribute("data-copy") + (c.getAttribute("data-copy").indexOf("?") < 0 ? "?" : "&") + "ref=" + myref);
+        }
+      }, true);
+    }
+  } catch (e) {}
+
   /* exact location: only when the person presses the button; the position is matched to a place and kept in the session */
   doc.addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-geolocate]");

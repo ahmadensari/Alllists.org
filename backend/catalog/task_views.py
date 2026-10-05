@@ -1,5 +1,7 @@
 """Surveyor task screens (plan 14.2): large targets, one task at a time, evidence required, minutes logged."""
 
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseForbidden
@@ -7,8 +9,10 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
 
 from accounts.roles import has_cap
+from core import clock
 from core.models import audit
 from entries import services as es
+from volunteers import onboarding, rewards
 from volunteers import services as vs
 from volunteers.models import Task
 
@@ -20,6 +24,8 @@ LOGIN = "/account/login/"
 def my_tasks(request):
     if not has_cap(request.user, "verify"):
         return HttpResponseForbidden("Verification tasks are for surveyors.")
+    if not onboarding.is_onboarded(request.user):
+        return redirect("/account/contributor/onboarding/")
     if request.method == "POST" and request.POST.get("action") == "take":
         task = vs.take_next_task(request.user)
         if task is None:
@@ -79,12 +85,29 @@ def task_detail(request, pk):
 
 
 @login_required(login_url=LOGIN)
+@require_http_methods(["GET", "POST"])
 def contributor_page(request):
-    prof = vs.ensure_profile(request.user)
+    from analytics.models import Event
+    from accounts.models import Profile
     from entries.models import CreditEvent, Entry
+    from volunteers.models import Reward
 
+    prof = vs.ensure_profile(request.user)
+    if request.method == "POST":
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        if request.POST.get("action") == "credit":
+            prof.show_credit = bool(request.POST.get("show_credit"))
+            prof.save(update_fields=["show_credit"])
+            name = request.POST.get("display_name", "").strip()[:60]
+            if name:
+                profile.display_name = name
+                profile.save(update_fields=["display_name"])
+            messages.success(request, "Saved.")
+        return redirect("/account/contributor/")
     added = Entry.objects.filter(created_by=request.user).count()
     credit = CreditEvent.objects.filter(user=request.user, kind="added")
+    visits = Event.objects.filter(name="ref_visit", props__ref=prof.ref_code)
+    next_level = next((n for n in vs.LEVEL_STEPS if n > prof.points), None)
     return render(
         request,
         "catalog/tasks/contributor.html",
@@ -94,7 +117,66 @@ def contributor_page(request):
             "eligible": credit.filter(eligible=True).count(),
             "waiting": credit.filter(eligible=False).count(),
             "ref_link": request.build_absolute_uri(f"/?ref={prof.ref_code}"),
+            "visits_total": visits.count(),
+            "visits_7d": visits.filter(ts__gte=clock.now() - timedelta(days=7)).count(),
+            "certificates": Reward.objects.filter(user=request.user, kind="certificate").order_by("granted_at"),
+            "credits": Reward.objects.filter(user=request.user, kind="access_credit"),
+            "to_next": (next_level - prof.points) if next_level else None,
+            "onboarded": prof.onboarded_at is not None,
+            "display_name": getattr(getattr(request.user, "profile", None), "display_name", ""),
             "robots": "noindex,nofollow",
             "title": "Contributor",
         },
+    )
+
+
+@login_required(login_url=LOGIN)
+@require_http_methods(["GET", "POST"])
+def onboarding_page(request):
+    result = None
+    if request.method == "POST":
+        answers = {k: request.POST.get(f"q_{k}", "") for k, *_ in onboarding.QUESTIONS}
+        result = onboarding.submit(request.user, answers, declared_rights=bool(request.POST.get("rights")))
+        if result[1]:
+            messages.success(request, "Welcome. You can now add entries and, with a surveyor role, take checks.")
+            return redirect("/account/contributor/")
+    return render(
+        request,
+        "catalog/tasks/onboarding.html",
+        {
+            "questions": onboarding.questions(getattr(request, "lang", "en")),
+            "result": result,
+            "pass_mark": onboarding.PASS_MARK,
+            "total": len(onboarding.QUESTIONS),
+            "robots": "noindex,nofollow",
+            "title": "Contributor onboarding",
+        },
+    )
+
+
+@login_required(login_url=LOGIN)
+def certificate_page(request, pk):
+    r = rewards.Reward.objects.filter(pk=pk, user=request.user, kind="certificate").first()
+    if r is None:
+        raise Http404
+    return render(
+        request,
+        "catalog/tasks/certificate.html",
+        {
+            "reward": r,
+            "verify_url": request.build_absolute_uri(f"/certificate/{r.code}/"),
+            "robots": "noindex,nofollow",
+            "title": "Certificate",
+        },
+    )
+
+
+def certificate_verify(request, code):
+    info = rewards.verify_certificate(code)
+    if info is None:
+        raise Http404
+    return render(
+        request,
+        "catalog/tasks/certificate_verify.html",
+        {"info": info, "robots": "noindex,nofollow", "title": "Certificate"},
     )

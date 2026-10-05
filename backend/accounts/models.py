@@ -48,3 +48,15 @@ class RecoveryCode(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+")
     code_hash = models.CharField(max_length=64)
     used_at = models.DateTimeField(null=True, blank=True)
+
+
+class SocialIdentity(models.Model):
+    """A sign-in at an outside provider (Google, ORCID) linked to one account. The provider's subject is the key."""
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="social_identities")
+    provider = models.CharField(max_length=20)
+    subject = models.CharField(max_length=120)
+    created_at = models.DateTimeField(default=clock.now)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["provider", "subject"], name="uniq_social_subject")]

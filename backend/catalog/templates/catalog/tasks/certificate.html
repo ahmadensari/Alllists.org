@@ -1,0 +1,5 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<section class="invoice"><h1 id="results">Certificate of contribution</h1>
+<p>AllLists certifies that the holder reached <strong>{{ reward.detail }}</strong> as a contributor on {{ reward.granted_at|date:"Y-m-d" }}.</p>
+<p>Certificate code <span class="mono">{{ reward.code }}</span>. Anyone can check it at <span class="mono">{{ verify_url }}</span>.</p>
+<p class="small muted">This is recognition of work done. It is not an offer of payment or employment.</p></section>{% endblock %}

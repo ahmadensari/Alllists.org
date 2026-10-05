@@ -107,6 +107,20 @@ def normalise_row(raw, mapping, country_code):
     return out
 
 
+def settle_duplicate(entry, actor=None):
+    """Scan a new draft for duplicates. Above the auto-merge threshold it is merged into the older entry; between the
+    thresholds the pair is queued for a person. Returns (entry_to_use, "merged" | "possible" | "new")."""
+    found = dedupe.scan_entry(entry)
+    if found and found[0][1] >= dedupe.AUTO_MERGE:
+        other, score, _ = found[0]
+        es.merge_entries(other, entry, actor=actor, score=score)
+        return other, "merged"
+    for other, score, features in found:
+        a, b = sorted([entry, other], key=lambda e: e.pk)
+        DedupeCandidate.objects.get_or_create(a_entry=a, b_entry=b, defaults=dict(score=score, features=features))
+    return entry, "possible" if found else "new"
+
+
 @transaction.atomic
 def run_import(batch, actor=None, addons=None):
     """Create draft entries for every usable row. Returns the batch counts."""
@@ -152,18 +166,13 @@ def run_import(batch, actor=None, addons=None):
             row.save()
             continue
         row.entry = entry
-        found = dedupe.scan_entry(entry)
-        if found and found[0][1] >= dedupe.AUTO_MERGE:
-            other, s, _ = found[0]
-            es.merge_entries(other, entry, actor=actor, score=s)
-            row.entry, row.status, row.message = other, ImportRow.Status.DUPLICATE, f"merged into {other.uid}"
+        entry, outcome = settle_duplicate(entry, actor)
+        if outcome == "merged":
+            row.entry, row.status, row.message = entry, ImportRow.Status.DUPLICATE, f"merged into {entry.uid}"
             counts["duplicate"] += 1
         else:
             row.status = ImportRow.Status.DRAFTED
-            if found:
-                for other, s, f in found:
-                    a, b = sorted([entry, other], key=lambda e: e.pk)
-                    DedupeCandidate.objects.get_or_create(a_entry=a, b_entry=b, defaults=dict(score=s, features=f))
+            if outcome == "possible":
                 row.message = "possible duplicate, queued for review"
                 counts["possible_duplicate"] += 1
             counts["drafted"] += 1

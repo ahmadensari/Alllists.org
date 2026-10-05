@@ -5,3 +5,6 @@ exclude = .git,__pycache__,migrations,prototype,research_notes,reports
 # translation catalogues hold whole sentences
 per-file-ignores =
     backend/catalog/strings/*:E501
+    # test fixtures hold whole sample files; the load test is one self-contained script
+    backend/*/tests/*:E501
+    scripts/loadtest.py:E501

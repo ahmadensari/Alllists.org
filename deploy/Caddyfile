@@ -1,0 +1,13 @@
+# Reverse proxy (plan 18.2): TLS, compression, and a cache hint for the shared pages. The app sets its own security headers.
+alllists.org, www.alllists.org {
+	encode zstd gzip
+	@static path /static/*
+	header @static Cache-Control "public, max-age=31536000, immutable"
+	reverse_proxy 127.0.0.1:8000 {
+		header_up X-Forwarded-Proto {scheme}
+	}
+	log {
+		output file /var/log/caddy/alllists.log
+		format json
+	}
+}

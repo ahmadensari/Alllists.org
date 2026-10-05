@@ -80,3 +80,17 @@ class DedupeCandidate(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["a_entry", "b_entry"], name="uniq_dedupe_pair")]
+
+
+class ExternalRecord(models.Model):
+    """One record from an open dataset (Overture, Foursquare, a register) and what happened to it. Doubles as the
+    checkpoint: a loader that stops can run again and skips whatever is already here."""
+
+    source = models.ForeignKey(Source, on_delete=models.PROTECT, related_name="records")
+    external_id = models.CharField(max_length=80)
+    entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    outcome = models.CharField(max_length=20)  # drafted, merged, no_category, no_place, no_name, blocked, error
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["source", "external_id"], name="uniq_external_record")]

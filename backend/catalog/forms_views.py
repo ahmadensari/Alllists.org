@@ -10,7 +10,7 @@ from access import services as access_services
 from access.policy import Viewer, subscribes_to
 from accounts import throttle
 from accounts.roles import has_cap
-from core.models import CountrySwitch
+from core.models import CountrySwitch, audit
 from entries import services as es
 from entries.models import Entry
 from moderation import services as mod
@@ -599,3 +599,22 @@ def payout_page(request):
         "catalog/forms/payout.html",
         {"profile": prof, "payable": lg.payable_balance(request.user), "held": held, "errors": errors},
     )
+
+
+@login_required(login_url=LOGIN)
+def my_data(request):
+    """The account holder's own data as one file (portability). Other people's contact values are never in it."""
+    import json
+
+    from django.http import HttpResponse
+
+    from moderation import privacy
+
+    audit("account.data_export", actor=request.user, object_type="user", object_uid=str(request.user.pk))
+    resp = HttpResponse(
+        json.dumps(privacy.account_data(request.user), indent=2, ensure_ascii=False),
+        content_type="application/json; charset=utf-8",
+    )
+    resp["Content-Disposition"] = 'attachment; filename="my-data.json"'
+    resp["Cache-Control"] = "private, no-store"
+    return resp

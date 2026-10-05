@@ -20,6 +20,7 @@ EN = {
     "trust_hero_label": "Checked by a person",
     "last_checked": "Last checked {date}",
     "checked_on": "Checked {date} · {age}",
+    "added_by": "Added by {name}",
     "age_today": "today",
     "age_days": {"one": "{n} day ago", "other": "{n} days ago"},
     "age_weeks": {"one": "{n} week ago", "other": "{n} weeks ago"},

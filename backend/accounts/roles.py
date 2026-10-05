@@ -44,7 +44,11 @@ def has_cap(user, cap):
 
 
 def needs_mfa(user):
-    return bool(user_roles(user) & MFA_ROLES) or user.is_staff
+    """Staff roles must use a second step. Anyone else gets it once they have switched it on (plan P6.02)."""
+    if bool(user_roles(user) & MFA_ROLES) or user.is_staff:
+        return True
+    dev = getattr(user, "totp", None)
+    return bool(dev and dev.confirmed)
 
 
 def grant_role(user, role):

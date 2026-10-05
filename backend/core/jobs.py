@@ -52,6 +52,12 @@ def _reconcile():
     return "agrees"
 
 
+def _alerts():
+    from .monitoring import send_alerts
+
+    return f"{send_alerts()} alerts sent"
+
+
 def _unchecked():
     from volunteers.services import queue_unchecked
 
@@ -89,6 +95,7 @@ JOBS = {
     "hold_release": (DAY, _holds),
     "audit_chain_verify": (DAY, _chain),
     "ledger_reconcile": (DAY, _reconcile),
+    "ops_alerts": (HOUR, _alerts),
     "queue_unchecked": (DAY, _unchecked),
     "quota_cleanup": (DAY, _quota_cleanup),
     "retention_purge": (WEEK, _retention),
