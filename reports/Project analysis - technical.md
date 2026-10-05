@@ -414,54 +414,47 @@ Practical verdict: **S0 and the early part of S1 can run at zero or under $50 a 
 
 ## 9. Delivery plan
 
-Assumes the owner authorises production code (Q-S11, S2 in the decision log); until then only the five cheap experiments in the AI report are run.
+Assumes the owner authorises production code (Q-S11, S2); until then only the five cheap experiments in the AI report are run.
 
 ### 9.1 Phases with entry and exit criteria
 
 | Phase | Entry | Exit |
 |---|---|---|
-| **P0 Foundations** | Owner go-ahead; stack decided | Secrets rotated; CI runs on Postgres; schema v1 migrated from empty database |
-| **P1 Data core** | P0 done | 1,000-record pilot imported; duplicate precision at least 95% on 500 labelled pairs; every field has provenance; audit log works |
-| **P2 Public site** | P1 done | 20 to 30 quality pages live and server-rendered with budgets enforced; empty pages `noindex`; Urdu pages pass the design review's must-fix list |
-| **P3 Money v1** | P2 done and one buyer has agreed to look at a sample | Manual payment recorded; ledger property tests green; restore drill done; first paid sample sold |
-| **P4 Outreach** | P3 plus counsel's written view for one country and channel; at least 100 opted-in shops | A test campaign delivers; opt-out works; reply rate measured against Google and Meta (Q-N4) |
-| **P5 Growth money** | At least 5 paying buyers and a decided step trigger (F4) | Automated payments; payouts reconcile to the ledger to the cent for two cycles |
-| **P6 Scale** | A measured limit (latency, size or cost) | Load test at 3 times current peak passes; recovery drill meets RPO and RTO |
+| **P0 Foundations** | Owner go-ahead; stack decided | Secrets rotated; CI runs on Postgres; schema v1 migrates from an empty database |
+| **P1 Data core** | P0 done | 1,000-record pilot imported; duplicate precision at least 95% on 500 labelled pairs; provenance on every field; audit log works |
+| **P2 Public site** | P1 done | 20 to 30 quality pages server-rendered with budgets enforced; empty pages `noindex`; design review must-fix list closed |
+| **P3 Money v1** | P2 done; one buyer agreed to look at a sample | Manual payment recorded; ledger property tests green; restore drill done; first paid sample sold |
+| **P4 Outreach** | P3; counsel's written view for one country and channel; at least 100 opted-in shops | Test campaign delivered; opt-out works; reply rate measured against Google and Meta (Q-N4) |
+| **P5 Growth money** | At least 5 paying buyers; step trigger (F4) decided | Automated payments; payouts reconcile to the cent for two cycles |
+| **P6 Scale** | A measured limit (latency, size or cost) | Load test at 3 times peak passes; recovery drill meets targets |
 
-### 9.2 Test strategy
+### 9.2 Test strategy, CI and definition of done
 
-| Layer | What | Tooling |
-|---|---|---|
-| Unit | Normalisation, rate-phase maths, state machine guards | pytest |
-| Integration | Real Postgres (not SQLite) in CI with the same extensions; migrations up and down | pytest, a Postgres service container |
-| Data quality | Labelled duplicate pairs; audit sample accuracy per source; noindex rule tests; page budgets | Custom scripts run in CI and monthly |
-| Ledger | Property tests (section 5.4) plus a monthly reconciliation | Hypothesis |
-| Security | Dependency audit, secret scan, security-review skill, authorisation tests for every route | `pip-audit`, `bandit`, GitHub scanning |
-| Load | Page, search and import paths at 3 times expected peak, before each stage | k6 or Locust (Memory) |
-| Accessibility | Keyboard, contrast and RTL checks from the design review as automated checks | axe (Memory) |
-
-### 9.3 CI and definition of done
-
-CI on every change: lint (style failures block), unit and integration tests on Postgres, coverage floor on new code, `pip-audit`, `bandit`, secret scan, page-weight gate, migration check. Move off Python 3.9; update the action versions.
-
-A change is done when: tests and gates pass; a human reviewed it (two for ledger, auth and consent code); a migration exists and runs forward and back; logs hold no personal data; the audit log covers the new actions; the page budgets hold; documentation of the decision is updated.
-
-### 9.4 First 90 days, weekly (after owner go-ahead)
-
-| Week | Block |
+| Layer | What |
 |---|---|
-| 1 | Rotate secrets; clean README; decision sprint (stack, hosting, licence, provider shortlist); book counsel; Django project, Postgres in CI |
-| 2 | Place tree import; taxonomy seed; schema v1; AI-report experiment 1 (gap check) |
-| 3 | Entry core with provenance and audit log; CSV import with column mapping; Urdu folding module with tests |
-| 4 | Duplicate detection v1 and back-office review queue; experiment 2 (385-record audit) |
-| 5 | Server-rendered list, entry and place pages; noindex rules; sharded sitemaps; page-budget gate |
-| 6 | Search v1 (scoped trigram plus concept synonyms); English and Urdu messages with proper plural rules; fix the design review's must-fix items |
-| 7 | Verification events and projections; claim flow; load the 1,000-record pilot for one trade and one city |
-| 8 | Accounts, roles, MFA for staff; rate limits; consent register; deletion workflow |
-| 9 | Access tiers (names only), quotas, canary entries; staging environment; first load test |
-| 10 | Ledger v1 with property tests; manual payment recording; payment route chosen |
+| Unit | Normalisation, rate-phase maths, state-machine guards (pytest) |
+| Integration | Real Postgres in CI (not SQLite) with the same extensions; migrations up and down |
+| Data quality | Labelled duplicate pairs; audit accuracy per source; noindex rules; page-weight ceilings |
+| Ledger | Property tests (5.1) plus monthly reconciliation |
+| Security | `pip-audit`, `bandit`, secret scan, the `security-review` skill, an authorisation test for every route |
+| Load | Page, search and import at 3 times expected peak before each stage (k6 or Locust, Memory) |
+| Accessibility | Keyboard, contrast and RTL checks from the design review, automated |
+
+CI on every change: lint that blocks, tests on Postgres, coverage floor on new code, dependency and secret scans, page-weight gate, migration check; drop Python 3.9 and update action versions. **Done** means: gates pass; a human reviewed it (two reviewers for ledger, auth and consent); the migration runs forward and back; logs hold no personal data; the audit log covers new actions; the decision record is updated.
+
+### 9.3 First 90 days (after go-ahead)
+
+| Weeks | Block |
+|---|---|
+| 1 | Rotate secrets; fix README; decision sprint (stack, hosting, licence, providers); book counsel; Django and Postgres in CI |
+| 2 to 3 | Place tree and taxonomy import; schema v1; entry core with provenance and audit log; CSV import; Urdu folding with tests; experiment 1 (gap check) |
+| 4 | Duplicate detection v1 and review queue; experiment 2 (385-record audit) |
+| 5 to 6 | Server-rendered list, entry and place pages; noindex rules; sharded sitemaps; page-weight gate; scoped search; English and Urdu messages with plural rules; fix design-review items |
+| 7 | Verification events and claim flow; load the 1,000-record pilot (one trade, one city) |
+| 8 to 9 | Accounts, roles, staff MFA; rate limits; consent register; deletion workflow; names-only tiers, quotas, canaries; staging; first load test |
+| 10 | Ledger v1 with property tests; manual payments; payment route chosen |
 | 11 | Backup and restore drill; monitoring and AI cost caps; security review |
-| 12 | Soft launch: 20 to 30 indexable pages; start the 90-day indexing watch; show a buyer the sample |
+| 12 | Soft launch of 20 to 30 indexable pages; start the 90-day indexing watch; show a buyer the sample |
 | 13 | Review against exit criteria; go or no-go for P4 |
 
 ---
@@ -470,22 +463,18 @@ A change is done when: tests and gates pass; a human reviewed it (two for ledger
 
 | Role | S0 to S1 | S2 | S3 to S4 |
 |---|---|---|---|
-| Founder (product owner, decisions, partners, volunteers) | Yes | Yes | Yes |
-| Lead engineer (data model, ledger, security review) | 1, part-time acceptable | 1 full-time | 2 to 3 |
+| Founder (decisions, partners, volunteers) | Yes | Yes | Yes |
+| Lead engineer (data model, ledger, security) | 1, part-time acceptable | 1 | 2 to 3 |
 | Second engineer (web, search, i18n) | AI agents | 1 | 2 |
-| Data and quality lead (verification rules, audits, dedupe tuning) | Founder with a volunteer lead | 1 | 2 to 3 |
-| Language reviewers (Urdu, Arabic, Roman Urdu) | Volunteers | 2 part-time | 4 or more |
-| Operations and support (moderation, takedowns, claims) | Founder | 1 | 3 to 5 |
-| Counsel (messaging, data protection, terms, per country) | Hours, before launch | Retainer | Per country |
-| Accountant and tax adviser (payouts, withholding) | Before first payout | Yes | Yes |
+| Data and quality lead (verification, audits, dedupe) | Founder plus a volunteer lead | 1 | 2 to 3 |
+| Language reviewers (Urdu, Arabic, Roman Urdu) | Volunteers | 2 part-time | 4+ |
+| Operations (moderation, takedowns, claims) | Founder | 1 | 3 to 5 |
+| Counsel; accountant and tax adviser | Hours before launch and before first payout | Retainer | Per country |
 
 | AI agents can | Must be human |
 |---|---|
-| Write most application code, tests and migrations under review | Decisions on money rules, consent wording and what counts as verified |
-| Draft entries from permitted sources with quoted evidence | Reviewing any code that touches ledger, authorisation, consent or encryption |
-| Flag duplicates and suspicious entries; triage the review queue | Final merges below the confidence threshold; takedown decisions |
-| Run security linters, load scripts, data audits | Confirming an entry is real by call, visit or owner claim |
-| Draft documentation and translations for review | Native-language review; legal advice; relationships with registers and chambers |
+| Write most code, tests and migrations under review; run linters, load scripts, data audits; draft documentation and translations | Money rules, consent wording, what counts as verified; review of ledger, authorisation, consent and encryption code |
+| Draft entries from permitted sources with quoted evidence; flag duplicates; triage the review queue | Merges below the confidence threshold; takedowns; confirming an entry is real by call, visit or owner claim; native-language review; legal advice; relationships with registers and chambers |
 
 ---
 
@@ -517,11 +506,6 @@ Likelihood (L) and impact (I) on a 1 to 5 scale; score is L times I. Ranked by s
 | 20 | R12 | Prompt injection via fetched pages | 3 | 3 | 9 | No credentials; staging only | Agent output with unexpected fields |
 | 21 | R18 | Postgres hot spots at 10 million or more (counts, unscoped search) | 3 | 3 | 9 | Roll-ups; scoped search; search engine when measured | 95th percentile search above 500 ms |
 | 22 | R26 | Registers' terms forbid bulk use | 3 | 3 | 9 | Written terms per body; start with facility and school registers | A refusal or a takedown letter |
-| 23 | R19 | Licence contamination (copying GPL or AGPL code, mixing share-alike data) | 2 | 4 | 8 | Study, do not copy; keep OpenStreetMap-derived data in a separate layer | A dependency with an unexpected licence |
-| 24 | R16 | Foreign host or card not available from Pakistan; latency | 3 | 2 | 6 | Choose a host that accepts the founder's payment; Postgres is portable; CDN | Payment declined |
-| 25 | R23 | Tests on SQLite miss Postgres bugs | 3 | 2 | 6 | Postgres in CI | A bug found only in staging |
-| 26 | R25 | Free tiers pause or change | 3 | 2 | 6 | Backups; no hard dependence | A paused project |
-| 27 | R27 | Wrong "closed" or accusatory statements | 2 | 3 | 6 | Facts only; correction route | A legal notice |
 
 ---
 
