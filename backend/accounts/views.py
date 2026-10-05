@@ -58,7 +58,12 @@ def signup(request):
         from django.contrib.auth.password_validation import validate_password
         from django.core.exceptions import ValidationError
 
-        if not username or "@" in username or len(username) > 40:
+        from access import quotas
+
+        subject, _ = quotas.subject_for(request)
+        if quotas.hit(subject, "signup") > 5:
+            errors.append(("username", "Too many sign-ups from this connection today. Try again tomorrow."))
+        elif not username or "@" in username or len(username) > 40:
             errors.append(("username", "Choose a username without @ (up to 40 characters)."))
         elif User.objects.filter(username__iexact=username).exists():
             errors.append(("username", "That username is taken."))

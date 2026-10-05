@@ -21,3 +21,12 @@ class RollupCell(models.Model):
             models.UniqueConstraint(fields=["country_code", "place_path", "concept"], name="uniq_rollup_cell")
         ]
         indexes = [models.Index(fields=["country_code", "place_path"], name="rollup_place_idx")]
+
+
+class Event(models.Model):
+    """Privacy-respecting server-side event (plan appendix G): hashed subject, no contact values."""
+
+    name = models.CharField(max_length=40, db_index=True)
+    ts = models.DateTimeField(default=clock.now, db_index=True)
+    subject_hash = models.CharField(max_length=64, blank=True)
+    props = models.JSONField(default=dict, blank=True)

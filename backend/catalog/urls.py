@@ -9,6 +9,7 @@ urlpatterns = [
     path("sitemap.xml", views.sitemap_index),
     path("sitemaps/<str:cc>-<int:n>.xml", views.sitemap_shard),
     path("prefs/", views.prefs, name="prefs"),
+    path("search/", views.search_page),
     path("add/", forms_views.add_entry),
     path("add/area/", forms_views.add_area),
     path("claim/<str:uid>/", forms_views.claim),

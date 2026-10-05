@@ -12,6 +12,7 @@ from django.utils.cache import get_conditional_response
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_GET, require_POST
 
+from access import quotas
 from access import services as access_services
 from access.policy import Viewer, list_mode, subscribes_to, visible
 from analytics.models import RollupCell
@@ -20,6 +21,7 @@ from entries.models import Entry
 from places.models import Place
 from taxonomy.models import ListTypeSettings
 
+from . import search
 from . import format as fmt
 from . import queries, resolver, seo, share, strings
 from .location import viewer_place
@@ -191,6 +193,7 @@ def list_page(request, place, concept):
     names = {"list_type": concept.label(lang), "place": place.name_for(lang)}
     cs = ListTypeSettings.objects.filter(concept=concept).first()
     ctx = {
+        "scope_path": place.path,
         "place": place,
         "concept": concept,
         "crumbs": breadcrumb(place),
@@ -354,12 +357,22 @@ def frag_list(request):
     concept = resolve_concept(request.GET.get("type", ""))
     if lp is None or concept is None:
         return private(HttpResponse("", status=204))
+    if not quotas.note_fragment(request):
+        return private(HttpResponse("", status=429))
+    from analytics import events
+
+    events.emit("list_view", request, path=lp.path, type=concept.slug)
     mode = list_mode(viewer, lp.path, concept.pk)
     area_slug = request.GET.get("area", "")
     area_place = Place.objects.filter(parent=lp, slug=area_slug, status="active").first() if area_slug else None
     sort = request.GET.get("sort") if request.GET.get("sort") in ("name", "checked") else "name"
     qs = queries.list_rows_queryset(lp, concept, area_place, sort)
     page = Paginator(qs, settings.PAGE_SIZE).get_page(request.GET.get("page"))
+    quota_exceeded = False
+    if mode == "free":
+        allowed, remaining, limit = quotas.check_names(request, len(page.object_list))
+        if not allowed:
+            mode, quota_exceeded = "names", True
     details = []
     for e in page:
         specs = specialities_of(e)
@@ -379,6 +392,7 @@ def frag_list(request):
             "details": details,
             "viewer": viewer,
             "ads": visible("ads", viewer, lp.path, concept.pk) != "none",
+            "quota_exceeded": quota_exceeded,
             "names_only": mode == "names",
             "locked": mode != "full",
         },
@@ -534,3 +548,42 @@ def not_found(request, exception=None):
         },
         status=404,
     )
+
+
+# ---- search ------------------------------------------------------------------------------------------------------
+
+
+@require_GET
+def search_page(request):
+    from analytics import events
+
+    scope = search.scope_from_path(request.GET.get("scope", ""))
+    results = search.run(request.GET.get("q", ""), scope)
+    lang, now = request.lang, timezone.now()
+    entry_rows = [row_for(e, lang, request.prefix, now) for e in results["entries"]]
+    concept_links = [(c, list_url(scope or resolver.world(), c)) for c in results["concepts"]]
+    place_links = [(p, place_url(p)) for p in results["places"]]
+    if results["query"]:
+        events.emit("search", request, n=search.total(results), scoped=bool(scope))
+        if search.total(results) == 0:
+            events.emit("search_zero_result", request)
+    if request.GET.get("fragment"):
+        return private(render(request, "catalog/search_rows.html", {"rows": entry_rows}))
+    resp = render(
+        request,
+        "catalog/search.html",
+        {
+            "q": results["query"],
+            "scope": scope,
+            "concept_links": concept_links,
+            "place_links": place_links,
+            "rows": entry_rows,
+            "none": bool(results["query"]) and search.total(results) == 0,
+            "short": 0 < len(results["query"]) < 2,
+            "robots": "noindex,follow",
+            "title": strings.t(lang, "search_everything"),
+            "canonical": "",
+        },
+    )
+    resp["Cache-Control"] = "private, no-store"
+    return resp

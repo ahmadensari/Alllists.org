@@ -53,6 +53,21 @@
     navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function () { toast(copied); });
   });
 
+  /* live search on the search page: results update as you type and focus stays in the box */
+  var sq = doc.getElementById("q"), live = doc.getElementById("live-results");
+  if (sq && live && window.fetch) {
+    var timer = null;
+    sq.addEventListener("input", function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        var form = sq.form, params = new URLSearchParams(new FormData(form)); params.set("fragment", "1");
+        fetch(form.action + "?" + params.toString(), { credentials: "same-origin" })
+          .then(function (r) { return r.ok ? r.text() : ""; })
+          .then(function (html) { live.innerHTML = html; }).catch(function () {});
+      }, 180);
+    });
+  }
+
   /* fragments: one private request per page brings the near-you strip, details for this viewer, the subscriber panel and
      the ad slot. Each returned element replaces the page element with the same id. */
   var holder = doc.getElementById("page-fragments");

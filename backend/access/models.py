@@ -48,3 +48,13 @@ class Entitlement(models.Model):
     valid_to = models.DateTimeField()
     source = models.CharField(max_length=40, blank=True)  # order or subscription reference
     revoked_at = models.DateTimeField(null=True, blank=True)
+
+
+class QuotaCounter(models.Model):
+    subject = models.CharField(max_length=64)  # keyed hash of user id or address
+    key = models.CharField(max_length=30)
+    day = models.DateField()
+    count = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["subject", "key", "day"], name="uniq_quota_counter")]

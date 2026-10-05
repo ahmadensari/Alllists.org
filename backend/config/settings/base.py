@@ -53,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "catalog.middleware.TemplateVersionMiddleware",
+    "core.middleware.SecurityHeadersMiddleware",
 ]
 ROOT_URLCONF = "config.urls"
 TEMPLATES = [
@@ -156,3 +157,12 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "AllLists <no-reply@al
 LOGIN_MAX_PER_ACCOUNT = 5
 LOGIN_MAX_PER_ADDRESS = 20
 SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {"scrub": {"()": "core.logscrub.ScrubFilter"}},
+    "handlers": {"console": {"class": "logging.StreamHandler", "filters": ["scrub"]}},
+    "root": {"handlers": ["console"], "level": os.environ.get("LOG_LEVEL", "INFO")},
+}
+CSP_REPORT_ONLY = os.environ.get("CSP_REPORT_ONLY", "") == "1"

@@ -191,3 +191,5 @@ details.more summary{min-height:var(--tap);display:inline-flex;align-items:cente
 .form fieldset{border:1px solid var(--rule);border-radius:var(--r);margin:0 0 var(--s3);padding:var(--s3)}
 table.staff{border-collapse:collapse;width:100%;font-size:var(--t-sm)}
 table.staff th,table.staff td{border-block-end:1px solid var(--rule);padding:var(--s2);text-align:start;vertical-align:top;overflow-wrap:anywhere}
+.hsearch{flex:1 1 12rem;min-width:0}
+.hsearch input{width:100%;padding:var(--s2) var(--s3);border:1px solid var(--control);border-radius:var(--r);background:var(--paper);color:var(--ink);font:inherit;min-height:var(--tap)}

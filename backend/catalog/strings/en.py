@@ -145,4 +145,11 @@ EN = {
     "enum_trader": "Trader",
     "enum_wholesaler": "Wholesaler",
     "enum_exporter": "Exporter",
+    "quota_notice": "You have used today's free views. Subscribers have no daily limit. Free views reset tomorrow.",
+    "search_too_short": "Type at least two letters.",
+    "search_no_results": "Nothing found.",
+    "search_start_list": "Every list exists everywhere, but this one is empty. You can start it:",
+    "search_lists": "Lists",
+    "search_places": "Places",
+    "search_entries": "Businesses in this area",
 }

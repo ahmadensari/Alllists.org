@@ -17,6 +17,7 @@
 <a class="skip" href="#results">{% tr 'skip' %}</a>
 <header class="site"><div class="wrap site-row">
   <a class="logo" href="{% u '/' %}">All<b>Lists</b></a>
+  <form action="{% u '/search/' %}" method="get" role="search" class="hsearch"><label class="visually-hidden" for="hq">{% tr 'search_everything' %}</label><input id="hq" name="q" type="search" placeholder="{% tr 'search_everything' %}"{% if scope_path %}><input type="hidden" name="scope" value="{{ scope_path }}"{% endif %}></form>
   <span class="grow"></span>
   <a class="btn quiet" href="{{ alt_url }}" hreflang="{{ other_lang }}" lang="{{ other_lang }}">{% if lang == 'en' %}اردو{% else %}English{% endif %}</a>
   <button class="btn quiet" type="button" data-theme-toggle>{% tr 'theme' %}</button>
