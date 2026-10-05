@@ -23,3 +23,59 @@ class Source(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ImportBatch(models.Model):
+    class Status(models.TextChoices):
+        UPLOADED = "uploaded"
+        MAPPED = "mapped"
+        DONE = "done"
+        FAILED = "failed"
+
+    source = models.ForeignKey(Source, on_delete=models.PROTECT, related_name="batches")
+    uploader = models.ForeignKey("auth.User", null=True, on_delete=models.SET_NULL, related_name="+")
+    declared_rights = models.BooleanField(default=False)  # contributor declares the right to share (D11)
+    place = models.ForeignKey("places.Place", on_delete=models.PROTECT, related_name="+")
+    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
+    raw_text = models.TextField()
+    mapping = models.JSONField(default=dict, blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.UPLOADED)
+    counts = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+
+
+class ImportRow(models.Model):
+    class Status(models.TextChoices):
+        NEW = "new"
+        DUPLICATE = "duplicate"
+        HELD = "held"
+        ERROR = "error"
+        DRAFTED = "drafted"
+
+    batch = models.ForeignKey(ImportBatch, on_delete=models.CASCADE, related_name="rows")
+    line_no = models.PositiveIntegerField()
+    raw = models.JSONField(default=dict)
+    normalised = models.JSONField(default=dict, blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
+    message = models.CharField(max_length=200, blank=True)
+    entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+
+
+class DedupeCandidate(models.Model):
+    class State(models.TextChoices):
+        PENDING = "pending"
+        AUTO_MERGED = "auto_merged"
+        REJECTED = "rejected"
+        MERGED = "merged"
+
+    a_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
+    b_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
+    score = models.FloatField()
+    features = models.JSONField(default=dict)
+    state = models.CharField(max_length=12, choices=State.choices, default=State.PENDING)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["a_entry", "b_entry"], name="uniq_dedupe_pair")]

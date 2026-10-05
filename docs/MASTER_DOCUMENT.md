@@ -83,41 +83,95 @@ One file holding every decision, detail, research note, the design code and the 
 77. prototype/README.md
 78. Design code: full interactive prototype (single HTML file)
 79. Software source: backend/README.md
-80. Software source: backend/config/__init__.py
-81. Software source: backend/config/settings.py
-82. Software source: backend/config/urls.py
-83. Software source: backend/config/wsgi.py
-84. Software source: backend/lists/__init__.py
-85. Software source: backend/lists/admin.py
-86. Software source: backend/lists/context.py
-87. Software source: backend/lists/management/__init__.py
-88. Software source: backend/lists/management/commands/__init__.py
-89. Software source: backend/lists/management/commands/seed_demo.py
-90. Software source: backend/lists/middleware.py
-91. Software source: backend/lists/models.py
-92. Software source: backend/lists/share.py
-93. Software source: backend/lists/static/lists/app.css
-94. Software source: backend/lists/static/lists/app.js
-95. Software source: backend/lists/strings.py
-96. Software source: backend/lists/templates/lists/404.html
-97. Software source: backend/lists/templates/lists/_chip.html
-98. Software source: backend/lists/templates/lists/_crumbs.html
-99. Software source: backend/lists/templates/lists/_share.html
-100. Software source: backend/lists/templates/lists/base.html
-101. Software source: backend/lists/templates/lists/entry.html
-102. Software source: backend/lists/templates/lists/home.html
-103. Software source: backend/lists/templates/lists/list.html
-104. Software source: backend/lists/templates/lists/place.html
-105. Software source: backend/lists/templatetags/__init__.py
-106. Software source: backend/lists/templatetags/lists_extras.py
-107. Software source: backend/lists/tests/__init__.py
-108. Software source: backend/lists/tests/test_app.py
-109. Software source: backend/lists/urls.py
-110. Software source: backend/lists/views.py
-111. Software source: backend/lists/visibility.py
-112. Software source: backend/manage.py
-113. Software source: backend/requirements.txt
-114. Appendix: founder's messages, verbatim
+80. Software source: backend/analytics/__init__.py
+81. Software source: backend/analytics/apps.py
+82. Software source: backend/analytics/models.py
+83. Software source: backend/analytics/rollups.py
+84. Software source: backend/analytics/tests/__init__.py
+85. Software source: backend/analytics/tests/test_rollups.py
+86. Software source: backend/config/__init__.py
+87. Software source: backend/config/settings/__init__.py
+88. Software source: backend/config/settings/base.py
+89. Software source: backend/config/settings/prod.py
+90. Software source: backend/config/urls.py
+91. Software source: backend/config/wsgi.py
+92. Software source: backend/conftest.py
+93. Software source: backend/core/__init__.py
+94. Software source: backend/core/admin.py
+95. Software source: backend/core/apps.py
+96. Software source: backend/core/clock.py
+97. Software source: backend/core/crypto.py
+98. Software source: backend/core/management/__init__.py
+99. Software source: backend/core/management/commands/__init__.py
+100. Software source: backend/core/management/commands/seed_pilot.py
+101. Software source: backend/core/models.py
+102. Software source: backend/core/pg.py
+103. Software source: backend/core/tests/__init__.py
+104. Software source: backend/core/tests/test_core.py
+105. Software source: backend/core/textfold.py
+106. Software source: backend/core/ulid.py
+107. Software source: backend/entries/__init__.py
+108. Software source: backend/entries/admin.py
+109. Software source: backend/entries/apps.py
+110. Software source: backend/entries/models.py
+111. Software source: backend/entries/services.py
+112. Software source: backend/entries/tests/__init__.py
+113. Software source: backend/entries/tests/test_entries.py
+114. Software source: backend/intake/__init__.py
+115. Software source: backend/intake/admin.py
+116. Software source: backend/intake/apps.py
+117. Software source: backend/intake/dedupe.py
+118. Software source: backend/intake/gate.py
+119. Software source: backend/intake/importer.py
+120. Software source: backend/intake/models.py
+121. Software source: backend/intake/tests/__init__.py
+122. Software source: backend/intake/tests/test_gate.py
+123. Software source: backend/intake/tests/test_import_dedupe.py
+124. Software source: backend/lists/__init__.py
+125. Software source: backend/lists/admin.py
+126. Software source: backend/lists/context.py
+127. Software source: backend/lists/management/__init__.py
+128. Software source: backend/lists/management/commands/__init__.py
+129. Software source: backend/lists/management/commands/seed_demo.py
+130. Software source: backend/lists/middleware.py
+131. Software source: backend/lists/models.py
+132. Software source: backend/lists/share.py
+133. Software source: backend/lists/static/lists/app.css
+134. Software source: backend/lists/static/lists/app.js
+135. Software source: backend/lists/strings.py
+136. Software source: backend/lists/templates/lists/404.html
+137. Software source: backend/lists/templates/lists/_chip.html
+138. Software source: backend/lists/templates/lists/_crumbs.html
+139. Software source: backend/lists/templates/lists/_share.html
+140. Software source: backend/lists/templates/lists/base.html
+141. Software source: backend/lists/templates/lists/entry.html
+142. Software source: backend/lists/templates/lists/home.html
+143. Software source: backend/lists/templates/lists/list.html
+144. Software source: backend/lists/templates/lists/place.html
+145. Software source: backend/lists/templatetags/__init__.py
+146. Software source: backend/lists/templatetags/lists_extras.py
+147. Software source: backend/lists/tests/__init__.py
+148. Software source: backend/lists/tests/test_app.py
+149. Software source: backend/lists/urls.py
+150. Software source: backend/lists/views.py
+151. Software source: backend/lists/visibility.py
+152. Software source: backend/manage.py
+153. Software source: backend/places/__init__.py
+154. Software source: backend/places/admin.py
+155. Software source: backend/places/apps.py
+156. Software source: backend/places/models.py
+157. Software source: backend/places/services.py
+158. Software source: backend/places/tests/__init__.py
+159. Software source: backend/places/tests/test_places.py
+160. Software source: backend/requirements.txt
+161. Software source: backend/taxonomy/__init__.py
+162. Software source: backend/taxonomy/admin.py
+163. Software source: backend/taxonomy/apps.py
+164. Software source: backend/taxonomy/models.py
+165. Software source: backend/taxonomy/services.py
+166. Software source: backend/taxonomy/tests/__init__.py
+167. Software source: backend/taxonomy/tests/test_taxonomy.py
+168. Appendix: founder's messages, verbatim
 
 
 ---
@@ -380,6 +434,8 @@ Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeri
 
 - 2026-10-05: First software build. Django 5.2 + SQLite (PostgreSQL via env) in `backend/`, replacing the Flask draft. Implements place tree, list views, entries with checks, free/subscriber visibility, company page, enquiry relay, report/claim, share registry, EN/UR, edge-header location, contributor phase rates locked per entry and sale distribution. Not yet built: payments, email relay delivery, subscriptions, moderation UI, search engine, ads. Stack choice (Q-S9/Q-S18) used the recorded default and can still be changed.
 - 2026-10-05: Technical plan written (`docs/TECHNICAL_PLAN.md`): 40 enforceable rules (R01 to R40), modular-monolith architecture, full schema, 94 work packages in phases P0 to P6 plus an agent track, owner-decision register with assumed defaults (including new questions Q-T1 to Q-T11), and a traceability matrix over every requirement ID. Coding follows this plan; the first Django build is kept only where section 24 says so.
+- 2026-10-05: Coding started per `docs/TECHNICAL_PLAN.md`. Done: P0.02 (legacy files removed), P0.03 (compose), P0.04 (CI on PostgreSQL, Python 3.11 to 3.13, blocking flake8, migrate-reverse check), P0.05 (bandit, pip-audit in CI), P0.07 (settings package, module skeletons), P0.09 (session hook), P0.10 partly (pull-request template, CONTRIBUTING; **LICENSE not added**, awaiting the owner's licence decision). P1: `core` (ULID, audit hash chain, change log, flags, country switches, field encryption, `fold()`), `places`, `taxonomy` (concepts, synonyms, add-on registry, reserved slugs), `entries` (schema, verification state machine with guards, publish bar, claims, consent, credit eligibility, expiry and grace), `intake` source gate. Append-only enforced by PostgreSQL triggers. 80 tests. Not done: P0.01 (owner must rotate secrets), P0.06 (hosting), import UI, duplicate pipeline, roll-ups, staff console, loaders.
+- 2026-10-05 (second coding step): added `analytics` roll-up cells (P1.05), merge service with first-adder credit (P1.14), paste and CSV import with header guessing in English, Urdu and Roman Urdu (P1.16), duplicate pipeline v1 with block, score and decide (P1.18), admin screens for pilot data entry, and `seed_pilot` (Sialkot structure, surgical-instrument list type, starter sources, Pakistan country switch with everything off but browsing). 99 tests pass on PostgreSQL. Dedupe thresholds (auto-merge 0.90, review 0.60) are first guesses to be calibrated on the 500 labelled pairs in the pilot.
 
 
 ---
@@ -20857,7 +20913,7 @@ moderation queues are not built yet; see `docs/DECISIONS.md` open items.
 
 ---
 
-## 80. Software source: backend/config/__init__.py
+## 80. Software source: backend/analytics/__init__.py
 
 ```py
 
@@ -20867,7 +20923,236 @@ moderation queues are not built yet; see `docs/DECISIONS.md` open items.
 
 ---
 
-## 81. Software source: backend/config/settings.py
+## 81. Software source: backend/analytics/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class AnalyticsConfig(AppConfig):
+    name = "analytics"
+```
+
+
+
+---
+
+## 82. Software source: backend/analytics/models.py
+
+```py
+from django.db import models
+
+from core import clock
+
+
+class RollupCell(models.Model):
+    """Counts for one (place, concept) cell, including everything below the place. Only non-empty cells exist."""
+    country_code = models.CharField(max_length=2)
+    place_path = models.CharField(max_length=500)
+    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.CASCADE, related_name="+")
+    total = models.PositiveIntegerField(default=0)
+    published = models.PositiveIntegerField(default=0)
+    by_level = models.JSONField(default=dict)
+    verified_12m = models.PositiveIntegerField(default=0)
+    with_contact_pct = models.PositiveSmallIntegerField(default=0)
+    updated_at = models.DateTimeField(default=clock.now)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["country_code", "place_path", "concept"], name="uniq_rollup_cell")]
+        indexes = [models.Index(fields=["country_code", "place_path"], name="rollup_place_idx")]
+```
+
+
+
+---
+
+## 83. Software source: backend/analytics/rollups.py
+
+```py
+"""Roll-up cells (plan 4.4). Each changed entry touches its place ancestors times its concept ancestors."""
+from datetime import timedelta
+
+from django.db import transaction
+
+from core import clock
+from entries.models import Entry
+from entries.services import current_level
+from taxonomy.models import Concept
+
+from .models import RollupCell
+
+
+def place_paths(path):
+    """'pk.punjab.sialkot' -> ['', 'pk', 'pk.punjab', 'pk.punjab.sialkot'] (world is the empty path)."""
+    parts = path.split(".") if path else []
+    return [""] + [".".join(parts[:i]) for i in range(1, len(parts) + 1)]
+
+
+def concept_chain(concept):
+    chain = []
+    while concept is not None:
+        chain.append(concept.pk)
+        concept = concept.parent
+    return chain
+
+
+def _entries_in(path, concept_ids, country):
+    qs = Entry.objects.filter(primary_concept_id__in=concept_ids, deleted_at__isnull=True, merged_into__isnull=True)
+    if country:
+        qs = qs.filter(country_code=country)
+    if path:
+        qs = [e for e in qs.filter(place_path__startswith=path)
+              if e.place_path == path or e.place_path.startswith(path + ".")]
+    return list(qs)
+
+
+def descendant_concept_ids(concept_id):
+    ids, frontier = [concept_id], [concept_id]
+    while frontier:
+        frontier = list(Concept.objects.filter(parent_id__in=frontier).values_list("pk", flat=True))
+        ids += frontier
+    return ids
+
+
+@transaction.atomic
+def recount_cell(country, path, concept_id, now=None):
+    now = now or clock.now()
+    entries = _entries_in(path, descendant_concept_ids(concept_id), country)
+    if not entries:
+        RollupCell.objects.filter(country_code=country, place_path=path, concept_id=concept_id).delete()
+        return None
+    published = [e for e in entries if e.publish_state == Entry.PublishState.PUBLISHED]
+    by_level = {"surveyor": 0, "owner": 0, "ai": 0, "none": 0}
+    verified_12m = 0
+    for e in published:
+        by_level[current_level(e, now)] += 1
+        if e.last_verified_at and e.last_verified_at > now - timedelta(days=365):
+            verified_12m += 1
+    with_contact = sum(1 for e in published if e.contact_set.exists())
+    cell, _ = RollupCell.objects.update_or_create(
+        country_code=country, place_path=path, concept_id=concept_id,
+        defaults=dict(total=len(entries), published=len(published), by_level=by_level, verified_12m=verified_12m,
+                      with_contact_pct=round(100 * with_contact / len(published)) if published else 0,
+                      updated_at=now))
+    return cell
+
+
+def refresh_for_entry(entry, now=None):
+    """Incremental update after an entry changed."""
+    for path in place_paths(entry.place_path):
+        for cid in concept_chain(entry.primary_concept):
+            recount_cell(entry.country_code, path, cid, now)
+
+
+def recount_all(now=None):
+    """Exact nightly recount. Returns the number of cells now present."""
+    seen = set()
+    for e in Entry.objects.filter(deleted_at__isnull=True, merged_into__isnull=True).select_related("primary_concept"):
+        for path in place_paths(e.place_path):
+            for cid in concept_chain(e.primary_concept):
+                if (e.country_code, path, cid) not in seen:
+                    seen.add((e.country_code, path, cid))
+                    recount_cell(e.country_code, path, cid, now)
+    stale = RollupCell.objects.all()
+    for cell in stale:
+        if (cell.country_code, cell.place_path, cell.concept_id) not in seen:
+            cell.delete()
+    return len(seen)
+```
+
+
+
+---
+
+## 84. Software source: backend/analytics/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 85. Software source: backend/analytics/tests/test_rollups.py
+
+```py
+from analytics.models import RollupCell
+from analytics.rollups import place_paths, recount_all, recount_cell, refresh_for_entry
+from entries import services as es
+
+
+def test_place_paths():
+    assert place_paths("pk.punjab.sialkot") == ["", "pk", "pk.punjab", "pk.punjab.sialkot"]
+    assert place_paths("") == [""]
+
+
+def test_incremental_refresh_matches_recount(entry, tree, surgical, users):
+    es.record_verification(entry, field_group="identity", level="surveyor", actor=users["surveyor"], method="call",
+                           evidence="Answered")
+    entry.refresh_from_db()
+    refresh_for_entry(entry)
+    cities = RollupCell.objects.get(place_path=tree["sialkot"].path, concept=surgical)
+    assert cities.total == 1 and cities.published == 1 and cities.by_level["surveyor"] == 1
+    assert cities.with_contact_pct == 100
+    world = RollupCell.objects.get(place_path="", concept=surgical)
+    assert world.total == 1
+    before = {(c.place_path, c.concept_id): (c.total, c.published) for c in RollupCell.objects.all()}
+    recount_all()
+    after = {(c.place_path, c.concept_id): (c.total, c.published) for c in RollupCell.objects.all()}
+    assert before == after
+
+
+def test_drafts_count_in_total_but_not_published(entry, tree, surgical):
+    refresh_for_entry(entry)
+    cell = RollupCell.objects.get(place_path=tree["paris"].path, concept=surgical)
+    assert cell.total == 1 and cell.published == 0
+
+
+def test_merged_entries_leave_the_counts(entry, tree, surgical, users):
+    other = es.create_entry(name="Dup Co", place=tree["paris"], primary_concept=surgical,
+                            addons={"business_type": "trader", "product_categories": ["x"]})
+    recount_all()
+    assert RollupCell.objects.get(place_path=tree["paris"].path, concept=surgical).total == 2
+    es.merge_entries(entry, other)
+    recount_all()
+    assert RollupCell.objects.get(place_path=tree["paris"].path, concept=surgical).total == 1
+
+
+def test_empty_cell_is_removed(entry, tree, surgical):
+    refresh_for_entry(entry)
+    entry.deleted_at = entry.created_at
+    entry.save()
+    assert recount_cell(entry.country_code, tree["paris"].path, surgical.pk) is None
+    assert not RollupCell.objects.filter(place_path=tree["paris"].path).exists()
+```
+
+
+
+---
+
+## 86. Software source: backend/config/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 87. Software source: backend/config/settings/__init__.py
+
+```py
+"""Settings package. `config.settings` is the development default; production uses `config.settings.prod`."""
+from .base import *  # noqa: F401,F403
+```
+
+
+
+---
+
+## 88. Software source: backend/config/settings/base.py
 
 ```py
 """AllLists settings. Secure by default; everything environment-specific comes from env vars."""
@@ -20875,7 +21160,7 @@ import os
 import sys
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "") == "1"
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or ("dev-only-insecure-key" if DEBUG else "")
@@ -20894,7 +21179,8 @@ DEMO_MODE = os.environ.get("ALLLISTS_DEMO", "1" if DEBUG else "0") == "1"
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
-    "lists",
+    "core", "places", "taxonomy", "entries", "intake", "analytics",
+    "lists",  # legacy demo app, replaced by catalog in phase P2
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -20921,7 +21207,8 @@ TEMPLATES = [{
 }]
 WSGI_APPLICATION = "config.wsgi.application"
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.environ.get("ALLLISTS_DB", BASE_DIR / "db.sqlite3")}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3",
+                         "NAME": os.environ.get("ALLLISTS_DB", BASE_DIR / "db.sqlite3")}}
 if os.environ.get("POSTGRES_DB"):  # PostgreSQL in production (install psycopg)
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql", "NAME": os.environ["POSTGRES_DB"],
@@ -20961,13 +21248,50 @@ CONTRIBUTOR_PHASE_RATES = {1: 50, 2: 40, 3: 30}
 CURRENT_PHASE = int(os.environ.get("ALLLISTS_PHASE", "1"))
 FREE_PREVIEW_NAMES = 25          # names-only preview beyond the visitor's own place
 FREE_MAX_SPECIALITIES = 3
+
+# Field encryption and keyed hashes (plan section 17). Dev values are throwaway; production sets real ones.
+FIELD_ENCRYPTION_KEYS = {}
+FIELD_ENCRYPTION_ACTIVE_KEY = os.environ.get("FIELD_ENCRYPTION_ACTIVE_KEY", "")
+for _item in [i for i in os.environ.get("FIELD_ENCRYPTION_KEYS", "").split(",") if i]:
+    _kid, _, _key = _item.partition(":")
+    FIELD_ENCRYPTION_KEYS[_kid] = _key
+CONTACT_HASH_PEPPER = os.environ.get("CONTACT_HASH_PEPPER", "")
+if not FIELD_ENCRYPTION_KEYS and (DEBUG or "pytest" in sys.modules):
+    from cryptography.fernet import Fernet  # noqa: E402
+    FIELD_ENCRYPTION_KEYS = {"dev": Fernet.generate_key().decode()}
+    FIELD_ENCRYPTION_ACTIVE_KEY = "dev"
+    CONTACT_HASH_PEPPER = CONTACT_HASH_PEPPER or "dev-pepper-not-secret"
+
+# Verification defaults (plan section 6.3, Q-T4): validity in days per level; grace before an expired entry returns to draft
+CHECK_VALIDITY_DAYS = {"surveyor": 365, "owner": 365, "ai": 180}
+GRACE_DAYS = 90
+INDEX_THRESHOLD = 10
 ```
 
 
 
 ---
 
-## 82. Software source: backend/config/urls.py
+## 89. Software source: backend/config/settings/prod.py
+
+```py
+"""Production settings: nothing here relaxes base; it only fails fast when required values are missing."""
+from django.core.exceptions import ImproperlyConfigured
+
+from .base import *  # noqa: F401,F403
+from .base import CONTACT_HASH_PEPPER, DEBUG, FIELD_ENCRYPTION_KEYS
+
+if DEBUG:
+    raise ImproperlyConfigured("DJANGO_DEBUG must be off in production")
+if not FIELD_ENCRYPTION_KEYS or not CONTACT_HASH_PEPPER:
+    raise ImproperlyConfigured("Set FIELD_ENCRYPTION_KEYS, FIELD_ENCRYPTION_ACTIVE_KEY and CONTACT_HASH_PEPPER")
+```
+
+
+
+---
+
+## 90. Software source: backend/config/urls.py
 
 ```py
 from django.contrib import admin
@@ -20983,7 +21307,7 @@ urlpatterns = [
 
 ---
 
-## 83. Software source: backend/config/wsgi.py
+## 91. Software source: backend/config/wsgi.py
 
 ```py
 import os
@@ -20998,7 +21322,88 @@ application = get_wsgi_application()
 
 ---
 
-## 84. Software source: backend/lists/__init__.py
+## 92. Software source: backend/conftest.py
+
+```py
+import datetime
+
+import pytest
+from django.contrib.auth.models import User
+from django.db import connection
+
+from core.models import CountrySwitch
+from entries import services as es
+from intake.models import Source
+from places.models import Place
+from places.services import create_place
+from taxonomy.models import Concept
+from taxonomy.services import create_concept, seed_manufacturer_template
+
+
+@pytest.fixture(autouse=True)
+def fast_hashers(settings):
+    settings.PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+
+
+@pytest.fixture
+def pg(db):
+    if connection.vendor != "postgresql":
+        pytest.skip("needs PostgreSQL (set POSTGRES_DB)")
+
+
+@pytest.fixture
+def tree(db):
+    world = create_place(parent=None, level=Place.Level.WORLD, name="World", slug="world")
+    pk = create_place(parent=world, level=Place.Level.COUNTRY, name="Pakistan", country_code="PK",
+                      names=[("ur", "پاکستان")])
+    punjab = create_place(parent=pk, level=Place.Level.ADMIN1, name="Punjab")
+    sialkot = create_place(parent=punjab, level=Place.Level.CITY, name="Sialkot", names=[("ur", "سیالکوٹ")])
+    paris = create_place(parent=sialkot, level=Place.Level.AREA, name="Paris Road")
+    return dict(world=world, pk=pk, punjab=punjab, sialkot=sialkot, paris=paris)
+
+
+@pytest.fixture
+def surgical(db):
+    tpl = seed_manufacturer_template()
+    return create_concept(kind=Concept.Kind.LIST_TYPE, name="Surgical instrument makers", template=tpl,
+                          synonyms=["surgical instruments manufacturers"])
+
+
+@pytest.fixture
+def users(db):
+    return {n: User.objects.create_user(n, f"{n}@example.org", "pw-for-tests-only") for n in
+            ("adder", "surveyor", "owner", "mod")}
+
+
+@pytest.fixture
+def green(db):
+    return Source.objects.create(name="Owner submissions", tier="green", allowed_uses=["import", "agent_fetch", "display"])
+
+
+@pytest.fixture
+def web_source(db):
+    return Source.objects.create(name="Open web page check", tier="amber", allowed_uses=["agent_fetch", "display"],
+                                 reviewed_on=datetime.date(2026, 10, 1))
+
+
+@pytest.fixture
+def entry(tree, surgical, users):
+    return es.create_entry(name="Crescent Surgical Works", place=tree["paris"], primary_concept=surgical,
+                           created_by=users["adder"], website="https://example.org",
+                           contacts=[("phone", "0300 123 4567")],
+                           addons={"business_type": "manufacturer", "product_categories": ["scissors"]})
+
+
+@pytest.fixture
+def pk_open(db):
+    return CountrySwitch.objects.create(country_code="PK", named_individuals_on=True)
+```
+
+
+
+---
+
+## 93. Software source: backend/core/__init__.py
 
 ```py
 
@@ -21008,7 +21413,2323 @@ application = get_wsgi_application()
 
 ---
 
-## 85. Software source: backend/lists/admin.py
+## 94. Software source: backend/core/admin.py
+
+```py
+from django.contrib import admin
+
+from .models import AuditLog, ChangeLog, CountrySwitch, FeatureFlag, RegistryVersion
+
+
+@admin.register(AuditLog)
+class AuditLogAdmin(admin.ModelAdmin):
+    list_display = ("id", "ts", "action", "object_type", "object_uid", "actor_id")
+    search_fields = ("action", "object_uid")
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(CountrySwitch)
+class CountrySwitchAdmin(admin.ModelAdmin):
+    list_display = ("country_code", "browsing_on", "indexing_on", "selling_on", "outreach_on", "ads_on", "cleared_by")
+
+
+admin.site.register([ChangeLog, FeatureFlag, RegistryVersion])
+```
+
+
+
+---
+
+## 95. Software source: backend/core/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class CoreConfig(AppConfig):
+    name = "core"
+```
+
+
+
+---
+
+## 96. Software source: backend/core/clock.py
+
+```py
+"""One clock so tests can set the time."""
+from django.utils import timezone
+
+_override = None
+
+
+def now():
+    return _override or timezone.now()
+
+
+def set_now(value):
+    global _override
+    _override = value
+
+
+def today():
+    return now().date()
+```
+
+
+
+---
+
+## 97. Software source: backend/core/crypto.py
+
+```py
+"""Field encryption with key versioning, and keyed hashes for lookup without decryption (plan sections 4.1, 17)."""
+import hashlib
+import hmac
+
+from cryptography.fernet import Fernet, InvalidToken
+from django.conf import settings
+from django.db import models
+
+
+class CryptoError(Exception):
+    pass
+
+
+def encrypt(plaintext: str) -> str:
+    kid = settings.FIELD_ENCRYPTION_ACTIVE_KEY
+    key = settings.FIELD_ENCRYPTION_KEYS.get(kid)
+    if not key:
+        raise CryptoError("no active encryption key configured")
+    return f"{kid}:{Fernet(key.encode()).encrypt(plaintext.encode()).decode()}"
+
+
+def decrypt(stored: str) -> str:
+    kid, _, token = stored.partition(":")
+    key = settings.FIELD_ENCRYPTION_KEYS.get(kid)
+    if not key:
+        raise CryptoError(f"unknown key id {kid!r}")
+    try:
+        return Fernet(key.encode()).decrypt(token.encode()).decode()
+    except InvalidToken as exc:
+        raise CryptoError("cannot decrypt value") from exc
+
+
+def keyed_hash(value: str) -> str:
+    """Stable keyed hash for de-duplication and suppression lists. Normalise before calling."""
+    pepper = settings.CONTACT_HASH_PEPPER
+    if not pepper:
+        raise CryptoError("CONTACT_HASH_PEPPER is not set")
+    return hmac.new(pepper.encode(), value.encode(), hashlib.sha256).hexdigest()
+
+
+class EncryptedTextField(models.TextField):
+    """Stores `key_id:ciphertext`. Never rendered to visitors (rule R02)."""
+
+    def get_prep_value(self, value):
+        if value is None:
+            return None
+        return encrypt(value)
+
+    def from_db_value(self, value, expression, connection):
+        return None if value is None else decrypt(value)
+```
+
+
+
+---
+
+## 98. Software source: backend/core/management/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 99. Software source: backend/core/management/commands/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 100. Software source: backend/core/management/commands/seed_pilot.py
+
+```py
+"""Seed the pilot structure: Pakistan to Sialkot, the surgical-instrument list type, and a starter source register.
+Safe to run twice. Entries are not created here; they come from imports and verification."""
+import datetime
+
+from django.core.management.base import BaseCommand
+
+from core.models import CountrySwitch
+from intake.models import Source
+from places.models import Place
+from places.services import create_place
+from taxonomy.models import Concept
+from taxonomy.services import create_concept, seed_manufacturer_template
+
+
+def get_or_create_place(parent, **kw):
+    existing = Place.objects.filter(parent=parent, slug=kw.get("slug") or kw["name"].lower().replace(" ", "-")).first()
+    return existing or create_place(parent=parent, **kw)
+
+
+class Command(BaseCommand):
+    def handle(self, *args, **opts):
+        world = Place.objects.filter(level="world").first() or create_place(
+            parent=None, level=Place.Level.WORLD, name="World", slug="world")
+        pk = Place.objects.filter(country_code="PK", level="country").first() or create_place(
+            parent=world, level=Place.Level.COUNTRY, name="Pakistan", country_code="PK", names=[("ur", "پاکستان")])
+        punjab = get_or_create_place(pk, level=Place.Level.ADMIN1, name="Punjab", names=[("ur", "پنجاب")])
+        city = get_or_create_place(punjab, level=Place.Level.CITY, name="Sialkot", names=[("ur", "سیالکوٹ")])
+        for area, ur in (("Paris Road", "پیرس روڈ"), ("Kashmir Road", "کشمیر روڈ"), ("Wazirabad Road", "وزیرآباد روڈ")):
+            get_or_create_place(city, level=Place.Level.AREA, name=area, names=[("ur", ur)])
+        tpl = seed_manufacturer_template()
+        if not Concept.objects.filter(kind="list_type", slug="surgical-instrument-makers").exists():
+            create_concept(kind=Concept.Kind.LIST_TYPE, name="Surgical instrument makers", template=tpl,
+                           natural_scale="national",
+                           synonyms=[("surgical instruments manufacturers", "en"), ("جراحی آلات بنانے والے", "ur")])
+        Source.objects.get_or_create(name="Owner and contributor submissions", defaults=dict(
+            tier="green", allowed_uses=["import", "display"], attribution_text="Provided by contributors"))
+        Source.objects.get_or_create(name="Open web page check", defaults=dict(
+            tier="amber", allowed_uses=["agent_fetch", "display"], reviewed_on=datetime.date.today(),
+            personal_data_rules="Business facts only; no personal data"))
+        CountrySwitch.objects.get_or_create(country_code="PK")  # everything off except browsing until counsel clears it
+        self.stdout.write("pilot structure ready")
+```
+
+
+
+---
+
+## 101. Software source: backend/core/models.py
+
+```py
+"""Shared base models: ids, soft delete, audit hash chain, change log, flags, country switches (plan section 4.2.1)."""
+import hashlib
+import json
+
+from django.conf import settings
+from django.db import connection, models, transaction
+
+from . import clock
+from .ulid import new_ulid
+
+
+class UidModel(models.Model):
+    uid = models.CharField(max_length=26, unique=True, default=new_ulid, editable=False)
+
+    class Meta:
+        abstract = True
+
+
+class SoftDeleteModel(models.Model):
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    tombstone_reason = models.CharField(max_length=80, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class AuditLog(models.Model):
+    """Append-only, hash-chained: hash = sha256(prev_hash + canonical row). Written in the same transaction as the change."""
+    ts = models.DateTimeField()
+    actor_id = models.BigIntegerField(null=True, blank=True)
+    actor_role = models.CharField(max_length=40, blank=True)
+    action = models.CharField(max_length=80)
+    object_type = models.CharField(max_length=60, blank=True)
+    object_uid = models.CharField(max_length=40, blank=True)
+    country_code = models.CharField(max_length=2, blank=True)
+    ip_hash = models.CharField(max_length=64, blank=True)
+    payload = models.JSONField(default=dict, blank=True)
+    prev_hash = models.CharField(max_length=64, blank=True)
+    hash = models.CharField(max_length=64, unique=True)
+
+    class Meta:
+        ordering = ["id"]
+
+
+def _canonical(prev_hash, fields):
+    return prev_hash + json.dumps(fields, sort_keys=True, separators=(",", ":"), default=str)
+
+
+def audit(action, *, actor=None, actor_role="", object_type="", object_uid="", country_code="", ip_hash="", payload=None):
+    """Append one audit row. Call inside the transaction that makes the change."""
+    with transaction.atomic():
+        if connection.vendor == "postgresql":
+            with connection.cursor() as cur:
+                cur.execute("SELECT pg_advisory_xact_lock(727001)")
+        last = AuditLog.objects.order_by("-id").first()
+        prev = last.hash if last else ""
+        ts = clock.now()
+        fields = {"ts": ts.isoformat(), "actor_id": getattr(actor, "pk", actor), "actor_role": actor_role,
+                  "action": action, "object_type": object_type, "object_uid": object_uid,
+                  "country_code": country_code, "ip_hash": ip_hash, "payload": payload or {}}
+        digest = hashlib.sha256(_canonical(prev, fields).encode()).hexdigest()
+        return AuditLog.objects.create(ts=ts, actor_id=fields["actor_id"], actor_role=actor_role, action=action,
+                                       object_type=object_type, object_uid=object_uid, country_code=country_code,
+                                       ip_hash=ip_hash, payload=fields["payload"], prev_hash=prev, hash=digest)
+
+
+def verify_audit_chain():
+    """Returns None if the chain is intact, else the id of the first broken row."""
+    prev = ""
+    for row in AuditLog.objects.order_by("id").iterator():
+        fields = {"ts": row.ts.isoformat(), "actor_id": row.actor_id, "actor_role": row.actor_role, "action": row.action,
+                  "object_type": row.object_type, "object_uid": row.object_uid, "country_code": row.country_code,
+                  "ip_hash": row.ip_hash, "payload": row.payload}
+        if row.prev_hash != prev or hashlib.sha256(_canonical(prev, fields).encode()).hexdigest() != row.hash:
+            return row.id
+        prev = row.hash
+    return None
+
+
+class ChangeLog(models.Model):
+    """One row per field change on an entry (append-only)."""
+    entry_id = models.BigIntegerField(db_index=True)
+    country_code = models.CharField(max_length=2)
+    field_key = models.CharField(max_length=60)
+    old = models.JSONField(null=True, blank=True)
+    new = models.JSONField(null=True, blank=True)
+    actor_id = models.BigIntegerField(null=True, blank=True)
+    source_id = models.BigIntegerField(null=True, blank=True)
+    ts = models.DateTimeField(default=clock.now)
+
+    class Meta:
+        ordering = ["id"]
+
+
+class FeatureFlag(models.Model):
+    key = models.CharField(max_length=60, unique=True)
+    description = models.CharField(max_length=200, blank=True)
+    enabled_default = models.BooleanField(default=False)
+    country_code = models.CharField(max_length=2, blank=True, help_text="Blank means every country")
+    rollout_percent = models.PositiveSmallIntegerField(default=100)
+
+
+class CountrySwitch(models.Model):
+    """Per-country control for rule R24. Everything except browsing defaults to off."""
+    country_code = models.CharField(max_length=2, unique=True)
+    browsing_on = models.BooleanField(default=True)
+    indexing_on = models.BooleanField(default=False)
+    selling_on = models.BooleanField(default=False)
+    outreach_on = models.BooleanField(default=False)
+    outreach_channels = models.JSONField(default=list, blank=True)
+    ads_on = models.BooleanField(default=False)
+    named_individuals_on = models.BooleanField(default=False)
+    health_prices_on = models.BooleanField(default=False)
+    child_services_on = models.BooleanField(default=False)
+    publish_cap_per_week = models.PositiveIntegerField(default=0)
+    legal_note = models.TextField(blank=True)
+    cleared_by = models.CharField(max_length=120, blank=True)
+    cleared_on = models.DateField(null=True, blank=True)
+
+    @classmethod
+    def for_country(cls, code):
+        """Unknown countries get the all-off default (browsing only)."""
+        return cls.objects.filter(country_code=code).first() or cls(country_code=code)
+
+
+class RegistryVersion(models.Model):
+    registry_key = models.CharField(max_length=60)
+    version = models.PositiveIntegerField()
+    changed_at = models.DateTimeField(default=clock.now)
+    changed_by = models.CharField(max_length=120, blank=True)
+
+    class Meta:
+        unique_together = [("registry_key", "version")]
+
+
+def flag_enabled(key, country_code=""):
+    f = FeatureFlag.objects.filter(key=key, country_code__in=[country_code, ""]).order_by("-country_code").first()
+    return bool(f and f.enabled_default and f.rollout_percent > 0)
+
+
+AUTH_USER = settings.AUTH_USER_MODEL
+```
+
+
+
+---
+
+## 102. Software source: backend/core/pg.py
+
+```py
+"""Helpers for PostgreSQL-only parts of migrations. SQLite (local demo) skips them."""
+from django.db import migrations
+
+
+def only_postgres(forward_sql, reverse_sql=""):
+    def forward(apps, schema_editor):
+        if schema_editor.connection.vendor == "postgresql":
+            schema_editor.execute(forward_sql, params=None)
+
+    def reverse(apps, schema_editor):
+        if reverse_sql and schema_editor.connection.vendor == "postgresql":
+            schema_editor.execute(reverse_sql, params=None)
+
+    return migrations.RunPython(forward, reverse)
+
+
+FORBID_FN = """
+CREATE OR REPLACE FUNCTION forbid_mutation() RETURNS trigger AS $$
+BEGIN
+  RAISE EXCEPTION 'table % is append-only: % is not allowed', TG_TABLE_NAME, TG_OP
+    USING ERRCODE = 'integrity_constraint_violation';
+END;
+$$ LANGUAGE plpgsql;
+"""
+DROP_FORBID_FN = "DROP FUNCTION IF EXISTS forbid_mutation();"
+
+
+def append_only(table):
+    return only_postgres(
+        f"CREATE TRIGGER {table}_append_only BEFORE UPDATE OR DELETE ON {table} "
+        "FOR EACH ROW EXECUTE FUNCTION forbid_mutation();",
+        f"DROP TRIGGER IF EXISTS {table}_append_only ON {table};")
+
+
+def trigram_index(table, column, name):
+    return only_postgres(
+        f"CREATE INDEX {name} ON {table} USING gin ({column} gin_trgm_ops);",
+        f"DROP INDEX IF EXISTS {name};")
+```
+
+
+
+---
+
+## 103. Software source: backend/core/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 104. Software source: backend/core/tests/test_core.py
+
+```py
+import pytest
+from django.db import connection, transaction
+from django.db.utils import IntegrityError, InternalError
+
+from core import clock
+from core.crypto import CryptoError, decrypt, encrypt, keyed_hash
+from core.models import AuditLog, ChangeLog, audit, verify_audit_chain
+from core.textfold import fold
+from core.ulid import new_ulid
+
+
+def test_ulid_is_26_chars_unique_and_time_ordered():
+    a, b = new_ulid(1000), new_ulid(2000)
+    assert len(a) == 26 and a < b and new_ulid() != new_ulid()
+
+
+@pytest.mark.parametrize("a,b", [
+    ("کراچی", "کراچی"),
+    ("ياسر", "یاسر"),          # Arabic yeh vs Farsi yeh
+    ("كراچی", "کراچی"),  # Arabic kaf vs keheh
+    ("آمین", "امین"),                                                   # madda folds to alef
+    ("پاکستان‌", "پاکستان"),
+    ("سیالکوٹ ١٢٣", "سیالکوٹ 123"),                                     # Arabic-Indic digits
+    ("Paris  Road!", "paris road"),
+    ("ہوٹل", "ہوٹل"),
+])
+def test_fold_unifies_variants(a, b):
+    assert fold(a) == fold(b)
+
+
+def test_fold_removes_marks_and_tatweel():
+    assert fold("مُحَمَّد") == fold("محمد")
+    assert fold("اللـه") == fold("الله")
+    assert fold("") == "" and fold(None) == ""
+
+
+def test_zwnj_becomes_space():
+    assert fold("ہوٹل‌سٹی") == "ہوٹل سٹی"
+
+
+def test_encrypt_roundtrip_and_key_rotation(settings):
+    from cryptography.fernet import Fernet
+    token = encrypt("+923001234567")
+    assert token.startswith("dev:") and "923001234567" not in token and decrypt(token) == "+923001234567"
+    settings.FIELD_ENCRYPTION_KEYS = {**settings.FIELD_ENCRYPTION_KEYS, "k2": Fernet.generate_key().decode()}
+    settings.FIELD_ENCRYPTION_ACTIVE_KEY = "k2"
+    assert encrypt("x").startswith("k2:") and decrypt(token) == "+923001234567"
+    with pytest.raises(CryptoError):
+        decrypt("nokey:abc")
+
+
+def test_keyed_hash_is_stable_and_keyed(settings):
+    h1 = keyed_hash("phone:+923001234567")
+    assert h1 == keyed_hash("phone:+923001234567") and len(h1) == 64
+    settings.CONTACT_HASH_PEPPER = "other"
+    assert keyed_hash("phone:+923001234567") != h1
+
+
+@pytest.mark.django_db
+def test_audit_chain_verifies_and_links():
+    a = audit("t.one")
+    b = audit("t.two", payload={"k": 1})
+    assert b.prev_hash == a.hash and verify_audit_chain() is None
+
+
+def test_audit_chain_detects_tamper(pg):
+    audit("t.one")
+    row = audit("t.two", payload={"k": 1})
+    with connection.cursor() as cur:
+        cur.execute("ALTER TABLE core_auditlog DISABLE TRIGGER core_auditlog_append_only")
+        cur.execute("UPDATE core_auditlog SET payload = '{\"k\": 2}' WHERE id = %s", [row.id])
+        cur.execute("ALTER TABLE core_auditlog ENABLE TRIGGER core_auditlog_append_only")
+    assert verify_audit_chain() == row.id
+
+
+@pytest.mark.parametrize("model", [AuditLog, ChangeLog])
+def test_append_only_tables_refuse_update_and_delete(pg, model):
+    if model is AuditLog:
+        obj = audit("t.one")
+    else:
+        obj = ChangeLog.objects.create(entry_id=1, country_code="PK", field_key="name", new="x")
+    for sql in (f"UPDATE {model._meta.db_table} SET country_code = 'AE'", f"DELETE FROM {model._meta.db_table}"):
+        with pytest.raises((InternalError, IntegrityError)), transaction.atomic():
+            with connection.cursor() as cur:
+                cur.execute(sql)
+    assert model.objects.filter(pk=obj.pk).exists()
+
+
+def test_clock_override():
+    import datetime
+    from django.utils import timezone
+    fixed = timezone.make_aware(datetime.datetime(2026, 1, 2, 3, 4))
+    clock.set_now(fixed)
+    try:
+        assert clock.now() == fixed
+    finally:
+        clock.set_now(None)
+
+
+def test_seed_pilot_is_idempotent_and_safe_by_default(db):
+    from django.core.management import call_command
+    from core.models import CountrySwitch
+    from places.models import Place
+    from taxonomy.models import Concept
+    call_command("seed_pilot")
+    call_command("seed_pilot")
+    assert Place.objects.filter(path="pk.punjab.sialkot").count() == 1
+    assert Place.objects.filter(parent__path="pk.punjab.sialkot").count() == 3
+    assert Concept.objects.filter(slug="surgical-instrument-makers").count() == 1
+    sw = CountrySwitch.objects.get(country_code="PK")
+    assert sw.browsing_on and not (sw.selling_on or sw.outreach_on or sw.indexing_on or sw.named_individuals_on)
+```
+
+
+
+---
+
+## 105. Software source: backend/core/textfold.py
+
+```py
+"""Search folding for Urdu, Arabic and Latin text (plan section 7.3).
+
+Unicode normalisation alone does not unify Urdu and Arabic letters: trigram similarity of the same name written with
+the two yeh forms was 0.54 before folding. This one function is used for names, place names, concept labels and queries.
+"""
+import re
+import unicodedata
+
+_MAP = {
+    0x064A: 0x06CC, 0x0649: 0x06CC,            # Arabic yeh, alef maksura -> Farsi yeh
+    0x0643: 0x06A9,                            # Arabic kaf -> keheh
+    0x0647: 0x06C1, 0x06D5: 0x06C1,            # heh, ae -> heh goal
+    0x06BE: 0x06C1,                            # heh doachashmee -> heh goal
+    0x0623: 0x0627, 0x0625: 0x0627, 0x0671: 0x0627, 0x0622: 0x0627,  # alef variants and madda -> alef
+    0x06C0: 0x06C1, 0x0624: 0x0648,            # heh with yeh above, waw with hamza
+    0x0626: 0x06CC,                            # yeh with hamza
+}
+_REMOVE = {0x0640, 0x200C, 0x200D, 0x200E, 0x200F, 0x0670}
+_DIGITS = {**{0x0660 + i: ord("0") + i for i in range(10)}, **{0x06F0 + i: ord("0") + i for i in range(10)}}
+_PUNCT = re.compile(r"[^\w\s]", re.UNICODE)
+_SPACE = re.compile(r"\s+")
+
+
+def fold(text):
+    if not text:
+        return ""
+    text = unicodedata.normalize("NFKC", text)
+    out = []
+    for ch in text:
+        cp = ord(ch)
+        if cp == 0x200C:       # ZWNJ separates words in Urdu
+            out.append(" ")
+        elif cp in _REMOVE or 0x064B <= cp <= 0x065F:
+            continue
+        elif cp in _DIGITS:
+            out.append(chr(_DIGITS[cp]))
+        elif cp in _MAP:
+            out.append(chr(_MAP[cp]))
+        else:
+            out.append(ch)
+    text = "".join(out).lower()
+    text = _PUNCT.sub(" ", text)
+    return _SPACE.sub(" ", text).strip()
+```
+
+
+
+---
+
+## 106. Software source: backend/core/ulid.py
+
+```py
+"""ULID: 26 characters, time-ordered, never reused. Public ids in URLs (plan section 4.1)."""
+import os
+import time
+
+_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+
+
+def new_ulid(now_ms=None):
+    ms = int(time.time() * 1000) if now_ms is None else now_ms
+    value = (ms << 80) | int.from_bytes(os.urandom(10), "big")
+    out = []
+    for _ in range(26):
+        out.append(_ALPHABET[value & 31])
+        value >>= 5
+    return "".join(reversed(out))
+```
+
+
+
+---
+
+## 107. Software source: backend/entries/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 108. Software source: backend/entries/admin.py
+
+```py
+from django.contrib import admin
+
+from .models import (Claim, ConsentRecord, Contact, CreditEvent, Entry, Identifier, NameVariant, Service, Social,
+                     VerificationCurrent)
+
+
+class NameVariantInline(admin.TabularInline):
+    model = NameVariant
+    extra = 0
+
+
+class SocialInline(admin.TabularInline):
+    model = Social
+    extra = 0
+
+
+class ServiceInline(admin.TabularInline):
+    model = Service
+    extra = 0
+
+
+class IdentifierInline(admin.TabularInline):
+    model = Identifier
+    extra = 0
+
+
+class CurrentInline(admin.TabularInline):
+    model = VerificationCurrent
+    extra = 0
+    can_delete = False
+    readonly_fields = ("field_group", "level", "state", "verified_at", "expires_at", "method", "actor_display")
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(Entry)
+class EntryAdmin(admin.ModelAdmin):
+    """Raw edits go through the service layer in the staff console (phase P2); admin is for staff inspection and seeding.
+    Contact values are deliberately not shown here: they are encrypted and relay-only (rule R02)."""
+    list_display = ("name", "country_code", "place_path", "publish_state", "claim_state", "created_via")
+    list_filter = ("country_code", "publish_state", "claim_state", "created_via", "entity_type")
+    search_fields = ("name", "name_fold", "uid")
+    readonly_fields = ("uid", "name_fold", "place_path", "created_at", "updated_at", "last_verified_at")
+    inlines = [NameVariantInline, SocialInline, ServiceInline, IdentifierInline, CurrentInline]
+
+
+admin.site.register([Claim, ConsentRecord, CreditEvent])
+admin.site.register(Contact, type("ContactAdmin", (admin.ModelAdmin,), {
+    "list_display": ("entry", "kind", "label", "optin_state"), "exclude": ("value_enc", "value_hash")}))
+```
+
+
+
+---
+
+## 109. Software source: backend/entries/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class EntriesConfig(AppConfig):
+    name = "entries"
+```
+
+
+
+---
+
+## 110. Software source: backend/entries/models.py
+
+```py
+"""Entries, child records, per-field provenance and verification (plan sections 4.2.4, 6)."""
+from django.conf import settings
+from django.db import models
+
+from core import clock
+from core.crypto import EncryptedTextField
+from core.models import SoftDeleteModel, UidModel
+
+
+class Entry(UidModel, SoftDeleteModel):
+    class EntityType(models.TextChoices):
+        BUSINESS = "business"
+        FACILITY = "facility"
+        PERSON = "person"
+        INSTITUTION = "institution"
+
+    class Status(models.TextChoices):
+        OPEN = "open"
+        TEMP_CLOSED = "temporarily_closed"
+        PERM_CLOSED = "permanently_closed"
+        MOVED = "moved"
+
+    class PublishState(models.TextChoices):
+        DRAFT = "draft"
+        REVIEW = "review"
+        PUBLISHED = "published"
+        SUPPRESSED = "suppressed"
+        TOMBSTONED = "tombstoned"
+
+    class ClaimState(models.TextChoices):
+        UNCLAIMED = "unclaimed"
+        PENDING = "pending"
+        CLAIMED = "claimed"
+
+    class CreatedVia(models.TextChoices):
+        CONTRIBUTOR = "contributor"
+        IMPORT = "import"
+        AGENT = "agent"
+        REGISTER = "register"
+        SELF = "self"
+
+    country_code = models.CharField(max_length=2, db_index=True)
+    entity_type = models.CharField(max_length=12, choices=EntityType.choices, default=EntityType.BUSINESS)
+    primary_concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
+    secondary_concepts = models.ManyToManyField("taxonomy.Concept", blank=True, related_name="secondary_entries")
+    name = models.CharField(max_length=250)
+    name_lang = models.CharField(max_length=10, default="en")
+    name_fold = models.CharField(max_length=250, db_index=True)
+    description = models.TextField(blank=True)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.OPEN)
+    status_date = models.DateField(null=True, blank=True)
+    publish_state = models.CharField(max_length=12, choices=PublishState.choices, default=PublishState.DRAFT)
+    address = models.JSONField(default=dict, blank=True)
+    address_text = models.CharField(max_length=400, blank=True)
+    place = models.ForeignKey("places.Place", on_delete=models.PROTECT, related_name="entries")
+    place_path = models.CharField(max_length=500)
+    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    precision_class = models.CharField(max_length=10, blank=True)
+    coord_source = models.CharField(max_length=40, blank=True)
+    coord_date = models.DateField(null=True, blank=True)
+    service_area = models.JSONField(default=dict, blank=True)
+    website = models.URLField(blank=True)
+    size_band = models.CharField(max_length=20, blank=True)
+    year_established = models.PositiveSmallIntegerField(null=True, blank=True)
+    parent_entry = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="branches_of")
+    languages = models.JSONField(default=list, blank=True)
+    price_band = models.CharField(max_length=10, blank=True)
+    payment_methods = models.JSONField(default=list, blank=True)
+    addons = models.JSONField(default=dict, blank=True)
+    addon_template_version = models.PositiveIntegerField(null=True, blank=True)
+    claim_state = models.CharField(max_length=10, choices=ClaimState.choices, default=ClaimState.UNCLAIMED)
+    listing_plan = models.CharField(max_length=10, default="basic")
+    plan_valid_until = models.DateField(null=True, blank=True)
+    visibility_flags = models.JSONField(default=list, blank=True)  # do_not_share, noindex, suppressed
+    created_via = models.CharField(max_length=12, choices=CreatedVia.choices, default=CreatedVia.CONTRIBUTOR)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
+                                   related_name="+")
+    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    phase_id = models.PositiveIntegerField(null=True, blank=True)  # locked rate phase (rule R11), set by the ledger module
+    created_at = models.DateTimeField(default=clock.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    last_verified_at = models.DateTimeField(null=True, blank=True)
+    merged_into = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="merged_from")
+
+    class Meta:
+        verbose_name_plural = "entries"
+        indexes = [
+            models.Index(fields=["country_code", "place_path", "primary_concept", "publish_state"], name="entry_list_query"),
+            models.Index(fields=["country_code", "claim_state"], name="entry_claim_idx"),
+        ]
+
+    def __str__(self):
+        return self.name
+
+
+# ---- child records (plan 4.2.4) ----------------------------------------------------------------------------
+
+class EntryChild(models.Model):
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="%(class)s_set")
+    country_code = models.CharField(max_length=2)
+
+    class Meta:
+        abstract = True
+
+
+class NameVariant(EntryChild):
+    text = models.CharField(max_length=250)
+    language = models.CharField(max_length=10, blank=True)
+    kind = models.CharField(max_length=15, default="trade")  # legal, trade, old, transliteration
+    text_fold = models.CharField(max_length=250, db_index=True)
+
+
+class Contact(EntryChild):
+    """Never rendered to anyone (rule R02). Value is encrypted; the keyed hash allows lookups and suppression."""
+    class Kind(models.TextChoices):
+        PHONE = "phone"
+        MOBILE = "mobile"
+        WHATSAPP = "whatsapp"
+        EMAIL = "email"
+        FAX = "fax"
+
+    kind = models.CharField(max_length=10, choices=Kind.choices)
+    value_enc = EncryptedTextField()
+    value_hash = models.CharField(max_length=64, db_index=True)
+    label = models.CharField(max_length=20, blank=True)
+    preferred_hours = models.CharField(max_length=60, blank=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    relay_only = models.BooleanField(default=True, editable=False)
+    optin_state = models.CharField(max_length=12, default="none")
+
+
+class Social(EntryChild):
+    platform = models.CharField(max_length=30)
+    handle_or_url = models.CharField(max_length=300)
+    owner_confirmed = models.BooleanField(default=False)
+    last_link_check = models.DateTimeField(null=True, blank=True)
+    link_status = models.CharField(max_length=10, blank=True)
+
+
+class Hours(EntryChild):
+    day_from = models.PositiveSmallIntegerField()
+    day_to = models.PositiveSmallIntegerField()
+    open_time = models.TimeField(null=True, blank=True)
+    close_time = models.TimeField(null=True, blank=True)
+    appointment_only = models.BooleanField(default=False)
+    confirmed_on = models.DateField(null=True, blank=True)
+    tz = models.CharField(max_length=40, blank=True)
+
+
+class Service(EntryChild):
+    concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    name_text = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    price_minor = models.BigIntegerField(null=True, blank=True)
+    currency = models.CharField(max_length=3, blank=True)
+    price_type = models.CharField(max_length=10, blank=True)  # fixed, from, hourly, per_visit
+    unit = models.CharField(max_length=40, blank=True)
+    price_date = models.DateField(null=True, blank=True)
+    prep_notes = models.CharField(max_length=300, blank=True)
+
+
+class Product(EntryChild):
+    concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    name_text = models.CharField(max_length=200)
+    brand = models.CharField(max_length=100, blank=True)
+    unit = models.CharField(max_length=40, blank=True)
+    price_band = models.CharField(max_length=10, blank=True)
+    availability_note = models.CharField(max_length=200, blank=True)
+    price_date = models.DateField(null=True, blank=True)
+
+
+class Speciality(EntryChild):
+    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
+    qualification = models.CharField(max_length=200, blank=True)
+    own_hours = models.CharField(max_length=120, blank=True)
+
+
+class Identifier(EntryChild):
+    """Store the fact and the register link, never a national ID number such as CNIC."""
+    scheme = models.CharField(max_length=30)
+    value = models.CharField(max_length=80)
+    issuer = models.CharField(max_length=120, blank=True)
+    valid_from = models.DateField(null=True, blank=True)
+    valid_to = models.DateField(null=True, blank=True)
+    last_checked = models.DateField(null=True, blank=True)
+    register_url = models.URLField(blank=True)
+
+
+class AreaServed(EntryChild):
+    place = models.ForeignKey("places.Place", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    radius_km = models.PositiveIntegerField(null=True, blank=True)
+    notes = models.CharField(max_length=200, blank=True)
+
+
+class Equipment(EntryChild):
+    type = models.CharField(max_length=80)
+    make_model = models.CharField(max_length=120, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
+    modality = models.CharField(max_length=60, blank=True)
+    installed_year = models.PositiveSmallIntegerField(null=True, blank=True)
+    services_supported = models.JSONField(default=list, blank=True)
+
+
+class Branch(EntryChild):
+    address_text = models.CharField(max_length=400, blank=True)
+    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+
+
+# ---- provenance and verification (plan 6) ------------------------------------------------------------------
+
+class ValueMeta(models.Model):
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="value_meta")
+    country_code = models.CharField(max_length=2)
+    field_key = models.CharField(max_length=60)
+    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    licence_text = models.CharField(max_length=200, blank=True)
+    retrieved_at = models.DateTimeField(default=clock.now)
+    level = models.CharField(max_length=10, default="none")
+    verified_by_id = models.BigIntegerField(null=True, blank=True)
+    method = models.CharField(max_length=40, blank=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    evidence_text = models.TextField(blank=True)
+    consent_ref = models.CharField(max_length=40, blank=True)
+    confidence = models.FloatField(null=True, blank=True)
+
+    class Meta:
+        unique_together = [("entry", "field_key")]
+
+
+class VerificationEvent(models.Model):
+    """Append-only (database trigger forbids update and delete)."""
+    class Level(models.TextChoices):
+        SURVEYOR = "surveyor"
+        OWNER = "owner"
+        AI = "ai"
+
+    class State(models.TextChoices):
+        PENDING = "pending"
+        VERIFIED = "verified"
+        EXPIRED = "expired"
+        REVOKED = "revoked"
+
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="verification_events")
+    country_code = models.CharField(max_length=2)
+    field_group = models.CharField(max_length=20)  # identity, location, contact, hours, services, certificates
+    level = models.CharField(max_length=10, choices=Level.choices)
+    state = models.CharField(max_length=10, choices=State.choices)
+    actor_id = models.BigIntegerField(null=True, blank=True)
+    method = models.CharField(max_length=40, blank=True)
+    evidence_text = models.TextField(blank=True)
+    source = models.ForeignKey("intake.Source", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    ts = models.DateTimeField(default=clock.now)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    supersedes = models.ForeignKey("self", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+
+    class Meta:
+        ordering = ["id"]
+
+
+class VerificationCurrent(models.Model):
+    """Projection the pages read. Rebuilt from events."""
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="verification_current")
+    field_group = models.CharField(max_length=20)
+    level = models.CharField(max_length=10)
+    state = models.CharField(max_length=10)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    method = models.CharField(max_length=40, blank=True)
+    actor_display = models.CharField(max_length=80, blank=True)
+
+    class Meta:
+        unique_together = [("entry", "field_group", "level")]
+
+
+class Claim(models.Model):
+    class State(models.TextChoices):
+        PENDING = "pending"
+        APPROVED = "approved"
+        REJECTED = "rejected"
+
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="claims")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+")
+    method = models.CharField(max_length=20)  # otp_phone, otp_email, documents
+    state = models.CharField(max_length=10, choices=State.choices, default=State.PENDING)
+    evidence_text = models.TextField(blank=True)
+    created_at = models.DateTimeField(default=clock.now)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    decided_at = models.DateTimeField(null=True, blank=True)
+
+
+class ConsentRecord(models.Model):
+    """Append-only consent for individuals and contacts (rule R18)."""
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="consents")
+    subject_kind = models.CharField(max_length=10, default="entry")  # entry | contact
+    status = models.CharField(max_length=12)  # consented, withdrawn, takedown
+    method = models.CharField(max_length=40)
+    wording_version = models.CharField(max_length=20)
+    evidence_text = models.TextField(blank=True)
+    at = models.DateTimeField(default=clock.now)
+
+    class Meta:
+        ordering = ["id"]
+
+
+class CreditEvent(models.Model):
+    """Credit lives here, not on the entry, so duplicates can merge without losing first-adder credit (D6)."""
+    entry = models.ForeignKey(Entry, null=True, on_delete=models.SET_NULL, related_name="credit_events")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="+")
+    kind = models.CharField(max_length=20)  # added, verified, area_added, claimed_assist
+    eligible = models.BooleanField(default=False)
+    ineligible_reason = models.CharField(max_length=60, blank=True)
+    phase_id = models.PositiveIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(default=clock.now)
+    merged_from_id = models.BigIntegerField(null=True, blank=True)
+
+
+class MergeMap(models.Model):
+    """Append-only record of a merge (plan 6.7). The dropped entry redirects to the kept one."""
+    from_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
+    to_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
+    score = models.FloatField(null=True, blank=True)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    decided_at = models.DateTimeField(default=clock.now)
+```
+
+
+
+---
+
+## 111. Software source: backend/entries/services.py
+
+```py
+"""Entry service layer: creation, edits with change log, verification state machine, publish rules, claims, consent.
+
+Rules enforced here: R07 (independence, expiry), R08 (draft hidden, publish bar), R09 (credit eligibility),
+R18/R19 (person and child-facing gates), R21 (source gate), R02 (contacts encrypted, hashed)."""
+import re
+from datetime import timedelta
+
+from django.conf import settings
+from django.db import transaction
+
+from core import clock
+from core.crypto import keyed_hash
+from core.models import ChangeLog, CountrySwitch, audit
+from core.textfold import fold
+from intake.gate import SourceBlocked, assert_allowed
+from taxonomy.models import ListTypeSettings
+from taxonomy.services import validate_addons
+
+from .models import (Claim, ConsentRecord, Contact, CreditEvent, Entry, NameVariant, VerificationCurrent,
+                     VerificationEvent)
+
+LEVEL_ORDER = ["surveyor", "owner", "ai"]
+EDITABLE = {"name", "description", "address", "address_text", "website", "size_band", "year_established", "languages",
+            "price_band", "payment_methods", "addons", "status", "status_date", "lat", "lon", "precision_class",
+            "coord_source", "coord_date", "service_area", "entity_type", "place"}
+
+
+class EntryError(ValueError):
+    pass
+
+
+class GuardError(EntryError):
+    """A verification rule (independence, claim, evidence) was not met."""
+
+
+def normalize_contact(kind, value, country_code=""):
+    value = (value or "").strip()
+    if kind == "email":
+        return value.lower()
+    digits = re.sub(r"[^\d+]", "", value)
+    if digits.startswith("00"):
+        digits = "+" + digits[2:]
+    if not digits.startswith("+") and country_code == "PK" and digits.startswith("0"):
+        digits = "+92" + digits[1:]
+    return digits
+
+
+@transaction.atomic
+def create_entry(*, name, place, primary_concept, created_by=None, created_via=Entry.CreatedVia.CONTRIBUTOR, source=None,
+                 contacts=(), name_variants=(), **fields):
+    if created_via in (Entry.CreatedVia.IMPORT, Entry.CreatedVia.AGENT, Entry.CreatedVia.REGISTER):
+        assert_allowed(source, "import" if created_via != Entry.CreatedVia.AGENT else "agent_fetch")
+    addons = fields.get("addons") or {}
+    if primary_concept.template_id:
+        problems = validate_addons(primary_concept.template, addons)
+        if problems:
+            raise EntryError(f"invalid add-on values: {problems}")
+        fields["addon_template_version"] = primary_concept.template.version
+    elif addons:
+        raise EntryError("this list type has no add-on template")
+    country = place.country_code or "ZZ"
+    entry = Entry.objects.create(
+        name=name, name_fold=fold(name), place=place, place_path=place.path, country_code=country,
+        primary_concept=primary_concept, entity_type=fields.pop("entity_type", primary_concept.entity_type_default),
+        created_by=created_by, created_via=created_via, source=source, **fields)
+    for text, lang, kind in name_variants:
+        NameVariant.objects.create(entry=entry, country_code=country, text=text, language=lang, kind=kind,
+                                   text_fold=fold(text))
+    for kind, value in contacts:
+        add_contact(entry, kind, value)
+    ChangeLog.objects.create(entry_id=entry.pk, country_code=country, field_key="created", new={"name": name},
+                             actor_id=getattr(created_by, "pk", None), source_id=getattr(source, "pk", None))
+    if created_by is not None:
+        CreditEvent.objects.create(entry=entry, user=created_by, kind="added", eligible=False,
+                                   ineligible_reason="unverified")
+    audit("entry.create", actor=created_by, object_type="entry", object_uid=entry.uid, country_code=country,
+          payload={"via": created_via})
+    return entry
+
+
+def add_contact(entry, kind, value):
+    norm = normalize_contact(kind, value, entry.country_code)
+    return Contact.objects.create(entry=entry, country_code=entry.country_code, kind=kind, value_enc=norm,
+                                  value_hash=keyed_hash(f"{kind}:{norm}"))
+
+
+@transaction.atomic
+def update_entry(entry, *, actor=None, **changes):
+    bad = set(changes) - EDITABLE
+    if bad:
+        raise EntryError(f"fields not editable here: {sorted(bad)}")
+    for key, new in changes.items():
+        old = getattr(entry, key)
+        if old == new:
+            continue
+        if key == "place":
+            entry.place_path = new.path
+            old, new_log = old.uid, new.uid
+        else:
+            new_log = new
+        setattr(entry, key, new)
+        if key == "name":
+            entry.name_fold = fold(new)
+        ChangeLog.objects.create(entry_id=entry.pk, country_code=entry.country_code, field_key=key,
+                                 old=_jsonable(old), new=_jsonable(new_log), actor_id=getattr(actor, "pk", None))
+    entry.save()
+    audit("entry.update", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
+          payload={"fields": sorted(changes)})
+    return entry
+
+
+def _jsonable(v):
+    return v if isinstance(v, (str, int, float, bool, list, dict, type(None))) else str(v)
+
+
+# ---- verification -------------------------------------------------------------------------------------------
+
+def current_level(entry, now=None):
+    """Best unexpired check level, or "none". Levels are independent chips; this is the best one for list order."""
+    now = now or clock.now()
+    levels = {v.level for v in VerificationCurrent.objects.filter(entry=entry, state="verified", expires_at__gt=now)}
+    for lv in LEVEL_ORDER:
+        if lv in levels:
+            return lv
+    return "none"
+
+
+def current_levels(entry, now=None):
+    now = now or clock.now()
+    return {v.level for v in VerificationCurrent.objects.filter(entry=entry, state="verified", expires_at__gt=now)}
+
+
+@transaction.atomic
+def record_verification(entry, *, field_group, level, actor=None, method="", evidence="", source=None, now=None):
+    now = now or clock.now()
+    if level not in LEVEL_ORDER:
+        raise GuardError(f"unknown level {level!r}")
+    if level in ("surveyor", "owner"):
+        if actor is None:
+            raise GuardError("a person must record a surveyor or owner check")
+        if not method or not evidence.strip():
+            raise GuardError("method and evidence text are required")
+    if level == "surveyor" and entry.created_by_id and actor.pk == entry.created_by_id:
+        raise GuardError("a surveyor never verifies an entry they added (rule R07)")
+    if level == "owner":
+        if entry.claim_state != Entry.ClaimState.CLAIMED:
+            raise GuardError("owner check needs a successful claim")
+        if not Claim.objects.filter(entry=entry, user=actor, state=Claim.State.APPROVED).exists():
+            raise GuardError("actor is not the approved claimant")
+    if level == "ai":
+        if source is None:
+            raise GuardError("an AI check must name its source")
+        if entry.source_id is not None and source.pk == entry.source_id:
+            raise GuardError("an AI check must use a different source from the draft (rule R07)")
+        assert_allowed(source, "agent_fetch")
+        if not evidence.strip():
+            raise GuardError("an AI check must store its evidence")
+    days = settings.CHECK_VALIDITY_DAYS[level]
+    previous = VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
+    event = VerificationEvent.objects.create(
+        entry=entry, country_code=entry.country_code, field_group=field_group, level=level, state="verified",
+        actor_id=getattr(actor, "pk", None), method=method, evidence_text=evidence, source=source, ts=now,
+        expires_at=now + timedelta(days=days), supersedes=previous)
+    VerificationCurrent.objects.update_or_create(
+        entry=entry, field_group=field_group, level=level,
+        defaults=dict(state="verified", verified_at=now, expires_at=event.expires_at, method=method,
+                      actor_display=(getattr(actor, "username", "") or "")[:80]))
+    entry.last_verified_at = now
+    entry.save(update_fields=["last_verified_at"])
+    if level in ("surveyor", "owner"):
+        _mark_credit_eligible(entry)
+    audit("verification.record", actor=actor, object_type="entry", object_uid=entry.uid,
+          country_code=entry.country_code, payload={"level": level, "group": field_group})
+    try_publish(entry, actor=actor, now=now)
+    return event
+
+
+def _mark_credit_eligible(entry):
+    """R09: payout credit needs a surveyor or owner check. Self-listed and agent-made entries never earn."""
+    if entry.created_via in (Entry.CreatedVia.SELF, Entry.CreatedVia.AGENT):
+        CreditEvent.objects.filter(entry=entry, kind="added").update(eligible=False, ineligible_reason=entry.created_via)
+        return
+    CreditEvent.objects.filter(entry=entry, kind="added", eligible=False, ineligible_reason="unverified").update(
+        eligible=True, ineligible_reason="")
+
+
+@transaction.atomic
+def revoke_verification(entry, *, field_group, level, actor, reason):
+    previous = VerificationEvent.objects.filter(entry=entry, field_group=field_group, level=level).order_by("-id").first()
+    VerificationEvent.objects.create(entry=entry, country_code=entry.country_code, field_group=field_group, level=level,
+                                     state="revoked", actor_id=getattr(actor, "pk", None), evidence_text=reason,
+                                     supersedes=previous)
+    VerificationCurrent.objects.filter(entry=entry, field_group=field_group, level=level).update(state="revoked")
+    audit("verification.revoke", actor=actor, object_type="entry", object_uid=entry.uid,
+          country_code=entry.country_code, payload={"level": level, "group": field_group, "reason": reason})
+
+
+@transaction.atomic
+def sweep_expired(now=None):
+    """Drop expired checks; return published entries that lost every check past the grace period to draft (R07, R08)."""
+    now = now or clock.now()
+    expired = list(VerificationCurrent.objects.select_for_update().filter(state="verified", expires_at__lte=now))
+    touched = set()
+    for cur in expired:
+        previous = VerificationEvent.objects.filter(entry_id=cur.entry_id, field_group=cur.field_group,
+                                                    level=cur.level).order_by("-id").first()
+        VerificationEvent.objects.create(entry_id=cur.entry_id, country_code=cur.entry.country_code,
+                                         field_group=cur.field_group, level=cur.level, state="expired", ts=now,
+                                         supersedes=previous)
+        cur.state = "expired"
+        cur.save(update_fields=["state"])
+        touched.add(cur.entry_id)
+    returned = 0
+    grace = timedelta(days=settings.GRACE_DAYS)
+    for entry in Entry.objects.filter(publish_state=Entry.PublishState.PUBLISHED):
+        if current_level(entry, now) != "none":
+            continue
+        last_expiry = max((v.expires_at for v in entry.verification_current.all() if v.expires_at), default=None)
+        if last_expiry is None or now > last_expiry + grace:
+            entry.publish_state = Entry.PublishState.DRAFT
+            entry.save(update_fields=["publish_state"])
+            audit("entry.to_draft", object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
+                  payload={"reason": "checks expired past grace"})
+            returned += 1
+    return {"expired": len(expired), "returned_to_draft": returned}
+
+
+# ---- publish bar ---------------------------------------------------------------------------------------------
+
+def quality_failures(entry, now=None):
+    """Why an entry may not be public yet (plan 6.1). Empty list means it clears the bar."""
+    fails = []
+    if not entry.name.strip():
+        fails.append("name missing")
+    if not entry.place_id:
+        fails.append("place missing")
+    if current_level(entry, now) == "none":
+        fails.append("needs at least an AI check")
+    if not (entry.website or entry.contact_set.exists()):
+        fails.append("needs a website or a contact")
+    if entry.source_id:
+        try:
+            assert_allowed(entry.source, "display")
+        except SourceBlocked as exc:
+            fails.append(str(exc))
+    switch = CountrySwitch.for_country(entry.country_code)
+    cs = ListTypeSettings.objects.filter(concept_id=entry.primary_concept_id).first()
+    if entry.entity_type == Entry.EntityType.PERSON:
+        if not switch.named_individuals_on:
+            fails.append("named individuals are off in this country")
+        latest = entry.consents.order_by("-id").first()
+        if not latest or latest.status != "consented":
+            fails.append("person needs recorded consent")
+    if cs and cs.is_child_facing and not switch.child_services_on:
+        fails.append("child-facing services are off in this country")
+    tpl = entry.primary_concept.template
+    if tpl:
+        for key, msg in validate_addons(tpl, entry.addons, for_publish=True):
+            fails.append(f"{key}: {msg}")
+    return fails
+
+
+def try_publish(entry, *, actor=None, now=None):
+    """Move draft or review to published when the bar is met. Returns the failure list (empty if published)."""
+    if entry.publish_state not in (Entry.PublishState.DRAFT, Entry.PublishState.REVIEW):
+        return []
+    fails = quality_failures(entry, now)
+    if not fails:
+        entry.publish_state = Entry.PublishState.PUBLISHED
+        entry.save(update_fields=["publish_state"])
+        audit("entry.publish", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code)
+    return fails
+
+
+# ---- claims and consent --------------------------------------------------------------------------------------
+
+@transaction.atomic
+def start_claim(entry, user, method, evidence=""):
+    if entry.claim_state == Entry.ClaimState.CLAIMED:
+        raise EntryError("entry is already claimed")
+    claim = Claim.objects.create(entry=entry, user=user, method=method, evidence_text=evidence)
+    entry.claim_state = Entry.ClaimState.PENDING
+    entry.save(update_fields=["claim_state"])
+    audit("claim.start", actor=user, object_type="entry", object_uid=entry.uid, country_code=entry.country_code)
+    return claim
+
+
+@transaction.atomic
+def decide_claim(claim, *, actor, approve, now=None):
+    now = now or clock.now()
+    if claim.state != Claim.State.PENDING:
+        raise EntryError("claim already decided")
+    claim.state = Claim.State.APPROVED if approve else Claim.State.REJECTED
+    claim.decided_by_id, claim.decided_at = actor.pk, now
+    claim.save()
+    entry = claim.entry
+    entry.claim_state = Entry.ClaimState.CLAIMED if approve else Entry.ClaimState.UNCLAIMED
+    entry.save(update_fields=["claim_state"])
+    audit("claim.decide", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
+          payload={"approved": approve})
+    if approve:
+        record_verification(entry, field_group="identity", level="owner", actor=claim.user, method=claim.method,
+                            evidence=claim.evidence_text or "claim approved", now=now)
+    return claim
+
+
+def record_consent(entry, *, status, method, wording_version, evidence="", actor=None):
+    rec = ConsentRecord.objects.create(entry=entry, status=status, method=method, wording_version=wording_version,
+                                       evidence_text=evidence)
+    audit("consent.record", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
+          payload={"status": status})
+    return rec
+
+
+# ---- merging (plan 6.7, rule D6) -----------------------------------------------------------------------------
+
+@transaction.atomic
+def merge_entries(keep, drop, *, actor=None, score=None):
+    """Merge `drop` into `keep`. Children move, credit events are re-pointed, the earliest added-credit survives,
+    the dropped entry is tombstoned with a redirect, and everything is logged."""
+    from .models import MergeMap
+    if keep.pk == drop.pk or drop.merged_into_id:
+        raise EntryError("cannot merge an entry into itself or merge twice")
+    if keep.country_code != drop.country_code:
+        raise EntryError("entries in different countries are never merged")
+    for rel in ("namevariant_set", "contact_set", "social_set", "hours_set", "service_set", "product_set",
+                "speciality_set", "identifier_set", "areaserved_set", "equipment_set", "branch_set"):
+        getattr(drop, rel).update(entry=keep)
+    NameVariant.objects.get_or_create(entry=keep, country_code=keep.country_code, text=drop.name,
+                                      defaults=dict(language=drop.name_lang, kind="old", text_fold=drop.name_fold))
+    CreditEvent.objects.filter(entry=drop).update(entry=keep, merged_from_id=drop.pk)
+    added = list(CreditEvent.objects.filter(entry=keep, kind="added").order_by("created_at", "id"))
+    for later in added[1:]:
+        later.eligible, later.ineligible_reason = False, "duplicate"
+        later.save(update_fields=["eligible", "ineligible_reason"])
+    drop.merged_into = keep
+    drop.publish_state = Entry.PublishState.SUPPRESSED
+    drop.save(update_fields=["merged_into", "publish_state"])
+    MergeMap.objects.create(from_entry=drop, to_entry=keep, score=score, decided_by_id=getattr(actor, "pk", None))
+    ChangeLog.objects.create(entry_id=keep.pk, country_code=keep.country_code, field_key="merged",
+                             new={"from": drop.uid}, actor_id=getattr(actor, "pk", None))
+    audit("entry.merge", actor=actor, object_type="entry", object_uid=keep.uid, country_code=keep.country_code,
+          payload={"from": drop.uid, "score": score})
+    return keep
+```
+
+
+
+---
+
+## 112. Software source: backend/entries/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 113. Software source: backend/entries/tests/test_entries.py
+
+```py
+from datetime import timedelta
+
+import pytest
+from django.db import connection, transaction
+from django.db.utils import IntegrityError, InternalError
+
+from core import clock
+from core.models import ChangeLog, CountrySwitch, verify_audit_chain
+from entries import services as es
+from entries.models import Contact, CreditEvent, VerificationCurrent, VerificationEvent
+from intake.gate import SourceBlocked
+from intake.models import Source
+from taxonomy.models import ListTypeSettings
+
+
+def verify(entry, user, level="surveyor", **kw):
+    return es.record_verification(
+        entry, field_group="identity", level=level, actor=user, method=kw.pop("method", "call"),
+        evidence=kw.pop("evidence", "Phone answered, name matched"), **kw)
+
+
+# ---- creation, contacts, history (R02, R21) ------------------------------------------------------------------
+
+def test_create_is_draft_with_country_path_and_template_version(entry, tree):
+    assert entry.publish_state == "draft" and entry.country_code == "PK"
+    assert entry.place_path == tree["paris"].path and entry.addon_template_version == 1
+    assert ChangeLog.objects.filter(entry_id=entry.pk, field_key="created").exists()
+    assert verify_audit_chain() is None
+
+
+def test_contact_is_encrypted_at_rest_and_hashed(pg, entry):
+    c = Contact.objects.get(entry=entry)
+    with connection.cursor() as cur:
+        cur.execute("SELECT value_enc FROM entries_contact WHERE id=%s", [c.pk])
+        raw = cur.fetchone()[0]
+    assert "923001234567" not in raw and raw.startswith("dev:")
+    assert c.value_enc == "+923001234567" and c.relay_only is True
+    assert Contact.objects.filter(value_hash=c.value_hash).count() == 1
+
+
+def test_contact_normalisation_and_same_number_same_hash(entry):
+    es.add_contact(entry, "phone", "+92 (300) 123-4567")
+    assert Contact.objects.filter(entry=entry).values("value_hash").distinct().count() == 1
+    assert es.normalize_contact("email", " A@B.CO ") == "a@b.co"
+
+
+def test_invalid_addons_rejected(tree, surgical, users):
+    with pytest.raises(es.EntryError):
+        es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
+                        addons={"business_type": "pirate"})
+
+
+def test_update_writes_change_log_and_refolds_name(entry, users):
+    es.update_entry(entry, actor=users["mod"], name="كريسنت Surgical", website="https://new.example.org")
+    rows = {r.field_key: r for r in ChangeLog.objects.filter(entry_id=entry.pk)}
+    assert rows["website"].old == "https://example.org" and rows["name"].new == "كريسنت Surgical"
+    entry.refresh_from_db()
+    assert "ک" in entry.name_fold
+    with pytest.raises(es.EntryError):
+        es.update_entry(entry, publish_state="published")
+
+
+def test_import_needs_an_allowed_source(tree, surgical, users, db):
+    red = Source.objects.create(name="Scraped maps", tier="red", allowed_uses=["import"])
+    with pytest.raises(SourceBlocked):
+        es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_via="import", source=red,
+                        addons={"business_type": "trader", "product_categories": ["a"]})
+    with pytest.raises(SourceBlocked):
+        es.create_entry(name="X", place=tree["paris"], primary_concept=surgical, created_via="import", source=None)
+
+
+# ---- verification guards (R07) -------------------------------------------------------------------------------
+
+def test_surveyor_never_verifies_own_entry(entry, users):
+    with pytest.raises(es.GuardError):
+        verify(entry, users["adder"])
+    assert verify(entry, users["surveyor"]).state == "verified"
+
+
+def test_surveyor_and_owner_need_method_and_evidence(entry, users):
+    with pytest.raises(es.GuardError):
+        verify(entry, users["surveyor"], evidence="  ")
+    with pytest.raises(es.GuardError):
+        verify(entry, users["surveyor"], method="")
+    with pytest.raises(es.GuardError):
+        es.record_verification(entry, field_group="identity", level="surveyor", actor=None, method="call", evidence="x")
+
+
+def test_owner_check_needs_approved_claim(entry, users):
+    with pytest.raises(es.GuardError):
+        verify(entry, users["owner"], level="owner")
+    claim = es.start_claim(entry, users["owner"], "otp_phone", "OTP matched stored phone")
+    with pytest.raises(es.GuardError):
+        verify(entry, users["owner"], level="owner")
+    es.decide_claim(claim, actor=users["mod"], approve=True)
+    entry.refresh_from_db()
+    assert entry.claim_state == "claimed" and es.current_level(entry) == "owner"
+
+
+def test_rejected_claim_leaves_entry_unclaimed(entry, users):
+    claim = es.start_claim(entry, users["owner"], "otp_phone")
+    es.decide_claim(claim, actor=users["mod"], approve=False)
+    entry.refresh_from_db()
+    assert entry.claim_state == "unclaimed"
+    with pytest.raises(es.EntryError):
+        es.decide_claim(claim, actor=users["mod"], approve=True)
+
+
+def test_ai_check_needs_different_source_and_evidence(entry, users, green, web_source):
+    es.update_entry(entry)  # no-op
+    entry.source = green
+    entry.save()
+    with pytest.raises(es.GuardError):
+        es.record_verification(entry, field_group="identity", level="ai", source=green, evidence="same", method="web")
+    with pytest.raises(es.GuardError):
+        es.record_verification(entry, field_group="identity", level="ai", source=None, evidence="x", method="web")
+    with pytest.raises(es.GuardError):
+        es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="", method="web")
+    ev = es.record_verification(entry, field_group="identity", level="ai", source=web_source,
+                                evidence="Page lists the same address", method="web")
+    assert ev.state == "verified"
+
+
+def test_ai_check_refuses_red_or_unreviewed_source(entry):
+    red = Source.objects.create(name="Bought list", tier="red", allowed_uses=["agent_fetch"])
+    with pytest.raises(SourceBlocked):
+        es.record_verification(entry, field_group="identity", level="ai", source=red, evidence="x", method="web")
+
+
+def test_levels_are_independent_chips(entry, users, web_source):
+    verify(entry, users["surveyor"])
+    es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="e", method="web")
+    assert es.current_levels(entry) == {"surveyor", "ai"} and es.current_level(entry) == "surveyor"
+
+
+def test_reverification_supersedes_and_keeps_history(entry, users):
+    e1 = verify(entry, users["surveyor"])
+    e2 = verify(entry, users["surveyor"])
+    assert e2.supersedes_id == e1.pk and VerificationEvent.objects.filter(entry=entry).count() == 2
+    assert VerificationCurrent.objects.filter(entry=entry).count() == 1
+
+
+def test_revoke(entry, users):
+    verify(entry, users["surveyor"])
+    es.revoke_verification(entry, field_group="identity", level="surveyor", actor=users["mod"], reason="report upheld")
+    assert es.current_level(entry) == "none"
+
+
+def test_append_only_verification_event(pg, entry, users):
+    ev = verify(entry, users["surveyor"])
+    with pytest.raises((InternalError, IntegrityError)), transaction.atomic():
+        with connection.cursor() as cur:
+            cur.execute("UPDATE entries_verificationevent SET method='x' WHERE id=%s", [ev.pk])
+
+
+# ---- expiry and grace (R07, R08) -----------------------------------------------------------------------------
+
+def test_checks_expire_then_grace_then_draft(entry, users, settings):
+    t0 = clock.now()
+    verify(entry, users["surveyor"], now=t0)
+    entry.refresh_from_db()
+    assert entry.publish_state == "published" and es.current_level(entry, t0) == "surveyor"
+    after = t0 + timedelta(days=settings.CHECK_VALIDITY_DAYS["surveyor"] + 1)
+    r = es.sweep_expired(after)
+    entry.refresh_from_db()
+    assert r == {"expired": 1, "returned_to_draft": 0} and entry.publish_state == "published"  # grace
+    assert es.current_level(entry, after) == "none"
+    later = after + timedelta(days=settings.GRACE_DAYS + 1)
+    assert es.sweep_expired(later)["returned_to_draft"] == 1
+    entry.refresh_from_db()
+    assert entry.publish_state == "draft"
+    assert VerificationEvent.objects.filter(entry=entry, state="expired").count() == 1
+
+
+def test_ai_check_expires_sooner_than_surveyor(settings):
+    assert settings.CHECK_VALIDITY_DAYS["ai"] < settings.CHECK_VALIDITY_DAYS["surveyor"]
+
+
+# ---- publish bar (R08, R18, R19, R21) -------------------------------------------------------------------------
+
+def test_draft_stays_draft_without_a_check(entry):
+    assert entry.publish_state == "draft"
+    assert "needs at least an AI check" in es.quality_failures(entry)
+
+
+def test_needs_website_or_contact(tree, surgical, users):
+    e = es.create_entry(name="No Contact Co", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
+                        addons={"business_type": "trader", "product_categories": ["a"]})
+    verify(e, users["surveyor"])
+    e.refresh_from_db()
+    assert e.publish_state == "draft" and "needs a website or a contact" in es.quality_failures(e)
+
+
+def test_required_addon_fields_gate_publishing(tree, surgical, users):
+    e = es.create_entry(name="Thin Co", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
+                        website="https://t.example.org")
+    verify(e, users["surveyor"])
+    e.refresh_from_db()
+    assert e.publish_state == "draft"
+    fails = es.quality_failures(e)
+    assert any(f.startswith("business_type") for f in fails)
+
+
+def test_published_after_surveyor_check(entry, users):
+    verify(entry, users["surveyor"])
+    entry.refresh_from_db()
+    assert entry.publish_state == "published"
+
+
+def test_blocked_source_prevents_publish(entry, users, green):
+    entry.source = green
+    entry.save()
+    green.status = "paused"
+    green.save()
+    verify(entry, users["surveyor"])
+    entry.refresh_from_db()
+    assert entry.publish_state == "draft" and any("not active" in f for f in es.quality_failures(entry))
+
+
+def test_person_needs_switch_and_consent(tree, surgical, users, db):
+    e = es.create_entry(name="Dr Example", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
+                        entity_type="person", website="https://dr.example.org",
+                        addons={"business_type": "trader", "product_categories": ["a"]})
+    verify(e, users["surveyor"])
+    e.refresh_from_db()
+    assert e.publish_state == "draft"
+    CountrySwitch.objects.create(country_code="PK", named_individuals_on=True)
+    assert es.quality_failures(e) == ["person needs recorded consent"]
+    es.record_consent(e, status="consented", method="signed form", wording_version="v1")
+    assert es.try_publish(e) == [] and e.publish_state == "published"
+    es.record_consent(e, status="withdrawn", method="email", wording_version="v1")
+    e.publish_state = "draft"
+    assert "person needs recorded consent" in es.quality_failures(e)
+
+
+def test_child_facing_list_type_off_by_default(entry, users):
+    ListTypeSettings.objects.filter(concept=entry.primary_concept).update(is_child_facing=True)
+    verify(entry, users["surveyor"])
+    entry.refresh_from_db()
+    assert entry.publish_state == "draft"
+    CountrySwitch.objects.create(country_code="PK", child_services_on=True)
+    assert es.try_publish(entry) == []
+
+
+def test_country_defaults_all_off_except_browsing(db):
+    s = CountrySwitch.for_country("ZZ")
+    assert s.browsing_on and not (s.indexing_on or s.selling_on or s.outreach_on or s.ads_on or s.named_individuals_on)
+
+
+# ---- credit eligibility (R09, D6) -----------------------------------------------------------------------------
+
+def test_credit_only_after_surveyor_or_owner_check(entry, users, web_source):
+    ce = CreditEvent.objects.get(entry=entry)
+    assert not ce.eligible and ce.ineligible_reason == "unverified"
+    es.record_verification(entry, field_group="identity", level="ai", source=web_source, evidence="e", method="web")
+    ce.refresh_from_db()
+    assert not ce.eligible  # an AI check earns nothing
+    verify(entry, users["surveyor"])
+    ce.refresh_from_db()
+    assert ce.eligible
+
+
+def test_self_listed_never_earns(tree, surgical, users):
+    e = es.create_entry(name="Self Listed", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
+                        created_via="self", website="https://s.example.org",
+                        addons={"business_type": "trader", "product_categories": ["a"]})
+    verify(e, users["surveyor"])
+    ce = CreditEvent.objects.get(entry=e)
+    assert not ce.eligible and ce.ineligible_reason == "self"
+
+
+def test_import_credit_waits_for_verification(tree, surgical, users, green):
+    e = es.create_entry(name="Imported Co", place=tree["paris"], primary_concept=surgical, created_by=users["adder"],
+                        created_via="import", source=green, website="https://i.example.org",
+                        addons={"business_type": "trader", "product_categories": ["a"]})
+    assert not CreditEvent.objects.get(entry=e).eligible
+    verify(e, users["surveyor"])
+    assert CreditEvent.objects.get(entry=e).eligible
+
+
+def test_agent_entries_have_no_human_credit(tree, surgical, web_source):
+    e = es.create_entry(name="Agent Draft", place=tree["paris"], primary_concept=surgical, created_via="agent",
+                        source=web_source, addons={"business_type": "trader", "product_categories": ["a"]})
+    assert not CreditEvent.objects.filter(entry=e).exists() and e.publish_state == "draft"
+```
+
+
+
+---
+
+## 114. Software source: backend/intake/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 115. Software source: backend/intake/admin.py
+
+```py
+from django.contrib import admin
+
+from .models import DedupeCandidate, ImportBatch, ImportRow, Source
+
+
+@admin.register(Source)
+class SourceAdmin(admin.ModelAdmin):
+    list_display = ("name", "tier", "status", "reviewed_on", "bulk_permission")
+    list_filter = ("tier", "status")
+
+
+admin.site.register([ImportBatch, ImportRow, DedupeCandidate])
+```
+
+
+
+---
+
+## 116. Software source: backend/intake/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class IntakeConfig(AppConfig):
+    name = "intake"
+```
+
+
+
+---
+
+## 117. Software source: backend/intake/dedupe.py
+
+```py
+"""Duplicate pipeline v1 (plan 7.4): block, score, decide. Scoped by place subtree and concept so it stays cheap."""
+import math
+from itertools import combinations
+
+from core.textfold import fold
+from entries.models import Contact, Entry
+
+AUTO_MERGE = 0.90
+REVIEW = 0.60
+WEIGHTS = {"phone": 0.50, "name": 0.30, "distance": 0.10, "address": 0.10}
+
+
+def trigrams(text):
+    padded = f"  {text} "
+    return {padded[i:i + 3] for i in range(len(padded) - 2)}
+
+
+def similarity(a, b):
+    """Jaccard similarity of trigrams of folded text, the same idea as pg_trgm."""
+    ta, tb = trigrams(fold(a)), trigrams(fold(b))
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / len(ta | tb)
+
+
+def haversine_m(lat1, lon1, lat2, lon2):
+    r = 6371000.0
+    p1, p2 = math.radians(float(lat1)), math.radians(float(lat2))
+    dphi, dl = p2 - p1, math.radians(float(lon2) - float(lon1))
+    h = math.sin(dphi / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return 2 * r * math.asin(math.sqrt(h))
+
+
+def features(a, b):
+    kinds = ["phone", "mobile", "whatsapp"]
+    phones_a = set(Contact.objects.filter(entry=a, kind__in=kinds).values_list("value_hash", flat=True))
+    phones_b = set(Contact.objects.filter(entry=b, kind__in=kinds).values_list("value_hash", flat=True))
+    f = {"phone": 1.0 if phones_a & phones_b else 0.0, "name": similarity(a.name, b.name),
+         "address": similarity(a.address_text, b.address_text) if a.address_text and b.address_text else 0.0,
+         "distance": 0.0}
+    if a.lat is not None and b.lat is not None:
+        d = haversine_m(a.lat, a.lon, b.lat, b.lon)
+        f["distance_m"] = round(d)
+        f["distance"] = 1.0 if d <= 100 else 0.0
+    return f
+
+
+def score(f):
+    s = sum(WEIGHTS[k] * f[k] for k in WEIGHTS)
+    # a shared phone plus a similar name is as good as a match; an exact name alone never auto-merges
+    if f["phone"] and f["name"] >= 0.5:
+        s = max(s, 0.92)
+    if f["distance"] and f["name"] >= 0.8:
+        s = max(s, 0.92)  # same name within 100 m
+    if f["name"] >= 0.8:
+        # near-identical names inside one place and concept block always reach review, never auto-merge alone
+        s = max(s, REVIEW + (f["name"] - 0.8) / 0.2 * 0.25)
+    return round(min(s, 1.0), 4)
+
+
+def candidates_for(entry):
+    """Blocking: same country and concept, within the same place subtree, or sharing a phone hash."""
+    base = Entry.objects.filter(country_code=entry.country_code, deleted_at__isnull=True, merged_into__isnull=True
+                                ).exclude(pk=entry.pk)
+    same_place = base.filter(primary_concept=entry.primary_concept, place_path__startswith=entry.place_path)
+    hashes = list(Contact.objects.filter(entry=entry).values_list("value_hash", flat=True))
+    same_phone = base.filter(contact_set__value_hash__in=hashes) if hashes else base.none()
+    seen, out = set(), []
+    for e in list(same_place) + list(same_phone):
+        if e.pk not in seen:
+            seen.add(e.pk)
+            out.append(e)
+    return out
+
+
+def scan_entry(entry):
+    """Return [(other, score, features)] at or above the review threshold, best first."""
+    found = []
+    for other in candidates_for(entry):
+        f = features(entry, other)
+        s = score(f)
+        if s >= REVIEW:
+            found.append((other, s, f))
+    return sorted(found, key=lambda t: -t[1])
+
+
+def scan_all(country_code=None):
+    """Batch scan of every pair inside each (place, concept) block. Returns the number of candidates stored."""
+    from .models import DedupeCandidate
+    qs = Entry.objects.filter(deleted_at__isnull=True, merged_into__isnull=True)
+    if country_code:
+        qs = qs.filter(country_code=country_code)
+    blocks = {}
+    for e in qs:
+        blocks.setdefault((e.country_code, e.place_id, e.primary_concept_id), []).append(e)
+    stored = 0
+    for group in blocks.values():
+        for a, b in combinations(sorted(group, key=lambda e: e.pk), 2):
+            f = features(a, b)
+            s = score(f)
+            if s >= REVIEW:
+                _, created = DedupeCandidate.objects.get_or_create(a_entry=a, b_entry=b, defaults=dict(score=s, features=f))
+                stored += int(created)
+    return stored
+```
+
+
+
+---
+
+## 118. Software source: backend/intake/gate.py
+
+```py
+"""Licence gate (rules R21, R22). A blocked source can never feed a published record."""
+from .models import Source
+
+
+class SourceBlocked(Exception):
+    pass
+
+
+def assert_allowed(source, use):
+    """Raise SourceBlocked unless `source` may be used for `use` ("import", "agent_fetch", "display")."""
+    if source is None:
+        raise SourceBlocked("every record needs a source")
+    if source.status != "active":
+        raise SourceBlocked(f"source {source.name!r} is not active")
+    if source.tier == Source.Tier.RED:
+        raise SourceBlocked(f"source {source.name!r} is red (scraping, logins or bought lists are never ingested)")
+    if use not in (source.allowed_uses or []):
+        raise SourceBlocked(f"source {source.name!r} does not allow {use!r}")
+    if use == "import" and source.tier == Source.Tier.AMBER and not source.reviewed_on:
+        raise SourceBlocked(f"amber source {source.name!r} has no recorded terms review")
+    return True
+```
+
+
+
+---
+
+## 119. Software source: backend/intake/importer.py
+
+```py
+"""Paste and CSV import (plan 7.2): parse, map columns, normalise, create drafts, check for duplicates.
+Imported entries are drafts and earn nothing until verified (rules R08, R09)."""
+import csv
+import io
+
+from django.db import transaction
+from django.utils import timezone
+
+from core.models import audit
+from core.textfold import fold
+from entries import services as es
+
+from . import dedupe
+from .gate import assert_allowed
+from .models import DedupeCandidate, ImportBatch, ImportRow
+
+# Header words in English, Urdu and Roman Urdu. Compared after folding.
+ALIASES = {
+    "name": ["name", "business name", "company", "company name", "firm", "shop", "title", "naam",
+             "نام", "کمپنی", "دکان", "فرم"],
+    "phone": ["phone", "mobile", "tel", "telephone", "contact", "contact no", "number", "cell", "whatsapp", "raabta",
+              "فون", "موبائل", "نمبر", "رابطہ"],
+    "email": ["email", "e-mail", "mail", "ای میل"],
+    "address": ["address", "location", "road", "street", "pata", "پتہ", "علاقہ", "سڑک"],
+    "website": ["website", "web", "url", "site", "ویب سائٹ"],
+    "specialities": ["products", "speciality", "specialities", "services", "items", "make", "پروڈکٹ", "مصنوعات"],
+}
+_FOLDED = {field: {fold(a) for a in words} for field, words in ALIASES.items()}
+
+
+class ImportError_(ValueError):
+    pass
+
+
+def parse_table(text):
+    """Pasted text or CSV to (headers, rows as dicts). Tab, comma, semicolon and pipe are detected."""
+    text = text.strip("﻿\n\r ")
+    if not text:
+        raise ImportError_("nothing to import")
+    sample = text[:2000]
+    delim = max(["\t", ",", ";", "|"], key=sample.count)
+    reader = csv.reader(io.StringIO(text), delimiter=delim)
+    rows = [r for r in reader if any(c.strip() for c in r)]
+    headers, body = [h.strip() for h in rows[0]], rows[1:]
+    return headers, [{headers[i]: (r[i].strip() if i < len(r) else "") for i in range(len(headers))} for r in body]
+
+
+def guess_mapping(headers):
+    mapping = {}
+    for h in headers:
+        for field, names in _FOLDED.items():
+            if fold(h) in names and field not in mapping.values():
+                mapping[h] = field
+                break
+    return mapping
+
+
+def normalise_row(raw, mapping, country_code):
+    out = {"name": "", "phones": [], "emails": [], "address": "", "website": "", "specialities": []}
+    for header, value in raw.items():
+        field = mapping.get(header)
+        value = (value or "").strip()
+        if not field or not value:
+            continue
+        if field == "name":
+            out["name"] = " ".join(value.split())
+        elif field == "phone":
+            for part in value.replace("/", ",").replace(";", ",").split(","):
+                n = es.normalize_contact("phone", part, country_code)
+                if len(n.lstrip("+")) >= 7:
+                    out["phones"].append(n)
+        elif field == "email":
+            out["emails"].append(es.normalize_contact("email", value))
+        elif field == "address":
+            out["address"] = value
+        elif field == "website":
+            out["website"] = value if value.startswith("http") else "https://" + value
+        elif field == "specialities":
+            out["specialities"] = [s.strip() for s in value.replace(";", ",").split(",") if s.strip()]
+    return out
+
+
+@transaction.atomic
+def run_import(batch, actor=None, addons=None):
+    """Create draft entries for every usable row. Returns the batch counts."""
+    if not batch.declared_rights:
+        raise ImportError_("the contributor must declare the right to share this list")
+    assert_allowed(batch.source, "import")
+    headers, rows = parse_table(batch.raw_text)
+    batch.mapping = batch.mapping or guess_mapping(headers)
+    if "name" not in batch.mapping.values():
+        batch.status = ImportBatch.Status.FAILED
+        batch.counts = {"error": "no name column found"}
+        batch.save()
+        raise ImportError_("could not find a name column; set the mapping")
+    country = batch.place.country_code
+    counts = {"rows": len(rows), "drafted": 0, "duplicate": 0, "possible_duplicate": 0, "error": 0}
+    for line_no, raw in enumerate(rows, start=2):
+        row = ImportRow.objects.create(batch=batch, line_no=line_no, raw=raw)
+        norm = normalise_row(raw, batch.mapping, country)
+        row.normalised = norm
+        if not norm["name"]:
+            row.status, row.message = ImportRow.Status.ERROR, "no name"
+            counts["error"] += 1
+            row.save()
+            continue
+        contacts = [("phone", p) for p in dict.fromkeys(norm["phones"])] + [("email", e) for e in norm["emails"]]
+        extra = {"addons": addons} if addons else {}
+        entry = es.create_entry(name=norm["name"], place=batch.place, primary_concept=batch.concept,
+                                created_by=batch.uploader, created_via="import", source=batch.source,
+                                address_text=norm["address"], website=norm["website"], contacts=contacts, **extra)
+        row.entry = entry
+        found = dedupe.scan_entry(entry)
+        if found and found[0][1] >= dedupe.AUTO_MERGE:
+            other, s, _ = found[0]
+            es.merge_entries(other, entry, actor=actor, score=s)
+            row.entry, row.status, row.message = other, ImportRow.Status.DUPLICATE, f"merged into {other.uid}"
+            counts["duplicate"] += 1
+        else:
+            row.status = ImportRow.Status.DRAFTED
+            if found:
+                for other, s, f in found:
+                    a, b = sorted([entry, other], key=lambda e: e.pk)
+                    DedupeCandidate.objects.get_or_create(a_entry=a, b_entry=b, defaults=dict(score=s, features=f))
+                row.message = "possible duplicate, queued for review"
+                counts["possible_duplicate"] += 1
+            counts["drafted"] += 1
+        row.save()
+    batch.status, batch.counts, batch.finished_at = ImportBatch.Status.DONE, counts, timezone.now()
+    batch.save()
+    audit("import.run", actor=actor, object_type="import_batch", object_uid=str(batch.pk), country_code=country,
+          payload=counts)
+    return counts
+```
+
+
+
+---
+
+## 120. Software source: backend/intake/models.py
+
+```py
+"""Source register (plan section 7.1). Every import and agent fetch references a source; the gate decides."""
+from django.db import models
+
+
+class Source(models.Model):
+    class Tier(models.TextChoices):
+        GREEN = "green"
+        AMBER = "amber"
+        RED = "red"
+
+    name = models.CharField(max_length=160, unique=True)
+    tier = models.CharField(max_length=6, choices=Tier.choices, default=Tier.AMBER)
+    licence_text = models.TextField(blank=True)
+    terms_url = models.URLField(blank=True)
+    robots_decision = models.CharField(max_length=60, blank=True)
+    allowed_uses = models.JSONField(default=list, blank=True)  # e.g. ["import", "agent_fetch", "display"]
+    bulk_permission = models.BooleanField(default=False)
+    personal_data_rules = models.TextField(blank=True)
+    attribution_text = models.CharField(max_length=300, blank=True)
+    reviewed_by = models.CharField(max_length=120, blank=True)
+    reviewed_on = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=10, default="active")
+
+    def __str__(self):
+        return self.name
+
+
+class ImportBatch(models.Model):
+    class Status(models.TextChoices):
+        UPLOADED = "uploaded"
+        MAPPED = "mapped"
+        DONE = "done"
+        FAILED = "failed"
+
+    source = models.ForeignKey(Source, on_delete=models.PROTECT, related_name="batches")
+    uploader = models.ForeignKey("auth.User", null=True, on_delete=models.SET_NULL, related_name="+")
+    declared_rights = models.BooleanField(default=False)  # contributor declares the right to share (D11)
+    place = models.ForeignKey("places.Place", on_delete=models.PROTECT, related_name="+")
+    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
+    raw_text = models.TextField()
+    mapping = models.JSONField(default=dict, blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.UPLOADED)
+    counts = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+
+
+class ImportRow(models.Model):
+    class Status(models.TextChoices):
+        NEW = "new"
+        DUPLICATE = "duplicate"
+        HELD = "held"
+        ERROR = "error"
+        DRAFTED = "drafted"
+
+    batch = models.ForeignKey(ImportBatch, on_delete=models.CASCADE, related_name="rows")
+    line_no = models.PositiveIntegerField()
+    raw = models.JSONField(default=dict)
+    normalised = models.JSONField(default=dict, blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
+    message = models.CharField(max_length=200, blank=True)
+    entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+
+
+class DedupeCandidate(models.Model):
+    class State(models.TextChoices):
+        PENDING = "pending"
+        AUTO_MERGED = "auto_merged"
+        REJECTED = "rejected"
+        MERGED = "merged"
+
+    a_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
+    b_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
+    score = models.FloatField()
+    features = models.JSONField(default=dict)
+    state = models.CharField(max_length=12, choices=State.choices, default=State.PENDING)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["a_entry", "b_entry"], name="uniq_dedupe_pair")]
+```
+
+
+
+---
+
+## 121. Software source: backend/intake/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 122. Software source: backend/intake/tests/test_gate.py
+
+```py
+import datetime
+
+import pytest
+
+from intake.gate import SourceBlocked, assert_allowed
+from intake.models import Source
+
+
+def mk(**kw):
+    base = dict(name="s", tier="green", allowed_uses=["import", "display"])
+    base.update(kw)
+    return Source(**base)
+
+
+def test_red_source_always_blocked():
+    for use in ("import", "agent_fetch", "display"):
+        with pytest.raises(SourceBlocked):
+            assert_allowed(mk(tier="red", allowed_uses=["import", "agent_fetch", "display"]), use)
+
+
+def test_missing_source_and_unallowed_use_blocked():
+    with pytest.raises(SourceBlocked):
+        assert_allowed(None, "import")
+    with pytest.raises(SourceBlocked):
+        assert_allowed(mk(), "agent_fetch")
+    with pytest.raises(SourceBlocked):
+        assert_allowed(mk(status="paused"), "import")
+
+
+def test_amber_import_needs_a_terms_review():
+    with pytest.raises(SourceBlocked):
+        assert_allowed(mk(tier="amber"), "import")
+    assert assert_allowed(mk(tier="amber", reviewed_on=datetime.date(2026, 10, 1)), "import")
+
+
+def test_green_allowed():
+    assert assert_allowed(mk(), "import")
+```
+
+
+
+---
+
+## 123. Software source: backend/intake/tests/test_import_dedupe.py
+
+```py
+import pytest
+
+from entries import services as es
+from entries.models import Contact, CreditEvent, Entry
+from intake import dedupe
+from intake.importer import ImportError_, guess_mapping, normalise_row, parse_table, run_import
+from intake.models import DedupeCandidate, ImportBatch, Source
+from intake.gate import SourceBlocked
+
+CSV = """Business Name,Mobile,Address,Products
+Crescent Surgical Works,0300-111-2222,Paris Road,"scissors, forceps"
+Falcon Medical Instruments,0301 333 4444 / 0302 555 6666,Kashmir Road,dental
+,0300 999 9999,Nowhere,
+"""
+
+
+def batch(tree, surgical, users, source, text=CSV, rights=True):
+    return ImportBatch.objects.create(source=source, uploader=users["adder"], declared_rights=rights, place=tree["sialkot"],
+                                      concept=surgical, raw_text=text)
+
+
+def run(b, addons=True):
+    return run_import(b, addons={"business_type": "manufacturer", "product_categories": ["x"]} if addons else None)
+
+
+def test_parse_detects_delimiters():
+    h, rows = parse_table("name\tphone\nA\t0300 1\nB\t0300 2")
+    assert h == ["name", "phone"] and len(rows) == 2
+    h, rows = parse_table("name;phone\nA;1")
+    assert h == ["name", "phone"]
+    with pytest.raises(ImportError_):
+        parse_table("  ")
+
+
+def test_header_guess_english_urdu_roman_urdu():
+    assert guess_mapping(["Business Name", "Mobile", "Address", "Products"]) == {
+        "Business Name": "name", "Mobile": "phone", "Address": "address", "Products": "specialities"}
+    assert guess_mapping(["نام", "موبائل", "پتہ"]) == {"نام": "name", "موبائل": "phone", "پتہ": "address"}
+    assert guess_mapping(["Naam", "Raabta", "Pata"]) == {"Naam": "name", "Raabta": "phone", "Pata": "address"}
+    assert guess_mapping(["foo", "bar"]) == {}
+
+
+def test_normalise_row_phones_and_website():
+    m = {"N": "name", "P": "phone", "W": "website"}
+    out = normalise_row({"N": "  A   B ", "P": "0300-111-2222 / 042 111 222", "W": "a.example.org"}, m, "PK")
+    assert out["name"] == "A B" and out["phones"][0] == "+923001112222" and out["website"] == "https://a.example.org"
+
+
+def test_import_creates_drafts_with_provenance_and_no_earnings(tree, surgical, users, green):
+    counts = run(batch(tree, surgical, users, green))
+    assert counts["rows"] == 3 and counts["drafted"] == 2 and counts["error"] == 1
+    entries = Entry.objects.filter(created_via="import")
+    assert entries.count() == 2 and set(entries.values_list("publish_state", flat=True)) == {"draft"}
+    assert all(e.source_id == green.pk for e in entries)
+    assert Contact.objects.filter(entry__name="Falcon Medical Instruments").count() == 2
+    assert not CreditEvent.objects.filter(entry__in=entries, eligible=True).exists()
+
+
+def test_import_requires_rights_and_a_green_or_reviewed_source(tree, surgical, users, green):
+    with pytest.raises(ImportError_):
+        run(batch(tree, surgical, users, green, rights=False))
+    red = Source.objects.create(name="Scraped", tier="red", allowed_uses=["import"])
+    with pytest.raises(SourceBlocked):
+        run(batch(tree, surgical, users, red))
+    amber = Source.objects.create(name="Chamber list", tier="amber", allowed_uses=["import"])
+    with pytest.raises(SourceBlocked):
+        run(batch(tree, surgical, users, amber))
+
+
+def test_missing_name_column_fails_clearly(tree, surgical, users, green):
+    b = batch(tree, surgical, users, green, text="foo,bar\n1,2")
+    with pytest.raises(ImportError_):
+        run(b)
+
+
+def test_same_phone_similar_spelling_auto_merges_and_keeps_first_credit(tree, surgical, users, green):
+    first = es.create_entry(name="Crescent Surgical Works", place=tree["sialkot"], primary_concept=surgical,
+                            created_by=users["mod"], contacts=[("phone", "0300 111 2222")],
+                            addons={"business_type": "manufacturer", "product_categories": ["x"]})
+    counts = run(batch(tree, surgical, users, green, text="Name,Phone\nCrescent Surgical Work,+92 300 111 2222"))
+    assert counts["duplicate"] == 1 and Entry.objects.filter(merged_into=first).count() == 1
+    dropped = Entry.objects.get(merged_into=first)
+    assert dropped.publish_state == "suppressed"
+    adds = CreditEvent.objects.filter(entry=first, kind="added").order_by("created_at", "id")
+    assert adds.count() == 2 and adds[0].user == users["mod"]
+    assert adds[1].ineligible_reason == "duplicate" and not adds[1].eligible
+    assert Contact.objects.filter(entry=first).count() == 2
+
+
+def test_similar_name_without_phone_goes_to_review_not_merge(tree, surgical, users, green):
+    es.create_entry(name="Royal Steel Instruments", place=tree["sialkot"], primary_concept=surgical,
+                    created_by=users["mod"], addons={"business_type": "trader", "product_categories": ["x"]})
+    counts = run(batch(tree, surgical, users, green, text="Name,Address\nRoyal Steel Instrument,Paris Road"))
+    assert counts["possible_duplicate"] == 1 and counts["duplicate"] == 0
+    cand = DedupeCandidate.objects.get()
+    assert dedupe.REVIEW <= cand.score < dedupe.AUTO_MERGE and cand.state == "pending"
+
+
+def test_different_shops_same_road_are_not_candidates(tree, surgical, users, green):
+    es.create_entry(name="Crescent Surgical Works", place=tree["sialkot"], primary_concept=surgical,
+                    created_by=users["mod"], addons={"business_type": "trader", "product_categories": ["x"]})
+    counts = run(batch(tree, surgical, users, green, text="Name,Address\nUnity Medical Traders,Paris Road"))
+    assert counts["possible_duplicate"] == 0 and not DedupeCandidate.objects.exists()
+
+
+def test_urdu_spelling_variants_match_after_fold(tree, surgical, users, green):
+    a = "كريسنت سرجيكل"            # Arabic yeh and kaf
+    b = "کریسنت سرجیکل"            # Farsi yeh and keheh
+    assert dedupe.similarity(a, b) == 1.0
+    es.create_entry(name=a, place=tree["sialkot"], primary_concept=surgical, created_by=users["mod"],
+                    contacts=[("phone", "0300 000 1111")], addons={"business_type": "trader", "product_categories": ["x"]})
+    counts = run(batch(tree, surgical, users, green, text=f"Name,Phone\n{b},0300 000 1111"))
+    assert counts["duplicate"] == 1
+
+
+def test_distance_feature(tree, surgical, users):
+    from decimal import Decimal
+    addons = {"business_type": "trader", "product_categories": ["x"]}
+    a = es.create_entry(name="A Shop", place=tree["sialkot"], primary_concept=surgical, addons=addons,
+                        lat=Decimal("32.5"), lon=Decimal("74.5"))
+    b = es.create_entry(name="B Shop", place=tree["sialkot"], primary_concept=surgical, addons=addons,
+                        lat=Decimal("32.5003"), lon=Decimal("74.5"))
+    assert dedupe.features(a, b)["distance"] == 1.0 and dedupe.features(a, b)["distance_m"] < 100
+
+
+def test_merge_guards(tree, surgical, entry, users):
+    with pytest.raises(es.EntryError):
+        es.merge_entries(entry, entry)
+    other = es.create_entry(name="Other", place=tree["sialkot"], primary_concept=surgical,
+                            addons={"business_type": "trader", "product_categories": ["x"]})
+    es.merge_entries(entry, other, actor=users["mod"])
+    with pytest.raises(es.EntryError):
+        es.merge_entries(entry, other)
+
+
+def test_scan_all_stores_candidates_once(tree, surgical, users):
+    for nm in ("Royal Steel Instruments", "Royal Steel Instrument"):
+        es.create_entry(name=nm, place=tree["sialkot"], primary_concept=surgical, created_by=users["mod"],
+                        addons={"business_type": "trader", "product_categories": ["x"]})
+    assert dedupe.scan_all() == 1 and dedupe.scan_all() == 0
+```
+
+
+
+---
+
+## 124. Software source: backend/lists/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 125. Software source: backend/lists/admin.py
 
 ```py
 from django.contrib import admin
@@ -21055,7 +23776,7 @@ for m in (models.ListType, models.Profile, models.Enquiry, models.Report, models
 
 ---
 
-## 86. Software source: backend/lists/context.py
+## 126. Software source: backend/lists/context.py
 
 ```py
 from django.conf import settings
@@ -21075,7 +23796,7 @@ def site(request):
 
 ---
 
-## 87. Software source: backend/lists/management/__init__.py
+## 127. Software source: backend/lists/management/__init__.py
 
 ```py
 
@@ -21085,7 +23806,7 @@ def site(request):
 
 ---
 
-## 88. Software source: backend/lists/management/commands/__init__.py
+## 128. Software source: backend/lists/management/commands/__init__.py
 
 ```py
 
@@ -21095,7 +23816,7 @@ def site(request):
 
 ---
 
-## 89. Software source: backend/lists/management/commands/seed_demo.py
+## 129. Software source: backend/lists/management/commands/seed_demo.py
 
 ```py
 """Load a small demo register (Sialkot surgical instruments and footballs). Safe to run twice."""
@@ -21152,7 +23873,7 @@ class Command(BaseCommand):
 
 ---
 
-## 90. Software source: backend/lists/middleware.py
+## 130. Software source: backend/lists/middleware.py
 
 ```py
 from .models import Place
@@ -21209,7 +23930,7 @@ class LocationMiddleware:
 
 ---
 
-## 91. Software source: backend/lists/models.py
+## 131. Software source: backend/lists/models.py
 
 ```py
 """Data model. Places form a tree; list types are categories; a *list* is a view (list type at a place).
@@ -21480,7 +24201,7 @@ class LedgerLine(models.Model):
 
 ---
 
-## 92. Software source: backend/lists/share.py
+## 132. Software source: backend/lists/share.py
 
 ```py
 """One registry drives every share control on every page. Add a channel here and it appears everywhere."""
@@ -21522,7 +24243,7 @@ def build(title, line, url, campaign, hide=()):
 
 ---
 
-## 93. Software source: backend/lists/static/lists/app.css
+## 133. Software source: backend/lists/static/lists/app.css
 
 ```css
 
@@ -21699,7 +24420,7 @@ footer.legal{border-block-start:1px solid var(--rule);margin-block-start:var(--s
 
 ---
 
-## 94. Software source: backend/lists/static/lists/app.js
+## 134. Software source: backend/lists/static/lists/app.js
 
 ```js
 // Tiny interaction layer: copy-link buttons only. Everything else works without JavaScript.
@@ -21716,7 +24437,7 @@ document.addEventListener("click", function (ev) {
 
 ---
 
-## 95. Software source: backend/lists/strings.py
+## 135. Software source: backend/lists/strings.py
 
 ```py
 """All interface text, English and Urdu, in one place. Missing Urdu keys fall back to English."""
@@ -21767,7 +24488,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 96. Software source: backend/lists/templates/lists/404.html
+## 136. Software source: backend/lists/templates/lists/404.html
 
 ```html
 {% extends "lists/base.html" %}{% block content %}<h1>{{ T.not_found }}</h1><p><a href="/">{{ T.home }}</a></p>{% endblock %}
@@ -21777,7 +24498,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 97. Software source: backend/lists/templates/lists/_chip.html
+## 137. Software source: backend/lists/templates/lists/_chip.html
 
 ```html
 {% load lists_extras %}
@@ -21788,7 +24509,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 98. Software source: backend/lists/templates/lists/_crumbs.html
+## 138. Software source: backend/lists/templates/lists/_crumbs.html
 
 ```html
 {% load lists_extras %}<nav class="crumbs" aria-label="Breadcrumb"><ol>
@@ -21800,7 +24521,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 99. Software source: backend/lists/templates/lists/_share.html
+## 139. Software source: backend/lists/templates/lists/_share.html
 
 ```html
 <div class="actions" role="group" aria-label="{{ T.share }}">
@@ -21814,7 +24535,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 100. Software source: backend/lists/templates/lists/base.html
+## 140. Software source: backend/lists/templates/lists/base.html
 
 ```html
 {% load static lists_extras %}<!doctype html>
@@ -21854,7 +24575,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 101. Software source: backend/lists/templates/lists/entry.html
+## 141. Software source: backend/lists/templates/lists/entry.html
 
 ```html
 {% extends "lists/base.html" %}{% load lists_extras %}
@@ -21898,7 +24619,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 102. Software source: backend/lists/templates/lists/home.html
+## 142. Software source: backend/lists/templates/lists/home.html
 
 ```html
 {% extends "lists/base.html" %}{% load lists_extras %}
@@ -21922,7 +24643,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 103. Software source: backend/lists/templates/lists/list.html
+## 143. Software source: backend/lists/templates/lists/list.html
 
 ```html
 {% extends "lists/base.html" %}{% load lists_extras %}
@@ -21967,7 +24688,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 104. Software source: backend/lists/templates/lists/place.html
+## 144. Software source: backend/lists/templates/lists/place.html
 
 ```html
 {% extends "lists/base.html" %}{% load lists_extras %}
@@ -21986,7 +24707,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 105. Software source: backend/lists/templatetags/__init__.py
+## 145. Software source: backend/lists/templatetags/__init__.py
 
 ```py
 
@@ -21996,7 +24717,7 @@ STRINGS = {"en": EN, "ur": {**EN, **UR}}
 
 ---
 
-## 106. Software source: backend/lists/templatetags/lists_extras.py
+## 146. Software source: backend/lists/templatetags/lists_extras.py
 
 ```py
 from django import template
@@ -22028,7 +24749,7 @@ def label(obj, lang):
 
 ---
 
-## 107. Software source: backend/lists/tests/__init__.py
+## 147. Software source: backend/lists/tests/__init__.py
 
 ```py
 
@@ -22038,7 +24759,7 @@ def label(obj, lang):
 
 ---
 
-## 108. Software source: backend/lists/tests/test_app.py
+## 148. Software source: backend/lists/tests/test_app.py
 
 ```py
 import datetime
@@ -22206,7 +24927,7 @@ def test_healthz_and_404(demo):
 
 ---
 
-## 109. Software source: backend/lists/urls.py
+## 149. Software source: backend/lists/urls.py
 
 ```py
 from django.urls import path, re_path
@@ -22231,7 +24952,7 @@ urlpatterns = [
 
 ---
 
-## 110. Software source: backend/lists/views.py
+## 150. Software source: backend/lists/views.py
 
 ```py
 from django.conf import settings
@@ -22419,7 +25140,7 @@ def not_found(request, exception=None):
 
 ---
 
-## 111. Software source: backend/lists/visibility.py
+## 151. Software source: backend/lists/visibility.py
 
 ```py
 """What a visitor may see. Free: names, area, up to 3 specialities, checks with dates.
@@ -22463,7 +25184,7 @@ def name_only(entry):
 
 ---
 
-## 112. Software source: backend/manage.py
+## 152. Software source: backend/manage.py
 
 ```py
 #!/usr/bin/env python
@@ -22480,7 +25201,319 @@ if __name__ == "__main__":
 
 ---
 
-## 113. Software source: backend/requirements.txt
+## 153. Software source: backend/places/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 154. Software source: backend/places/admin.py
+
+```py
+from django.contrib import admin
+
+from .models import Place, PlaceName, PlaceProposal
+
+
+class PlaceNameInline(admin.TabularInline):
+    model = PlaceName
+    extra = 0
+
+
+@admin.register(Place)
+class PlaceAdmin(admin.ModelAdmin):
+    list_display = ("path", "level", "country_code", "status")
+    list_filter = ("level", "status", "country_code")
+    search_fields = ("path", "slug")
+    inlines = [PlaceNameInline]
+
+
+admin.site.register(PlaceProposal)
+```
+
+
+
+---
+
+## 155. Software source: backend/places/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class PlacesConfig(AppConfig):
+    name = "places"
+```
+
+
+
+---
+
+## 156. Software source: backend/places/models.py
+
+```py
+"""Place tree (plan sections 4.2.2, 5.1). `path` makes "everything under Rawalpindi" one prefix range scan."""
+from django.db import models
+from django.db.models import Q
+
+from core import clock
+from core.models import UidModel
+
+
+class Place(UidModel):
+    class Level(models.TextChoices):
+        WORLD = "world"
+        REGION = "region"
+        COUNTRY = "country"
+        ADMIN1 = "admin1"
+        ADMIN2 = "admin2"
+        ADMIN3 = "admin3"
+        CITY = "city"
+        AREA = "area"
+        SOCIETY = "society"
+        STREET = "street"
+
+    class Status(models.TextChoices):
+        ACTIVE = "active"
+        PROPOSED = "proposed"
+        REJECTED = "rejected"
+        MERGED = "merged"
+
+    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.PROTECT, related_name="children")
+    level = models.CharField(max_length=10, choices=Level.choices)
+    local_level_label = models.CharField(max_length=40, blank=True)
+    iso_code = models.CharField(max_length=10, blank=True)
+    country_code = models.CharField(max_length=2, blank=True, db_index=True)
+    slug = models.SlugField(max_length=120)
+    path = models.CharField(max_length=500, db_index=True)  # e.g. pk.punjab.rawalpindi.adyala; "" for the world
+    depth = models.PositiveSmallIntegerField(default=0)
+    centre_lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    centre_lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    population_band = models.CharField(max_length=20, blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.ACTIVE)
+    source_id = models.BigIntegerField(null=True, blank=True)
+    geonames_id = models.BigIntegerField(null=True, blank=True)
+    wikidata_id = models.CharField(max_length=20, blank=True)
+    created_at = models.DateTimeField(default=clock.now)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["parent", "slug"], name="places_uniq_slug_per_parent"),
+            models.UniqueConstraint(fields=["slug"], condition=Q(parent__isnull=True), name="uniq_root_slug"),
+        ]
+        indexes = [models.Index(fields=["path"], name="place_path_prefix", opclasses=["varchar_pattern_ops"])]
+
+    def __str__(self):
+        return self.name_for("en")
+
+    def name_for(self, language):
+        names = list(self.names.all())
+        for n in names:
+            if n.language == language and n.kind == PlaceName.Kind.PREFERRED:
+                return n.name
+        for n in names:
+            if n.kind == PlaceName.Kind.PREFERRED:
+                return n.name
+        return self.slug
+
+    def ancestors(self):
+        chain, node = [], self
+        while node:
+            chain.append(node)
+            node = node.parent
+        return list(reversed(chain))
+
+
+class PlaceName(models.Model):
+    class Kind(models.TextChoices):
+        PREFERRED = "preferred"
+        ALIAS = "alias"
+        TRANSLITERATION = "transliteration"
+
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name="names")
+    language = models.CharField(max_length=10)  # BCP 47
+    script = models.CharField(max_length=10, blank=True)
+    name = models.CharField(max_length=200)
+    kind = models.CharField(max_length=20, choices=Kind.choices, default=Kind.PREFERRED)
+    name_fold = models.CharField(max_length=200, db_index=True)
+
+
+class PlaceProposal(models.Model):
+    """A user-added area (Adyala Road, Abraham Street) waits here for approval (Q-O2 default)."""
+    class State(models.TextChoices):
+        PENDING = "pending"
+        APPROVED = "approved"
+        REJECTED = "rejected"
+        DUPLICATE = "duplicate"
+
+    parent = models.ForeignKey(Place, on_delete=models.CASCADE, related_name="proposals")
+    proposed_name = models.CharField(max_length=200)
+    language = models.CharField(max_length=10, default="en")
+    proposer_id = models.BigIntegerField(null=True, blank=True)
+    state = models.CharField(max_length=10, choices=State.choices, default=State.PENDING)
+    duplicate_of = models.ForeignKey(Place, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    decided_by = models.BigIntegerField(null=True, blank=True)
+    reason = models.CharField(max_length=200, blank=True)
+    created_at = models.DateTimeField(default=clock.now)
+```
+
+
+
+---
+
+## 157. Software source: backend/places/services.py
+
+```py
+from django.db import transaction
+from django.utils.text import slugify
+
+from core.models import audit
+from core.textfold import fold
+from taxonomy.models import ReservedSlug
+
+from .models import Place, PlaceName, PlaceProposal
+
+
+class PlaceError(ValueError):
+    pass
+
+
+def make_slug(name):
+    slug = slugify(name, allow_unicode=False)
+    if not slug:
+        raise PlaceError("a place needs an ASCII slug; transliterate the name first")
+    return slug
+
+
+@transaction.atomic
+def create_place(*, parent, level, name, language="en", slug=None, country_code="", names=None, actor=None, **extra):
+    """Create a place, keeping `path`, `depth` and `country_code` consistent. `names` is a list of (language, name)."""
+    slug = slug or make_slug(name)
+    if parent is not None and parent.country_code and not country_code:
+        country_code = parent.country_code
+    if level == Place.Level.COUNTRY and not country_code:
+        raise PlaceError("a country needs a country_code")
+    if ReservedSlug.objects.filter(slug=slug, kind="list_type").exists():
+        raise PlaceError(f"slug {slug!r} is reserved by a list type")
+    path = slug if parent is None or not parent.path else f"{parent.path}.{slug}"
+    if level == Place.Level.WORLD:
+        path = ""
+    if level == Place.Level.COUNTRY:
+        path = country_code.lower()
+        slug = country_code.lower()
+    place = Place.objects.create(parent=parent, level=level, slug=slug, path=path,
+                                 depth=0 if parent is None else parent.depth + 1,
+                                 country_code=country_code.upper(), **extra)
+    ReservedSlug.objects.get_or_create(slug=slug, kind="place")
+    for lang, nm in [(language, name)] + list(names or []):
+        PlaceName.objects.create(place=place, language=lang, name=nm, name_fold=fold(nm))
+    audit("place.create", actor=actor, object_type="place", object_uid=place.uid, country_code=place.country_code)
+    return place
+
+
+def descendants(place):
+    """Everything under a place: one prefix range scan on `path`."""
+    if not place.path:
+        return Place.objects.exclude(pk=place.pk)
+    return Place.objects.filter(path__startswith=place.path + ".")
+
+
+def propose_area(*, parent, name, language="en", proposer=None):
+    """Match against existing areas first; a close match is returned as a duplicate hint."""
+    folded = fold(name)
+    existing = Place.objects.filter(parent=parent, names__name_fold=folded).first()
+    prop = PlaceProposal.objects.create(parent=parent, proposed_name=name, language=language,
+                                        proposer_id=getattr(proposer, "pk", None),
+                                        state=PlaceProposal.State.DUPLICATE if existing else PlaceProposal.State.PENDING,
+                                        duplicate_of=existing)
+    return prop
+
+
+@transaction.atomic
+def approve_proposal(proposal, *, actor, level=Place.Level.AREA, slug=None):
+    if proposal.state != PlaceProposal.State.PENDING:
+        raise PlaceError("only pending proposals can be approved")
+    place = create_place(parent=proposal.parent, level=level, name=proposal.proposed_name,
+                         language=proposal.language, slug=slug, actor=actor)
+    proposal.state = PlaceProposal.State.APPROVED
+    proposal.decided_by = getattr(actor, "pk", None)
+    proposal.save(update_fields=["state", "decided_by"])
+    return place
+```
+
+
+
+---
+
+## 158. Software source: backend/places/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 159. Software source: backend/places/tests/test_places.py
+
+```py
+import pytest
+
+from places.models import Place, PlaceProposal
+from places.services import PlaceError, approve_proposal, create_place, descendants, propose_area
+from taxonomy.services import create_concept
+
+
+def test_path_depth_and_country(tree):
+    assert tree["pk"].path == "pk" and tree["pk"].country_code == "PK"
+    assert tree["sialkot"].path == "pk.punjab.sialkot" and tree["sialkot"].depth == 3
+    assert tree["paris"].country_code == "PK" and tree["paris"].path == "pk.punjab.sialkot.paris-road"
+    assert tree["world"].path == ""
+
+
+def test_descendants_is_a_prefix_scan(tree):
+    ids = set(descendants(tree["punjab"]).values_list("slug", flat=True))
+    assert ids == {"sialkot", "paris-road"}
+    assert descendants(tree["world"]).count() == 4
+
+
+def test_names_in_both_scripts(tree):
+    assert tree["pk"].name_for("ur") == "پاکستان" and tree["pk"].name_for("en") == "Pakistan"
+
+
+def test_country_needs_code(db, tree):
+    with pytest.raises(PlaceError):
+        create_place(parent=tree["world"], level=Place.Level.COUNTRY, name="Nowhere")
+
+
+def test_slug_collision_with_list_type_refused(tree, db):
+    create_concept(kind="list_type", name="Hotels")
+    with pytest.raises(PlaceError):
+        create_place(parent=tree["pk"], level=Place.Level.ADMIN1, name="Hotels")
+
+
+def test_duplicate_proposal_is_flagged_and_pending_one_can_be_approved(tree):
+    dup = propose_area(parent=tree["sialkot"], name="PARIS  road")
+    assert dup.state == PlaceProposal.State.DUPLICATE and dup.duplicate_of == tree["paris"]
+    new = propose_area(parent=tree["sialkot"], name="Kashmir Road")
+    assert new.state == PlaceProposal.State.PENDING
+    place = approve_proposal(new, actor=None)
+    new.refresh_from_db()
+    assert new.state == PlaceProposal.State.APPROVED and place.path.endswith("kashmir-road")
+    with pytest.raises(PlaceError):
+        approve_proposal(new, actor=None)
+```
+
+
+
+---
+
+## 160. Software source: backend/requirements.txt
 
 ```txt
 Django>=5.2,<5.3
@@ -22489,13 +25522,407 @@ whitenoise>=6.7
 pytest>=8
 pytest-django>=4.8
 # production database: add psycopg[binary] and set DATABASE_URL-style env (see config/settings.py)
+psycopg[binary]>=3.2
+cryptography>=43
+hypothesis>=6.100
 ```
 
 
 
 ---
 
-## 114. Appendix: founder's messages, verbatim
+## 161. Software source: backend/taxonomy/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 162. Software source: backend/taxonomy/admin.py
+
+```py
+from django.contrib import admin
+
+from .models import AddonField, AddonTemplate, Concept, ConceptCrosswalk, ConceptLabel, ListTypeSettings, ReservedSlug
+
+
+class LabelInline(admin.TabularInline):
+    model = ConceptLabel
+    extra = 0
+
+
+@admin.register(Concept)
+class ConceptAdmin(admin.ModelAdmin):
+    list_display = ("slug", "kind", "natural_scale", "status")
+    list_filter = ("kind", "natural_scale")
+    search_fields = ("slug", "labels__text")
+    inlines = [LabelInline]
+
+
+class AddonFieldInline(admin.TabularInline):
+    model = AddonField
+    extra = 0
+
+
+@admin.register(AddonTemplate)
+class AddonTemplateAdmin(admin.ModelAdmin):
+    list_display = ("key", "version", "status")
+    inlines = [AddonFieldInline]
+
+
+admin.site.register([ConceptCrosswalk, ListTypeSettings, ReservedSlug])
+```
+
+
+
+---
+
+## 163. Software source: backend/taxonomy/apps.py
+
+```py
+from django.apps import AppConfig
+
+
+class TaxonomyConfig(AppConfig):
+    name = "taxonomy"
+```
+
+
+
+---
+
+## 164. Software source: backend/taxonomy/models.py
+
+```py
+"""Concepts (list types and more), labels, crosswalks, the add-on registry and list-type settings (plan sections 4.2.3, 5)."""
+from django.db import models
+
+from core import clock
+from core.models import UidModel
+
+
+class Concept(UidModel):
+    class Kind(models.TextChoices):
+        FAMILY = "family"
+        LIST_TYPE = "list_type"
+        SPECIALITY = "speciality"
+        SERVICE = "service"
+        PRODUCT = "product"
+
+    class Scale(models.TextChoices):
+        HYPER_LOCAL = "hyper_local"
+        CITY = "city"
+        NATIONAL = "national"
+        GLOBAL = "global"
+
+    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.PROTECT, related_name="children")
+    kind = models.CharField(max_length=12, choices=Kind.choices)
+    slug = models.SlugField(max_length=120)
+    entity_type_default = models.CharField(max_length=12, default="business")
+    natural_scale = models.CharField(max_length=12, choices=Scale.choices, default=Scale.CITY)
+    template = models.ForeignKey("AddonTemplate", null=True, blank=True, on_delete=models.SET_NULL, related_name="concepts")
+    status = models.CharField(max_length=10, default="active")
+    created_by_id = models.BigIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(default=clock.now)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["kind", "slug"], name="uniq_concept_slug_per_kind")]
+
+    def __str__(self):
+        return self.slug
+
+    def label(self, language="en"):
+        labels = list(self.labels.all())
+        for lb in labels:
+            if lb.language == language and lb.kind == ConceptLabel.Kind.PREFERRED:
+                return lb.text
+        for lb in labels:
+            if lb.kind == ConceptLabel.Kind.PREFERRED:
+                return lb.text
+        return self.slug
+
+
+class ConceptLabel(models.Model):
+    class Kind(models.TextChoices):
+        PREFERRED = "preferred"
+        SYNONYM = "synonym"
+        LOCAL = "local"
+        MISSPELLING = "misspelling"
+
+    concept = models.ForeignKey(Concept, on_delete=models.CASCADE, related_name="labels")
+    language = models.CharField(max_length=10)
+    region = models.CharField(max_length=2, blank=True)
+    kind = models.CharField(max_length=12, choices=Kind.choices, default=Kind.PREFERRED)
+    text = models.CharField(max_length=200)
+    text_fold = models.CharField(max_length=200, db_index=True)
+
+
+class ConceptCrosswalk(models.Model):
+    concept = models.ForeignKey(Concept, on_delete=models.CASCADE, related_name="crosswalks")
+    system = models.CharField(max_length=20)  # isic, isco, overture, foursquare, osm, schema_org, hs
+    code = models.CharField(max_length=80)
+    match_type = models.CharField(max_length=10, default="exact")
+
+
+class AddonTemplate(models.Model):
+    key = models.SlugField(unique=True)
+    version = models.PositiveIntegerField(default=1)
+    status = models.CharField(max_length=10, default="active")
+    description = models.CharField(max_length=200, blank=True)
+
+
+class AddonField(models.Model):
+    """Fields can be added or deprecated, never changed in meaning (spec rule 3)."""
+    class Type(models.TextChoices):
+        TEXT = "text"
+        NUMBER = "number"
+        ENUM = "enum"
+        BOOL = "bool"
+        DATE = "date"
+        CONCEPT_LIST = "concept_list"
+        MONEY = "money"
+        IDENTIFIER_LIST = "identifier_list"
+        PLACE_LIST = "place_list"
+
+    class Show(models.TextChoices):
+        PUBLIC = "P"
+        LOCKED = "L"
+        HIDDEN = "H"
+        INTERNAL = "I"
+
+    template = models.ForeignKey(AddonTemplate, on_delete=models.CASCADE, related_name="fields")
+    key = models.SlugField(max_length=60)
+    label_key = models.CharField(max_length=120)
+    type = models.CharField(max_length=20, choices=Type.choices)
+    validation = models.JSONField(default=dict, blank=True)  # e.g. {"choices": [...], "max_length": 80}
+    required_for_publish = models.BooleanField(default=False)
+    show = models.CharField(max_length=1, choices=Show.choices, default=Show.PUBLIC)
+    filterable = models.BooleanField(default=False)
+    row_descriptor = models.BooleanField(default=False)
+    provisional = models.BooleanField(default=False)
+    version = models.PositiveIntegerField(default=1)
+    deprecated_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["template", "key"], name="uniq_addon_field")]
+
+
+class ListTypeSettings(models.Model):
+    concept = models.OneToOneField(Concept, on_delete=models.CASCADE, related_name="settings")
+    index_threshold = models.PositiveIntegerField(default=10)
+    row_descriptor_field = models.CharField(max_length=60, blank=True)
+    actions_allowed = models.JSONField(default=list, blank=True)
+    share_hidden = models.BooleanField(default=False)
+    is_individual = models.BooleanField(default=False)
+    is_child_facing = models.BooleanField(default=False)
+    is_health = models.BooleanField(default=False)
+    price_required_date = models.BooleanField(default=True)
+
+
+class ReservedSlug(models.Model):
+    """Place and list-type slugs share one URL namespace; this table keeps them from colliding (plan 8.2)."""
+    slug = models.SlugField(max_length=120)
+    kind = models.CharField(max_length=10)  # place | list_type | system
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["slug", "kind"], name="uniq_reserved_slug_kind")]
+```
+
+
+
+---
+
+## 165. Software source: backend/taxonomy/services.py
+
+```py
+from django.db import transaction
+from django.utils.text import slugify
+
+from core.models import RegistryVersion
+from core.textfold import fold
+
+from .models import AddonField, AddonTemplate, Concept, ConceptLabel, ListTypeSettings, ReservedSlug
+
+SYSTEM_SLUGS = {"e", "search", "add", "claim", "wrong", "message", "enquiry", "about", "terms", "privacy", "plans",
+                "sources", "me", "staff", "admin", "account", "ur", "prefs", "optout", "healthz", "static"}
+
+
+class TaxonomyError(ValueError):
+    pass
+
+
+@transaction.atomic
+def create_concept(*, kind, name, language="en", slug=None, parent=None, synonyms=(), **extra):
+    slug = slug or slugify(name)
+    if kind == Concept.Kind.LIST_TYPE:
+        if slug in SYSTEM_SLUGS or ReservedSlug.objects.filter(slug=slug, kind__in=["place", "system"]).exists():
+            raise TaxonomyError(f"slug {slug!r} collides with a place or system address")
+    concept = Concept.objects.create(kind=kind, slug=slug, parent=parent, **extra)
+    ConceptLabel.objects.create(concept=concept, language=language, kind="preferred", text=name, text_fold=fold(name))
+    for syn in synonyms:
+        text, lang = (syn, language) if isinstance(syn, str) else syn
+        ConceptLabel.objects.create(concept=concept, language=lang, kind="synonym", text=text, text_fold=fold(text))
+    if kind == Concept.Kind.LIST_TYPE:
+        ReservedSlug.objects.get_or_create(slug=slug, kind="list_type")
+        ListTypeSettings.objects.get_or_create(concept=concept)
+    return concept
+
+
+def find_concepts(query, kind=Concept.Kind.LIST_TYPE):
+    """Synonym lookup: "gas station" finds the petrol-pump concept."""
+    folded = fold(query)
+    return Concept.objects.filter(kind=kind, labels__text_fold=folded).distinct()
+
+
+@transaction.atomic
+def bump_template(template, changed_by=""):
+    template.version += 1
+    template.save(update_fields=["version"])
+    RegistryVersion.objects.create(registry_key=f"addon:{template.key}", version=template.version, changed_by=changed_by)
+    return template.version
+
+
+def validate_addons(template, values, *, for_publish=False):
+    """Return a list of (field_key, message). Empty list means valid."""
+    problems = []
+    fields = {f.key: f for f in AddonField.objects.filter(template=template, deprecated_at__isnull=True)}
+    for key in values:
+        if key not in fields:
+            problems.append((key, "unknown field"))
+    for key, f in fields.items():
+        val = values.get(key)
+        empty = val in (None, "", [], {})
+        if empty:
+            if for_publish and f.required_for_publish:
+                problems.append((key, "required"))
+            continue
+        msg = _check_value(f, val)
+        if msg:
+            problems.append((key, msg))
+    return problems
+
+
+def _check_value(field, val):
+    t, rules = field.type, field.validation or {}
+    if t == AddonField.Type.ENUM:
+        return None if val in rules.get("choices", []) else "not an allowed choice"
+    if t == AddonField.Type.BOOL:
+        return None if isinstance(val, bool) else "must be true or false"
+    if t == AddonField.Type.NUMBER:
+        if isinstance(val, bool) or not isinstance(val, (int, float)):
+            return "must be a number"
+        if "min" in rules and val < rules["min"]:
+            return "below minimum"
+        if "max" in rules and val > rules["max"]:
+            return "above maximum"
+        return None
+    if t == AddonField.Type.TEXT:
+        if not isinstance(val, str):
+            return "must be text"
+        return "too long" if len(val) > rules.get("max_length", 500) else None
+    if t in (AddonField.Type.CONCEPT_LIST, AddonField.Type.IDENTIFIER_LIST, AddonField.Type.PLACE_LIST):
+        return None if isinstance(val, list) else "must be a list"
+    if t == AddonField.Type.MONEY:
+        ok = isinstance(val, dict) and isinstance(val.get("minor"), int) and isinstance(val.get("currency"), str)
+        return None if ok else "must have integer minor units and a currency"
+    if t == AddonField.Type.DATE:
+        return None if isinstance(val, str) and len(val) == 10 else "must be an ISO date"
+    return None
+
+
+def seed_manufacturer_template():
+    """The pilot add-on block (plan appendix C.8). Safe to run twice."""
+    tpl, _ = AddonTemplate.objects.get_or_create(key="manufacturers", defaults={"description": "Manufacturers and exporters"})
+    spec = [
+        ("business_type", "enum", {"choices": ["manufacturer", "trader", "wholesaler", "exporter"]}, True, "P", True, True),
+        ("product_categories", "concept_list", {}, True, "P", True, False),
+        ("tax_ids", "identifier_list", {}, False, "P", False, False),
+        ("year_established", "number", {"min": 1800, "max": 2100}, False, "P", False, False),
+        ("years_exporting", "number", {"min": 0, "max": 200}, False, "P", False, False),
+        ("export_markets", "place_list", {}, False, "L", True, False),
+        ("certifications", "identifier_list", {}, False, "L", True, False),
+        ("verification_tier", "enum", {"choices": ["none", "documents", "on_site", "third_party"]}, False, "P", True, False),
+        ("capacity_band", "enum", {"choices": ["small", "medium", "large"]}, False, "L", False, False),
+        ("workforce_band", "enum", {"choices": ["1-10", "11-50", "51-200", "201-1000", "1000+"]}, False, "L", False, False),
+        ("oem", "bool", {}, False, "P", True, False),
+        ("moq", "text", {"max_length": 80}, False, "L", False, False),
+    ]
+    for key, typ, validation, req, show, filt, row in spec:
+        AddonField.objects.get_or_create(template=tpl, key=key, defaults={
+            "label_key": f"addon.manufacturers.{key}", "type": typ, "validation": validation,
+            "required_for_publish": req, "show": show, "filterable": filt, "row_descriptor": row})
+    return tpl
+```
+
+
+
+---
+
+## 166. Software source: backend/taxonomy/tests/__init__.py
+
+```py
+
+```
+
+
+
+---
+
+## 167. Software source: backend/taxonomy/tests/test_taxonomy.py
+
+```py
+import pytest
+
+from core.models import RegistryVersion
+from taxonomy.models import AddonField
+from taxonomy.services import TaxonomyError, bump_template, create_concept, find_concepts, validate_addons
+
+
+def test_synonyms_find_one_concept(db):
+    c = create_concept(kind="list_type", name="Petrol pumps", synonyms=["gas station", "fuel station", "filling station"])
+    for q in ("Gas Station", "FUEL  station", "petrol pumps"):
+        assert list(find_concepts(q)) == [c]
+    assert not find_concepts("hotel").exists()
+
+
+def test_list_type_slug_cannot_shadow_system_or_place(db, tree):
+    with pytest.raises(TaxonomyError):
+        create_concept(kind="list_type", name="Search")
+    with pytest.raises(TaxonomyError):
+        create_concept(kind="list_type", name="Sialkot")
+
+
+def test_same_name_other_kind_is_fine(db):
+    create_concept(kind="list_type", name="Plumbing")
+    assert create_concept(kind="service", name="Plumbing").pk
+
+
+def test_addon_validation(surgical):
+    tpl = surgical.template
+    assert validate_addons(tpl, {"business_type": "manufacturer", "product_categories": ["x"]}, for_publish=True) == []
+    probs = dict(validate_addons(tpl, {"business_type": "pirate", "oem": "yes", "year_established": 1700, "zzz": 1}))
+    assert probs["business_type"] == "not an allowed choice" and probs["oem"] == "must be true or false"
+    assert probs["year_established"] == "below minimum" and probs["zzz"] == "unknown field"
+    missing = dict(validate_addons(tpl, {}, for_publish=True))
+    assert set(missing) == {"business_type", "product_categories"}
+
+
+def test_deprecated_field_rejected_and_version_bumped(surgical):
+    tpl = surgical.template
+    AddonField.objects.filter(template=tpl, key="moq").update(deprecated_at="2026-01-01T00:00:00Z")
+    assert dict(validate_addons(tpl, {"moq": "100"}))["moq"] == "unknown field"
+    assert bump_template(tpl, "tester") == 2
+    assert RegistryVersion.objects.filter(registry_key="addon:manufacturers", version=2).exists()
+```
+
+
+
+---
+
+## 168. Appendix: founder's messages, verbatim
 
 ### Message 1
 
@@ -26291,3 +29718,7 @@ pytest-django>=4.8
 ### Message 54
 
 > make a complete technical plan for the website coding. All aspects included. consider all the research, discussion and decisions, all the features. USe the available resources where available. never miss any minute detail from the plan, once plan is ready we can start writing code
+
+### Message 55
+
+> ok start coding

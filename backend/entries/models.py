@@ -315,3 +315,12 @@ class CreditEvent(models.Model):
     phase_id = models.PositiveIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(default=clock.now)
     merged_from_id = models.BigIntegerField(null=True, blank=True)
+
+
+class MergeMap(models.Model):
+    """Append-only record of a merge (plan 6.7). The dropped entry redirects to the kept one."""
+    from_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
+    to_entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="+")
+    score = models.FloatField(null=True, blank=True)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    decided_at = models.DateTimeField(default=clock.now)

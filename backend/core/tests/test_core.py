@@ -95,3 +95,17 @@ def test_clock_override():
         assert clock.now() == fixed
     finally:
         clock.set_now(None)
+
+
+def test_seed_pilot_is_idempotent_and_safe_by_default(db):
+    from django.core.management import call_command
+    from core.models import CountrySwitch
+    from places.models import Place
+    from taxonomy.models import Concept
+    call_command("seed_pilot")
+    call_command("seed_pilot")
+    assert Place.objects.filter(path="pk.punjab.sialkot").count() == 1
+    assert Place.objects.filter(parent__path="pk.punjab.sialkot").count() == 3
+    assert Concept.objects.filter(slug="surgical-instrument-makers").count() == 1
+    sw = CountrySwitch.objects.get(country_code="PK")
+    assert sw.browsing_on and not (sw.selling_on or sw.outreach_on or sw.indexing_on or sw.named_individuals_on)

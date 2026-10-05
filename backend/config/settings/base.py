@@ -22,7 +22,7 @@ DEMO_MODE = os.environ.get("ALLLISTS_DEMO", "1" if DEBUG else "0") == "1"
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
-    "core", "places", "taxonomy", "entries", "intake",
+    "core", "places", "taxonomy", "entries", "intake", "analytics",
     "lists",  # legacy demo app, replaced by catalog in phase P2
 ]
 MIDDLEWARE = [

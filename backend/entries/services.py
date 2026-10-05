@@ -310,3 +310,35 @@ def record_consent(entry, *, status, method, wording_version, evidence="", actor
     audit("consent.record", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code,
           payload={"status": status})
     return rec
+
+
+# ---- merging (plan 6.7, rule D6) -----------------------------------------------------------------------------
+
+@transaction.atomic
+def merge_entries(keep, drop, *, actor=None, score=None):
+    """Merge `drop` into `keep`. Children move, credit events are re-pointed, the earliest added-credit survives,
+    the dropped entry is tombstoned with a redirect, and everything is logged."""
+    from .models import MergeMap
+    if keep.pk == drop.pk or drop.merged_into_id:
+        raise EntryError("cannot merge an entry into itself or merge twice")
+    if keep.country_code != drop.country_code:
+        raise EntryError("entries in different countries are never merged")
+    for rel in ("namevariant_set", "contact_set", "social_set", "hours_set", "service_set", "product_set",
+                "speciality_set", "identifier_set", "areaserved_set", "equipment_set", "branch_set"):
+        getattr(drop, rel).update(entry=keep)
+    NameVariant.objects.get_or_create(entry=keep, country_code=keep.country_code, text=drop.name,
+                                      defaults=dict(language=drop.name_lang, kind="old", text_fold=drop.name_fold))
+    CreditEvent.objects.filter(entry=drop).update(entry=keep, merged_from_id=drop.pk)
+    added = list(CreditEvent.objects.filter(entry=keep, kind="added").order_by("created_at", "id"))
+    for later in added[1:]:
+        later.eligible, later.ineligible_reason = False, "duplicate"
+        later.save(update_fields=["eligible", "ineligible_reason"])
+    drop.merged_into = keep
+    drop.publish_state = Entry.PublishState.SUPPRESSED
+    drop.save(update_fields=["merged_into", "publish_state"])
+    MergeMap.objects.create(from_entry=drop, to_entry=keep, score=score, decided_by_id=getattr(actor, "pk", None))
+    ChangeLog.objects.create(entry_id=keep.pk, country_code=keep.country_code, field_key="merged",
+                             new={"from": drop.uid}, actor_id=getattr(actor, "pk", None))
+    audit("entry.merge", actor=actor, object_type="entry", object_uid=keep.uid, country_code=keep.country_code,
+          payload={"from": drop.uid, "score": score})
+    return keep
