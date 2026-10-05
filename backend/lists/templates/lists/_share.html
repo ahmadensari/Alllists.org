@@ -1,0 +1,5 @@
+<div class="actions" role="group" aria-label="{{ T.share }}">
+{% for ch in share_links %}{% if ch.group == "main" %}{% if ch.kind == "copy" %}<button class="btn" type="button" data-copy="{{ ch.copy }}">{{ ch.label }}</button>{% else %}<a class="btn" rel="noopener" target="_blank" href="{{ ch.href }}">{{ ch.label }}</a>{% endif %}{% endif %}{% endfor %}
+<details class="key"><summary>{{ T.share_more }}</summary>
+<div class="actions">{% for ch in share_links %}{% if ch.group == "more" %}<a class="btn" rel="noopener" target="_blank" href="{{ ch.href }}">{{ ch.label }}</a>{% endif %}{% endfor %}</div></details>
+</div>

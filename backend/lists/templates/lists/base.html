@@ -1,0 +1,31 @@
+{% load static lists_extras %}<!doctype html>
+<html lang="{{ lang }}" dir="{{ dir }}"{% if theme %} data-theme="{{ theme }}"{% endif %}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}{{ T.site }}{% endblock %}</title>
+<meta name="description" content="{% block desc %}{{ T.tagline }}{% endblock %}">
+<link rel="stylesheet" href="{% static 'lists/app.css' %}">
+</head>
+<body>
+<a class="skip" href="#main">{{ T.skip }}</a>
+<header class="site"><div class="wrap site-row">
+  <a class="logo" href="/">All<b>Lists</b></a>
+  <form class="search" action="" method="get" role="search">
+    {% block searchbox %}{% endblock %}
+  </form>
+  <form method="post" action="/prefs/" class="ctl">{% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    <button class="btn quiet" name="lang" value="{% if lang == 'en' %}ur{% else %}en{% endif %}">{% if lang == 'en' %}اردو{% else %}English{% endif %}</button>
+    <button class="btn quiet" name="theme" value="{% if theme == 'dark' %}light{% else %}dark{% endif %}">{{ T.theme }}</button>
+    {% if demo_mode %}<button class="btn quiet" name="plan" value="{% if subscriber %}free{% else %}subscriber{% endif %}">{{ T.demo_plan }}: {% if subscriber %}{{ T.plan_subscriber }}{% else %}{{ T.plan_free }}{% endif %}</button>{% endif %}
+  </form>
+</div></header>
+<main id="main" class="wrap">
+{% for m in messages %}<p class="notice" role="status">{{ T|tr:m.message }}</p>{% endfor %}
+{% block content %}{% endblock %}
+</main>
+<footer class="legal wrap"><p>{{ T.legal }}</p></footer>
+{% block share_js %}<script src="{% static 'lists/app.js' %}" defer></script>{% endblock %}
+</body>
+</html>

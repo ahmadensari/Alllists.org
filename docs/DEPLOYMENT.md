@@ -1,3 +1,5 @@
+> **Note:** the Flask draft this guide described was replaced by the Django app in `backend/`. See `backend/README.md` for current run and production settings. The text below is the earlier untested draft.
+
 # Deployment guide (draft, untested)
 
 Target: one Ubuntu server running Nginx, Gunicorn (as a systemd service) and PostgreSQL, with HTTPS.

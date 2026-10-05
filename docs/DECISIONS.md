@@ -133,3 +133,7 @@ Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeri
 | Choose one first trade in writing | Sialkot surgical instruments, as a verified-supplier register, tested for eight weeks first | Q-S16 |
 | How the contributor share is defined | Net revenue, with a time cap on each entry's phase rate (suggested 36 months) | Q-S15 |
 | The name and domain | Keep AllLists; check alllists.org ownership; price alllists.com; protect .app, .io and .pk; fallback ListAtlas | Q-S19 |
+
+## Build log
+
+- 2026-10-05: First software build. Django 5.2 + SQLite (PostgreSQL via env) in `backend/`, replacing the Flask draft. Implements place tree, list views, entries with checks, free/subscriber visibility, company page, enquiry relay, report/claim, share registry, EN/UR, edge-header location, contributor phase rates locked per entry and sale distribution. Not yet built: payments, email relay delivery, subscriptions, moderation UI, search engine, ads. Stack choice (Q-S9/Q-S18) used the recorded default and can still be changed.

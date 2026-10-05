@@ -1,0 +1,15 @@
+{% extends "lists/base.html" %}{% load lists_extras %}
+{% block content %}
+<h1>{{ T.site }}</h1><p class="muted">{{ T.tagline }}</p>
+<section class="locbar" aria-label="{{ T.near_you }}">
+{% if near %}<span class="where">{{ T.near_you }}: <a href="{{ near.url }}">{% label near.place lang %}</a> <span class="num">({{ near.count }} {{ T.entries }})</span></span>
+<span class="muted small">{% if location_source == 'guess' %}{{ T.guess_note }}{% else %}{{ T.chosen_note }}{% endif %}</span>
+{% else %}<span class="where">{{ T.no_place }}</span>{% endif %}
+<form method="post" action="/prefs/" class="ctl">{% csrf_token %}<input type="hidden" name="next" value="/">
+<label for="pl" class="visually-hidden">{{ T.choose_place }}</label>
+<select id="pl" name="place">{% for p in all_places %}<option value="{{ p.pk }}"{% if my_place and my_place.pk == p.pk %} selected{% endif %}>{% label p lang %} ({{ p.kind }})</option>{% endfor %}</select>
+<button class="btn" type="submit">{{ T.choose_place }}</button></form>
+</section>
+<h2>{{ T.countries }}</h2>
+<ul class="tilegrid">{% for c in countries %}<li><a class="tile" href="/p/{{ c.slug }}/"><strong>{% label c lang %}</strong></a></li>{% empty %}<li class="empty">{{ T.empty_body }}</li>{% endfor %}</ul>
+{% endblock %}

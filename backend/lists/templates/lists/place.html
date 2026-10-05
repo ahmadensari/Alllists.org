@@ -1,0 +1,10 @@
+{% extends "lists/base.html" %}{% load lists_extras %}
+{% block title %}{{ place.name }} · {{ T.site }}{% endblock %}
+{% block content %}
+{% include "lists/_crumbs.html" %}
+<h1>{% label place lang %}</h1><p class="muted num">{{ total }} {{ T.entries }}</p>
+{% if children %}<h2>{{ T.places_in }} {% label place lang %}</h2>
+<ul class="tilegrid">{% for c in children %}<li><a class="tile" href="{{ c.url }}"><strong>{% label c.p lang %}</strong><span class="big num">{{ c.n }}</span></a></li>{% endfor %}</ul>{% endif %}
+<h2>{{ T.lists_here }}</h2>
+<ul class="tilegrid">{% for t in types %}<li><a class="tile" href="{{ place_url }}l/{{ t.slug }}/"><strong>{% label t lang %}</strong><span class="big num">{{ t.n }}</span></a></li>{% empty %}<li class="empty"><strong>{{ T.empty_title }}</strong><p>{{ T.empty_body }}</p></li>{% endfor %}</ul>
+{% endblock %}

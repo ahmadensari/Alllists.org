@@ -1,0 +1,36 @@
+{% extends "lists/base.html" %}{% load lists_extras %}
+{% block title %}{% label ltype lang %} · {{ place.name }} · {{ T.site }}{% endblock %}
+{% block searchbox %}<input type="search" name="q" value="{{ q }}" placeholder="{{ T.search }}" aria-label="{{ T.search }}"><button class="btn primary">{{ T.search_go }}</button>{% endblock %}
+{% block content %}
+{% include "lists/_crumbs.html" %}
+<h1>{% label ltype lang %}: {% label place lang %}</h1>
+<section class="hero" aria-label="trust"><div class="hero-num num">{{ trust.pct }}%</div><div class="hero-body">
+<p>{{ T.trust }} <span class="muted num">({{ trust.total }} {{ T.entries }})</span></p>
+<div class="tbar" role="img" aria-label="{{ trust.pct }}%"><i class="t-s" style="--w:{{ trust.s }}%"></i><i class="t-o" style="--w:{{ trust.o }}%"></i><i class="t-a" style="--w:{{ trust.a }}%"></i></div>
+<div class="legend"><span><b class="t-s" style="background:var(--ok)"></b>{{ T.level_surveyor }}</span><span><b style="background:color-mix(in oklab,var(--ok) 55%,var(--surface))"></b>{{ T.level_owner }}</span><span><b></b>{{ T.level_ai }}</span></div></div></section>
+{% include "lists/_share.html" %}
+<div class="actions">
+<form method="get" class="ctl"><input type="hidden" name="q" value="{{ q }}">
+<label for="area" class="visually-hidden">{{ T.all_areas }}</label>
+<select id="area" name="area" onchange="this.form.submit()"><option value="">{{ T.all_areas }}</option>{% for a in areas %}<option value="{{ a.slug }}"{% if a.slug == area %} selected{% endif %}>{% label a lang %}</option>{% endfor %}</select>
+<label for="sort" class="visually-hidden">{{ T.sort }}</label>
+<select id="sort" name="sort" onchange="this.form.submit()"><option value="name"{% if sort == 'name' %} selected{% endif %}>{{ T.sort_name }}</option><option value="checked"{% if sort == 'checked' %} selected{% endif %}>{{ T.sort_checked }}</option></select></form>
+<form method="post" action="/prefs/" class="vt">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+<button name="view" value="list" aria-pressed="{% if view_mode == 'list' %}true{% else %}false{% endif %}">{{ T.view_list }}</button><button name="view" value="cards" aria-pressed="{% if view_mode == 'cards' %}true{% else %}false{% endif %}">{{ T.view_cards }}</button></form>
+</div>
+{% if names_only %}<p class="co-note">{{ T.widen_note }} <a href="#">{{ T.subscribe }}</a></p>{% endif %}
+{% if rows %}
+<ul class="rows enter{% if view_mode == 'cards' %} cards{% endif %}">
+{% for r in rows %}<li class="row{% if r.sponsored %} sponsored-row{% endif %}" style="--i:{{ forloop.counter0 }}">
+<div><a class="nm" href="{{ r.url }}">{{ r.name }}</a>{% if r.name_alt %}<span class="alt">{{ r.name_alt }}</span>{% endif %}
+{% if r.is_company %}<span class="pill pill-co">{{ T.company }}</span>{% endif %}{% if r.sponsored %}<span class="sponsored-label">{{ T.sponsored }}</span>{% endif %}
+{% if r.status != 'active' %}<span class="chip closed">{{ T|tr:r.status }}</span>{% endif %}</div>
+<div class="muted">{% if lang == 'ur' and r.area_ur %}{{ r.area_ur }}{% else %}{{ r.area }}{% endif %}{% if r.type %} · {{ r.type }}{% endif %}
+{% for s in r.specialities %}<span class="pill">{{ s }}</span>{% endfor %}{% if r.more_specialities %}<span class="pill">+{{ r.more_specialities }} {{ T.more }}</span>{% endif %}</div>
+<div>{% include "lists/_chip.html" with level=r.level %}{% if r.last_checked %}<span class="small muted num">{{ T.checked }} {{ r.last_checked|date:"j M Y" }}</span>{% endif %}</div>
+</li>{% endfor %}
+</ul>
+{% if shown < total %}<p class="muted">{{ shown }} / {{ total }} · <a href="#">{{ T.subscribe }}</a></p>{% endif %}
+{% else %}<div class="empty"><strong>{{ T.empty_title }}</strong><p>{{ T.empty_body }}</p></div>{% endif %}
+<div class="ad">{{ T.ads }}</div>
+{% endblock %}

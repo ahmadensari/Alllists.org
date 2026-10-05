@@ -1,0 +1,35 @@
+{% extends "lists/base.html" %}{% load lists_extras %}
+{% block title %}{{ e.name }} · {{ T.site }}{% endblock %}
+{% block content %}
+{% include "lists/_crumbs.html" with link_last=True %}
+<h1>{{ e.name }}</h1>{% if e.name_alt %}<p class="muted">{{ e.name_alt }}</p>{% endif %}
+<p>{% if e.is_company %}<span class="pill pill-co">{{ T.company }}</span>{% endif %}{% include "lists/_chip.html" with level=e.level %}
+{% if e.status != 'active' %}<span class="chip closed">{{ T|tr:e.status }}</span>{% endif %}</p>
+{% include "lists/_share.html" %}
+<section class="sec"><dl class="facts">
+<dt>{{ T.checked }}</dt><dd class="num">{% if e.last_checked %}{{ e.last_checked|date:"j M Y" }}{% else %}-{% endif %}</dd>
+<dt>{{ T.entries }}</dt><dd>{{ e.type }} · {% if lang == 'ur' and e.area_ur %}{{ e.area_ur }}{% else %}{{ e.area }}{% endif %}</dd>
+<dt>{{ T.specialities }}</dt><dd>{% for s in e.specialities %}<span class="pill">{{ s }}</span>{% endfor %}{% if e.more_specialities %}<span class="pill">+{{ e.more_specialities }} {{ T.more }}</span>{% endif %}</dd>
+{% if subscriber %}
+<dt>{{ T.address }}</dt><dd>{{ e.address }}</dd>
+{% if e.latitude %}<dt>{{ T.map }}</dt><dd class="mono num">{{ e.latitude }}, {{ e.longitude }}</dd>{% endif %}
+{% if e.website %}<dt>{{ T.website }}</dt><dd><a href="{{ e.website }}" rel="noopener nofollow">{{ e.website }}</a></dd>{% endif %}
+{% if e.size %}<dt>{{ T.size }}</dt><dd>{{ e.size }}</dd>{% endif %}
+{% if e.markets %}<dt>{{ T.markets }}</dt><dd>{{ e.markets }}</dd>{% endif %}
+{% if e.moq %}<dt>{{ T.moq }}</dt><dd>{{ e.moq }}</dd>{% endif %}
+{% if e.price_note %}<dt>{{ T.prices }}</dt><dd>{{ e.price_note }}</dd>{% endif %}
+{% if e.certificates %}<dt>{{ T.certificates }}</dt><dd>{{ e.certificates }}</dd>{% endif %}
+{% if e.services %}<dt>{{ T.services }}</dt><dd>{{ e.services|join:", " }}</dd>{% endif %}
+{% if e.socials %}<dt>{{ T.social }}</dt><dd>{% for s in e.socials %}<a href="{{ s.url }}" rel="noopener nofollow">{{ s.channel }}</a> {% endfor %}</dd>{% endif %}
+{% else %}<dt>{{ T.address }}</dt><dd class="muted">{{ T.locked }}</dd>{% endif %}
+</dl></section>
+{% if e.is_company and subscriber and e.company_profile %}<section class="sec"><h2>{{ T.company }}</h2><p class="provided-tag">{{ T.provided_by }}</p><p>{{ e.company_profile|linebreaksbr }}</p></section>{% endif %}
+<section class="sec"><h2>{{ T.checked }}</h2><ul class="records">{% for c in e.checks %}<li>{% include "lists/_chip.html" with level=c.level %} <span class="num small muted">{{ c.checked_on|date:"j M Y" }} · {{ c.field }}</span></li>{% empty %}<li class="muted">{{ T.level_none }}</li>{% endfor %}</ul></section>
+<section class="sec"><h2>{{ T.enquiry }}</h2><p class="muted small">{{ T.contact_note }}</p>
+{% if subscriber %}<form method="post" action="/enquiry/">{% csrf_token %}<input type="hidden" name="entries" value="{{ entry.pk }}"><input type="hidden" name="next" value="{{ request.path }}">
+<p><label>{{ T.your_email }}<br><input type="email" name="reply_to" required></label></p>
+<p><label>{{ T.message }}<br><textarea name="message" rows="4" maxlength="2000" required></textarea></label></p>
+<button class="btn primary">{{ T.send }}</button></form>{% else %}<p>{{ T.subscribers_only }} <a href="#">{{ T.subscribe }}</a></p>{% endif %}</section>
+<section class="sec"><form method="post" action="/e/{{ entry.pk }}/report/" class="ctl">{% csrf_token %}<input name="note" placeholder="{{ T.note }}" aria-label="{{ T.note }}"><button class="btn">{{ T.report }}</button></form>
+<form method="post" action="/e/{{ entry.pk }}/claim/" class="ctl">{% csrf_token %}<input name="contact" placeholder="{{ T.contact }}" aria-label="{{ T.contact }}"><button class="btn">{{ T.claim }}</button></form></section>
+{% endblock %}

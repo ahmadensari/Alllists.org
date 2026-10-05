@@ -1,0 +1,2 @@
+{% load lists_extras %}
+<span class="chip {% if level == 'surveyor' %}surveyor{% elif level == 'owner' %}owner{% elif level == 'ai' %}ai{% else %}none{% endif %}">{{ T|level_label:level }}</span>
