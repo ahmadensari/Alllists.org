@@ -3,6 +3,7 @@
 Planning note for the coding phase. No code is written yet. Licence status is graded:
 
 - **Seen** means a search result this session states it. Still check the repository's licence file before use.
+- **File** means I cloned the repository (read only) and read its LICENSE file and project settings.
 - **Memory** means it is from my background knowledge and was not checked this session.
 
 Last updated: 2026-10-05.
@@ -29,9 +30,9 @@ Two licence rules to keep in mind:
 
 | Need | Candidate | Licence | Status | How we would use it | Caution |
 |---|---|---|---|---|---|
-| Place and category schema | Overture schema (Pydantic models, official GitHub repository) and its categories CSV | Open (check repo) | Seen that the code is on GitHub | Borrow the place structure and taxonomy as a starting point for our concept table | Our own crosswalk still needed |
+| Place and category schema | Overture schema (official GitHub repository, schema files in YAML plus Python packages) | LICENSE file is Creative Commons Attribution 4.0; packaging settings say MIT | File | Borrow the place structure and taxonomy as a starting point for our concept table. Attribution is required if we copy schema text | Mixed licences in one repository; confirm which applies to which folder |
 | Load Overture data | `overturemaps-py`, the official command-line tool | Open (check repo) | Seen | Download by region and convert formats | |
-| Duplicate detection | Splink (Ministry of Justice, Python, links tens of millions of records) | Free and open source; exact licence not confirmed | Seen (open source); licence Memory | Core of our merge pipeline | Needs tuning for Urdu and transliteration |
+| Duplicate detection | Splink (Ministry of Justice, Python, links tens of millions of records) | MIT | File | Core of our merge pipeline | Needs tuning for Urdu and transliteration |
 | Duplicate detection (alternatives) | `dedupe`, `recordlinkage` | Memory | Memory | Smaller datasets, easier to learn | |
 | Address parsing | libpostal | MIT | Memory | Normalise addresses worldwide | Large model; weak on informal addresses such as "Adyala Road, near X" |
 | Geocoding | Pelias | MIT | Seen | Self-hosted address search | Heavy to run; start with a hosted service if terms allow |
@@ -47,12 +48,16 @@ Two licence rules to keep in mind:
 | Money ledger | Formance Ledger (programmable double-entry, MIT) | MIT | Seen | Could run as a separate ledger service | Adds a service to operate; a simple Postgres ledger may be enough early |
 | Money ledger | TigerBeetle (open-source financial transactions database) | Open | Seen | Only if volume demands it | Overkill early |
 | Money ledger | django-ledger (double-entry accounting for Django) | Not stated | Seen (existence); licence unknown | Reference for ledger design | Built for bookkeeping, not per-sale revenue sharing |
-| Marketplace parts (vendors, commissions, payouts) | Saleor (BSD-3, Python), Medusa (MIT, TypeScript), Mercur (marketplace on Medusa, MIT core with separately licensed enterprise modules) | As stated | Seen | Study how they model vendors, commissions and payouts | We sell data access, not goods; do not adopt a whole shop platform |
+| Marketplace parts (vendors, commissions, payouts) | Saleor (BSD-3-Clause, Python), Medusa (MIT, TypeScript), Mercur (marketplace on Medusa, MIT core with separately licensed enterprise modules) | As stated | Saleor: File; others: Seen | Study how they model vendors, commissions and payouts | We sell data access, not goods; do not adopt a whole shop platform |
 | Support and messaging inbox | Chatwoot (MIT; handles WhatsApp Business API, email, SMS) | MIT | Seen | Reply inbox for outreach responses | Needs official WhatsApp Business API access |
 | Email campaigns | listmonk (AGPL-3.0, Go, single binary with Postgres) | AGPL-3.0 | Seen | Run as a separate service for email outreach | AGPL; do not copy its code into ours |
 | Front end | Next.js or Astro, Tailwind | MIT | Memory | Server-rendered, search-friendly pages | |
 | Content pages | Wagtail (BSD, Django) | Memory | Memory | If we want an editorial layer | |
 | Security scanning | Dependabot, secret scanning (GitHub), OWASP guides | | Memory | Free checks in CI | |
+
+## 2b. What the Overture place schema holds (read from the repository)
+
+A Place is a point with: id, geometry, names, a basic category, a taxonomy (primary category, full hierarchy path, alternate categories), a confidence number from 0 to 1 that the place exists, websites, social links, emails, phones, brand (with a Wikidata link), addresses, and an operating status (open, permanently closed, temporarily closed). This is close to our core entry fields. What it lacks, and what AllLists adds: owner, WhatsApp number, reviewer rankings, size, goods, priced services, equipment, per-field verification levels, per-field source and licence, consent status and claim status.
 
 ## 3. Things to avoid
 
@@ -77,6 +82,6 @@ Limits: the network proxy blocks many official sites, so facts from them cannot 
 
 ## 5. Suggested next steps (research only, until the owner asks for code)
 
-1. Attach and read the repositories for Overture schema, Splink and one marketplace platform (Saleor or Medusa) to confirm licences and see what is reusable.
-2. Confirm each shortlisted licence from its repository file.
+1. Done for Overture schema, Splink and Saleor: cloned read-only and licences read. Medusa, libpostal, Pelias and Formance are still to check.
+2. Confirm each remaining shortlisted licence from its repository file.
 3. Decide the stack (Q-S9) before choosing among the alternatives above.
