@@ -12,7 +12,7 @@ from django.views.decorators.http import require_POST
 from accounts.roles import has_cap
 from core.models import AuditLog, CountrySwitch, audit, verify_audit_chain
 from entries import services as es
-from entries.models import Claim
+from entries.models import Claim, CompanySection
 from intake.models import DedupeCandidate, ImportBatch, Source
 from moderation import services as mod
 from moderation.models import Report, SuggestedEdit, Takedown
@@ -91,6 +91,14 @@ queue(
     describe=lambda s: f"{s.entry.name}: {s.field_key} -> {s.new_value}",
 )
 queue(
+    key="company",
+    title="Company page text",
+    cap="moderate",
+    actions=(("approve", "Approve"), ("reject", "Reject")),
+    items=lambda: CompanySection.objects.filter(state="pending").select_related("entry").order_by("updated_at")[:100],
+    describe=lambda s: f"{s.entry.name} / {s.kind}: {s.body[:160]}",
+)
+queue(
     key="takedowns",
     title="Removal and erasure requests",
     cap="takedown",
@@ -160,6 +168,7 @@ def act(request, key, pk, action):
             "reports": Report,
             "suggestions": SuggestedEdit,
             "takedowns": Takedown,
+            "company": CompanySection,
         }[key]
         .objects.filter(pk=pk)
         .first()
@@ -189,6 +198,8 @@ def act(request, key, pk, action):
             mod.decide_report(obj, actor=actor, uphold=action == "uphold", resolution=note)
         elif key == "suggestions":
             mod.decide_suggestion(obj, actor=actor, accept=action == "accept")
+        elif key == "company":
+            es.moderate_company_section(obj, actor=actor, approve=action == "approve")
         elif key == "takedowns":
             (
                 mod.execute_erasure(obj, actor=actor)

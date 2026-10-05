@@ -268,6 +268,8 @@ def record_verification(entry, *, field_group, level, actor=None, method="", evi
     )
     entry.last_verified_at = now
     entry.save(update_fields=["last_verified_at"])
+    if field_group == "certificates" and level in ("surveyor", "ai"):
+        entry.identifier_set.update(last_checked=now.date())
     if level in ("surveyor", "owner"):
         _mark_credit_eligible(entry)
     audit(
@@ -408,6 +410,9 @@ def try_publish(entry, *, actor=None, now=None):
     if not fails:
         entry.publish_state = Entry.PublishState.PUBLISHED
         entry.save(update_fields=["publish_state"])
+        from ledger.services import lock_phase  # late import: the ledger reads entries
+
+        lock_phase(entry)
         audit("entry.publish", actor=actor, object_type="entry", object_uid=entry.uid, country_code=entry.country_code)
     return fails
 
@@ -545,3 +550,103 @@ def approve_claim_by_code(claim, contact, *, wording_version="v1"):
         contact, method="claim_otp", wording_version=wording_version, evidence=f"code verified for {start.uid}"
     )
     return claim
+
+
+# ---- company page (plan 8.3.3) ---------------------------------------------------------------------------------
+
+COMPANY_KINDS = ("about", "products", "capacity", "terms", "faq")
+
+
+def company_page_active(entry, today=None):
+    from core import clock as _clock
+
+    today = today or _clock.today()
+    return entry.listing_plan == "company" and (entry.plan_valid_until is None or entry.plan_valid_until >= today)
+
+
+def company_page_allowed(entry):
+    """Individuals and child-facing services are not eligible (R18, R19)."""
+    cs = ListTypeSettings.objects.filter(concept_id=entry.primary_concept_id).first()
+    return entry.entity_type != Entry.EntityType.PERSON and not (cs and cs.is_child_facing)
+
+
+@transaction.atomic
+def activate_company_plan(entry, *, days, actor=None):
+    from datetime import timedelta as _td
+
+    from core import clock as _clock
+
+    if not company_page_allowed(entry):
+        raise EntryError("this entry is not eligible for a company page")
+    entry.listing_plan = "company"
+    base = max(entry.plan_valid_until or _clock.today(), _clock.today())
+    entry.plan_valid_until = base + _td(days=days)
+    entry.save(update_fields=["listing_plan", "plan_valid_until"])
+    audit(
+        "plan.activate",
+        actor=actor,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"plan": "company", "until": entry.plan_valid_until.isoformat()},
+    )
+    return entry
+
+
+def is_owner(entry, user):
+    return bool(
+        getattr(user, "is_authenticated", False)
+        and entry.claim_state == Entry.ClaimState.CLAIMED
+        and Claim.objects.filter(entry=entry, user=user, state=Claim.State.APPROVED).exists()
+    )
+
+
+@transaction.atomic
+def save_company_section(entry, user, kind, body, *, title="", section_id=None):
+    """Owners write sections; each save goes back to pending until a moderator approves it."""
+    from .models import CompanySection
+
+    if not is_owner(entry, user):
+        raise GuardError("only the owner can edit the company page")
+    if not company_page_active(entry):
+        raise GuardError("the company page plan is not active")
+    if kind not in COMPANY_KINDS:
+        raise EntryError("unknown section")
+    body = (body or "").strip()
+    if not body:
+        raise EntryError("write something first")
+    for banned in ("http://", "https://", "www."):
+        if banned in body.lower() and kind != "products":
+            raise EntryError("links are not allowed in this section")
+    if section_id:
+        sec = CompanySection.objects.get(pk=section_id, entry=entry)
+        sec.title, sec.body, sec.state = title[:160], body[:4000], CompanySection.State.PENDING
+        sec.updated_at = clock.now()
+        sec.save()
+    else:
+        sec = CompanySection.objects.create(entry=entry, kind=kind, title=title[:160], body=body[:4000])
+    audit(
+        "company.section_saved",
+        actor=user,
+        object_type="entry",
+        object_uid=entry.uid,
+        country_code=entry.country_code,
+        payload={"kind": kind},
+    )
+    return sec
+
+
+@transaction.atomic
+def moderate_company_section(section, *, actor, approve):
+    section.state = "approved" if approve else "rejected"
+    section.moderated_by_id = actor.pk
+    section.save(update_fields=["state", "moderated_by_id"])
+    audit(
+        "company.section_moderated",
+        actor=actor,
+        object_type="entry",
+        object_uid=section.entry.uid,
+        country_code=section.entry.country_code,
+        payload={"approved": approve, "kind": section.kind},
+    )
+    return section

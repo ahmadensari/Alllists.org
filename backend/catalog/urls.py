@@ -18,6 +18,7 @@ urlpatterns = [
     path("enquiry/", forms_views.enquiry_many),
     path("optout/<str:token>/", forms_views.optout),
     path("account/enquiries/", forms_views.my_enquiries),
+    path("account/owner/<str:uid>/", forms_views.owner_page),
     path("staff/", staff_views.index),
     path("staff/imports/", staff_views.imports),
     path("staff/sources/", staff_views.sources),

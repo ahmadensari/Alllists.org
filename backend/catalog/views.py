@@ -23,6 +23,8 @@ from taxonomy.models import ListTypeSettings
 
 from . import search
 from . import format as fmt
+from entries import services as es
+
 from . import queries, resolver, seo, share, strings
 from .location import viewer_place
 from .resolver import list_url, place_url
@@ -98,7 +100,7 @@ def row_for(entry, lang, prefix, now):
         "checked": entry.last_verified_at,
         "area": entry.place,
         "type": entry.primary_concept,
-        "company": entry.listing_plan == "company",
+        "company": es.company_page_active(entry),
         "status": entry.status,
         "closed": entry.status in ("permanently_closed",),
         "url": f"/e/{entry.uid}/{_slug(entry.name)}/",
@@ -109,6 +111,40 @@ def _slug(name):
     from django.utils.text import slugify
 
     return slugify(name)[:60] or "entry"
+
+
+COMPANY_KINDS = [
+    ("about", "cs_about"),
+    ("products", "cs_products"),
+    ("capacity", "cs_capacity"),
+    ("terms", "cs_terms"),
+    ("faq", "cs_faq"),
+]
+
+
+def company_sections(entry):
+    """Approved company-provided sections, grouped by kind, only while the paid plan is active."""
+    if not (es.company_page_active(entry) and es.company_page_allowed(entry)):
+        return {}
+    out = {}
+    for sec in entry.company_sections.filter(state="approved").order_by("kind", "sort", "id"):
+        out.setdefault(sec.kind, []).append(sec)
+    return out
+
+
+def company_updated(entry):
+    secs = [s.updated_at for s in entry.company_sections.filter(state="approved")]
+    return max(secs) if secs else None
+
+
+def company_certs(entry):
+    """Certificates the company lists: "Checked by AllLists" only when a check was recorded, else "Company says"."""
+    if not (es.company_page_active(entry) and es.company_page_allowed(entry)):
+        return []
+    return [
+        {"scheme": i.scheme, "value": i.value, "checked": i.last_checked is not None, "date": i.last_checked}
+        for i in entry.identifier_set.all()
+    ]
 
 
 def specialities_of(entry):
@@ -306,7 +342,11 @@ def entry_page(request, uid, slug=None):
             "moved": "moved",
             "permanently_closed": "closed",
         }.get(entry.status),
-        "company": entry.listing_plan == "company",
+        "company": es.company_page_active(entry),
+        "company_kinds": COMPANY_KINDS,
+        "company_sections": company_sections(entry),
+        "company_certs": company_certs(entry),
+        "company_updated": company_updated(entry),
         "services": [s.name_text for s in entry.service_set.all()],
         "certs": [i.scheme for i in entry.identifier_set.all()],
         "title": strings.t(lang, "title_entry", name=entry.name, list_type=list_type_name, place=place_name),

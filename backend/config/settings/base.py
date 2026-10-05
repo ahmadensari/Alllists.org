@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     "access",
     "accounts",
     "moderation",
+    "ledger",
+    "billing",
     "outreach",
     "volunteers",
     "catalog",
@@ -166,3 +168,8 @@ LOGGING = {
     "root": {"handlers": ["console"], "level": os.environ.get("LOG_LEVEL", "INFO")},
 }
 CSP_REPORT_ONLY = os.environ.get("CSP_REPORT_ONLY", "") == "1"
+
+REFUND_HOLD_DAYS = 14
+TAX_RATES = {}  # country code -> percent (decimal string), configured per country; empty means none
+PAYMENT_WEBHOOK_SECRETS = {}  # provider name -> shared secret (set per environment; none by default)
+PAYMENT_INSTRUCTIONS = os.environ.get("PAYMENT_INSTRUCTIONS", "")

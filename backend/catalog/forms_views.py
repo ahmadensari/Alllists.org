@@ -376,3 +376,59 @@ def optout(request, token):
             {"heading": "You will not be contacted again", "body": "Your choice takes effect immediately."},
         )
     return _page(request, "catalog/forms/optout.html", {"token": token})
+
+
+# ---- owner page: company sections and certificates ---------------------------------------------------------------------
+
+
+@login_required(login_url=LOGIN)
+@require_http_methods(["GET", "POST"])
+def owner_page(request, uid):
+    entry = _entry_or_404(uid, published_only=False)
+    if not es.is_owner(entry, request.user):
+        raise Http404
+    errors, saved = [], False
+    active = es.company_page_active(entry) and es.company_page_allowed(entry)
+    if request.method == "POST" and active:
+        action = request.POST.get("action")
+        try:
+            if action == "section":
+                es.save_company_section(
+                    entry,
+                    request.user,
+                    request.POST.get("kind", ""),
+                    request.POST.get("body", ""),
+                    title=request.POST.get("title", ""),
+                    section_id=int(request.POST["section_id"]) if request.POST.get("section_id") else None,
+                )
+                saved = True
+            elif action == "certificate":
+                scheme, value = request.POST.get("scheme", "").strip(), request.POST.get("value", "").strip()
+                if not scheme or not value or len(value) > 80:
+                    raise es.EntryError("enter the certificate name and number")
+                from entries.models import Identifier
+
+                Identifier.objects.create(
+                    entry=entry,
+                    country_code=entry.country_code,
+                    scheme=scheme[:30],
+                    value=value,
+                    issuer=request.POST.get("issuer", "")[:120],
+                )
+                saved = True
+        except (es.EntryError, ValueError) as exc:
+            errors.append(("body", str(exc)))
+    return _page(
+        request,
+        "catalog/forms/owner.html",
+        {
+            "entry": entry,
+            "active": active,
+            "eligible": es.company_page_allowed(entry),
+            "sections": entry.company_sections.order_by("kind", "sort", "id"),
+            "certs": entry.identifier_set.all(),
+            "kinds": es.COMPANY_KINDS,
+            "errors": errors,
+            "saved": saved,
+        },
+    )

@@ -25,6 +25,12 @@
 {% if services %}<dt>{% tr 'services' %}</dt><dd>{{ services|join:", " }}</dd>{% endif %}
 {% if certs %}<dt>{% tr 'certificates' %}</dt><dd>{{ certs|join:", " }}</dd>{% endif %}
 </dl></section>
+{% if company_sections or company_certs %}<section class="sec company" id="company-page">
+<p class="provided-tag">{% tr 'provided_by' %}{% if company_updated %} · {% date company_updated as cu %}{% tr 'company_updated' date=cu %}{% endif %}</p>
+{% for kind, label_key in company_kinds %}{% with secs=company_sections|get:kind %}{% if secs %}<h2>{% tr label_key %}</h2>
+{% for sec in secs %}{% if sec.title %}<h3>{{ sec.title }}</h3>{% endif %}<p>{{ sec.body|linebreaksbr }}</p>{% endfor %}{% endif %}{% endwith %}{% endfor %}
+{% if company_certs %}<h2>{% tr 'company_certs' %}</h2><ul class="records">{% for c in company_certs %}<li><strong>{{ c.scheme }}</strong> {{ c.value }} · {% if c.checked %}<span class="chip owner">{% tr 'checked_by_us' %}</span>{% else %}<span class="chip ai">{% tr 'company_says' %}</span>{% endif %}</li>{% endfor %}</ul>{% endif %}
+</section>{% elif not company %}<p class="muted small" id="company-prompt"><a href="{% u '/claim/' %}{{ entry.uid }}/">{% tr 'company_prompt' %}</a></p>{% endif %}
 <div id="entry-detail"></div>
 {% include "catalog/includes/something_wrong.html" %}
 {% endblock %}

@@ -343,3 +343,29 @@ class MergeMap(models.Model):
     score = models.FloatField(null=True, blank=True)
     decided_by_id = models.BigIntegerField(null=True, blank=True)
     decided_at = models.DateTimeField(default=clock.now)
+
+
+class CompanySection(models.Model):
+    """Company-provided content for a paid company page (plan 8.3.3, rule R15). Public and labelled
+    "Provided by the company"; moderated before it shows."""
+
+    class Kind(models.TextChoices):
+        ABOUT = "about"
+        PRODUCTS = "products"
+        CAPACITY = "capacity"
+        TERMS = "terms"
+        FAQ = "faq"
+
+    class State(models.TextChoices):
+        PENDING = "pending"
+        APPROVED = "approved"
+        REJECTED = "rejected"
+
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name="company_sections")
+    kind = models.CharField(max_length=10, choices=Kind.choices)
+    title = models.CharField(max_length=160, blank=True)  # the question for FAQ rows
+    body = models.TextField(max_length=4000)
+    sort = models.PositiveSmallIntegerField(default=0)
+    state = models.CharField(max_length=10, choices=State.choices, default=State.PENDING)
+    updated_at = models.DateTimeField(default=clock.now)
+    moderated_by_id = models.BigIntegerField(null=True, blank=True)
