@@ -4,7 +4,7 @@ Prepared 5 October 2026. Built from the six research notes, `docs/DECISIONS.md`,
 
 ## 1. Summary
 
-**The answer.** We looked at 53 established platforms in six groups. They host 113 distinct list types in twelve families (section 3). Of these, 48 are new compared with the 124-type inventory (17 more are near matches), and 64 are not covered by your seed list. The 124 cover service providers only, so many new ones are property, vehicles, jobs and topic lists. Money sits where one customer is worth a lot: property, vehicles, urgent home jobs, health bookings, industrial suppliers, recruiters. This agrees with the pay report.
+**The answer.** We looked at 53 established platforms in six groups. They host 113 distinct list types in twelve families (section 3). Of these, 48 are new against the 124-type inventory (17 more are near matches), and 64 are not covered by your seed list. The 124 cover service providers only, so many new ones are property, vehicles, jobs and topic lists. Money sits where one customer is worth a lot: property, vehicles, urgent home jobs, health bookings, industrial suppliers, recruiters. This agrees with the pay report.
 
 **Biggest surprises**
 - **Buyers' wishes are lists too.** IndiaMART's core product is the buy lead, a list of people who want to buy. Job vacancies, tenders and customer requests work the same way. These "demand lists" are in neither your seed list nor the 124-type inventory.
@@ -335,13 +335,13 @@ New compared with `DECISIONS.md` section 8. Firms first, as the pay report advis
 12. Topic lists: software and app lists, AI tools.
 13. Second wave with data scientists: software developers and designers.
 
-One design point: keep Quran academies (firms) separate from Quran tutors (individuals).
+Keep Quran academies (firms) separate from Quran tutors (individuals).
 
 ## 7. Gaps and what is unverified
 
 | Gap | What it means | Next step |
 |---|---|---|
-| No category tree was read at source | The platforms' own pages were blocked, so every count is a search snippet. Counts conflict: Sulekha (200, 800+, about 1,200), Hotfrog (27 or 38 countries), Yelp (1,500+ against 22, 498, 178), Angi (500+ against 50+), Fiverr (300+ against 550), Superprof (1,000 against 2,000), Clutch (150,000 against 250,000 to 350,000), TAAFT (10,000 against 47,400) | Re-read pages in a browser |
+| No category tree was read at source | Platform pages were blocked, so every count is a snippet. Counts conflict: Sulekha (200, 800+, about 1,200), Hotfrog (27 or 38 countries), Yelp (1,500+ against 22, 498, 178), Angi (500+ against 50+), Fiverr (300+ against 550), Superprof (1,000 against 2,000), Clutch (150,000 against 250,000 to 350,000), TAAFT (10,000 against 47,400) | Re-read pages in a browser |
 | Search allowance ran out | Notes 01 and 05 say so. Note 01 hit 200 of 200, leaving Apple categories, the Facebook count and Yelp sub-categories undone. Note 05 left Craigslist paid categories, Autotrader counts, PakWheels, Naukri and Rozee prices, Crunchbase tiers, Daraz sellers and Zameen, Bayut and PF fees. The other four do not say, but all six used snippets | Second pass with fresh allowance |
 | Payment evidence is mostly a described model | Filings cover Angi, Urban Company, IndiaMART, Alibaba, Rightmove, CarGurus and few more. No platform shows revenue by category; no Pakistani buyer is shown (pay report) | Pay report tests |
 | Pakistan is thin | No category tree for any Pakistani directory. Marham and Oladoc counts are self-reported. No Pakistani school finder with an earning model. No marketplace for independent pharmacies (unserved, unproven). Markaz, Careem and Bykea were not studied. TDAP directory size and the KCCI, Faisalabad, Sialkot, PBEA, PRGMEA and APTMA directories not found | Pakistan pass |
@@ -349,7 +349,7 @@ One design point: keep Quran academies (firms) separate from Quran tutors (indiv
 | Entry fields by category | Not captured for most platforms | Needed for C26 templates |
 | Not researched | Tutors.com (no evidence); Sittercity, UrbanSitter (names only); Kompass tiers; QS revenue; privacy law for personal and public-figure lists; Wikipedia licence terms; Pakistani topic equivalents; Google Lists in 2026 | As each list is built |
 | Our own grading | Strong, Some, None and Unknown are our mapping of the notes' labels. "New vs 124" is by name matching; the 124 is a design proposal, not demand data. "Broad" reads "other skill-based lists" widely. Note 01 read the seed list as an exclusion list | Confirm the reading |
-| Seed-list mismatch | Note 05 says you named real estate agents. Section 8 of `DECISIONS.md` does not list them | Confirm |
+| Seed-list mismatch | Note 05 says you named real estate agents; `DECISIONS.md` section 8 does not | Confirm |
 | Figures that differ from the pay report | Urban Company: about 64.8% of operating income (UNVERIFIED) against 73.4% of revenue from platform and commission fees (pay report). IndiaMART Mini Dynamic Catalog: Rs 35,000 (UNVERIFIED) against Rs 28,000 (company help page, pay report) | Use the pay report figures |
 
 Every figure marked UNVERIFIED in the notes keeps that flag. Unflagged figures are still snippet-level and need a click-through before public use.
