@@ -16,6 +16,7 @@ PAGES = {
     "plans": "plans",
     "sources": "sources",
     "how-checks-work": "how_checks_work",
+    "how-lists-are-ordered": "how_ordered",
     "contributors/rules": "contributor_rules",
 }
 

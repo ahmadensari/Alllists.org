@@ -9,6 +9,8 @@ from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 
+from access import placements as pl
+from access.models import Ad
 from accounts.roles import has_cap
 from core.models import AuditLog, CountrySwitch, audit, verify_audit_chain
 from entries import services as es
@@ -18,6 +20,8 @@ from moderation import services as mod
 from moderation.models import Report, SuggestedEdit, Takedown
 from outreach import campaigns
 from outreach.models import Campaign, MessageTemplate, OutboxMessage, SupplierVerification
+from ledger import services as ledger_services
+from ledger.models import PayoutBatch, PayoutProfile
 from places import services as ps
 from places.models import PlaceProposal
 from volunteers import services as vs
@@ -124,6 +128,22 @@ queue(
     describe=lambda c: f"{c.buyer.username}: {c.channel} to {c.scope_path or 'world'} ({c.budget_minor} budget)",
 )
 queue(
+    key="ads",
+    title="Text ads to approve",
+    cap="moderate",
+    actions=(("approve", "Approve"), ("reject", "Reject")),
+    items=lambda: Ad.objects.filter(state="pending").exclude(order_ref="").select_related("entry")[:100],
+    describe=lambda a: f"{a.headline} / {a.body[:80]} -> {a.entry.uid} ({a.scope_path or 'anywhere'})",
+)
+queue(
+    key="kyc",
+    title="Payout details to approve",
+    cap="record_payment",
+    actions=(("approve", "Approve"), ("reject", "Reject")),
+    items=lambda: PayoutProfile.objects.filter(state="submitted").select_related("user")[:100],
+    describe=lambda k: f"{k.user.username}: {k.country_code}, {k.method} (account details are shown only to the bank step)",
+)
+queue(
     key="takedowns",
     title="Removal and erasure requests",
     cap="takedown",
@@ -200,6 +220,8 @@ def act(request, key, pk, action):
             "suppliers": SupplierVerification,
             "campaigns": Campaign,
             "templates": MessageTemplate,
+            "ads": Ad,
+            "kyc": PayoutProfile,
         }[key]
         .objects.filter(pk=pk)
         .first()
@@ -235,6 +257,10 @@ def act(request, key, pk, action):
             campaigns.decide_supplier(obj, actor=actor, approve=action == "approve", note=note)
         elif key == "campaigns":
             campaigns.approve_campaign(obj, actor=actor)
+        elif key == "kyc":
+            ledger_services.decide_kyc(obj, actor=actor, approve=action == "approve", note=note)
+        elif key == "ads":
+            pl.decide_ad(obj, actor=actor, approve=action == "approve")
         elif key == "templates":
             obj.provider_state, obj.approved_by_id = "approved", actor.pk
             obj.save(update_fields=["provider_state", "approved_by_id"])
@@ -245,7 +271,14 @@ def act(request, key, pk, action):
                 if action == "erase"
                 else mod.refuse_takedown(obj, actor=actor, reason=note or "refused")
             )
-    except (es.EntryError, mod.ModerationError, ps.PlaceError, campaigns.CampaignError) as exc:
+    except (
+        es.EntryError,
+        mod.ModerationError,
+        ps.PlaceError,
+        campaigns.CampaignError,
+        pl.PlacementError,
+        ledger_services.LedgerError,
+    ) as exc:
         messages.error(request, str(exc))
     return redirect(f"/staff/{key}/")
 
@@ -443,5 +476,152 @@ def outbox(request):
                 for m in OutboxMessage.objects.order_by("-id")[:100]
             ],
             "robots": "noindex,nofollow",
+        },
+    )
+
+
+def statistics(request):
+    """Aggregate statistics for institutions (rule R30): counts only, small cells hidden, no business named."""
+    from analytics import extracts as ex
+
+    denied = _gate(request, "run_extract")
+    if denied:
+        return denied
+    scope = request.GET.get("scope", "").strip()
+    slug = request.GET.get("type", "").strip()
+    from taxonomy.models import Concept
+
+    concept = Concept.objects.filter(kind="list_type", slug=slug).first() if slug else None
+    report = ex.statistics_report(scope, concept)
+    if request.GET.get("format") == "csv":
+        from django.http import HttpResponse
+
+        audit("statistics.export", actor=request.user, object_type="statistics", object_uid=scope or "world")
+        resp = HttpResponse(ex.statistics_csv(report), content_type="text/csv; charset=utf-8")
+        resp["Content-Disposition"] = 'attachment; filename="statistics.csv"'
+        return resp
+    rows = [[k, v] for k, v in report.items() if not isinstance(v, dict)]
+    rows += [[f"check: {k}", v] for k, v in report["by_level"].items()]
+    rows += [[f"place: {k}", v] for k, v in report["by_child_place"].items()]
+    return render(
+        request,
+        "catalog/staff/table.html",
+        {"title": "Statistics report", "head": ["Measure", "Value"], "rows": rows, "robots": "noindex,nofollow"},
+    )
+
+
+def extracts(request):
+    from analytics import extracts as ex
+    from analytics.models import Extract
+    from billing.models import Order
+    from taxonomy.models import Concept
+
+    denied = _gate(request, "run_extract")
+    if denied:
+        return denied
+    if request.method == "POST":
+        order = Order.objects.filter(ref=request.POST.get("order", "")).first() if request.POST.get("order") else None
+        concept = Concept.objects.filter(kind="list_type", slug=request.POST.get("type", "")).first()
+        try:
+            made = ex.build_extract(
+                request.user,
+                request.POST.get("scope", "").strip(),
+                concept,
+                order=order,
+                purpose=request.POST.get("purpose", ""),
+                buyer_label=request.POST.get("buyer", ""),
+            )
+            messages.success(request, f"Extract {made.pk}: {made.row_count} rows, {made.trace_count} trace entries.")
+        except ex.ExtractError as exc:
+            messages.error(request, str(exc))
+        return redirect("/staff/extracts/")
+    rows = [
+        [
+            e.pk,
+            e.scope_path or "world",
+            e.order_ref or e.purpose,
+            e.row_count,
+            e.trace_count,
+            f"/staff/extracts/{e.pk}/download/",
+        ]
+        for e in Extract.objects.order_by("-id")[:50]
+    ]
+    return render(
+        request,
+        "catalog/staff/table.html",
+        {
+            "title": "Extracts",
+            "head": ["Extract", "Scope", "Order or purpose", "Rows", "Traces", "Download"],
+            "rows": rows,
+            "robots": "noindex,nofollow",
+            "form": [
+                ("scope", "Place path"),
+                ("type", "List type slug"),
+                ("order", "Paid order ref"),
+                ("purpose", "Or purpose"),
+                ("buyer", "Buyer label"),
+            ],
+        },
+    )
+
+
+def extract_download(request, pk):
+    from analytics import extracts as ex
+    from analytics.models import Extract
+
+    denied = _gate(request, "run_extract")
+    if denied:
+        return denied
+    obj = Extract.objects.filter(pk=pk).first()
+    if obj is None:
+        raise Http404
+    from django.http import HttpResponse
+
+    resp = HttpResponse(ex.read_extract(obj, request.user), content_type="text/csv; charset=utf-8")
+    resp["Content-Disposition"] = f'attachment; filename="{obj.file_name}"'
+    resp["Cache-Control"] = "private, no-store"
+    return resp
+
+
+def ledger_page(request):
+    """Reconciliation and payout batches (plan 12.5). Creating and approving a batch are different people."""
+    from billing.reconcile import reconcile
+
+    denied = _gate(request, "record_payment")
+    if denied:
+        return denied
+    if request.method == "POST":
+        action, batch = (
+            request.POST.get("action"),
+            PayoutBatch.objects.filter(pk=request.POST.get("batch") or 0).first(),
+        )
+        try:
+            if action == "create":
+                if not has_cap(request.user, "create_payout"):
+                    return HttpResponseForbidden("Not allowed")
+                ledger_services.create_batch(request.user)
+            elif action == "approve" and batch:
+                if not has_cap(request.user, "approve_payout"):
+                    return HttpResponseForbidden("Not allowed")
+                ledger_services.approve_batch(batch, approver=request.user)
+            elif action == "paid" and batch:
+                refs = {}
+                for line in request.POST.get("refs", "").splitlines():
+                    pid, _, ref = line.partition("=")
+                    if pid.strip().isdigit() and ref.strip():
+                        refs[int(pid)] = ref.strip()
+                ledger_services.mark_batch_paid(batch, refs)
+        except ledger_services.LedgerError as exc:
+            messages.error(request, str(exc))
+        return redirect("/staff/ledger/")
+    batches = list(PayoutBatch.objects.order_by("-id")[:10])
+    return render(
+        request,
+        "catalog/staff/ledger.html",
+        {
+            "results": reconcile(),
+            "batches": [(b, list(b.payouts.select_related("user"))) for b in batches],
+            "robots": "noindex,nofollow",
+            "title": "Ledger",
         },
     )

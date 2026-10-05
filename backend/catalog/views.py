@@ -12,7 +12,7 @@ from django.utils.cache import get_conditional_response
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_GET, require_POST
 
-from access import quotas
+from access import placements, quotas
 from access import services as access_services
 from access.policy import Viewer, list_mode, subscribes_to, visible
 from analytics.models import RollupCell
@@ -221,6 +221,8 @@ def list_page(request, place, concept):
     qs = queries.list_rows_queryset(place, concept, area_place, sort or "name")
     page = Paginator(qs, settings.PAGE_SIZE).get_page(request.GET.get("page"))
     rows = [row_for(e, lang, request.prefix, now) for e in page]
+    sponsored = placements.active_placements(place.path, concept.pk) if not area_slug and page.number == 1 else []
+    sponsored_rows = [{**row_for(p.entry, lang, request.prefix, now), "sponsored": True} for p in sponsored]
     chips = queries.area_chips(place, concept)
     last = queries.last_checked(place, concept)
     published, awaiting = cell["published"], max(cell["total"] - cell["published"], 0)
@@ -234,6 +236,7 @@ def list_page(request, place, concept):
         "concept": concept,
         "crumbs": breadcrumb(place),
         "rows": rows,
+        "sponsored_rows": sponsored_rows,
         "page": page,
         "chips": [(c, n) for c, n in chips],
         "area": area_place,
@@ -268,7 +271,11 @@ def list_page(request, place, concept):
             for k, v in {"path": place.path, "type": concept.slug, **{k: v for k, v in params.items() if v}}.items()
         ),
     }
-    stamp = queries.stamp(cell["updated_at"], last)
+    stamp = (
+        queries.stamp(cell["updated_at"], last)
+        + "|"
+        + ",".join(f"{p.pk}.{int(p.updated_at.timestamp())}" for p in sponsored)
+    )
     return shell(request, "catalog/list.html", ctx, stamp)
 
 
@@ -432,12 +439,38 @@ def frag_list(request):
             "details": details,
             "viewer": viewer,
             "ads": visible("ads", viewer, lp.path, concept.pk) != "none",
+            "ad": _ad_for(viewer, lp.path, concept.pk),
             "quota_exceeded": quota_exceeded,
             "names_only": mode == "names",
             "locked": mode != "full",
         },
     )
     return private(resp)
+
+
+@require_GET
+def ad_click(request, pk):
+    """Count a click on a text ad, then go to the entry page it points to. Never indexed."""
+    from access.models import Ad
+    from django.db.models import F
+
+    ad = Ad.objects.select_related("entry").filter(pk=pk, state="active").first()
+    if ad is None or ad.entry.publish_state != "published":
+        raise Http404
+    Ad.objects.filter(pk=ad.pk).update(clicks=F("clicks") + 1)
+    resp = redirect(f"/e/{ad.entry.uid}/{_slug(ad.entry.name)}/")
+    resp["X-Robots-Tag"] = "noindex"
+    return resp
+
+
+def _ad_for(viewer, place_path, concept_id):
+    """One text ad for a free viewer in the matching trade and place; subscribers never see ads."""
+    if visible("ads", viewer, place_path, concept_id) == "none":
+        return None
+    ad = placements.pick_ad(place_path, concept_id)
+    if ad is not None:
+        placements.note_shown(ad)
+    return ad
 
 
 @require_GET
@@ -455,6 +488,7 @@ def frag_entry(request, uid):
         "entry": entry,
         "full": full,
         "ads": visible("ads", viewer, entry.place_path, entry.primary_concept_id) != "none",
+        "ad": _ad_for(viewer, entry.place_path, entry.primary_concept_id),
         "socials": list(entry.social_set.all()) if full else [],
         "services": list(entry.service_set.all()) if full else [],
         "identifiers": list(entry.identifier_set.all()) if full else [],

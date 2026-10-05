@@ -14,6 +14,7 @@ class Product(models.Model):
         RANK = "rank"
         EXTRACT = "extract"
         OUTREACH = "outreach"
+        AD = "ad"
 
     key = models.SlugField(unique=True)
     name = models.CharField(max_length=100)
@@ -42,6 +43,9 @@ class Order(models.Model):
     concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
     entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
     campaign_id = models.PositiveIntegerField(null=True, blank=True)
+    ad_id = models.PositiveIntegerField(null=True, blank=True)
+    tax_rate = models.CharField(max_length=10, default="0")  # percent at the time of the order
+    billing = models.JSONField(default=dict, blank=True)  # name, address, tax number given by the buyer
     created_at = models.DateTimeField(default=clock.now)
     ref = models.CharField(max_length=40, unique=True)
 
@@ -66,8 +70,30 @@ class Payment(models.Model):
         constraints = [models.UniqueConstraint(fields=["provider", "provider_ref"], name="uniq_payment_ref")]
 
 
+class InvoiceCounter(models.Model):
+    """Gap-free numbering: one counter row per year, locked while a number is taken."""
+
+    year = models.PositiveSmallIntegerField(unique=True)
+    last = models.PositiveIntegerField(default=0)
+
+
 class Invoice(models.Model):
+    class Kind(models.TextChoices):
+        INVOICE = "invoice"
+        CREDIT_NOTE = "credit_note"
+
     number = models.CharField(max_length=20, unique=True)
-    order = models.OneToOneField(Order, on_delete=models.PROTECT, related_name="invoice")
+    kind = models.CharField(max_length=12, choices=Kind.choices, default=Kind.INVOICE)
+    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name="invoices")
+    credit_for = models.ForeignKey("self", null=True, blank=True, on_delete=models.PROTECT, related_name="credits")
     issued_at = models.DateTimeField(default=clock.now)
+    currency = models.CharField(max_length=3, default="USD")
+    seller = models.JSONField(default=dict, blank=True)  # legal name, address, tax number at the time of issue
+    buyer = models.JSONField(default=dict, blank=True)
+    tax_rate = models.CharField(max_length=10, default="0")
     lines = models.JSONField(default=list)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["order"], condition=models.Q(kind="invoice"), name="one_invoice_per_order")
+        ]

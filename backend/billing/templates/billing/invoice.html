@@ -1,0 +1,6 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}{% for inv in invoices %}<section class="invoice"><h1{% if forloop.first %} id="results"{% endif %}>{% if inv.kind == 'credit_note' %}Credit note{% else %}Invoice{% endif %} {{ inv.number }}</h1>
+<p>Date {{ inv.issued_at|date:"Y-m-d" }} · Order {{ order.ref }}{% if inv.credit_for %} · credits invoice {{ inv.credit_for.number }}{% endif %}</p>
+<p><strong>From</strong> {{ inv.seller.name }}{% if inv.seller.address %}, {{ inv.seller.address }}{% endif %}{% if inv.seller.tax_id %} · Tax no. {{ inv.seller.tax_id }}{% endif %}</p>
+<p><strong>To</strong> {{ inv.buyer.name }}{% if inv.buyer.address %}, {{ inv.buyer.address }}{% endif %}{% if inv.buyer.tax_id %} · Tax no. {{ inv.buyer.tax_id }}{% endif %}</p>
+<table class="staff"><thead><tr><th scope="col">Item</th><th scope="col">Amount ({{ inv.currency }}, minor units)</th></tr></thead><tbody>{% for ln in inv.lines %}<tr><td>{{ ln.item }}</td><td>{{ ln.amount_minor }}</td></tr>{% endfor %}</tbody></table></section>{% endfor %}{% endblock %}

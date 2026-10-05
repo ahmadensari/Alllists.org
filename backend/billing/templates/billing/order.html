@@ -1,4 +1,5 @@
 {% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
 {% block content %}<h1 id="results">Order {{ order.ref }}</h1>
 <p>{{ order.product.name }}: <strong class="num">{{ order.currency }} {{ order.amount_minor }}</strong> in minor units{% if order.tax_minor %} (tax {{ order.tax_minor }}){% endif %}. Status: {{ order.state }}.</p>
+{% if order.state == 'fulfilled' or order.state == 'refunded' %}<p><a href="/account/orders/{{ order.ref }}/invoice/">Invoice</a></p>{% endif %}
 {% if order.state == 'pending' %}<div class="co-note">{{ instructions|default:"Pay by bank transfer and use the order reference above. We activate your plan when the payment is recorded." }}</div>{% endif %}{% endblock %}

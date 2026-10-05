@@ -10,4 +10,4 @@
 {% for i in identifiers %}<dt>{{ i.scheme }}</dt><dd>{{ i.value }}{% if i.register_url %} · <a href="{{ i.register_url }}" rel="nofollow noopener noreferrer">register</a>{% endif %}</dd>{% endfor %}
 </dl></section></div>
 {% else %}<div id="entry-detail"><div class="co-note"><strong>{% tr 'subscriber_panel_title' %}</strong> {% tr 'subscriber_panel_body' %} <a href="{% u '/plans/' %}">{% tr 'subscribe' %}</a></div></div>{% endif %}
-{% if ads %}<div id="ad-slot" class="ad"><span class="small">{% tr 'ad_label' %}</span></div>{% endif %}
+{% include "catalog/includes/ad.html" %}

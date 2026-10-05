@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 
 from core import clock
+from core.crypto import EncryptedTextField
 
 
 class RatePhase(models.Model):
@@ -65,6 +66,7 @@ class Sale(models.Model):
         RANK = "rank"
         EXTRACT = "extract"
         OUTREACH = "outreach"
+        AD = "ad"
 
     class State(models.TextChoices):
         RECORDED = "recorded"
@@ -96,6 +98,46 @@ class SaleAllocation(models.Model):
     reversed_at = models.DateTimeField(null=True, blank=True)
 
 
+class PayoutProfile(models.Model):
+    """Who gets paid and how (plan 12.5, F14). Identity checks happen before the first payout; details are encrypted."""
+
+    class KYC(models.TextChoices):
+        SUBMITTED = "submitted"
+        APPROVED = "approved"
+        REJECTED = "rejected"
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="payout_profile")
+    legal_name_enc = EncryptedTextField()
+    country_code = models.CharField(max_length=2)
+    method = models.CharField(max_length=30)  # bank, wallet, other
+    account_enc = EncryptedTextField()
+    tax_id_enc = EncryptedTextField(blank=True, default="")
+    state = models.CharField(max_length=10, choices=KYC.choices, default=KYC.SUBMITTED)
+    note = models.CharField(max_length=200, blank=True)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    decided_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(default=clock.now)
+
+
+class PayoutBatch(models.Model):
+    """One payout cycle. Two people are needed: one creates, a different one approves (rule: separation of duties)."""
+
+    class State(models.TextChoices):
+        PENDING = "pending"
+        APPROVED = "approved"
+        PAID = "paid"
+        CANCELLED = "cancelled"
+
+    currency = models.CharField(max_length=3, default="USD")
+    state = models.CharField(max_length=10, choices=State.choices, default=State.PENDING)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="+")
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.PROTECT, related_name="+"
+    )
+    total_minor = models.BigIntegerField(default=0)
+    created_at = models.DateTimeField(default=clock.now)
+
+
 class Payout(models.Model):
     class State(models.TextChoices):
         PENDING = "pending"
@@ -114,4 +156,5 @@ class Payout(models.Model):
     )
     external_ref = models.CharField(max_length=80, blank=True)
     txn = models.ForeignKey(LedgerTxn, null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    batch = models.ForeignKey(PayoutBatch, null=True, blank=True, on_delete=models.PROTECT, related_name="payouts")
     created_at = models.DateTimeField(default=clock.now)

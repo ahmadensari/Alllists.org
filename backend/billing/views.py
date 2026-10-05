@@ -30,7 +30,16 @@ def subscription_page(request):
         else:
             try:
                 order = services.create_order(
-                    request.user, product, scope_path=place.path if place else "", concept=concept, entry=entry
+                    request.user,
+                    product,
+                    scope_path=place.path if place else "",
+                    concept=concept,
+                    entry=entry,
+                    billing={
+                        "name": request.POST.get("billing_name", ""),
+                        "address": request.POST.get("billing_address", ""),
+                        "tax_id": request.POST.get("billing_tax_id", ""),
+                    },
                 )
             except services.BillingError as exc:
                 errors.append(("product", str(exc)))
@@ -67,6 +76,44 @@ def order_page(request, ref):
             "robots": "noindex,nofollow",
             "title": "Order",
         },
+    )
+
+
+@login_required(login_url=LOGIN)
+def invoice_page(request, ref, number=None):
+    order = Order.objects.filter(ref=ref, buyer=request.user).first()
+    if order is None:
+        return HttpResponse(status=404)
+    invoices = list(order.invoices.order_by("issued_at", "id"))
+    if number:
+        invoices = [i for i in invoices if i.number == number]
+    if not invoices:
+        return HttpResponse(status=404)
+    return render(
+        request,
+        "billing/invoice.html",
+        {"order": order, "invoices": invoices, "robots": "noindex,nofollow", "title": "Invoice"},
+    )
+
+
+def staff_revenue(request):
+    from . import reporting
+
+    if not has_cap(request.user, "record_payment"):
+        return HttpResponseForbidden("Not allowed")
+    year = int(request.GET["year"]) if request.GET.get("year", "").isdigit() else None
+    rows = reporting.revenue_report(year)
+    if request.GET.get("format") == "csv":
+        from core.models import audit
+
+        audit("revenue.export", actor=request.user, object_type="report", object_uid=str(year or "all"))
+        resp = HttpResponse(reporting.revenue_csv(rows), content_type="text/csv; charset=utf-8")
+        resp["Content-Disposition"] = 'attachment; filename="revenue.csv"'
+        return resp
+    return render(
+        request,
+        "billing/staff_revenue.html",
+        {"rows": rows, "usd": reporting.consolidated_usd(rows), "robots": "noindex,nofollow", "title": "Revenue"},
     )
 
 

@@ -30,3 +30,28 @@ class Event(models.Model):
     ts = models.DateTimeField(default=clock.now, db_index=True)
     subject_hash = models.CharField(max_length=64, blank=True)
     props = models.JSONField(default=dict, blank=True)
+
+
+class Extract(models.Model):
+    """A custom data extract (rule R13): made by staff, never downloadable by users, carries planted trace entries."""
+
+    created_by_id = models.BigIntegerField()
+    scope_path = models.CharField(max_length=500, blank=True)
+    concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    order_ref = models.CharField(max_length=40, blank=True)
+    purpose = models.CharField(max_length=200, blank=True)
+    buyer_label = models.CharField(max_length=120, blank=True)
+    row_count = models.PositiveIntegerField(default=0)
+    trace_count = models.PositiveIntegerField(default=0)
+    sha256 = models.CharField(max_length=64, blank=True)
+    file_name = models.CharField(max_length=120, blank=True)
+    created_at = models.DateTimeField(default=clock.now)
+
+
+class TraceEntry(models.Model):
+    """A made-up business planted in one extract. Finding it elsewhere identifies the extract it leaked from."""
+
+    extract = models.ForeignKey(Extract, on_delete=models.CASCADE, related_name="traces")
+    name = models.CharField(max_length=200, db_index=True)
+    website = models.CharField(max_length=200, db_index=True)
+    address_text = models.CharField(max_length=400)

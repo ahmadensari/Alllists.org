@@ -41,6 +41,17 @@ def _chain():
     return "intact"
 
 
+def _reconcile():
+    from billing.reconcile import all_ok, reconcile
+
+    results = reconcile()
+    if not all_ok(results):
+        bad = [r["check"] for r in results if not r["ok"]]
+        audit("ledger.reconcile_failed", object_type="ledger", object_uid="USD", payload={"checks": bad})
+        raise RuntimeError("ledger does not reconcile: " + "; ".join(bad))
+    return "agrees"
+
+
 def _unchecked():
     from volunteers.services import queue_unchecked
 
@@ -64,12 +75,20 @@ def _retention():
     return f"{a} events, {b} messages"
 
 
+def _placements():
+    from access.placements import expire_due
+
+    return f"{expire_due()} ended"
+
+
 JOBS = {
+    "placement_expiry": (HOUR, _placements),
     "rollup_recount": (DAY, _rollups),
     "expiry_sweeper": (HOUR, _expiry),
     "steward_inactivity": (DAY, _stewards),
     "hold_release": (DAY, _holds),
     "audit_chain_verify": (DAY, _chain),
+    "ledger_reconcile": (DAY, _reconcile),
     "queue_unchecked": (DAY, _unchecked),
     "quota_cleanup": (DAY, _quota_cleanup),
     "retention_purge": (WEEK, _retention),

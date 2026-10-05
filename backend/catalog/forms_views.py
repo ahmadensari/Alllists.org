@@ -513,3 +513,89 @@ def campaigns_page(request):
             "types": _list_types(),
         },
     )
+
+
+# ---- text ads (owner side, phase P5) -------------------------------------------------------------------------------
+
+
+@login_required(login_url=LOGIN)
+@require_http_methods(["GET", "POST"])
+def ads_page(request):
+    from access import placements as pl
+    from access.models import Ad, Placement
+    from billing import services as bs
+    from billing.models import Product
+
+    errors, order = [], None
+    if request.method == "POST":
+        action = request.POST.get("action")
+        try:
+            if action == "submit":
+                entry = _entry_or_404(request.POST.get("entry", ""))
+                place = Place.objects.filter(path=request.POST.get("scope", ""), status="active").first()
+                concept = Concept.objects.filter(kind="list_type", slug=request.POST.get("type", "")).first()
+                pl.submit_ad(
+                    request.user,
+                    entry,
+                    request.POST.get("headline", ""),
+                    request.POST.get("body", ""),
+                    scope_path=place.path if place else "",
+                    concept=concept,
+                )
+            elif action == "buy":
+                ad = Ad.objects.filter(pk=request.POST.get("ad") or 0, advertiser=request.user).first()
+                product = Product.objects.filter(kind="ad", active=True).first()
+                if ad is None or product is None:
+                    raise pl.PlacementError("choose one of your ads")
+                order = bs.create_order(request.user, product, ad=ad)
+        except (pl.PlacementError, bs.BillingError) as exc:
+            errors.append(("headline", str(exc)))
+        if order is not None:
+            return redirect(f"/account/orders/{order.ref}/")
+    return _page(
+        request,
+        "catalog/forms/ads.html",
+        {
+            "ads": Ad.objects.filter(advertiser=request.user).select_related("entry").order_by("-id")[:30],
+            "placements": Placement.objects.filter(
+                entry__claims__user=request.user, entry__claims__state="approved"
+            ).distinct()[:30],
+            "places": _places(),
+            "types": _list_types(),
+            "errors": errors,
+        },
+    )
+
+
+# ---- payout details (contributor side, P5.05) -------------------------------------------------------------------------
+
+
+@login_required(login_url=LOGIN)
+@require_http_methods(["GET", "POST"])
+def payout_page(request):
+    from ledger import services as lg
+    from ledger.models import PayoutProfile, SaleAllocation
+
+    errors = []
+    if request.method == "POST":
+        try:
+            lg.submit_kyc(
+                request.user,
+                legal_name=request.POST.get("legal_name", ""),
+                country_code=request.POST.get("country", ""),
+                method=request.POST.get("method", ""),
+                account=request.POST.get("account", ""),
+                tax_id=request.POST.get("tax_id", ""),
+            )
+        except lg.LedgerError as exc:
+            errors.append(("legal_name", str(exc)))
+    prof = PayoutProfile.objects.filter(user=request.user).first()
+    held = sum(
+        a.amount_minor
+        for a in SaleAllocation.objects.filter(user=request.user, released_at__isnull=True, reversed_at__isnull=True)
+    )
+    return _page(
+        request,
+        "catalog/forms/payout.html",
+        {"profile": prof, "payable": lg.payable_balance(request.user), "held": held, "errors": errors},
+    )

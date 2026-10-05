@@ -10,6 +10,8 @@ urlpatterns = [
     path("account/", include("accounts.urls")),
     path("account/subscription/", billing_views.subscription_page),
     path("account/orders/<str:ref>/", billing_views.order_page),
+    path("account/orders/<str:ref>/invoice/", billing_views.invoice_page),
+    path("staff/revenue/", billing_views.staff_revenue),
     path("webhooks/payments/<str:provider>/", billing_views.webhook),
     path("staff/orders/", billing_views.staff_orders),
     path("webhooks/messaging/<str:provider>/", outreach_views.messaging_webhook),

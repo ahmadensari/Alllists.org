@@ -15,6 +15,7 @@ from core.models import audit
 from entries import services as es
 from ledger import services as ledger
 from ledger.models import Sale
+from places.models import Place
 
 from .models import Invoice, Order, Payment, Product
 
@@ -25,11 +26,16 @@ KIND_TO_SALE = {
     "rank": Sale.Kind.RANK,
     "outreach": Sale.Kind.OUTREACH,
     "extract": Sale.Kind.EXTRACT,
+    "ad": Sale.Kind.AD,
 }
 
 
 class BillingError(ValueError):
     pass
+
+
+def tax_rate_for(country_code):
+    return str(getattr(settings, "TAX_RATES", {}).get((country_code or "").upper(), "0"))
 
 
 def tax_for(country_code, amount_minor):
@@ -45,7 +51,7 @@ def new_ref():
 
 
 @transaction.atomic
-def create_order(buyer, product, *, scope_path="", concept=None, entry=None, campaign=None):
+def create_order(buyer, product, *, scope_path="", concept=None, entry=None, campaign=None, ad=None, billing=None):
     if not product.active:
         raise BillingError("this product is not on sale")
     price = product.price_minor
@@ -60,6 +66,22 @@ def create_order(buyer, product, *, scope_path="", concept=None, entry=None, cam
         if campaign is None or campaign.buyer_id != buyer.pk or campaign.status not in ("pending", "approved"):
             raise BillingError("choose one of your pending campaigns")
         price, scope_path, concept = campaign.budget_minor, campaign.scope_path, campaign.concept
+    elif product.kind == Product.Kind.RANK:
+        from access import placements as pl
+
+        if entry is None or concept is None or not es.is_owner(entry, buyer):
+            raise BillingError("only the owner can sponsor an entry, on a chosen list type")
+        place = Place.objects.filter(path=scope_path, status="active").first()
+        if place is None:
+            raise BillingError("choose a place")
+        try:
+            pl.check_capacity(entry, place, concept, months=max(product.period_days // 30, 1))
+        except pl.PlacementError as exc:
+            raise BillingError(str(exc)) from exc
+    elif product.kind == Product.Kind.AD:
+        if ad is None or ad.advertiser_id != buyer.pk or ad.order_ref:
+            raise BillingError("choose one of your submitted ads")
+        entry = ad.entry
     country = scope_path.split(".")[0] if scope_path else (entry.country_code if entry else "")
     tax = tax_for(country, price)
     order = Order.objects.create(
@@ -73,6 +95,9 @@ def create_order(buyer, product, *, scope_path="", concept=None, entry=None, cam
         entry=entry,
         ref=new_ref(),
         campaign_id=campaign.pk if campaign else None,
+        ad_id=ad.pk if ad else None,
+        tax_rate=tax_rate_for(country),
+        billing={k: str(v)[:200] for k, v in (billing or {}).items() if k in ("name", "address", "tax_id")},
     )
     audit("order.create", actor=buyer, object_type="order", object_uid=order.ref, payload={"product": product.key})
     return order
@@ -149,6 +174,27 @@ def fulfil(order, payment, *, now=None):
         from outreach.models import Campaign
 
         Campaign.objects.filter(pk=order.campaign_id).update(funded=True)
+    elif p.kind == Product.Kind.RANK:
+        from access import placements as pl
+
+        pl.create_placement(
+            order.entry,
+            Place.objects.get(path=order.scope_path),
+            order.concept,
+            months=max(p.period_days // 30, 1),
+            price_minor=order.amount_minor - order.tax_minor,
+            currency=order.currency,
+            order_ref=order.ref,
+            now=now,
+        )
+    elif p.kind == Product.Kind.AD:
+        from datetime import timedelta
+
+        from access.models import Ad
+
+        Ad.objects.filter(pk=order.ad_id).update(
+            order_ref=order.ref, starts_at=now, ends_at=now + timedelta(days=p.period_days)
+        )
     ledger.record_sale(
         order.ref,
         KIND_TO_SALE[p.kind],
@@ -162,15 +208,69 @@ def fulfil(order, payment, *, now=None):
     )
     order.state = Order.State.FULFILLED
     order.save(update_fields=["state"])
-    Invoice.objects.get_or_create(
+    issue_invoice(order, now=now)
+
+
+def next_invoice_number(year):
+    from .models import InvoiceCounter
+
+    row, _ = InvoiceCounter.objects.select_for_update().get_or_create(year=year)
+    row.last += 1
+    row.save(update_fields=["last"])
+    return f"AL-{year}-{row.last:06d}"
+
+
+def _seller():
+    return dict(getattr(settings, "COMPANY_DETAILS", {}))
+
+
+def _buyer(order):
+    b = dict(order.billing or {})
+    b.setdefault("name", order.buyer.get_full_name() or order.buyer.username)
+    return b
+
+
+@transaction.atomic
+def issue_invoice(order, *, now=None):
+    """One numbered invoice per order, with the tax rate the order was priced at. Safe to call twice."""
+    existing = order.invoices.filter(kind="invoice").first()
+    if existing:
+        return existing
+    now = now or clock.now()
+    net = order.amount_minor - order.tax_minor
+    lines = [{"item": order.product.name, "amount_minor": net}]
+    if order.tax_minor:
+        lines.append({"item": f"Tax {order.tax_rate}%", "amount_minor": order.tax_minor})
+    return Invoice.objects.create(
+        number=next_invoice_number(now.year),
         order=order,
-        defaults={
-            "number": f"AL-{now.year}-{order.pk:06d}",
-            "lines": [
-                {"item": p.name, "amount_minor": order.amount_minor - order.tax_minor},
-                {"item": "Tax", "amount_minor": order.tax_minor},
-            ],
-        },
+        issued_at=now,
+        currency=order.currency,
+        seller=_seller(),
+        buyer=_buyer(order),
+        tax_rate=order.tax_rate,
+        lines=lines,
+    )
+
+
+@transaction.atomic
+def issue_credit_note(order, *, now=None):
+    """A refund never edits the invoice; it issues a numbered credit note with the same lines, negated."""
+    now = now or clock.now()
+    inv = order.invoices.filter(kind="invoice").first()
+    if inv is None or order.invoices.filter(kind="credit_note").exists():
+        return None
+    return Invoice.objects.create(
+        number=next_invoice_number(now.year),
+        kind="credit_note",
+        credit_for=inv,
+        order=order,
+        issued_at=now,
+        currency=inv.currency,
+        seller=inv.seller,
+        buyer=inv.buyer,
+        tax_rate=inv.tax_rate,
+        lines=[{**ln, "amount_minor": -ln["amount_minor"]} for ln in inv.lines],
     )
 
 
@@ -181,12 +281,17 @@ def refund_order(order, *, actor):
     sale = Sale.objects.get(order_ref=order.ref)
     ledger.refund_sale(sale, actor=actor)
     Entitlement.objects.filter(source__in=[f"order:{order.ref}"]).update(revoked_at=clock.now())
+    from access.models import Ad, Placement
+
+    Placement.objects.filter(order_ref=order.ref).update(state="cancelled")
+    Ad.objects.filter(order_ref=order.ref).update(state="ended")
     Entitlement.objects.filter(
         source__startswith="subscription:", user=order.buyer, valid_from__gte=order.created_at
     ).update(revoked_at=clock.now())
     order.state = Order.State.REFUNDED
     order.save(update_fields=["state"])
     order.payments.update(state=Payment.State.REFUNDED)
+    issue_credit_note(order)
     audit("order.refund", actor=actor, object_type="order", object_uid=order.ref)
     return order
 
@@ -225,6 +330,22 @@ def handle_webhook(provider, body, signature):
 
 
 def seed_products():
+    Product.objects.get_or_create(
+        key="extract-custom",
+        defaults=dict(name="Custom data extract (made by staff)", kind="extract", price_minor=100000, period_days=0),
+    )
+    Product.objects.get_or_create(
+        key="statistics-report",
+        defaults=dict(name="Statistics report (aggregates only)", kind="extract", price_minor=25000, period_days=0),
+    )
+    Product.objects.get_or_create(
+        key="rank-city-month",
+        defaults=dict(name="Sponsored slot on a list, 30 days", kind="rank", price_minor=19900, period_days=30),
+    )
+    Product.objects.get_or_create(
+        key="ad-month",
+        defaults=dict(name="Text ad for free viewers, 30 days", kind="ad", price_minor=4900, period_days=30),
+    )
     Plan.objects.get_or_create(key="subscriber_scope", defaults=dict(name="Subscriber (scope)"))
     Product.objects.get_or_create(
         key="subscription-city-month",

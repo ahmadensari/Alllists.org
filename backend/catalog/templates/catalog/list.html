@@ -27,6 +27,9 @@
   <span class="vt" role="group" aria-label="view"><button type="button" data-view="list" aria-pressed="true">{% tr 'view_list' %}</button><button type="button" data-view="cards" aria-pressed="false">{% tr 'view_cards' %}</button></span>
   {% if area or sort %}<a class="btn quiet" href="{% u path %}">{% tr 'clear_filters' %}</a>{% endif %}
 </div>
+{% if sponsored_rows %}<section class="sponsored-slot" aria-label="{% tr 'sponsored' %}">
+<ul class="rows" data-view-target>{% for r in sponsored_rows %}{% include "catalog/includes/row.html" %}{% endfor %}</ul>
+<p class="small muted"><a href="{% u '/how-lists-are-ordered/' %}">{% tr 'how_ordered' %}</a></p></section>{% endif %}
 <ul class="rows enter" id="results" data-view-target>
 {% for r in rows %}{% include "catalog/includes/row.html" %}{% endfor %}
 </ul>

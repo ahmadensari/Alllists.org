@@ -58,3 +58,53 @@ class QuotaCounter(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["subject", "key", "day"], name="uniq_quota_counter")]
+
+
+class Placement(models.Model):
+    """Paid rank (plan 9.4, rule R14): a labelled slot at the top of one list. It never changes checks or their order."""
+
+    class State(models.TextChoices):
+        ACTIVE = "active"
+        ENDED = "ended"
+        CANCELLED = "cancelled"
+
+    entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="placements")
+    scope_path = models.CharField(max_length=500)  # the place whose list shows the slot
+    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
+    level = models.CharField(max_length=10)  # area, city or country, from the place depth
+    slot = models.PositiveSmallIntegerField()  # 1..PLACEMENT_SLOTS
+    price_minor = models.BigIntegerField(default=0)
+    currency = models.CharField(max_length=3, default="USD")
+    starts_at = models.DateTimeField(default=clock.now)
+    ends_at = models.DateTimeField()
+    state = models.CharField(max_length=10, choices=State.choices, default=State.ACTIVE)
+    order_ref = models.CharField(max_length=40, blank=True)
+    label = models.CharField(max_length=20, default="Sponsored")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [models.Index(fields=["scope_path", "concept", "state"], name="placement_lookup")]
+
+
+class Ad(models.Model):
+    """A text ad for free viewers only (plan 9.4): supplier ads in the matching trade and place. Text only, no links out."""
+
+    class State(models.TextChoices):
+        PENDING = "pending"
+        ACTIVE = "active"
+        REJECTED = "rejected"
+        ENDED = "ended"
+
+    advertiser = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="ads")
+    entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="ads")  # the ad points here
+    scope_path = models.CharField(max_length=500, blank=True)  # shown on lists and entries at or under this place
+    concept = models.ForeignKey("taxonomy.Concept", null=True, blank=True, on_delete=models.PROTECT, related_name="+")
+    headline = models.CharField(max_length=80)
+    body = models.CharField(max_length=160, blank=True)
+    starts_at = models.DateTimeField(default=clock.now)
+    ends_at = models.DateTimeField()
+    state = models.CharField(max_length=10, choices=State.choices, default=State.PENDING)
+    shown = models.PositiveIntegerField(default=0)
+    clicks = models.PositiveIntegerField(default=0)
+    order_ref = models.CharField(max_length=40, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)

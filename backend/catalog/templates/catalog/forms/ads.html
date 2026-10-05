@@ -1,0 +1,13 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Text ads</h1>
+<p>An ad is plain text shown to free viewers in the trade and place you choose. It points to your entry page. No phone numbers, emails or links. Staff approve it before it shows.</p>
+{% include "catalog/forms/_errors.html" %}
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="submit">
+<p class="field"><label for="id_entry">Entry code</label><input id="id_entry" name="entry" required></p>
+<p class="field"><label for="id_scope">Show in (place)</label><select id="id_scope" name="scope"><option value="">Anywhere</option>{% for p in places %}<option value="{{ p.path }}">{{ p.path }}</option>{% endfor %}</select></p>
+<p class="field"><label for="id_type">Show on (list type)</label><select id="id_type" name="type"><option value="">Any</option>{% for t in types %}<option value="{{ t.slug }}">{{ t.slug }}</option>{% endfor %}</select></p>
+<p class="field"><label for="id_headline">Headline (up to 80)</label><input id="id_headline" name="headline" maxlength="80" required></p>
+<p class="field"><label for="id_body">Text (up to 160)</label><input id="id_body" name="body" maxlength="160"></p>
+<button class="btn primary">Submit ad</button></form>
+<h2>My ads</h2><ul class="records">{% for a in ads %}<li>#{{ a.pk }} · {{ a.headline }} · {{ a.state }}{% if a.order_ref %} · paid{% else %}
+<form method="post" style="display:inline">{% csrf_token %}<input type="hidden" name="action" value="buy"><input type="hidden" name="ad" value="{{ a.pk }}"><button class="btn quiet">Buy 30 days</button></form>{% endif %} · {{ a.shown }} shown, {{ a.clicks }} clicks</li>{% empty %}<li>None yet.</li>{% endfor %}</ul>{% endblock %}

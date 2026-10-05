@@ -42,6 +42,26 @@ def test_no_contributor_exceeds_their_rate_share(net, items):
         assert amount <= ceiling + 1
 
 
+weighted = st.lists(
+    st.tuples(st.integers(1, 6), st.sampled_from([0, 30, 40, 50, 100]), st.sampled_from([1, 1.25, 2])),
+    min_size=1,
+    max_size=30,
+)
+
+
+@given(net=st.integers(0, 10**9), items=weighted)
+@hsettings(max_examples=150, deadline=None)
+def test_weighted_allocation_conserves_every_cent_and_is_order_free(net, items):
+    contrib, platform = ledger.compute_allocation(net, [(u, r, str(w)) for u, r, w in items])
+    assert platform >= 0 and sum(contrib.values()) + platform == net
+    assert (contrib, platform) == ledger.compute_allocation(net, [(u, r, str(w)) for u, r, w in reversed(items)])
+
+
+def test_equal_weights_match_the_unweighted_result():
+    items = [(1, 50), (1, 50), (2, 40)]
+    assert ledger.compute_allocation(9700, items) == ledger.compute_allocation(9700, [(u, r, 1) for u, r in items])
+
+
 def test_allocation_matches_the_worked_example_in_the_plan():
     # net 97.00, ten verified entries: A has 6 at 50 percent, B has 4 at 40 percent
     items = [(1, 50)] * 6 + [(2, 40)] * 4
@@ -169,6 +189,11 @@ def scene(tree, surgical, users, make_published, db):
     return dict(e1=e1, e2=e2, e3=e3, adder=users["adder"], other=other, surgical=surgical)
 
 
+def approve_kyc(user, reviewer):
+    prof = ledger.submit_kyc(user, legal_name="A Person", country_code="PK", method="bank", account="PK00 TEST 0000")
+    ledger.decide_kyc(prof, actor=reviewer, approve=True)
+
+
 def balances():
     return {(a.kind, a.user_id): ledger.balance(a) for a in LedgerAccount.objects.all()}
 
@@ -188,8 +213,19 @@ def test_list_sale_pays_only_verified_eligible_entries_and_every_account_balance
 
 
 def test_non_list_sales_are_platform_revenue(scene):
-    sale = ledger.record_sale("O2", "subscription", gross=2900)
+    sale = ledger.record_sale("O2", "rank", gross=2900)
     assert not sale.allocations.exists() and balances()[("platform", None)] == -2900
+
+
+def test_subscription_sale_pays_scope_entries_with_a_freshness_bonus(scene):
+    s = scene
+    # Alpha was just re-verified; make Beta's last check old so only Alpha gets the 0.25 bonus
+    s["e2"].__class__.objects.filter(pk=s["e2"].pk).update(last_verified_at=clock.now() - timedelta(days=200))
+    sale = ledger.record_sale("S1", "subscription", gross=2900, scope_path="pk.punjab.sialkot", concept=s["surgical"])
+    allocs = {a.user_id: a.amount_minor for a in sale.allocations.all()}
+    # weights 1.25 and 1.00 over net 2900: 1611.11 and 1288.89, each at 50 percent
+    assert allocs == {s["adder"].pk: 806, s["other"].pk: 644}
+    assert sum(balances().values()) == 0
 
 
 def test_sale_is_idempotent(scene):
@@ -231,6 +267,9 @@ def test_payout_needs_a_second_person_and_never_exceeds_payable(scene):
     f2 = User.objects.create_user("fin2", "f2@x.org", "x")
     owed = ledger.payable_balance(s["adder"])
     assert owed == 25000
+    with pytest.raises(ledger.LedgerError, match="not been approved"):
+        ledger.create_payout(s["adder"], creator=f1, amount_minor=10000)
+    approve_kyc(s["adder"], f2)
     with pytest.raises(ledger.LedgerError):
         ledger.create_payout(s["adder"], creator=f1, amount_minor=owed + 1)
     with pytest.raises(ledger.LedgerError):
@@ -263,6 +302,7 @@ def test_payout_total_never_exceeds_collections(scene):
     f1 = User.objects.create_user("fa", "a@x.org", "x")
     f2 = User.objects.create_user("fb", "b@x.org", "x")
     for user in (s["adder"], s["other"]):
+        approve_kyc(user, f2)
         p = ledger.create_payout(user, creator=f1)
         ledger.approve_payout(p, approver=f2)
         ledger.mark_paid(p, external_ref=f"B-{user.pk}")

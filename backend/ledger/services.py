@@ -100,25 +100,38 @@ def rate_for(entry, credit_created, today=None):
 
 
 def compute_allocation(net_minor, items):
-    """Split `net_minor` equally across the entries in `items` [(user_id, rate_percent)], each earning slice times its
-    rate. Returns ({user_id: minor}, platform_minor). Largest remainder keeps every cent: contributors plus platform
-    equal `net_minor` exactly."""
+    """Split `net_minor` across the entries in `items`, each (user_id, rate_percent) or (user_id, rate_percent, weight).
+    Without weights the split is equal; with weights an entry's slice is proportional to its weight. An entry earns its
+    slice times its rate. Returns ({user_id: minor}, platform_minor). Largest remainder keeps every cent: contributors
+    plus platform equal `net_minor` exactly."""
     if net_minor < 0:
         raise LedgerError("net must not be negative")
     if not items:
         return {}, net_minor
-    slice_ = Fraction(net_minor, len(items))
+    parsed = [(it[0], it[1], Fraction(it[2]) if len(it) > 2 else Fraction(1)) for it in items]
+    if any(w <= 0 for _, _, w in parsed):
+        raise LedgerError("weight must be positive")
+    total_weight = sum(w for _, _, w in parsed)
     exact = defaultdict(Fraction)
-    for user_id, rate in items:
+    for user_id, rate, weight in parsed:
         if not 0 <= rate <= 100:
             raise LedgerError("rate out of range")
-        exact[user_id] += slice_ * Fraction(rate, 100)
+        exact[user_id] += Fraction(net_minor) * weight / total_weight * Fraction(rate, 100)
     pool = floor(sum(exact.values()))
     floors = {u: floor(v) for u, v in exact.items()}
     leftover = pool - sum(floors.values())
     for u in sorted(exact, key=lambda k: (-(exact[k] - floors[k]), k))[:leftover]:
         floors[u] += 1
     return {u: v for u, v in floors.items() if v > 0}, net_minor - sum(floors.values())
+
+
+def freshness_weight(entry, now):
+    """1.0, plus the bonus (default 0.25) when the entry was re-verified within FRESHNESS_DAYS (default 90)."""
+    bonus = Fraction(str(getattr(settings, "FRESHNESS_BONUS", "0.25")))
+    days = int(getattr(settings, "FRESHNESS_DAYS", 90))
+    if entry.last_verified_at and entry.last_verified_at >= now - timedelta(days=days):
+        return Fraction(1) + bonus
+    return Fraction(1)
 
 
 def allocation_items(scope_path, concept, now=None):
@@ -174,6 +187,12 @@ def record_sale(order_ref, kind, *, gross, fees=0, tax=0, currency="USD", scope_
     if kind == Sale.Kind.LIST:
         items = allocation_items(scope_path, concept, now)
         alloc, platform = compute_allocation(net, [(u, r) for u, r, _ in items])
+        for u, _, _ in items:
+            counts[u] = counts.get(u, 0) + 1
+    elif kind == Sale.Kind.SUBSCRIPTION:
+        # F8: net revenue across the verified entries in the subscriber's scope, a freshness bonus for recent checks
+        items = allocation_items(scope_path, concept, now)
+        alloc, platform = compute_allocation(net, [(u, r, freshness_weight(e, now)) for u, r, e in items])
         for u, _, _ in items:
             counts[u] = counts.get(u, 0) + 1
     elif kind == Sale.Kind.OUTREACH and settings.OUTREACH_SHARE_PERCENT:
@@ -297,15 +316,64 @@ def payable_balance(user, currency="USD"):
     return owed - reserved
 
 
+def kyc_ok(user):
+    from .models import PayoutProfile
+
+    return PayoutProfile.objects.filter(user=user, state="approved").exists()
+
+
 @transaction.atomic
-def create_payout(user, *, creator, amount_minor=None, method="", currency="USD"):
+def submit_kyc(user, *, legal_name, country_code, method, account, tax_id=""):
+    """Payout details. Any change goes back to review and blocks payouts until a person approves it again."""
+    from .models import PayoutProfile
+
+    if not (legal_name.strip() and account.strip() and method.strip() and len(country_code) == 2):
+        raise LedgerError("legal name, country, method and account are required")
+    prof, _ = PayoutProfile.objects.update_or_create(
+        user=user,
+        defaults=dict(
+            legal_name_enc=legal_name.strip(),
+            country_code=country_code.upper(),
+            method=method.strip()[:30],
+            account_enc=account.strip(),
+            tax_id_enc=tax_id.strip(),
+            state="submitted",
+            note="",
+            decided_by_id=None,
+            decided_at=None,
+        ),
+    )
+    audit("kyc.submit", actor=user, object_type="user", object_uid=str(user.pk))
+    return prof
+
+
+@transaction.atomic
+def decide_kyc(profile, *, actor, approve, note=""):
+    if profile.state != "submitted":
+        raise LedgerError("already decided")
+    if profile.user_id == actor.pk:
+        raise LedgerError("you cannot approve your own payout details")
+    profile.state, profile.note = ("approved" if approve else "rejected"), note[:200]
+    profile.decided_by_id, profile.decided_at = actor.pk, clock.now()
+    profile.save()
+    audit("kyc.decide", actor=actor, object_type="user", object_uid=str(profile.user_id), payload={"approved": approve})
+    return profile
+
+
+@transaction.atomic
+def create_payout(user, *, creator, amount_minor=None, method="", currency="USD", batch=None):
+    if not kyc_ok(user):
+        raise LedgerError("payout details have not been approved")
     avail = payable_balance(user, currency)
     amount = avail if amount_minor is None else amount_minor
     if amount <= 0 or amount > avail:
         raise LedgerError("amount exceeds what is payable")
     if amount < MIN_PAYOUT_MINOR:
         raise LedgerError("below the minimum payout")
-    p = Payout.objects.create(user=user, currency=currency, amount_minor=amount, method=method, created_by=creator)
+    method = method or user.payout_profile.method
+    p = Payout.objects.create(
+        user=user, currency=currency, amount_minor=amount, method=method, created_by=creator, batch=batch
+    )
     audit("payout.create", actor=creator, object_type="payout", object_uid=str(p.pk), payload={"amount": amount})
     return p
 
@@ -342,3 +410,57 @@ def mark_paid(payout, *, external_ref, now=None):
     payout.save(update_fields=["state", "external_ref", "txn"])
     audit("payout.paid", object_type="payout", object_uid=str(payout.pk), payload={"ref": external_ref})
     return payout
+
+
+# ---- payout batches ---------------------------------------------------------------------------------------------------
+
+
+@transaction.atomic
+def create_batch(creator, currency="USD"):
+    """One pending payout for each approved user whose payable balance reaches the minimum."""
+    from django.contrib.auth import get_user_model
+
+    from .models import PayoutBatch
+
+    batch = PayoutBatch.objects.create(currency=currency, created_by=creator)
+    total = 0
+    for user in get_user_model().objects.filter(payout_profile__state="approved").order_by("pk"):
+        if payable_balance(user, currency) >= MIN_PAYOUT_MINOR:
+            total += create_payout(user, creator=creator, currency=currency, batch=batch).amount_minor
+    if not total:
+        raise LedgerError("nobody has a payable balance at or above the minimum")
+    batch.total_minor = total
+    batch.save(update_fields=["total_minor"])
+    audit("payout_batch.create", actor=creator, object_type="batch", object_uid=str(batch.pk), payload={"total": total})
+    return batch
+
+
+@transaction.atomic
+def approve_batch(batch, *, approver):
+    if batch.state != "pending":
+        raise LedgerError("batch is not pending")
+    if approver.pk == batch.created_by_id:
+        raise LedgerError("the person who created a batch cannot approve it")
+    for p in batch.payouts.select_for_update().filter(state="pending"):
+        approve_payout(p, approver=approver)
+    batch.state, batch.approved_by = "approved", approver
+    batch.save(update_fields=["state", "approved_by"])
+    audit("payout_batch.approve", actor=approver, object_type="batch", object_uid=str(batch.pk))
+    return batch
+
+
+@transaction.atomic
+def mark_batch_paid(batch, refs, *, now=None):
+    """`refs` maps payout id to the bank or wallet reference. Every payout in the batch needs one."""
+    if batch.state != "approved":
+        raise LedgerError("batch must be approved first")
+    payouts = list(batch.payouts.select_for_update())
+    missing = [p.pk for p in payouts if not refs.get(p.pk)]
+    if missing:
+        raise LedgerError(f"missing payment reference for payouts {missing}")
+    for p in payouts:
+        mark_paid(p, external_ref=refs[p.pk], now=now)
+    batch.state = "paid"
+    batch.save(update_fields=["state"])
+    audit("payout_batch.paid", object_type="batch", object_uid=str(batch.pk))
+    return batch

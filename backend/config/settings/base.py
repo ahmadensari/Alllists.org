@@ -171,6 +171,12 @@ LOGGING = {
 CSP_REPORT_ONLY = os.environ.get("CSP_REPORT_ONLY", "") == "1"
 
 REFUND_HOLD_DAYS = 14
+COMPANY_DETAILS = {  # the seller on every invoice; fill in once the company exists
+    "name": os.environ.get("COMPANY_NAME", "AllLists"),
+    "address": os.environ.get("COMPANY_ADDRESS", ""),
+    "tax_id": os.environ.get("COMPANY_TAX_ID", ""),
+}
+REPORT_RATES_TO_USD = {}  # currency -> units of USD per unit; only used for the indicative consolidated line
 TAX_RATES = {}  # country code -> percent (decimal string), configured per country; empty means none
 PAYMENT_WEBHOOK_SECRETS = {}  # provider name -> shared secret (set per environment; none by default)
 PAYMENT_INSTRUCTIONS = os.environ.get("PAYMENT_INSTRUCTIONS", "")
@@ -180,6 +186,11 @@ AI_KILL_SWITCH = os.environ.get("AI_KILL_SWITCH", "") == "1"
 AI_DAILY_CAP_MINOR = int(os.environ.get("AI_DAILY_CAP_MINOR", "0"))
 AI_MONTHLY_CAP_MINOR = int(os.environ.get("AI_MONTHLY_CAP_MINOR", "0"))
 AI_JOB_CAP_MINOR = int(os.environ.get("AI_JOB_CAP_MINOR", "50"))
+
+# Subscription allocation (plan 12.2, F8): weight 1.0 plus a bonus for entries re-verified recently
+FRESHNESS_BONUS = "0.25"
+FRESHNESS_DAYS = 90
+PLACEMENT_SLOTS = 2  # sponsored slots per list (Q-T8)
 
 # Outreach (plan 13): everything stays off until counsel clears a country; these are the rules once it is on.
 OUTREACH_SHARE_PERCENT = (

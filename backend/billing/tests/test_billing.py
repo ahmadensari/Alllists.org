@@ -87,7 +87,7 @@ def test_tax_is_added_from_country_configuration(products, buyer, settings):
     assert sale.tax_minor == 493 and sale.net_minor == order.amount_minor - 493 - 100
     assert [line["item"] for line in Invoice.objects.get(order=order).lines] == [
         products["subscription-city-month"].name,
-        "Tax",
+        "Tax 17%",
     ]
 
 

@@ -203,8 +203,22 @@ def test_wider_than_own_place_is_names_only_for_free(world_data):
 
 def test_subscriber_fragment_has_full_specialities_and_no_ads(world_data, demo, settings):
     path = "/_f/list/?path=pk.punjab.sialkot&type=surgical-instrument-makers"
+    from datetime import timedelta
+
+    from django.contrib.auth.models import User
+
+    from access.models import Ad
+    from core import clock
+
+    Ad.objects.create(
+        advertiser=User.objects.create_user("adv", "adv@x.org", "x"),
+        entry=world_data["a"],
+        headline="Scissors made to order",
+        ends_at=clock.now() + timedelta(days=5),
+        state="active",
+    )
     free = own_place_client(world_data["sialkot"]).get(path).content.decode()
-    assert 'id="ad-slot"' in free
+    assert 'id="ad-slot"' in free and "Scissors made to order" in free
     sub = subscriber_client(settings).get(path).content.decode()
     assert 'id="ad-slot"' not in sub
 
