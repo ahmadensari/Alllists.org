@@ -86,6 +86,7 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | C26 | **Entry template per list type.** The owner wants every relevant detail added to each entry of a list, so each list type gets a complete set of fields (a common core plus type-specific add-ons), based on what established platforms and registers normally hold | U (2026-10-05) | **Decided as a requirement.** Research under way (`entry_attributes_by_list_type.md`). Open: which fields are launch-time and which later, and which are sensitive for individuals (C22) |
 | C27 | **Lists that are not about places:** apps on a topic, websites on a topic, and similar topic lists (books, tools, public figures). These sit in a topic tree instead of the place tree | U (2026-10-05) | **Raised as an idea; working view:** a cheap, fast-to-fill traffic and credibility layer, monetised by sponsored placement, affiliate links and ads rather than by selling lists. Not the core revenue. Open: Q-S4 |
 | C28 | **Launch globally with no spending, grow by a study-then-snowball approach** (each stage's earnings pay for the next) | U (2026-10-05) | **Raised as an approach; working view:** structure global from day one (already decided), money-free first stage possible except for founder time, verification, payment collection and legal advice. Revenue scenarios in the chat answer of 2026-10-05, labelled as estimates. Open: Q-S5 |
+| C29 | **At this stage load only text and numbers, no pictures or videos.** Many thousands of list types, applied across the whole place tree, are expected to make millions of lists | U (2026-10-05) | **Decided as a scope rule.** Working view: lists are views (category at a place), not copies, so storage grows with entries, not lists; most of the millions of list-places stay empty and are not published until they hold entries. Capabilities and scale stages are in the chat answer of 2026-10-05; open: Q-S6 |
 
 ## D. Getting content in, and keeping it good
 
@@ -425,6 +426,7 @@ The owner's stated principles: **better usage and returning clients**, and **rev
 - **Q-S3** For each register or body used as a source (D21): written terms of use, whether bulk or partnered access is allowed, and personal-data rules. Registers fetched so far are unverified because official sites were blocked in this environment.
 - **Q-S4** Digital lists (apps, websites on a topic): which topics first, who curates, and whether sponsored placement and affiliate links are allowed (C27).
 - **Q-S5** Zero-spend snowball (C28): what founder time per week, which costs are unavoidable (payment collection, counsel, verification), and what revenue per stage triggers the next stage.
+- **Q-S6** Scale plan (C29): confirm partition by country from the start, one managed Postgres until a measured limit, and which of the capabilities listed in the chat answer are built first.
 
 ## Next step
 
