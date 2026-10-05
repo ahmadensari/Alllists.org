@@ -65,7 +65,7 @@ def main():
     parts = []  # (title, body)
     parts.append(("Project README", (ROOT / "README.md").read_text(encoding="utf-8")))
     for n in ["DECISIONS", "REQUIREMENTS", "TECHNICAL_CAPABILITIES", "REUSE_AND_TOOLS",
-              "LIST_AND_ENTRY_COMPONENTS", "DESIGN_SYSTEM", "MODERN_UI_TOOLS", "NAME_AND_NAVIGATION",
+              "LIST_AND_ENTRY_COMPONENTS", "DESIGN_SYSTEM", "MODERN_UI_TOOLS", "NAME_AND_NAVIGATION", "TECHNICAL_PLAN",
               "DEPLOYMENT"]:
         parts.append((f"docs/{n}.md", (ROOT / "docs" / f"{n}.md").read_text(encoding="utf-8")))
     for p in sorted((ROOT / "reports").glob("*.md")):
