@@ -130,9 +130,36 @@ footer.legal{border-block-start:1px solid var(--rule);margin-block-start:var(--s
 .toast{position:fixed;inset-block-end:var(--s4);inset-inline:0;margin-inline:auto;width:max-content;max-width:90%;background:var(--ink);color:var(--paper);border:2px solid var(--paper);padding:var(--s2) var(--s4);border-radius:var(--r);display:none}
 .toast.show{display:block}
 @media (pointer:coarse){.seg button{min-height:var(--tap)}}
+/* Modern surfaces: tinted hero, trust bar, area chips, card view. Still system fonts, no images. */
+.hero{display:flex;gap:var(--s4);align-items:center;padding:var(--s4);border-radius:12px;background:color-mix(in oklab,var(--accent) 8%,var(--surface));border:1px solid var(--rule);margin-block:var(--s3)}
+.hero-num{font-size:3.25rem;font-weight:700;line-height:1;color:var(--accent);letter-spacing:-.03em;min-width:2ch;text-align:center}
+.hero-body{min-width:0;flex:1}
+.tbar{display:flex;height:.8rem;border-radius:99px;overflow:hidden;background:var(--lock);border:1px solid var(--control);margin-block:var(--s2)}
+.tbar i{display:block;height:100%;width:var(--w);transition:width .7s cubic-bezier(.2,.8,.2,1)}
+@starting-style{.tbar i{width:0}}
+.tbar .t-s{background:var(--ok)}
+.tbar .t-o{background:color-mix(in oklab,var(--ok) 55%,var(--surface))}
+.tbar .t-a{background:repeating-linear-gradient(45deg,var(--ink-2) 0 3px,var(--surface) 3px 6px)}
+.legend{display:flex;flex-wrap:wrap;gap:var(--s1) var(--s4);font-size:var(--t-sm);color:var(--ink-2)}
+.legend b{display:inline-block;width:.8rem;height:.8rem;border-radius:3px;vertical-align:-1px;margin-inline-end:var(--s1);border:1px solid var(--control)}
+.chips{display:flex;gap:var(--s2);overflow-x:auto;padding-block:var(--s1) var(--s2);scrollbar-width:thin}
+.chips button{flex:none;min-height:var(--tap);padding:var(--s1) var(--s4);border:1px solid var(--control);border-radius:99px;background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;transition:background-color .15s ease,color .15s ease,transform .1s ease}
+.chips button:hover{background:var(--lock)}
+.chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.vt{display:inline-flex;border:1px solid var(--control);border-radius:var(--r);overflow:hidden}
+.vt button{border:0;padding:var(--s1) var(--s3);min-height:var(--tap);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}
+.vt button:focus-visible{outline-offset:-3px}
+.vt button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.rows.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:var(--s3)}
+.rows.cards .row{display:block;border:1px solid var(--rule);border-radius:12px;padding:var(--s4);background:var(--surface);transition:transform .15s ease,box-shadow .15s ease}
+.rows.cards .row:hover{background:var(--surface);transform:translateY(-3px);box-shadow:0 8px 22px rgba(16,24,40,.12)}
+.rows.cards .row>div+div{margin-block-start:var(--s2)}
+.btn:active,.chips button:active{transform:scale(.97)}
+.enter .rows .row{animation:rise .38s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*45ms)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
 /* Motion, CSS first: nothing here loads a library. Every effect has a reduced-motion off switch below. */
 .row{transition:background-color .15s ease}
-.row:hover{background:var(--lock)}
+.rows:not(.cards) .row:hover{background:var(--lock)}
 .btn{transition:background-color .15s ease,border-color .15s ease}
 .toast{opacity:0;transition:opacity .2s ease,display .2s allow-discrete}
 .toast.show{opacity:1}
@@ -220,7 +247,7 @@ var EN = {
   openMap:"Open in Google Maps", notes:"Sample data. Share links are plain links: nothing loads from a social network until you click.",
   linkCopied:"Link copied", toastOutreach:"Demo: opens the channel picker. WhatsApp first, only to people who agreed, sent by AllLists.", toastPlans:"Demo: opens the plans page.", toastSave:"Demo: saved. Needs an account.", toastFollow:"Demo: we will tell you when it changes. Needs an account.",
   statusShown:"{n} businesses shown",
-  ago0:"today", agoD:"{d} days ago", agoW:"{w} weeks ago", agoM:"{m} months ago", mon_sat:"Mon to Sat", x:"X", tg:"Telegram",
+  ago0:"today", agoD:"{d} days ago", agoW:"{w} weeks ago", agoM:"{m} months ago", mon_sat:"Mon to Sat", x:"X", tg:"Telegram", viewList:"List", viewCards:"Cards", viewLbl:"View", copied:"Copied", areaLbl2:"Area", legendS:"Surveyor", legendO:"Owner", legendA:"Computer",
   companyPage:"Company page", provided:"Provided by the company", providedNote:"This page is provided by the company. AllLists checks are shown separately and cannot be bought.",
   coAbout:"About the company", coProducts:"Products and services", coCerts:"Certificates the company lists", coCapacity:"Capacity and facilities", coTerms:"Terms and samples", coFaq:"Questions buyers ask",
   basicNote:"This is the basic page. The company can add a full page with products, certificates, capacity and more.", addCompanyPage:"Add a company page",
@@ -274,7 +301,7 @@ var UR = {
   openMap:"گوگل میپس میں کھولیں", notes:"نمونہ ڈیٹا۔ شیئر لنک سادہ لنک ہیں: آپ کے کلک کرنے تک کسی سوشل نیٹ ورک سے کچھ لوڈ نہیں ہوتا۔",
   linkCopied:"لنک کاپی ہو گیا", toastOutreach:"نمونہ: چینل منتخب کرنے کی سکرین کھلے گی۔ پہلے واٹس ایپ، صرف ان لوگوں کو جو راضی ہوں، آل لسٹس کی طرف سے۔", toastPlans:"نمونہ: پلان کا صفحہ کھلے گا۔", toastSave:"نمونہ: محفوظ ہو گیا۔ اکاؤنٹ درکار ہے۔", toastFollow:"نمونہ: بدلنے پر ہم بتائیں گے۔ اکاؤنٹ درکار ہے۔",
   statusShown:"{n} کاروبار دکھائے گئے",
-  ago0:"آج", agoD:"{d} دن پہلے", agoW:"{w} ہفتے پہلے", agoM:"{m} مہینے پہلے", mon_sat:"پیر تا ہفتہ",companyPage:"کمپنی کا صفحہ", provided:"کمپنی کی فراہم کردہ معلومات", providedNote:"یہ صفحہ کمپنی نے فراہم کیا ہے۔ آل لسٹس کی جانچ الگ دکھائی جاتی ہے اور خریدی نہیں جا سکتی۔",
+  ago0:"آج", agoD:"{d} دن پہلے", agoW:"{w} ہفتے پہلے", agoM:"{m} مہینے پہلے", mon_sat:"پیر تا ہفتہ", viewList:"فہرست", viewCards:"کارڈز", viewLbl:"منظر", copied:"کاپی ہو گیا", areaLbl2:"علاقہ", legendS:"سروے کار", legendO:"مالک", legendA:"کمپیوٹر",companyPage:"کمپنی کا صفحہ", provided:"کمپنی کی فراہم کردہ معلومات", providedNote:"یہ صفحہ کمپنی نے فراہم کیا ہے۔ آل لسٹس کی جانچ الگ دکھائی جاتی ہے اور خریدی نہیں جا سکتی۔",
   coAbout:"کمپنی کے بارے میں", coProducts:"مصنوعات اور خدمات", coCerts:"کمپنی کے بتائے ہوئے سرٹیفکیٹ", coCapacity:"پیداواری صلاحیت اور سہولیات", coTerms:"شرائط اور نمونے", coFaq:"خریداروں کے عام سوالات",
   basicNote:"یہ بنیادی صفحہ ہے۔ کمپنی مصنوعات، سرٹیفکیٹ، صلاحیت اور مزید کے ساتھ مکمل صفحہ شامل کر سکتی ہے۔", addCompanyPage:"کمپنی کا صفحہ شامل کریں",
   checkedByUs:"آل لسٹس نے جانچا", companySays:"کمپنی کا دعویٰ", workers:"عملہ", capacityLbl:"ماہانہ صلاحیت", areaLbl:"فیکٹری کا رقبہ", updatedLbl:"کمپنی نے {date} کو اپ ڈیٹ کیا", moqLbl:"کم از کم آرڈر",
@@ -325,7 +352,7 @@ var ENTRIES=[
  {id:"e9",name:"Former Sample Works",urdu:"سابقہ سیمپل ورکس",area:"Paris Road",status:"closed",levels:[{k:"owner",when:"2025-11-02"}],type:"Manufacturer",spec:["General surgery"],cert:"",moq:"",band:"",rank:null,lat:32.4948,lng:74.5231,year:2001,markets:[],oem:false,hours:false}
 ];
 var LK={surveyor:"lSurveyor",owner:"lOwner",ai:"lAi",none:"lNone"}, GK={surveyor:"gSurveyor",owner:"gOwner",ai:"gAi",none:"gNone"};
-var state={plan:"free",area:"all",level:"all",sort:"ranked",count:5,theme:"system",q:""};
+var state={plan:"free",area:"all",level:"all",sort:"ranked",count:5,theme:"system",q:"",view:"list"};
 
 /* ---------- Helpers ---------- */
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
@@ -416,21 +443,26 @@ function renderList(){
   h+='<h1>'+esc(T("title"))+'</h1>';
   h+='<p>'+esc(T("scope"))+'</p>';
   h+='<ul class="tags"><li class="tag">'+esc(T("fam"))+' / '+esc(T("fam2"))+'</li><li class="tag">'+esc(T("scale"))+'</li></ul>';
-  h+='<p class="num"><strong>'+esc(T("summary",{n:pubList.length,date:fmtDate(latest)}))+'</strong><br><span class="muted small">'+esc(T("trustLine",{a:c.surveyor,b:c.owner,c:c.ai}))+'</span></p>';
+  var tot=Math.max(pubList.length,1);
+  h+='<div class="hero"><div class="hero-num num" aria-hidden="true">'+pubList.length+'</div><div class="hero-body"><strong class="num">'+esc(T("summary",{n:pubList.length,date:fmtDate(latest)}))+'</strong>'
+    +'<div class="tbar" role="img" aria-label="'+esc(T("trustLine",{a:c.surveyor,b:c.owner,c:c.ai}))+'"><i class="t-s" style="--w:'+(100*c.surveyor/tot)+'%"></i><i class="t-o" style="--w:'+(100*c.owner/tot)+'%"></i><i class="t-a" style="--w:'+(100*c.ai/tot)+'%"></i></div>'
+    +'<div class="legend num"><span><b class="t-s" style="background:var(--ok)"></b>'+esc(T("legendS"))+' '+c.surveyor+'</span><span><b style="background:color-mix(in oklab,var(--ok) 55%,var(--surface))"></b>'+esc(T("legendO"))+' '+c.owner+'</span><span><b style="background:repeating-linear-gradient(45deg,var(--ink-2) 0 3px,var(--surface) 3px 6px)"></b>'+esc(T("legendA"))+' '+c.ai+'</span></div></div></div>';
   h+=keyBlock();
   h+='<div class="actions"><button class="btn primary" type="button" data-outreach>'+esc(T("enquiry"))+(sub?'':' <span class="xs">('+esc(T("forSubs"))+')</span>')+'</button><button class="btn" type="button" data-follow>'+esc(T("follow"))+'</button></div>';
   h+='<div style="margin-block-start:var(--s3)">'+shareBar("list")+'</div>';
   h+='<section class="sec" id="results" tabindex="-1" aria-label="'+esc(T("shown",{n:rows.length,m:rowsAll.length}))+'" style="margin-block-start:var(--s4)">';
-  h+='<div class="actions"><label for="fa">'+esc(T("area"))+'</label><select id="fa"><option value="all">'+esc(T("allAreas"))+'</option>'
-    +Object.keys(areas).sort().map(function(a){return '<option value="'+esc(a)+'"'+(state.area===a?' selected':'')+'>'+esc(D(a))+' ('+areas[a]+')</option>';}).join("")+'</select>'
+  h+='<div class="chips" role="group" aria-label="'+esc(T("area"))+'"><button type="button" data-area="all" aria-pressed="'+(state.area==="all")+'"'+(state.area==="all"?' id="fa"':'')+'>'+esc(T("allAreas"))+' ('+pubList.length+')</button>'
+    +Object.keys(areas).sort().map(function(a){return '<button type="button" data-area="'+esc(a)+'" aria-pressed="'+(state.area===a)+'"'+(state.area===a?' id="fa"':'')+'>'+esc(D(a))+' ('+areas[a]+')</button>';}).join("")+'</div>';
+  h+='<div class="actions">'
     +'<label for="fl">'+esc(T("verification"))+'</label><select id="fl"><option value="all">'+esc(T("allChecks"))+'</option>'
     +['surveyor','owner','ai'].map(function(k){return '<option value="'+k+'"'+(state.level===k?' selected':'')+'>'+esc(T(LK[k]))+'</option>';}).join("")+'</select>'
     +'<label for="so">'+esc(T("sort"))+'</label><select id="so"><option value="ranked"'+(state.sort==="ranked"?' selected':'')+'>'+esc(T("ranked"))+'</option><option value="az"'+(state.sort==="az"?' selected':'')+'>'+esc(T("az"))+'</option><option value="recent"'+(state.sort==="recent"?' selected':'')+'>'+esc(T("recent"))+'</option></select>'
+    +'<span class="vt" role="group" aria-label="'+esc(T("viewLbl"))+'"><button type="button" data-view="list" aria-pressed="'+(state.view==="list")+'">'+esc(T("viewList"))+'</button><button type="button" data-view="cards" aria-pressed="'+(state.view==="cards")+'">'+esc(T("viewCards"))+'</button></span>'
     +(filtered?'<button class="btn quiet" type="button" data-clear>'+esc(T("clear"))+'</button>':'')+'</div>';
   h+='<p class="muted xs" style="margin-block-start:var(--s2)">'+esc(T("order"))+' <a href="#/system">'+esc(T("howOrder"))+'</a></p>';
-  h+='<h2 class="num">'+esc(T("shown",{n:rows.length,m:rowsAll.length}))+'</h2><ol class="rows">';
-  rows.forEach(function(e){
-    h+='<li class="row" style="view-transition-name:r-'+e.id+'"><div><a class="nm" href="#/entry/'+e.id+'">'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</a><span class="alt">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</span></div>'
+  h+='<h2 class="num">'+esc(T("shown",{n:rows.length,m:rowsAll.length}))+'</h2><ol class="rows'+(state.view==="cards"?' cards':'')+'">';
+  rows.forEach(function(e,i){
+    h+='<li class="row" style="--i:'+i+';view-transition-name:r-'+e.id+'"><div><a class="nm" href="#/entry/'+e.id+'">'+bdiName(mainName(e),lang==="ur"?"ur":"en")+'</a><span class="alt">'+bdiName(altName(e),lang==="ur"?"en":"ur")+'</span></div>'
       +'<div class="small">'+esc(D(e.type))+' · '+esc(D(e.area))+'<div style="margin-block-start:var(--s1)">'+specText(e,3)+(e.paid?'<span class="pill pill-co">'+esc(T("companyPage"))+'</span>':'')+'</div></div>'
       +'<div>'+chips(e)+'<div class="muted small">'+esc(T("checked",{date:fmtDate(lastChecked(e))}))+' · '+esc(age(lastChecked(e)))+'</div></div></li>';
   });
@@ -573,7 +605,7 @@ function routeInfo(){
 function render(keepScroll){
   var r=routeInfo(), html;
   if(r.kind==="entry")html=renderEntry(r.id); else if(r.kind==="empty")html=renderEmpty(); else if(r.kind==="system")html=renderSystem(); else if(r.kind==="stub")html=renderStub(r.id); else html=renderList();
-  chrome(); document.getElementById("app").innerHTML=html; document.title=r.title; setRobots(r.robots);
+  chrome(); var appEl=document.getElementById("app"); appEl.innerHTML=html; appEl.classList.toggle("enter",!keepScroll); document.title=r.title; setRobots(r.robots);
   if(!keepScroll)window.scrollTo(0,0);
   Array.prototype.forEach.call(document.querySelectorAll("[data-native]"),function(b){if(navigator.share){b.hidden=false;}});
 }
@@ -597,8 +629,11 @@ document.addEventListener("click",function(ev){
   if(t.id==="planSub"){state.plan="sub";rerender("planSub");return;}
   if(t.hasAttribute("data-theme-btn")){state.theme=t.getAttribute("data-theme-btn");applyTheme();chrome();return;}
   if(t.hasAttribute("data-lang-btn")){lang=t.getAttribute("data-lang-btn");render(true);var lb=document.querySelector('[data-lang-btn="'+lang+'"]');if(lb)lb.focus();return;}
-  if(t.hasAttribute("data-copy")){var u=t.getAttribute("data-copy");
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){toast(T("linkCopied"));},function(){toast(u);});}else{toast(u);}return;}
+  if(t.hasAttribute("data-area")){state.area=t.getAttribute("data-area");state.count=5;rerender("fa",T("statusShown",{n:visibleCount()}));return;}
+  if(t.hasAttribute("data-view")){state.view=t.getAttribute("data-view");rerender(null);var vb=document.querySelector('[data-view="'+state.view+'"]');if(vb)vb.focus();return;}
+  if(t.hasAttribute("data-copy")){var u=t.getAttribute("data-copy");var oldLabel=t.textContent;
+    function copied(){t.textContent=T("copied");setTimeout(function(){t.textContent=oldLabel;},1500);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(copied,function(){toast(u);});}else{toast(u);}return;}
   if(t.hasAttribute("data-native")){navigator.share({title:EN.title,url:CANON}).catch(function(){});return;}
   if(t.hasAttribute("data-more")){var key=t.getAttribute("data-more");var mm=document.getElementById("menu-"+key);var open=mm.classList.toggle("open");t.setAttribute("aria-expanded",String(open));return;}
   if(t.hasAttribute("data-outreach")){toast(T("toastOutreach"));return;}

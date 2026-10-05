@@ -61,6 +61,9 @@ Theme rule: every colour is a token defined on the bare root, redefined for dark
 | **Check labels** | The four decided names, with shape and words (solid thick, solid, dashed, dotted). Colour never carries meaning alone. Wrap on small screens. |
 | **Primary action** | One per area. List: "Send one enquiry to several makers" (subscribers). Entry: "Message this business". Secondary: save, or "Tell me when this list changes". |
 | **Share** | One native Share button where the browser supports it, plus WhatsApp and Copy link. Facebook, email, LinkedIn and X sit under "More options". Copy link copies the clean address without tracking tags. |
+| **Trust hero** | Large count, a trust bar showing the split by check type with a text legend, and the last checked date. The bar fills on load; patterns and words carry the meaning. |
+| **Area chips** | One chip per area with its count, scrolling sideways on phones. |
+| **View toggle** | List or cards. Both show the same fields. |
 | **Filters** | Area, check type, sort. Changing one keeps focus where it was, announces the new count, and does not jump the page. "Clear filters" appears when any filter is on. |
 | **Result row** | Name (and the other-language name), type and area, up to three specialities and "+n more", check labels, "Checked {date} · {age}". No position number, no open button, no lock boxes. |
 | **Paging** | Five rows, then "Show n more". A stated per-account limit for free visitors. |

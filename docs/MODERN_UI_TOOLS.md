@@ -81,6 +81,10 @@ Figures are search summaries (S, vendor claims U). Neither GSAP nor Rive belongs
 | Toast fade-in | `@starting-style` |
 | Hover feedback on rows and buttons | Plain CSS transitions |
 | Reduced motion | All of the above switch off |
+| Trust hero | A large count and a trust bar that fills on load; the bar uses patterns and a legend, not colour alone |
+| Area chips | Tap an area chip instead of using a drop-down; scrolls sideways on phones |
+| List or cards | A toggle switches the results between a ruled list and a card grid, with the cards gliding into place |
+| Entrance and press effects | Rows rise in one after another when a page opens; buttons give a small press response |
 | Company pages | Paid companies have a fuller page (C35) |
 
 Everything adds about one kilobyte and loads no library. It was tested in Chromium; Safari and Firefox fall back to instant changes where a feature is missing.
