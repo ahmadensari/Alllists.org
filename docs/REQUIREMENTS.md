@@ -365,6 +365,17 @@ The owner's longer-term vision: lists of salons, spare-parts shops, bakeries, mo
 
 ---
 
+## Strategy decisions recorded 2026-10-05
+
+| ID | Decision | Source | Note |
+|---|---|---|---|
+| S1 | The idea is judged **workable enough to refine fully before any coding** | U | The research calls it plausible but unproven; the first proof is a buyer paying for a verified list |
+| S2 | **Coding starts only after refinement, and proceeds top to bottom** (global structure first, then country, region, city, area), within the phased plan | U | No code is written until the owner says so |
+| S3 | **All countries are included in the structure, but go-to-market focuses on countries with lighter data-usage restrictions first** | U | Consistent with P11. Design for later strict markets from the start: per-record provenance, consent status, opt-out and deletion (D17), so data collected early can be carried into stricter markets |
+| S4 | The product aims to become a **high-end product** as it reaches high-end markets | U | In high-end markets the buyer pays for verified, owner-claimed, compliant data, not raw volume; accuracy and compliance records are what make it high-end |
+
+---
+
 ## Next step
 
 Share the `.docx` files (put them in the repository under `docs/source/`, or paste their text) and unlock `chatgpt.com` for this environment, so I can read the sources directly. Then this register gets corrected against the real documents and the Questions in section R get answered. Only then should coding start.
