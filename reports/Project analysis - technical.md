@@ -272,90 +272,84 @@ Licence grades follow `docs/REUSE_AND_TOOLS.md`: File (licence file read), Seen 
 
 | Assets | Actors |
 |---|---|
-| Entry data and its value (the product); contact data of shops and people; the ledger and payout details; admin and moderator accounts; the sending identity (WhatsApp number, email domain); AI provider keys and spend; the founder's domain and repository | Casual visitors; competitors and scrapers; malicious or lazy contributors; fake verifiers and fake shop farmers; buyers who try to extract contacts; business owners disputing entries; criminals (credential stuffing, payment fraud); hostile web pages feeding the agents; insiders and volunteers with too much access; regulators and takedown requesters |
+| Entry data (the product); contacts of shops and people; the ledger and payout details; staff accounts; the sending identity (WhatsApp number, email domain); AI keys and spend; the domain and repository | Visitors; competitors and scrapers; lazy or malicious contributors; fake verifiers and fake-shop farmers; buyers trying to extract contacts; owners disputing entries; credential-stuffing and payment fraudsters; hostile pages feeding the agents; over-privileged volunteers; regulators and takedown requesters |
 
 ### 6.2 Top 15 threats
 
-| # | Threat | Control | Check |
-|---|---|---|---|
-| 1 | Exposed database password and secret key still valid | Rotate all, move secrets to environment or a secret store, enable GitHub secret scanning with push protection | Old credentials rejected |
-| 2 | Account takeover (credential stuffing, weak passwords) | Strong hashing (already scrypt), login throttling, lockout, MFA for admin, moderator and payout roles | Throttle test in CI |
-| 3 | Scraping of paid data | Section 5.5 | Quota alarms |
-| 4 | Buyer extracts contacts through the outreach product | Contacts never leave the server; replies relayed; templates reviewed; no free-text with phone numbers | Red-team test |
-| 5 | Fake entries and fake shops to earn credit | Imported entries earn nothing until verified; self-listing earns nothing (D8); payout needs independent verification and a 30-day re-check [S, AI report]; canary entries | Audit sample |
-| 6 | Collusion between contributor and verifier | Verifier is never the adder; sampled audits; graph check for repeated pairs | Weekly report |
-| 7 | Ledger tampering or error | Append-only tables, no update or delete rights, balanced-transaction trigger, hash-chained audit log, separation of duties for payouts | Property tests; monthly reconciliation |
-| 8 | Injection and cross-site scripting | Framework escaping, parameterised queries, content security policy (the legacy `app.js` violates this), no inline scripts in new pages | Security scan in CI |
-| 9 | Prompt injection through fetched pages | Section 5.7: agents get no credentials and no production write access | Test pages with planted instructions |
-| 10 | Personal-data breach | Field encryption, least-privilege roles, no PII in logs, restricted exports, breach runbook | Access review quarterly |
-| 11 | Spam through the outreach channel; number banned | Opt-in gate, caps, templates, suppression list, per-country switch | Opt-out and failure alarms |
-| 12 | Abuse of the unauthenticated, CPU-heavy endpoints (for example `/recommend` at 169 ms per call [M]) | Remove or cache; rate-limit by address; cap work per request | Load test |
-| 13 | Payment fraud and chargebacks | Hosted payment pages (card data never on our servers); manual confirmation first; refund hold window | Reconciliation |
-| 14 | Takedown and defamation (wrong "closed" or "scam") | Agents write facts only, never opinions; report and correct flow free of charge (P17); moderation queue; takedown log | SLA on removals |
-| 15 | Supply chain (a bad dependency or CI action) | Locked versions, Dependabot, `pip-audit` in CI, pinned actions | Weekly scan |
+| # | Threat | Control |
+|---|---|---|
+| 1 | Exposed database password and secret key still valid | Rotate all; secrets in environment or a secret store; GitHub secret scanning with push protection |
+| 2 | Account takeover | scrypt hashing (present), login throttling and lockout, MFA for admin, moderator and payout roles |
+| 3 | Scraping of paid data | 5.1 anti-scraping row; quota alarms |
+| 4 | Buyer extracts contacts through outreach | Contacts never leave the server; replies relayed; approved templates; no free text with phone numbers |
+| 5 | Fake entries and shops to earn credit | Imports and self-listings earn nothing (D5, D8); payout needs independent verification and a 30-day re-check [S]; canaries |
+| 6 | Contributor and verifier collusion | Verifier is never the adder; audits; weekly report of repeated pairs |
+| 7 | Ledger tampering or error | Append-only tables, no update rights, balance trigger, hash-chained audit log, separation of duties, monthly reconciliation |
+| 8 | Injection and cross-site scripting | Framework escaping, parameterised queries, content security policy (the legacy `app.js` violates it), CI scan |
+| 9 | Prompt injection through fetched pages | No credentials and no production write access for agents; planted-instruction tests |
+| 10 | Personal-data breach | Field encryption, least privilege, no personal data in logs, restricted exports, breach runbook |
+| 11 | Spam through outreach; number banned | Opt-in gate, caps, templates, suppression list, per-country switch |
+| 12 | Abuse of cheap-to-call heavy endpoints (`/recommend` costs 169 ms per call, unauthenticated [M]) | Remove or cache; rate-limit by address; cap work per request |
+| 13 | Payment fraud and chargebacks | Hosted payment pages (no card data on our servers); manual confirmation first; refund hold |
+| 14 | Takedown and defamation | Agents write facts, never opinions; free report-and-correct flow (P17); moderation queue; takedown log |
+| 15 | Supply chain | Locked versions, Dependabot, `pip-audit` in CI, pinned actions |
 
 ### 6.3 Required before launch
 
 | Item | Done when |
 |---|---|
-| Secret rotation | Database and application secrets replaced; old ones confirmed dead; tokens pasted in chats revoked |
-| MFA | Mandatory for admin, moderator, surveyor lead and any payout role |
-| Rate limits | Login, registration, search, list pages, exports and every unauthenticated endpoint |
-| Audit log | Hash-chained, covers logins, role changes, verification events, claim changes, exports, ledger and payout actions |
-| Consent register | Opt-in, source and wording stored for every messageable contact; per-country switch default off |
-| Deletion and correction | Free request form; a tested deletion that tombstones and suppresses re-import |
-| Backups | A restore from backup performed and timed |
+| Secret rotation | Database and application secrets replaced, old ones confirmed dead, tokens pasted in chats revoked |
+| MFA | Mandatory for admin, moderator, surveyor lead and payout roles |
+| Rate limits | Login, registration, search, list pages, exports, every unauthenticated endpoint |
+| Audit log | Hash-chained; covers logins, role changes, verification, claims, exports, ledger and payout actions |
+| Consent register | Opt-in, source and wording stored for every messageable contact; per-country switch off by default |
+| Deletion and correction | Free request form; tested tombstone deletion that suppresses re-import |
+| Backups | A restore performed and timed |
 | Legal | Terms, privacy notice, takedown route; counsel's written view before any messaging test |
-| Security review | Run the `security-review` skill and a manual pass on authorisation and the ledger |
+| Security review | `security-review` skill plus a manual pass on authorisation and the ledger |
 
 ---
 
 ## 7. Performance and reliability budget
 
-### 7.1 Per-page weight and latency
+### 7.1 Page weight and latency
 
-Budget taken from the independent design review [S] and my measurements [M].
+Budget from the independent design review [S] and my measurements [M].
 
-| Page | Target | Hard ceiling (build fails) |
+| Page | Target (compressed) | Hard ceiling (build fails) |
 |---|---|---|
-| List page, 25 rows | 11 KB compressed | 18 KB |
+| List page, 25 rows | 11 KB | 18 KB |
 | Entry page | 7 KB | 12 KB |
 | Empty list | 4 KB | 6 KB |
-| Inline CSS | 2 KB | 3 KB |
-| JavaScript | 0 required; optional 1 KB | 5 KB, never blocking |
+| Inline CSS / JavaScript | 2 KB / none required (optional 1 KB) | 3 KB / 5 KB, never blocking |
 | Fonts and images | None downloaded (system fonts, text only, C29) | None |
 
 | Latency goal | Value |
 |---|---|
-| Cached page from the edge | under 200 ms to a phone in Lahore, Karachi or Dubai [I] |
-| Uncached origin response, 95th percentile | under 300 ms |
-| Database query, 95th percentile | under 50 ms (measured 2 to 50 ms for the list query at 1 million entries) [M] |
-| Search, 95th percentile, scoped | under 150 ms; unscoped under 500 ms until a search engine exists |
-| Page ceiling in CI | A test fails the build if a rendered page exceeds its ceiling |
+| Cached page from the edge to a phone in Lahore, Karachi or Dubai | under 200 ms [I] |
+| Uncached origin, 95th percentile | under 300 ms |
+| Database query, 95th percentile | under 50 ms (list query measured 2 to 50 ms at 1 million entries [M]) |
+| Search, 95th percentile | scoped under 150 ms; unscoped under 500 ms until a search engine exists |
 
 ### 7.2 Availability, backup and restore
 
-| Stage | Availability goal | Allowed downtime per month | Recovery point and time |
+| Stage | Availability goal | Downtime allowed per month | Data loss at most / restore within |
 |---|---|---|---|
-| S0 to S1 | 99% | about 7 hours | Last nightly dump; restore within a day |
-| S2 | 99.5% | about 3.6 hours | 15 minutes of data loss at most (WAL archiving); restore within 4 hours |
-| S3 to S4 | 99.9% | about 43 minutes | 5 minutes; restore within 1 hour; replica failover |
+| S0 to S1 | 99% | about 7 hours | last nightly dump / 1 day |
+| S2 | 99.5% | about 3.6 hours | 15 minutes (WAL archiving) / 4 hours |
+| S3 to S4 | 99.9% | about 43 minutes | 5 minutes / 1 hour; replica failover |
 
-Backups: nightly logical dump plus continuous WAL archive (the log of changes that allows point-in-time recovery) to storage in a different account or region. **Restore drill every quarter**: my 2.4 GB test restored in 34 seconds with four jobs; a drill that is not run does not count (spec).
+Backups: nightly logical dump plus continuous WAL archive (the log of changes that allows point-in-time recovery) in a different account or region. **Restore drill every quarter**: my 2.4 GB test restored in 34 seconds with four jobs [M].
 
 ### 7.3 Observability and cost monitoring
 
 | Need | Proposal |
 |---|---|
-| Errors | Sentry free plan (reported 5,000 errors a month, 1 user) [S, search result] |
-| Uptime | UptimeRobot free (50 monitors, 5-minute checks) [S] |
-| Metrics and logs | Grafana Cloud free tier (10,000 series, 50 GB logs, 14-day retention) [S], or the host's own |
-| Database | Slow-query log, connection count, replication lag, table and index growth, vacuum health |
-| Jobs | Queue depth, failure rate, age of oldest job per queue |
+| Errors, uptime, metrics | Sentry free (reported 5,000 errors a month), UptimeRobot free (50 monitors, 5-minute checks), Grafana Cloud free (10,000 series, 14-day retention) [S, search results] |
+| Database and jobs | Slow-query log, connections, replication lag, table and index growth; queue depth, failure rate, age of oldest job |
 | Data quality | Accuracy by source (audit samples), freshness, coverage by place and concept, duplicate rate |
-| **AI spend** | Every call records tokens and dollars with a job tag; a daily cap stops the pipeline; an alert at 50% and 80% of the monthly cap; a dashboard of cost per verified record |
-| Outreach | Delivery, failure and opt-out rates per sender and per country |
-| Money | Daily reconciliation of ledger against payment-provider reports |
+| **AI spend** | Every call logs tokens and dollars with a job tag; a daily cap stops the pipeline; alerts at 50% and 80% of the monthly cap; dashboard of cost per verified record |
+| Outreach and money | Delivery, failure and opt-out rates per sender and country; daily reconciliation of ledger against payment-provider reports |
 
 ---
 
@@ -363,30 +357,30 @@ Backups: nightly logical dump plus continuous WAL archive (the log of changes th
 
 ### 8.1 Build effort (estimates, person-months)
 
-Assumptions: one to two experienced engineers directing AI coding agents, with human review of all code touching security, money and data rules. "Person-month" is a full month of a skilled engineer. These are estimates, not quotes [I]. Ranges are wide because the data decisions (F4 step trigger, Q-P6 draft rules) are still open.
+Assumptions: one to two experienced engineers directing AI coding agents, with human review of all code touching security, money and data rules. These are estimates, not quotes [I]; ranges are wide because data decisions (F4 step trigger, Q-P6 draft rules) are open.
 
 | Phase | Scope | Low | High |
 |---|---|---|---|
-| P0 | Foundations: rotate secrets, repository clean-up, CI with Postgres, stack decision, schema v1 | 0.5 | 1.0 |
-| P1 | Data core: place tree, taxonomy, entries with provenance, import, normalisation, duplicate detection v1, back office (Django admin) | 3.0 | 5.0 |
-| P2 | Public site: server-rendered pages, URLs, Urdu and English, search v1, indexing rules and sitemaps, verification states, claim flow | 3.0 | 5.0 |
-| P3 | Money v1: accounts and roles, access tiers, manual payment recording, ledger, audit log, property tests | 2.0 | 4.0 |
-| P4 | Outreach: provider, consent register, opt-out, caps, templates, delivery callbacks | 2.0 | 4.0 |
-| P5 | Growth money: roll-up counters, paid ranking, subscriptions, automated payments and payouts, KYC | 4.0 | 7.0 |
-| P6 | Scale: search engine, replicas, country partitions, load tests, recovery drills | 2.0 | 4.0 |
-| T1 | Agent pipeline (parallel): runner, evidence store, gates, cost caps, audit sets | 1.5 | 3.0 |
+| P0 | Rotate secrets, clean-up, CI with Postgres, stack decision, schema v1 | 0.5 | 1.0 |
+| P1 | Data core: places, taxonomy, entries with provenance, import, normalisation, dedupe v1, back office | 3.0 | 5.0 |
+| P2 | Public site: server-rendered pages, Urdu and English, search v1, indexing rules, verification states, claim flow | 3.0 | 5.0 |
+| P3 | Money v1: accounts, access tiers, manual payments, ledger, audit log, property tests | 2.0 | 4.0 |
+| P4 | Outreach: provider, consent register, opt-out, caps, callbacks | 2.0 | 4.0 |
+| P5 | Roll-ups, paid ranking, subscriptions, automated payments and payouts, KYC | 4.0 | 7.0 |
+| P6 | Search engine, replicas, country partitions, load tests, recovery drills | 2.0 | 4.0 |
+| T1 | Agent pipeline (parallel track) | 1.5 | 3.0 |
 | | **Subtotal** | **18.0** | **33.0** |
-| | With 12 to 20% for security, operations and review | **20** | **40** |
-| | Through P3 plus the agent track (the first revenue-capable system) | **10** | **18** |
+| | **With 12 to 20% for security, operations and review** | **20** | **40** |
+| | First revenue-capable system (P0 to P3 plus agent track) | **10** | **18** |
 | | Same work without AI assistance (1.6 to 2.2 times) | 32 | 87 |
 
-Cash cost of build labour at assumed rates of $1,500, $4,000 and $8,000 per person-month: $30,000 to $59,000, $81,000 to $158,000 and $161,000 to $317,000 for the full range [I]. The founder's zero-spend preference means most of P0 to P3 should be built by the founder directing AI agents, plus a part-time reviewer.
+At $1,500, $4,000 and $8,000 per person-month the full range is $30,000 to $59,000, $81,000 to $158,000 and $161,000 to $317,000 [I].
 
 ### 8.2 Running cost per stage (US dollars per month)
 
-Assumptions: Hetzner-class small server about $5 and Supabase Pro $25 with 8 GB database [S, search results]; larger tiers are my estimates [I]. WhatsApp pass-through at the Pakistan rate cards above [S]. AI drafting spread over the stage's build-out period at $0.03 to $0.10 per record [S]. Phone-number lookups at $0.008 each [S, AI report].
+Anchors: a small Hetzner-class server about $5 and Supabase Pro $25 with 8 GB [S, search results]; larger tiers are my estimates [I]. WhatsApp at the Pakistan rates above [S]; AI drafting at $0.03 to $0.10 per record spread over the stage's build-out [S]; phone lookups $0.008 each [S].
 
-| Stage | Hosting and app | Database and backups | Search | CDN, email, monitoring | **Infrastructure total** | AI drafting | Phone lookups | Outreach pass-through (covered by buyer price) |
+| Stage | Hosting and app | Database and backups | Search | CDN, email, monitoring | **Infrastructure** | AI drafting | Phone lookups | Outreach pass-through |
 |---|---|---|---|---|---|---|---|---|
 | S0 Proof | 0 to 5 | 0 to 25 | 0 | 0 | **1 to 32** | 0 to 50 | 0 | 0 |
 | S1 Pilot | 10 to 40 | 26 to 65 | 0 | 0 to 50 | **37 to 157** | 250 to 830 | 64 | 47 |
@@ -394,21 +388,20 @@ Assumptions: Hetzner-class small server about $5 and Supabase Pro $25 with 8 GB 
 | S3 Multi-country | 400 to 1,200 | 850 to 2,700 | 100 to 500 | 420 to 1,700 | **1,775 to 6,110** | 12,500 to 42,000 | 3,300 | 2,000 to 9,500 |
 | S4 Global | 3,000 to 10,000 | 6,100 to 20,600 | 1,500 to 6,000 | 4,000 to 16,000 | **14,610 to 52,620** | 83,000 to 278,000 | 22,000 | 20,000 to 95,000 |
 
-Reading the table: **servers are not the problem; AI drafting and verification are.** At S2, infrastructure is under $1,000 a month while drafting could be $2,500 to $8,300. At S4, drafting is 5 times the infrastructure. A cap on AI spend per stage, set by measured cost per verified record, is the main cost control. Verification labour is not in the table because the decision is volunteers with non-cash rewards (CP1, CP9); capacity is the limit: at 1 to 3 minutes a record, 1 million records need 17,000 to 50,000 volunteer hours [I]. If surveyors are ever paid $3 to $15 an hour, that is $50 to $750 per 1,000 records [I].
+**Servers are not the problem; AI drafting and verification are.** At S2 infrastructure is under $1,000 a month while drafting could be $2,500 to $8,300; at S4 drafting is about 5 times infrastructure. A cap per stage, set from measured cost per verified record, is the main cost control. Verification labour is not in the table because the decision is volunteers with non-cash rewards (CP1, CP9); capacity is the limit: at 1 to 3 minutes a record, 1 million records need 17,000 to 50,000 volunteer hours [I]. Paid surveyors at $3 to $15 an hour would cost $50 to $750 per 1,000 records [I].
 
 ### 8.3 The zero-spend path and its limits
 
 | Need | Free option | Limit |
 |---|---|---|
-| Code and CI | GitHub public repository and Actions | Public repository means exposure; the old secrets must be rotated first |
-| Hosting | Free-tier static hosting and CDN; a free Postgres plan | Free plans pause or cap. A 500 MB free database holds about **287,000 entries** (full provenance) or 359,000 (compact) [M, I]; no assured backups, no uptime promise [U] |
-| Data | Overture, Foursquare, GeoNames and open registers (terms to be checked) | Licence duties; registers' terms unverified (Q-S3) |
-| AI | Free token quotas (for example 1 million tokens per model for 90 days on one provider [S]); token-only extraction costs $0.25 to $17 per 1,000 records with small models [S] | A free quota is a trial, about 160 records at 6,500 tokens each; accuracy untested |
-| Monitoring | Sentry, UptimeRobot, Grafana free tiers [S] | Small quotas; one user |
-| People | Volunteers; the founder | Verification capacity, key-person risk |
-| What cannot be zero | Domain name (about $10 to $15 a year [U]); counsel before any messaging or named-individual list; a payment collection route (Stripe and PayPal do not onboard Pakistani businesses [S, research notes]; local gateways such as PayFast and Safepay hold SBP licences [S]); a card that foreign hosts accept | The founder's time is the real budget |
+| Code, CI | GitHub public repository and Actions | Public means exposed: rotate the old secrets first |
+| Hosting | Free static hosting and CDN; a free Postgres plan | Plans pause or cap. A 500 MB free database holds about **287,000 entries** (full provenance) or 359,000 (compact) [M, I]; no assured backups or uptime [U] |
+| Data | Overture, Foursquare, GeoNames, open registers | Licence duties; register terms unverified (Q-S3) |
+| AI | Free token quotas (for example 1 million tokens per model for 90 days [S]); small models cost $0.25 to $17 per 1,000 records token-only [S] | A quota is a trial (about 160 records); accuracy untested |
+| Monitoring | Sentry, UptimeRobot, Grafana free tiers [S] | Small quotas |
+| What cannot be zero | Domain (about $10 to $15 a year [U]); counsel before any messaging or named-individual list; a payment collection route (Stripe and PayPal do not onboard Pakistani businesses [S, research notes]; PayFast and Safepay hold SBP licences [S]); a card that foreign hosts accept | The founder's time is the real budget |
 
-Practical verdict: **S0 and the early part of S1 can run at zero or under $50 a month.** From S1 onward the first real expenses are managed Postgres with backups (about $25 to $65) and verification tooling.
+**S0 and the early part of S1 can run at zero to under $50 a month.** The first real expenses are managed Postgres with backups ($25 to $65) and verification tooling.
 
 ---
 
