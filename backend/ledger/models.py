@@ -157,4 +157,5 @@ class Payout(models.Model):
     external_ref = models.CharField(max_length=80, blank=True)
     txn = models.ForeignKey(LedgerTxn, null=True, blank=True, on_delete=models.PROTECT, related_name="+")
     batch = models.ForeignKey(PayoutBatch, null=True, blank=True, on_delete=models.PROTECT, related_name="payouts")
+    details_hash = models.CharField(max_length=64, blank=True)  # keyed hash of the approved account at creation
     created_at = models.DateTimeField(default=clock.now)

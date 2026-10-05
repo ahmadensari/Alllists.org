@@ -76,9 +76,11 @@ def test_refund_revokes_access_and_reverses_the_ledger(products, buyer, tree, su
         services.refund_order(order, actor=buyer)
 
 
-def test_tax_is_added_from_country_configuration(products, buyer, settings):
+def test_tax_is_added_from_country_configuration(products, buyer, settings, tree, surgical):
     settings.TAX_RATES = {"PK": "17"}
-    order = services.create_order(buyer, products["subscription-city-month"], scope_path="pk.punjab")
+    order = services.create_order(
+        buyer, products["subscription-city-month"], scope_path="pk.punjab.sialkot", concept=surgical
+    )
     assert order.tax_minor == 493 and order.amount_minor == 2900 + 493
     services.record_payment(
         order, provider="manual", provider_ref="T1", amount_minor=order.amount_minor, fees_minor=100
@@ -217,11 +219,16 @@ def test_staff_record_payment_screen_needs_finance_role(products, buyer, db):
     assert plain.get("/staff/orders/").status_code == 403
 
 
-def test_buyer_pages(products, buyer):
+def test_buyer_pages(products, buyer, tree, surgical):
     c = Client()
     assert c.get("/account/subscription/")["Location"].startswith("/account/login/")
     c.force_login(buyer)
-    r = c.post("/account/subscription/", {"product": "subscription-city-month", "scope": ""})
+    refused = c.post("/account/subscription/", {"product": "subscription-city-month", "scope": ""})
+    assert refused.status_code == 200 and b"whole world" in refused.content  # no world-wide access at the city price
+    r = c.post(
+        "/account/subscription/",
+        {"product": "subscription-city-month", "scope": "pk.punjab.sialkot", "type": surgical.slug},
+    )
     ref = r["Location"].rstrip("/").split("/")[-1]
     page = c.get(f"/account/orders/{ref}/").content.decode()
     assert ref in page and "pending" in page

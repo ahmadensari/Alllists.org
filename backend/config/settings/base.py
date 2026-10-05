@@ -186,6 +186,8 @@ LOGGING = {
 CSP_REPORT_ONLY = os.environ.get("CSP_REPORT_ONLY", "") == "1"
 
 REFUND_HOLD_DAYS = 14
+SUBSCRIPTION_SCOPE_MULTIPLIER = {1: 20, 2: 10, 3: 1}  # place depth (country, region, city) -> times the city price
+SUBSCRIPTION_ANY_TYPE_MULTIPLIER = 3  # a subscription with no list type covers every list type in the place
 COMPANY_DETAILS = {  # the seller on every invoice; fill in once the company exists
     "name": os.environ.get("COMPANY_NAME", "AllLists"),
     "address": os.environ.get("COMPANY_ADDRESS", ""),

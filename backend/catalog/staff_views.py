@@ -618,6 +618,14 @@ def ledger_page(request):
                 if not has_cap(request.user, "approve_payout"):
                     return HttpResponseForbidden("Not allowed")
                 ledger_services.approve_batch(batch, approver=request.user)
+            elif action == "cancel_payout":
+                if not has_cap(request.user, "create_payout"):
+                    return HttpResponseForbidden("Not allowed")
+                from ledger.models import Payout
+
+                p = Payout.objects.filter(pk=request.POST.get("payout") or 0).first()
+                if p:
+                    ledger_services.cancel_payout(p, actor=request.user, reason=request.POST.get("reason", ""))
             elif action == "paid" and batch:
                 refs = {}
                 for line in request.POST.get("refs", "").splitlines():

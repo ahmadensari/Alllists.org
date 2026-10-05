@@ -74,6 +74,19 @@ def normalize_contact(kind, value, country_code=""):
     return digits
 
 
+def entity_type_for(concept, requested=None):
+    """Individuals are decided by the list type: a list type for people always makes person entries, whatever a caller or
+    form asks for. A caller may ask for the stricter case (a person on a business list) but never the reverse."""
+    cs = ListTypeSettings.objects.filter(concept_id=concept.pk).first()
+    if requested == Entry.EntityType.PERSON or concept.entity_type_default == Entry.EntityType.PERSON:
+        return Entry.EntityType.PERSON
+    if cs and cs.is_individual:
+        return Entry.EntityType.PERSON
+    if requested in Entry.EntityType.values:
+        return requested
+    return concept.entity_type_default if concept.entity_type_default in Entry.EntityType.values else "business"
+
+
 @transaction.atomic
 def create_entry(
     *,
@@ -110,7 +123,7 @@ def create_entry(
         place_path=place.path,
         country_code=country,
         primary_concept=primary_concept,
-        entity_type=fields.pop("entity_type", primary_concept.entity_type_default),
+        entity_type=entity_type_for(primary_concept, fields.pop("entity_type", None)),
         created_by=created_by,
         created_via=created_via,
         source=source,
@@ -270,8 +283,8 @@ def record_verification(entry, *, field_group, level, actor=None, method="", evi
     entry.save(update_fields=["last_verified_at"])
     if field_group == "certificates" and level in ("surveyor", "ai"):
         entry.identifier_set.update(last_checked=now.date())
-    if level in ("surveyor", "owner"):
-        _mark_credit_eligible(entry)
+    if level == "surveyor" or (level == "owner" and actor is not None and actor.pk != entry.created_by_id):
+        _mark_credit_eligible(entry)  # an owner check by the person who added the entry proves nothing independent
     audit(
         "verification.record",
         actor=actor,
@@ -545,6 +558,11 @@ def approve_claim_by_code(claim, contact, *, wording_version="v1"):
     from outreach.services import record_optin
 
     start = claim.entry
+    if claim.user_id == start.created_by_id:
+        raise EntryError(
+            "The person who added this entry cannot prove ownership with a code sent to a contact they supplied. "
+            "Send documents and a moderator will review them."
+        )
     decide_claim(claim, actor=claim.user, approve=True)
     record_optin(
         contact, method="claim_otp", wording_version=wording_version, evidence=f"code verified for {start.uid}"

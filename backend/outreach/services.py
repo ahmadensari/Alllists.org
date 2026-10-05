@@ -6,6 +6,8 @@ import secrets
 from datetime import timedelta
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.core.mail import send_mail
 from django.db import transaction
 
@@ -185,8 +187,13 @@ def send_enquiry(sender, entries, text, reply_to, *, allow_many=False, scope_pat
         raise RelayError(
             "Remove " + ", ".join(leaks) + " from your message. Replies reach you by email through AllLists."
         )
-    if "@" not in (reply_to or ""):
-        raise RelayError("a reply email address is needed")
+    reply_to = (reply_to or "").strip()
+    try:
+        validate_email(reply_to)
+    except ValidationError as exc:
+        raise RelayError("a valid reply email address is needed") from exc
+    if len(reply_to) > 254 or any(ch.isspace() or ord(ch) < 32 for ch in reply_to):
+        raise RelayError("a valid reply email address is needed")
     entries = list(entries)
     if not entries:
         raise RelayError("choose at least one business")

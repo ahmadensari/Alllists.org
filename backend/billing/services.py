@@ -34,6 +34,16 @@ class BillingError(ValueError):
     pass
 
 
+def scoped_price(base_minor, scope_path, concept):
+    """The listed price is for one city and one list type. A region or a country costs more, and so does every list type
+    in a place (multipliers in settings), so a cheap order cannot unlock much more than was paid for."""
+    depth = min(len(scope_path.split(".")), 3)
+    mult = Decimal(str(settings.SUBSCRIPTION_SCOPE_MULTIPLIER.get(depth, 1)))
+    if concept is None:
+        mult *= Decimal(str(settings.SUBSCRIPTION_ANY_TYPE_MULTIPLIER))
+    return int((Decimal(base_minor) * mult).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+
+
 def tax_rate_for(country_code):
     return str(getattr(settings, "TAX_RATES", {}).get((country_code or "").upper(), "0"))
 
@@ -55,13 +65,17 @@ def create_order(buyer, product, *, scope_path="", concept=None, entry=None, cam
     if not product.active:
         raise BillingError("this product is not on sale")
     price = product.price_minor
+    if product.kind == Product.Kind.SUBSCRIPTION:
+        if not scope_path:
+            raise BillingError("choose a place for the subscription; the whole world is not sold at the city price")
+        price = scoped_price(product.price_minor, scope_path, concept)
     if product.kind == Product.Kind.LISTING:
         if entry is None or not es.company_page_allowed(entry):
             raise BillingError("a company page needs an eligible entry")
         if not es.is_owner(entry, buyer):
             raise BillingError("only the owner can buy a company page")
-    elif product.kind == Product.Kind.LIST_ACCESS and concept is None and not scope_path:
-        raise BillingError("choose what to access")
+    elif product.kind == Product.Kind.LIST_ACCESS and (concept is None or not scope_path):
+        raise BillingError("choose a place and a list type")
     elif product.kind == Product.Kind.OUTREACH:
         if campaign is None or campaign.buyer_id != buyer.pk or campaign.status not in ("pending", "approved"):
             raise BillingError("choose one of your pending campaigns")

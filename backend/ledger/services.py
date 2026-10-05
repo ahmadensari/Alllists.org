@@ -322,6 +322,23 @@ def kyc_ok(user):
     return PayoutProfile.objects.filter(user=user, state="approved").exists()
 
 
+def details_fingerprint(user):
+    """Keyed hash of the payout details as they stand now, so a payout can prove they were not swapped after approval."""
+    from core.crypto import keyed_hash
+
+    from .models import PayoutProfile
+
+    prof = PayoutProfile.objects.filter(user=user).first()  # always fresh, never a cached related object
+    if prof is None:
+        return ""
+    return keyed_hash(f"payout:{prof.method}:{prof.country_code}:{prof.legal_name_enc}:{prof.account_enc}")
+
+
+def _details_unchanged(payout):
+    """True when the person's payout details are still approved and still the ones the payout was created with."""
+    return kyc_ok(payout.user) and payout.details_hash and details_fingerprint(payout.user) == payout.details_hash
+
+
 @transaction.atomic
 def submit_kyc(user, *, legal_name, country_code, method, account, tax_id=""):
     """Payout details. Any change goes back to review and blocks payouts until a person approves it again."""
@@ -372,10 +389,33 @@ def create_payout(user, *, creator, amount_minor=None, method="", currency="USD"
         raise LedgerError("below the minimum payout")
     method = method or user.payout_profile.method
     p = Payout.objects.create(
-        user=user, currency=currency, amount_minor=amount, method=method, created_by=creator, batch=batch
+        user=user,
+        currency=currency,
+        amount_minor=amount,
+        method=method,
+        created_by=creator,
+        batch=batch,
+        details_hash=details_fingerprint(user),
     )
     audit("payout.create", actor=creator, object_type="payout", object_uid=str(p.pk), payload={"amount": amount})
     return p
+
+
+@transaction.atomic
+def cancel_payout(payout, *, actor, reason=""):
+    """Cancel a payout that is not yet paid. The reserved amount becomes payable again; the batch total follows."""
+    if payout.state not in (Payout.State.PENDING, Payout.State.APPROVED):
+        raise LedgerError("only a pending or approved payout can be cancelled")
+    payout.state = Payout.State.CANCELLED
+    payout.save(update_fields=["state"])
+    if payout.batch_id:
+        batch = payout.batch
+        batch.total_minor = sum(p.amount_minor for p in batch.payouts.exclude(state="cancelled"))
+        batch.save(update_fields=["total_minor"])
+    audit(
+        "payout.cancel", actor=actor, object_type="payout", object_uid=str(payout.pk), payload={"reason": reason[:100]}
+    )
+    return payout
 
 
 @transaction.atomic
@@ -385,6 +425,10 @@ def approve_payout(payout, *, approver):
         raise LedgerError("payout is not pending")
     if approver.pk == payout.created_by_id:
         raise LedgerError("the person who created a payout cannot approve it")
+    if not _details_unchanged(payout):
+        raise LedgerError(
+            "the payout details changed or are no longer approved; cancel this payout and create it again"
+        )
     payout.state, payout.approved_by = Payout.State.APPROVED, approver
     payout.save(update_fields=["state", "approved_by"])
     audit("payout.approve", actor=approver, object_type="payout", object_uid=str(payout.pk))
@@ -395,6 +439,8 @@ def approve_payout(payout, *, approver):
 def mark_paid(payout, *, external_ref, now=None):
     if payout.state != Payout.State.APPROVED:
         raise LedgerError("payout must be approved first")
+    if not _details_unchanged(payout):
+        raise LedgerError("the payout details changed after approval; cancel this payout and create it again")
     cur = payout.currency
     txn, _ = post(
         f"payout:{payout.pk}",
@@ -454,7 +500,7 @@ def mark_batch_paid(batch, refs, *, now=None):
     """`refs` maps payout id to the bank or wallet reference. Every payout in the batch needs one."""
     if batch.state != "approved":
         raise LedgerError("batch must be approved first")
-    payouts = list(batch.payouts.select_for_update())
+    payouts = list(batch.payouts.select_for_update().exclude(state="cancelled"))
     missing = [p.pk for p in payouts if not refs.get(p.pk)]
     if missing:
         raise LedgerError(f"missing payment reference for payouts {missing}")

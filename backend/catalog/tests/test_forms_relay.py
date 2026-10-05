@@ -79,16 +79,15 @@ def test_add_entry_requires_login_and_rights_declaration(tree, surgical):
 
 
 def test_add_entry_rejects_person_when_switch_off_and_bad_place(tree, surgical):
+    from taxonomy.models import ListTypeSettings
+    from taxonomy.services import create_concept
+
+    tutors = create_concept(kind="list_type", name="Home tutors", entity_type_default="person")
+    ListTypeSettings.objects.filter(concept=tutors).update(is_individual=True)
     u, c = login("adder3")
     r = c.post(
         "/add/",
-        {
-            "type": "surgical-instrument-makers",
-            "name": "Dr X",
-            "place": tree["paris"].uid,
-            "rights": "1",
-            "entity_type": "person",
-        },
+        {"type": tutors.slug, "name": "Dr X", "place": tree["paris"].uid, "rights": "1"},  # no form value is needed
     )
     assert b"not open in this country" in r.content
     r = c.post("/add/", {"type": "surgical-instrument-makers", "name": "X", "rights": "1"})

@@ -95,7 +95,7 @@ def add_entry(request):
                 addons[f.key] = [s.strip() for s in raw.split(",") if s.strip()]
             else:
                 addons[f.key] = raw
-        entity = post.get("entity_type", "business")
+        entity = es.entity_type_for(concept)  # decided by the list type, never by a form value
         if (
             entity == "person"
             and not CountrySwitch.for_country(place.country_code if place else "").named_individuals_on
@@ -181,7 +181,14 @@ def claim(request, uid):
         if action == "send":
             channel = request.POST.get("channel")
             pool = [c for c in contacts if (c.kind == "email") == (channel == "email")]
-            if not pool:
+            if entry.created_by_id == request.user.pk:
+                ctx["errors"].append(
+                    (
+                        "channel",
+                        "You added this entry, so a code to its contact cannot prove ownership. Send documents instead.",
+                    )
+                )
+            elif not pool:
                 ctx["errors"].append(("channel", "No contact of that kind is stored."))
             else:
                 try:
