@@ -94,14 +94,19 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | E2 | **The platform sets the price of merged lists** | U | Decided (formula not defined, see Q-M3) |
 | E3 | First few listings are free to view for people who sign up | C1 | Proposed |
 | E4 | A free public preview of each list page (needed for search indexing) | my design | Proposed |
-| E5 | Buyers receive the data in the list (phone numbers, addresses, locations, ratings, business size, whatever it holds) | U | Decided |
-| E6 | **View-only, time-limited access** (e.g. 24 hours, 7 days) after payment, with paid renewals; **data cannot be downloaded** | C3 | **Conflict with E5** |
+| E5 | ~~Buyers receive the data in the list~~ **Superseded on 2026-10-05 by E13.** Original text: buyers receive phone numbers, addresses, locations, ratings, business size, whatever the list holds | U | Superseded |
+| E6 | View-only, time-limited access after payment, with paid renewals; data cannot be downloaded | C3 | **Adopted as the default** (resolves the old E5 conflict, see E13) |
 | E7 | Subscriptions: lower recurring fee for live, scope-based access (territory + category) | U | Decided |
 | E8 | Optional platform-wide subscription to all premium content | C1 | Proposed |
 | E9 | Pay-per-view access | C3 | Proposed (overlaps E6) |
 | E10 | Exports are rate-limited and watermarked (planted trace entries) to detect resale | my design | Proposed |
 | E11 | API access for premium users or businesses | C3, C4 | Later |
-| E12 | Pricing ladder: free preview → subscription → messaging → full list | my design, U | Proposed |
+| E12 | Pricing ladder: free preview → subscription → messaging → full list | my design, U | Proposed (full list is now the premium rung, see E13) |
+| E13 | **Downloading the data is not allowed except at a heavy price (about USD 1,000).** The default product is outreach: the buyer chooses the outreach method and the platform delivers it; the buyer never sees the contact data | U (2026-10-05) | **Decided.** Price basis open: a flat figure versus a price scaled by list size and freshness (Q-N1) |
+| E14 | Each list page shows the first few entries plus statistics about the whole list (counts by area, category, verification and freshness), without exposing the rest | U (2026-10-05) | **Decided** |
+| E15 | **Listed businesses pay to rank higher in a list** (paid position) | U (2026-10-05) | **Decided.** Needs: auction or fixed price, "sponsored" labelling, and who earns the revenue (Q-N2) |
+| E16 | **Government and institutions** (for example tax authorities) may buy lists or list statistics | U (2026-10-05) | **Decided in principle.** Needs a data-sharing policy disclosed to contributors and listed businesses (Q-N3) |
+| E17 | The platform is positioned as a cheaper, more targeted alternative to Google and Meta advertising for reaching businesses in a territory or trade | U (2026-10-05) | **Decided as positioning.** Must be tested: cost per reply or lead against Google and Meta (Q-N4) |
 
 ## F. Money: revenue sharing
 
@@ -127,8 +132,8 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 | ID | Requirement | Source | Status |
 |---|---|---|---|
 | G1 | Platform sends wholesale suppliers' messages to listed shops, for a fee, **without revealing contacts to the supplier** | U | Decided |
-| G2 | Email outreach tools for list buyers to contact entries, with campaign analytics | C3 | Conflict with G1 on channel and on who holds the contact data |
-| G3 | Channels: WhatsApp, SMS, in-app inbox (and/or email) | U (WhatsApp/SMS), C3 (email) | **Open** |
+| G2 | Email outreach tools for list buyers to contact entries, with campaign analytics | C3 | **Resolved by E13:** the buyer picks the method, the platform sends it, and contacts stay hidden |
+| G3 | Channels the buyer can choose: WhatsApp, SMS, email, in-app inbox, phone | U (2026-10-05: the buyer chooses the outreach method), C3 | Decided that the buyer chooses; the list of channels is **open** and legal limits differ by country |
 | G4 | Shops opt in (by category and channel); frequency caps; one-tap opt-out | my design | Proposed |
 | G5 | Supplier verification and message review before sending | my design | Proposed |
 | G6 | Delivery, read, reply and order tracking per campaign | my design, C3 | Proposed |
@@ -141,7 +146,7 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 |---|---|---|---|
 | H1 | Ads shown on list pages | C1 | Proposed |
 | H2 | A share of ad revenue goes to creators | C1, C2 | Proposed. Check the ad network's terms on revenue sharing |
-| H3 | Featured/sponsored placement sold directly to businesses | my design | Proposed |
+| H3 | Featured/sponsored placement sold directly to businesses | my design | Superseded by E15 (paid ranking is now decided) |
 | H4 | Affiliate-link revenue | C2 | Later |
 
 ## I. Personal and private lists
@@ -242,8 +247,11 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 
 | # | Conflict | Sources | My recommendation |
 |---|---|---|---|
-| P1 | Buyers receive the data (E5) vs. view-only, no downloads (E6) | U vs C3 | Offer both: cheap view-only subscription, expensive downloadable snapshot (see ladder E12) |
-| P2 | Messaging via WhatsApp/SMS with hidden contacts (G1, G3) vs. email tools for buyers (G2) | U vs C3 | Platform-sent messages first; no contact data released through that product |
+| P1 | ~~Buyers receive the data vs. view-only, no downloads~~ | U vs C3 | **Resolved 2026-10-05 (E13):** no download except at about USD 1,000; outreach and view-only access are the default |
+| P2 | ~~Messaging via WhatsApp/SMS with hidden contacts vs. email tools for buyers~~ | U vs C3 | **Resolved 2026-10-05 (E13, G2, G3):** the platform sends on the buyer's chosen method and contacts stay hidden |
+| P8 | Outreach is now the main product, but the business-case research ranked message campaigns as the riskiest product and recommended launching them last | U (E13) vs research report | **Open.** Legal exposure moves to the platform as the sender (Pakistan's cybercrime law s.25, US TCPA and CAN-SPAM, EU ePrivacy and GDPR, WhatsApp opt-in). Decide the first country and channel with a lawyer before building |
+| P9 | Paid ranking (E15) versus contributors paid per verified entry, and versus the verified-quality promise | U (E15) | **Open.** Who earns paid-ranking revenue, and how paid positions are labelled |
+| P10 | Government as a buyer (E16) versus businesses' and contributors' willingness to list | U (E16) | **Open.** Disclose the policy; consider starting with aggregate statistics only |
 | P3 | Role names admin/creator/subscriber vs admin/moderator/user | R vs C2 | Use a role set that includes both: admin, moderator, plus the capabilities creator/buyer/subscriber |
 | P4 | React SPA (N2) vs. server-rendered pages for search ranking | C2 vs my advice | Server-rendered |
 | P5 | Anti-scraping/CAPTCHA (M4) vs. public indexable pages (J4) | C3 vs my design | Protect only the paid data and exports |
@@ -292,6 +300,15 @@ It is a working document: nothing here is built, and nothing marked "unconfirmed
 
 15. Who will review the terms of service, data-protection position and messaging rules?
 16. Who can verify entries, and are contributors paid before or after verification?
+
+**Added 2026-10-05 (from the decisions on downloads, outreach, ranking and government buyers)**
+
+- **Q-N1.** Is the USD 1,000 download price flat, or scaled by list size and freshness? (A list of 50 entries and a list of 50,000 entries cannot cost the same.)
+- **Q-N2.** How is paid ranking sold (fixed monthly price, auction, tiers), how many paid positions per list, and does any of that revenue go to the contributors of the entry or the list? Paid positions must be labelled "sponsored".
+- **Q-N3.** What is the policy for selling to government: aggregate statistics only, or full lists? Will it be disclosed to contributors and listed businesses before they join?
+- **Q-N4.** How is "cheaper and more targeted than Google and Meta" measured: cost per reply, per lead, or per order? What is the target price per message or per reply?
+- **Q-N5.** Which outreach channels does the buyer choose from in the first country (WhatsApp, SMS, email, phone, in-app), and who bears the legal responsibility for message content?
+- **Q-N6.** Which country and which trade come first? This decides which messaging laws apply (see the business case report).
 
 ---
 
