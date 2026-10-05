@@ -33,6 +33,16 @@ SWAPS = [
 SKIP = re.compile(r"^\s*(#|\"\"\"|'''|import |from |raise |assert |@|class |def .*:\s*$|logger|audit\()")
 
 
+STRING = re.compile(r"\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*'")
+
+
+def code_only(line):
+    """The line with string contents and trailing comments blanked out (same length), so only real code is mutated."""
+    masked = STRING.sub(lambda m: m.group(0)[0] + " " * (len(m.group(0)) - 2) + m.group(0)[-1], line)
+    cut = masked.find("#")
+    return masked if cut < 0 else masked[:cut] + " " * (len(masked) - cut)
+
+
 def candidates(lines):
     in_doc = False
     for n, line in enumerate(lines):
@@ -41,8 +51,9 @@ def candidates(lines):
             continue
         if in_doc or SKIP.match(line):
             continue
+        masked = code_only(line)
         for pat, rep in SWAPS:
-            for m in re.finditer(pat, line):
+            for m in re.finditer(pat, masked):
                 yield n, m.start(), m.end(), rep
 
 
