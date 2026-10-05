@@ -1,0 +1,10 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Something wrong with {{ entry.name }}?</h1>
+<p class="muted">It is free to report a problem, correct an entry or ask us to remove your data.</p>
+{% include "catalog/forms/_errors.html" %}
+<form method="post" class="form">{% csrf_token %}
+<p class="field"><label for="id_kind">What is wrong?</label><select id="id_kind" name="kind">{% for k, label in kinds %}<option value="{{ k }}"{% if form.kind == k %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></p>
+<p class="field"><label for="id_text">Details</label><textarea id="id_text" name="text" maxlength="2000">{{ form.text }}</textarea></p>
+<p class="field"><label for="id_contact">How can we reach you? (optional)</label><input id="id_contact" name="contact" value="{{ form.contact }}"></p>
+<p class="visually-hidden" aria-hidden="true"><label>Leave this empty<input name="website2" tabindex="-1" autocomplete="off"></label></p>
+<button class="btn primary">Send</button></form>{% endblock %}

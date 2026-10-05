@@ -1,0 +1,3 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">My enquiries</h1>
+<ul class="records">{% for r in rows %}<li id="e{{ r.enq.pk }}"><strong>{{ r.enq.created_at|date:"j M Y" }}</strong> · {{ r.counts.delivered }} delivered, {{ r.counts.queued }} queued, {{ r.counts.not_reachable }} not reachable yet<br><span class="muted">{{ r.enq.text|truncatechars:140 }}</span></li>{% empty %}<li>No enquiries yet.</li>{% endfor %}</ul>{% endblock %}

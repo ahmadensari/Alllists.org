@@ -94,15 +94,11 @@ class Migration(migrations.Migration):
                 ("place_path", models.CharField(max_length=500)),
                 (
                     "lat",
-                    models.DecimalField(
-                        blank=True, decimal_places=6, max_digits=9, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=6, max_digits=9, null=True),
                 ),
                 (
                     "lon",
-                    models.DecimalField(
-                        blank=True, decimal_places=6, max_digits=9, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=6, max_digits=9, null=True),
                 ),
                 ("precision_class", models.CharField(blank=True, max_length=10)),
                 ("coord_source", models.CharField(blank=True, max_length=40)),
@@ -401,15 +397,11 @@ class Migration(migrations.Migration):
                 ("address_text", models.CharField(blank=True, max_length=400)),
                 (
                     "lat",
-                    models.DecimalField(
-                        blank=True, decimal_places=6, max_digits=9, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=6, max_digits=9, null=True),
                 ),
                 (
                     "lon",
-                    models.DecimalField(
-                        blank=True, decimal_places=6, max_digits=9, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=6, max_digits=9, null=True),
                 ),
                 (
                     "entry",
@@ -908,9 +900,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name="entry",
-            index=models.Index(
-                fields=["country_code", "claim_state"], name="entry_claim_idx"
-            ),
+            index=models.Index(fields=["country_code", "claim_state"], name="entry_claim_idx"),
         ),
         migrations.AlterUniqueTogether(
             name="valuemeta",

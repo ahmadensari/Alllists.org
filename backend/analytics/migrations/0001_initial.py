@@ -44,11 +44,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "indexes": [
-                    models.Index(
-                        fields=["country_code", "place_path"], name="rollup_place_idx"
-                    )
-                ],
+                "indexes": [models.Index(fields=["country_code", "place_path"], name="rollup_place_idx")],
                 "constraints": [
                     models.UniqueConstraint(
                         fields=("country_code", "place_path", "concept"),

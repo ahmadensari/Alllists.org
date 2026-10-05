@@ -35,6 +35,10 @@ INSTALLED_APPS = [
     "intake",
     "analytics",
     "access",
+    "accounts",
+    "moderation",
+    "outreach",
+    "volunteers",
     "catalog",
 ]
 MIDDLEWARE = [
@@ -45,6 +49,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "accounts.middleware.StaffMFAMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "catalog.middleware.TemplateVersionMiddleware",
@@ -140,3 +145,14 @@ GRACE_DAYS = 90
 INDEX_THRESHOLD = 10
 TEMPLATE_VERSION = "1"  # bump on any template change; part of cache keys and ETags (rule R25)
 PAGE_SIZE = 25
+
+# Passwords: Argon2id first; PBKDF2 stays only so older hashes can be read and upgraded.
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+]
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "AllLists <no-reply@alllists.org>")
+LOGIN_MAX_PER_ACCOUNT = 5
+LOGIN_MAX_PER_ADDRESS = 20
+SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")

@@ -133,18 +133,24 @@ def run_import(batch, actor=None, addons=None):
             continue
         contacts = [("phone", p) for p in dict.fromkeys(norm["phones"])] + [("email", e) for e in norm["emails"]]
         extra = {"addons": addons} if addons else {}
-        entry = es.create_entry(
-            name=norm["name"],
-            place=batch.place,
-            primary_concept=batch.concept,
-            created_by=batch.uploader,
-            created_via="import",
-            source=batch.source,
-            address_text=norm["address"],
-            website=norm["website"],
-            contacts=contacts,
-            **extra,
-        )
+        try:
+            entry = es.create_entry(
+                name=norm["name"],
+                place=batch.place,
+                primary_concept=batch.concept,
+                created_by=batch.uploader,
+                created_via="import",
+                source=batch.source,
+                address_text=norm["address"],
+                website=norm["website"],
+                contacts=contacts,
+                **extra,
+            )
+        except es.EntryError as exc:
+            row.status, row.message = ImportRow.Status.ERROR, str(exc)[:200]
+            counts["error"] += 1
+            row.save()
+            continue
         row.entry = entry
         found = dedupe.scan_entry(entry)
         if found and found[0][1] >= dedupe.AUTO_MERGE:

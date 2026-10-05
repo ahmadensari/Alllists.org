@@ -38,8 +38,20 @@ FIELDS = {
 
 @dataclass(frozen=True)
 class Viewer:
-    subscriber: bool = False
+    subscriber: bool = False  # platform-wide access (demo switch, or a whole-world entitlement)
     own_path: Optional[str] = None  # the viewer's own place subtree (chosen place, else edge guess)
+    scopes: tuple = ()  # ((place subtree path, concept id or None), ...) from live entitlements
+
+
+def subscribes_to(viewer, place_path, concept_id=None):
+    """True when the viewer's subscription covers this place (and list type, if the entitlement names one)."""
+    if viewer.subscriber:
+        return True
+    for path, cid in viewer.scopes:
+        inside = path == "" or place_path == path or place_path.startswith(path + ".")
+        if inside and (cid is None or concept_id is None or cid == concept_id):
+            return True
+    return False
 
 
 def scope_of(viewer, place_path):
@@ -53,18 +65,18 @@ def scope_of(viewer, place_path):
     return "wider"
 
 
-def visible(field, viewer, place_path):
+def visible(field, viewer, place_path, concept_id=None):
     """Return the visibility value for a field. Unknown fields are not shown."""
     row = FIELDS.get(field)
     if row is None:
         return "none"
-    if viewer.subscriber:
+    if subscribes_to(viewer, place_path, concept_id):
         return row[SUBSCRIBER]
     return row[FREE_OWN] if scope_of(viewer, place_path) == "own" else row[FREE_WIDER]
 
 
-def list_mode(viewer, place_path):
+def list_mode(viewer, place_path, concept_id=None):
     """How a list page's rows render for this viewer: "full" (subscriber), "free" (own place) or "names" (wider)."""
-    if viewer.subscriber:
+    if subscribes_to(viewer, place_path, concept_id):
         return "full"
     return "free" if scope_of(viewer, place_path) == "own" else "names"

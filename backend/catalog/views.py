@@ -12,7 +12,8 @@ from django.utils.cache import get_conditional_response
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_GET, require_POST
 
-from access.policy import Viewer, list_mode, visible
+from access import services as access_services
+from access.policy import Viewer, list_mode, subscribes_to, visible
 from analytics.models import RollupCell
 from core.models import CountrySwitch
 from entries.models import Entry
@@ -57,7 +58,8 @@ def get_viewer(request):
     """Fragments only. Subscriber access is the demo switch until real subscriptions exist (plan P3.04)."""
     place, source = viewer_place(request)
     sub = settings.DEMO_MODE and request.session.get("demo_plan") == "subscriber"
-    return Viewer(subscriber=bool(sub), own_path=place.path if place else None), place, source
+    scopes = tuple(access_services.active_scopes(request.user))
+    return Viewer(subscriber=bool(sub), own_path=place.path if place else None, scopes=scopes), place, source
 
 
 def breadcrumb(place):
@@ -352,7 +354,7 @@ def frag_list(request):
     concept = resolve_concept(request.GET.get("type", ""))
     if lp is None or concept is None:
         return private(HttpResponse("", status=204))
-    mode = list_mode(viewer, lp.path)
+    mode = list_mode(viewer, lp.path, concept.pk)
     area_slug = request.GET.get("area", "")
     area_place = Place.objects.filter(parent=lp, slug=area_slug, status="active").first() if area_slug else None
     sort = request.GET.get("sort") if request.GET.get("sort") in ("name", "checked") else "name"
@@ -376,7 +378,7 @@ def frag_list(request):
             "mode": mode,
             "details": details,
             "viewer": viewer,
-            "ads": visible("ads", viewer, lp.path) != "none",
+            "ads": visible("ads", viewer, lp.path, concept.pk) != "none",
             "names_only": mode == "names",
             "locked": mode != "full",
         },
@@ -394,17 +396,17 @@ def frag_entry(request, uid):
     )
     if entry is None:
         return private(HttpResponse("", status=204))
-    full = viewer.subscriber
+    full = subscribes_to(viewer, entry.place_path, entry.primary_concept_id)
     ctx = {
         "entry": entry,
         "full": full,
-        "ads": visible("ads", viewer, entry.place_path) != "none",
+        "ads": visible("ads", viewer, entry.place_path, entry.primary_concept_id) != "none",
         "socials": list(entry.social_set.all()) if full else [],
         "services": list(entry.service_set.all()) if full else [],
         "identifiers": list(entry.identifier_set.all()) if full else [],
         "addons_locked": [],
         "can_message": entry.status != "permanently_closed"
-        and visible("enquiry_one", viewer, entry.place_path) != "none",
+        and visible("enquiry_one", viewer, entry.place_path, entry.primary_concept_id) != "none",
     }
     if full and entry.primary_concept.template_id:
         from taxonomy.models import AddonField

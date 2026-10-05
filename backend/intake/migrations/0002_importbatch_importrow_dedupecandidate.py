@@ -179,11 +179,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "constraints": [
-                    models.UniqueConstraint(
-                        fields=("a_entry", "b_entry"), name="uniq_dedupe_pair"
-                    )
-                ],
+                "constraints": [models.UniqueConstraint(fields=("a_entry", "b_entry"), name="uniq_dedupe_pair")],
             },
         ),
     ]

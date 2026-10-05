@@ -1,0 +1,4 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Staff console</h1>
+<ul class="tilegrid">{% for r in rows %}<li><a class="tile" href="/staff/{{ r.q.key }}/"><strong>{{ r.q.title }}</strong><span class="big num">{{ r.n }}</span></a></li>{% endfor %}
+{% for key, title, cap in extra %}<li><a class="tile" href="/staff/{{ key }}/"><strong>{{ title }}</strong></a></li>{% endfor %}</ul>{% endblock %}

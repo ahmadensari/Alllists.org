@@ -1,0 +1,15 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Claim {{ entry.name }}</h1>
+{% include "catalog/forms/_errors.html" %}
+{% if step == 'choose' %}
+{% if channels %}<p>We will send a code to a contact we already hold for this business. We never show you the contact.</p>
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="send">
+<fieldset><legend>Send the code by</legend>{% for ch in channels %}<label><input type="radio" name="channel" value="{{ ch }}" {% if forloop.first %}checked{% endif %}> {% if ch == 'email' %}Email{% else %}Text or WhatsApp message{% endif %}</label><br>{% endfor %}</fieldset>
+<button class="btn primary">Send code</button></form>{% else %}<p>We hold no contact for this business to send a code to.</p>{% endif %}
+<h2>Or explain how you run it</h2>
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="documents"><p class="field"><label for="id_evidence">Describe your role and how a person can confirm it</label><textarea id="id_evidence" name="evidence"></textarea></p><button class="btn">Send for review</button></form>
+{% else %}
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="verify">
+<p class="field"><label for="id_code">The 6-digit code</label><input id="id_code" name="code" inputmode="numeric" autocomplete="one-time-code" required></p>
+<p class="field"><label><input id="id_optin" type="checkbox" name="optin" value="1"> Send me enquiries from buyers through AllLists. I can stop at any time with one tap.</label></p>
+<button class="btn primary">Confirm</button></form>{% endif %}{% endblock %}

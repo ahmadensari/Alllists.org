@@ -1,1 +1,2 @@
-{% load catalog_tags %}<section class="sec" id="something-wrong"><h2>{% tr 'something_wrong' %}</h2><p class="muted">{% tr 'something_wrong_body' %}</p></section>
+{% load catalog_tags %}<section class="sec" id="something-wrong"><h2>{% tr 'something_wrong' %}</h2><p class="muted">{% tr 'something_wrong_body' %}</p>
+<p class="actions">{% if entry %}<a class="btn" href="{% u '/wrong/' %}{{ entry.uid }}/">{% tr 'something_wrong' %}</a> <a class="btn" href="{% u '/claim/' %}{{ entry.uid }}/">{% tr 'claim_business' %}</a>{% else %}<a class="btn" href="{% u '/add/' %}">{% tr 'add_entry' %}</a> <a class="btn" href="{% u '/add/area/' %}">{% tr 'suggest_area' %}</a>{% endif %}</p></section>

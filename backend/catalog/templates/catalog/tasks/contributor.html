@@ -1,0 +1,6 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">My contributions</h1>
+<dl class="facts"><dt>Level</dt><dd>{{ prof.level }}</dd><dt>Entries added</dt><dd class="num">{{ added }}</dd>
+<dt>Checked by a person (counts for your share)</dt><dd class="num">{{ eligible }}</dd><dt>Waiting for a check</dt><dd class="num">{{ waiting }}</dd></dl>
+<p class="muted">You are paid only when a list is sold. Until then your work earns credit, levels and certificates. Nothing here is a promise of money.</p>
+<p>Your share link: <span class="mono">{{ ref_link }}</span></p>{% endblock %}

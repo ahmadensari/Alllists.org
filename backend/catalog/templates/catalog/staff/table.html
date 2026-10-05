@@ -1,0 +1,6 @@
+{% extends "catalog/base.html" %}{% block crumbs %}<nav class="crumbs"><a href="/staff/">Staff</a></nav>{% endblock %}
+{% block content %}<h1 id="results">{{ title }}</h1>
+{% for m in messages %}<div class="notice" role="status">{{ m }}</div>{% endfor %}
+{% if note %}<p>{{ note }}</p>{% endif %}
+{% if post_action %}<form method="post">{% csrf_token %}<button class="btn" name="action" value="{{ post_action.0 }}">{{ post_action.1 }}</button></form>{% endif %}
+<table class="staff"><thead><tr>{% for h in head %}<th scope="col">{{ h }}</th>{% endfor %}</tr></thead><tbody>{% for row in rows %}<tr>{% for c in row %}<td>{{ c }}</td>{% endfor %}</tr>{% endfor %}</tbody></table>{% endblock %}

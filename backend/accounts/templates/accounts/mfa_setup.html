@@ -1,0 +1,9 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Set up two-step sign-in</h1>
+{% if codes %}<div class="panel"><p><strong>Save these recovery codes now.</strong> Each works once. They are not shown again.</p><ul class="mono">{% for c in codes %}<li>{{ c }}</li>{% endfor %}</ul><p><a class="btn primary" href="/account/">Continue</a></p></div>
+{% else %}
+<p>Add this key to an authenticator app (time-based, 6 digits), then enter the code it shows.</p>
+<p class="mono num">{{ secret }}</p><p class="small muted">{{ uri }}</p>
+{% if error %}<div class="notice" role="alert">{{ error }}</div>{% endif %}
+<form method="post" class="form">{% csrf_token %}<p class="field"><label for="id_code">Code</label><input id="id_code" name="code" inputmode="numeric" autocomplete="one-time-code" required></p><button class="btn primary">Confirm</button></form>
+{% endif %}{% endblock %}

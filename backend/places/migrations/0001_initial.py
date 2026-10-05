@@ -63,15 +63,11 @@ class Migration(migrations.Migration):
                 ("depth", models.PositiveSmallIntegerField(default=0)),
                 (
                     "centre_lat",
-                    models.DecimalField(
-                        blank=True, decimal_places=6, max_digits=9, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=6, max_digits=9, null=True),
                 ),
                 (
                     "centre_lon",
-                    models.DecimalField(
-                        blank=True, decimal_places=6, max_digits=9, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=6, max_digits=9, null=True),
                 ),
                 ("population_band", models.CharField(blank=True, max_length=20)),
                 (
@@ -202,9 +198,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name="place",
-            constraint=models.UniqueConstraint(
-                fields=("parent", "slug"), name="places_uniq_slug_per_parent"
-            ),
+            constraint=models.UniqueConstraint(fields=("parent", "slug"), name="places_uniq_slug_per_parent"),
         ),
         migrations.AddConstraint(
             model_name="place",

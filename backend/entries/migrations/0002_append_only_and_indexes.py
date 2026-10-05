@@ -11,6 +11,8 @@ class Migration(migrations.Migration):
         append_only("entries_verificationevent"),
         append_only("entries_consentrecord"),
         # a published entry needs a place and a name; plain checks the application also enforces
-        only_postgres("ALTER TABLE entries_entry ADD CONSTRAINT entry_name_not_blank CHECK (length(trim(name)) > 0);",
-                      "ALTER TABLE entries_entry DROP CONSTRAINT IF EXISTS entry_name_not_blank;"),
+        only_postgres(
+            "ALTER TABLE entries_entry ADD CONSTRAINT entry_name_not_blank CHECK (length(trim(name)) > 0);",
+            "ALTER TABLE entries_entry DROP CONSTRAINT IF EXISTS entry_name_not_blank;",
+        ),
     ]

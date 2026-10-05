@@ -1,0 +1,11 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Your account</h1>
+<p>Signed in as <strong>{{ request.user.username }}</strong>{% if profile and not profile.email_verified %} · email not confirmed yet{% endif %}.</p>
+{% if roles %}<p>Roles: {{ roles|join:", " }}</p>{% endif %}
+<ul class="records">
+<li><a href="/add/">Add an entry</a></li>
+<li><a href="/account/tasks/">My verification tasks</a></li>
+<li><a href="/account/subscription/">Subscription</a></li>
+<li><a href="/account/delete/">Delete my account</a></li>
+</ul>
+<form method="post" action="/account/logout/">{% csrf_token %}<button class="btn">Sign out</button></form>{% endblock %}

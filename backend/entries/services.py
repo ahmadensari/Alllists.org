@@ -89,6 +89,11 @@ def create_entry(
 ):
     if created_via in (Entry.CreatedVia.IMPORT, Entry.CreatedVia.AGENT, Entry.CreatedVia.REGISTER):
         assert_allowed(source, "import" if created_via != Entry.CreatedVia.AGENT else "agent_fetch")
+    from outreach.services import is_suppressed, normalized_hash  # late import: outreach depends on entries
+
+    for kind, value in contacts:
+        if is_suppressed(normalized_hash(kind, value, place.country_code)):
+            raise EntryError("this contact asked to be removed and cannot be added again")
     addons = fields.get("addons") or {}
     if primary_concept.template_id:
         problems = validate_addons(primary_concept.template, addons)
@@ -526,3 +531,17 @@ def merge_entries(keep, drop, *, actor=None, score=None):
         payload={"from": drop.uid, "score": score},
     )
     return keep
+
+
+@transaction.atomic
+def approve_claim_by_code(claim, contact, *, wording_version="v1"):
+    """A claimant who proved control of a stored contact with a one-time code becomes the owner. The decision is recorded
+    against the claimant, with the method, so a moderator can review it later."""
+    from outreach.services import record_optin
+
+    start = claim.entry
+    decide_claim(claim, actor=claim.user, approve=True)
+    record_optin(
+        contact, method="claim_otp", wording_version=wording_version, evidence=f"code verified for {start.uid}"
+    )
+    return claim

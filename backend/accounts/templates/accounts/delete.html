@@ -1,0 +1,4 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Delete my account</h1><p>This removes your personal details. Entries you added stay, without your name.</p>
+{% if error %}<div class="notice" role="alert">{{ error }}</div>{% endif %}
+<form method="post" class="form">{% csrf_token %}<p class="field"><label for="id_password">Your password</label><input id="id_password" name="password" type="password" required></p><button class="btn primary">Delete my account</button></form>{% endblock %}

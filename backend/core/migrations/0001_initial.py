@@ -109,9 +109,7 @@ class Migration(migrations.Migration):
                 ("enabled_default", models.BooleanField(default=False)),
                 (
                     "country_code",
-                    models.CharField(
-                        blank=True, help_text="Blank means every country", max_length=2
-                    ),
+                    models.CharField(blank=True, help_text="Blank means every country", max_length=2),
                 ),
                 ("rollout_percent", models.PositiveSmallIntegerField(default=100)),
             ],

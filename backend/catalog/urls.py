@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 
-from . import views
+from . import forms_views, staff_views, task_views, views
 
 urlpatterns = [
     path("", views.world, name="world"),
@@ -9,6 +9,26 @@ urlpatterns = [
     path("sitemap.xml", views.sitemap_index),
     path("sitemaps/<str:cc>-<int:n>.xml", views.sitemap_shard),
     path("prefs/", views.prefs, name="prefs"),
+    path("add/", forms_views.add_entry),
+    path("add/area/", forms_views.add_area),
+    path("claim/<str:uid>/", forms_views.claim),
+    path("wrong/<str:uid>/", forms_views.wrong),
+    path("message/<str:uid>/", forms_views.message),
+    path("enquiry/", forms_views.enquiry_many),
+    path("optout/<str:token>/", forms_views.optout),
+    path("account/enquiries/", forms_views.my_enquiries),
+    path("staff/", staff_views.index),
+    path("staff/imports/", staff_views.imports),
+    path("staff/sources/", staff_views.sources),
+    path("staff/tasks/", staff_views.tasks),
+    path("staff/audit/", staff_views.audit_view),
+    path("staff/switches/", staff_views.switches),
+    path("staff/outbox/", staff_views.outbox),
+    path("staff/<str:key>/", staff_views.show_queue),
+    path("staff/<str:key>/<int:pk>/<str:action>/", staff_views.act),
+    path("account/tasks/", task_views.my_tasks),
+    path("account/tasks/<int:pk>/", task_views.task_detail),
+    path("account/contributor/", task_views.contributor_page),
     path("_f/near-you/", views.frag_near_you),
     path("_f/list/", views.frag_list),
     path("_f/entry/<str:uid>/", views.frag_entry),

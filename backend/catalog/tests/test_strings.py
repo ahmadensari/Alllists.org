@@ -14,7 +14,9 @@ def test_no_stray_urdu_keys():
 def test_plural_selection_and_fallback():
     assert strings.t("en", "n_entries", n=1) == "1 entry" and strings.t("en", "n_entries", n=3) == "3 entries"
     assert strings.t("ur", "n_entries", n=1) == "1 اندراج"
-    assert strings.t("ur", "addon_tax_ids") == strings.t("en", "addon_tax_ids")  # untranslated key falls back to English
+    assert strings.t("ur", "addon_tax_ids") == strings.t(
+        "en", "addon_tax_ids"
+    )  # untranslated key falls back to English
 
 
 def test_titles_follow_the_specified_pattern():
