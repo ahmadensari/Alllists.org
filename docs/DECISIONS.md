@@ -162,3 +162,7 @@ For the time being all work is in English only: pages, labels, messages, documen
 ## Build log: extended list types and domain (2026-10-06)
 
 `manage.py seed_taxonomy --extended` loads the merged research set (inventory plus platform catalogue, 235 unique types in `backend/taxonomy/data/list_types.csv`) on top of the 32 seeded types; safe to repeat; individuals and child-facing types are created gated (contacts hidden). Default templates are not yet assigned to the new types. The domain in code, deploy files and the user agent is now alllists.com. Run `seed_taxonomy --extended`, load places, then `generate_lists --levels world,country,admin1,city` to create the stored lists.
+
+## Build log: visitor address trust (2026-10-06)
+
+The visitor address now comes from Cloudflare's header only when `BEHIND_CLOUDFLARE=1`; otherwise the socket address is used, so quota and throttle keys cannot be forged by sending the header (security requirement AS-01). Set the variable on the real server once Cloudflare fronts the site.

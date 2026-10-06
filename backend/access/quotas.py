@@ -4,6 +4,7 @@ from django.db import IntegrityError, transaction
 from django.db.models import F
 
 from core import clock
+from core.clientip import client_address
 from core.crypto import keyed_hash
 from core.models import audit
 
@@ -20,7 +21,7 @@ def subject_for(request):
     user = getattr(request, "user", None)
     if user is not None and user.is_authenticated:
         return keyed_hash(f"user:{user.pk}"), "account"
-    addr = request.META.get("HTTP_CF_CONNECTING_IP") or request.META.get("REMOTE_ADDR", "")
+    addr = client_address(request)
     return keyed_hash(f"addr:{addr}"), "anon"
 
 

@@ -179,6 +179,8 @@ EXTRACT_DIR = os.environ.get("EXTRACT_DIR", str(BASE_DIR / "var" / "extracts"))
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "AllLists <no-reply@alllists.com>")
 LOGIN_MAX_PER_ACCOUNT = 5
 LOGIN_MAX_PER_ADDRESS = 20
+# Trust Cloudflare's visitor-address header only when the site really sits behind Cloudflare (AS-01).
+BEHIND_CLOUDFLARE = os.environ.get("BEHIND_CLOUDFLARE", "") == "1"
 SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")
 
 LOGGING = {

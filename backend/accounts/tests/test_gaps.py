@@ -97,7 +97,8 @@ def test_username_case_and_spaces_do_not_dodge_the_lock(db):
     assert throttle.is_locked("  alice ", "8.8.8.8")
 
 
-def test_client_address_prefers_the_edge_header():
+def test_client_address_prefers_the_edge_header_only_behind_cloudflare(settings):
+    settings.BEHIND_CLOUDFLARE = True
     rf = RequestFactory()
     assert throttle.client_address(rf.get("/", HTTP_CF_CONNECTING_IP="5.5.5.5", REMOTE_ADDR="10.0.0.1")) == "5.5.5.5"
     assert throttle.client_address(rf.get("/", REMOTE_ADDR="10.0.0.1")) == "10.0.0.1"

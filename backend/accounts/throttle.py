@@ -5,6 +5,7 @@ from datetime import timedelta
 from django.conf import settings
 
 from core import clock
+from core.clientip import client_address as _client_address
 from core.crypto import keyed_hash
 
 from .models import LoginAttempt
@@ -36,4 +37,4 @@ def record(username, address, success):
 
 
 def client_address(request):
-    return request.META.get("HTTP_CF_CONNECTING_IP") or request.META.get("REMOTE_ADDR", "")
+    return _client_address(request)
