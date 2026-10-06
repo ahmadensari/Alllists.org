@@ -25,3 +25,6 @@ current      writers=1 hold=20ms  tx/s=      42  rows/s=       42  p50=  22.63ms
 current      writers=8 hold=20ms  tx/s=      43  rows/s=       43  p50= 186.59ms p99=  213.27ms
 chain16      writers=1 hold=20ms  tx/s=      35  rows/s=       35  p50=  22.47ms p99=  195.07ms
 chain16      writers=8 hold=20ms  tx/s=     234  rows/s=      234  p50=  28.14ms p99=  130.93ms
+unchained    writers=1 hold=20ms  tx/s=      32  rows/s=       32  p50=  23.17ms p99=  140.93ms
+unchained    writers=8 hold=20ms  tx/s=     337  rows/s=      337  p50=  22.61ms p99=   31.48ms
+== sealer running every 1 s while 8 writers insert unchained rows ==
