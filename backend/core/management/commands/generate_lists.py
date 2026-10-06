@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from django.db import connection
 
 from places.models import Place
-from taxonomy.models import Concept, PlaceList
+from taxonomy.models import PlaceList
 
 LEVELS = [lv for lv, _ in Place.Level.choices]
 

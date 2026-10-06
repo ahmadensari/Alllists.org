@@ -9,3 +9,7 @@ The build plan is `docs/TECHNICAL_PLAN.md`. Work is done in work packages (WP) n
 4. Modules talk to each other through `services.py` only. Migrations are forward-only in production.
 5. Decisions go in `docs/DECISIONS.md` before the code that depends on them.
 6. Never commit secrets. Tests use fake values.
+
+## Standing rules
+
+- English only for now: write all pages, labels, messages and documents in English. Do not add or review translations until the founder lifts this rule (docs/DECISIONS.md, "Rule: English only for now").

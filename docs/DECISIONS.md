@@ -154,3 +154,7 @@ Petrol pumps; schools (on a road, in a city); beauty parlours and salons; bakeri
 
 Founder decisions (answered in the session): lists are **stored rows**, one per list type per place (E27, supersedes the "virtual views" working view in C29 for storage; entries are still stored once); place tree from **GeoNames + Overture**; domain **alllists.com** (replaces the alllists.org default in section 9); list set to load is **all 113 platform types + the 124 inventory + the owner's seed list**, merged and de-duplicated.
 Built: `taxonomy.PlaceList` (unique per place and type) and `manage.py generate_lists [--levels ...] [--country XX] [--dry-run]`, one SQL insert, safe to repeat. Not yet done: loading the merged ~200 list types (only the 32 seeded types exist), loading the full GeoNames/Overture tree, switching domain settings to alllists.com. Cost warning: ~200 types times millions of places is hundreds of millions of rows; use `--levels` to start with world to city.
+
+## Rule: English only for now (2026-10-06, founder instruction)
+
+For the time being all work is in English only: pages, labels, messages, documents, list names, and new data. No new Urdu or other translations are written or reviewed; existing Urdu labels and the right-to-left support stay in the code, unused and untouched, until the founder lifts this rule. Default language stays `en` (`LANGUAGE_CODE`). Supersedes earlier notes that call for an Urdu review before launch.
