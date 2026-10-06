@@ -19,3 +19,4 @@ Read `docs/DECISIONS.md` first. Nothing marked Decided is reopened unless the fo
 10. Never print or commit secrets. The founder's pasted tokens and passwords stay redacted; only the founder can rotate them (`docs/runbooks/secret-rotation.md`).
 11. Do not ask the founder routine questions. Ask only when a decision is genuinely theirs, using a short pop-up question; otherwise use the defaults in `docs/DECISIONS.md` section 9.
 12. Branch: work on `claude/zen-wright-fudnux`, open drafts as pull requests, never push elsewhere.
+13. **Depth and scale:** follow `docs/REQUIREMENTS_DEPTH_AND_SCALE.md` and the `depth-and-scale` skill: the Hotels logic at every place level, depth over generalisation (manufacturing deepest), state scale arithmetic before design.
