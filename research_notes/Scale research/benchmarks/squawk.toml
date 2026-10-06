@@ -1,0 +1,13 @@
+# Proposed .squawk.toml for AllLists (repo root). See note 06, section 9.
+pg_version = "16.0"
+assume_in_transaction = false  # sqlmigrate output already contains BEGIN/COMMIT
+excluded_rules = [
+  "prefer-text-field",           # Django CharField(max_length) is the house style
+  "ban-drop-default",            # Django adds a column with DEFAULT then drops the default: the standard safe idiom
+  "transaction-nesting",         # sqlmigrate wraps each migration itself
+  "prefer-robust-stmts",         # Django migrations are not written to be re-run half way
+  "prefer-bigint-over-int",      # policy is set by the model review (BigAutoField is the default), not per statement
+  "prefer-bigint-over-smallint",
+  "require-lock-timeout",        # enforced centrally: role/database default + the Django check in the note
+  "require-statement-timeout",
+]

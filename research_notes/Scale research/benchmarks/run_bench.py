@@ -26,7 +26,7 @@ import psycopg
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--db", required=True)
-ap.add_argument("--scale", choices=["1m", "5m"], required=True)
+ap.add_argument("--scale", choices=["1m", "5m", "1mhd"], required=True)
 ap.add_argument("--n", type=int, default=80)
 ap.add_argument("--only", default="", help="comma list of substrings; a cell runs if scope:cls:method contains any")
 ap.add_argument("--socket-dir", default="/var/lib/postgresql/bench_pg16")

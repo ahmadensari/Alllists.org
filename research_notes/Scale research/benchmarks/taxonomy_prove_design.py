@@ -37,8 +37,13 @@ from analytics import recount  # noqa: E402
 from analytics.models import PlaceTotal, RollupCell  # noqa: E402
 from analytics.storerule import should_store  # noqa: E402
 from catalog import lists  # noqa: E402
+from datetime import timedelta  # noqa: E402
+
+from entries import lifecycle as lc  # noqa: E402
 from entries import membership as mb  # noqa: E402
-from entries.models import Entry, EntryConcept, EntryFacet  # noqa: E402
+from entries.merge import merge_with_undo, unmerge  # noqa: E402
+from entries.models import Brand, ClosureSignal, CreditEvent, Entry, EntryConcept, EntryFacet, EntryStatusEvent, MergeEvent  # noqa: E402
+from intake.branchrule import classify_pair  # noqa: E402
 from places.models import Place  # noqa: E402
 from places.services import create_place  # noqa: E402
 from taxonomy import closure, crosswalk, facets, slugs  # noqa: E402
@@ -709,6 +714,168 @@ def _():
 def _():
     assert slugs.resolve_slug("no-such-list-type").status == 404
 
+
+
+# --------------------------------------------------------------------------- C05 merge and unmerge
+@check("test_merge_unions_memberships_into_survivor")
+def _():
+    a, b = make_entry("Merge A", lahore, sports_gloves), make_entry("Merge B", lahore, football_gloves)
+    mb.add_secondary(b, prot, source=EntryConcept.Source.OWNER, evidence_ref=1)
+    ev = merge_with_undo(a, b)
+    got = {m.concept_id: m.role for m in EntryConcept.objects.filter(entry=a)}
+    assert got == {sports_gloves.pk: 1, football_gloves.pk: 2, prot.pk: 2}, got  # the absorbed primary became a secondary
+    assert sorted(ev.moved["memberships_added"]) == sorted([football_gloves.pk, prot.pk])
+
+
+@check("test_merged_entry_leaves_list_pages_and_survivor_appears_once")
+def _():
+    a, b = make_entry("Merge C", lahore, sports_gloves), make_entry("Merge D", lahore, sports_gloves)
+    merge_with_undo(a, b)
+    page = [e.pk for e in lists.first_page(lahore, sports_gloves, limit=500)]
+    assert a.pk in page and b.pk not in page and page.count(a.pk) == 1
+
+
+@check("test_unmerge_restores_children_credit_and_memberships")
+def _():
+    from entries.models import Contact
+    from outreach.services import normalized_hash
+
+    a, b = make_entry("Merge E", lahore, sports_gloves), make_entry("Merge F", lahore, football_gloves)
+    Contact.objects.create(entry=b, country_code="PK", kind="phone", value_enc="x", value_hash=normalized_hash("phone", "0300111", "PK"))
+    ev = merge_with_undo(a, b)
+    assert Contact.objects.filter(entry=a).count() == 1 and Contact.objects.filter(entry=b).count() == 0
+    unmerge(ev)
+    assert Contact.objects.filter(entry=b).count() == 1 and Contact.objects.filter(entry=a).count() == 0
+    assert {m.concept_id for m in EntryConcept.objects.filter(entry=a)} == {sports_gloves.pk}
+    b.refresh_from_db()
+    assert b.merged_into_id is None
+
+
+@check("test_unmerge_absorbed_returns_to_draft_not_published")
+def _():
+    a, b = make_entry("Merge G", lahore, sports_gloves), make_entry("Merge H", lahore, sports_gloves)
+    ev = merge_with_undo(a, b)
+    unmerge(ev)
+    b.refresh_from_db()
+    assert b.publish_state == "draft" and not EntryConcept.objects.filter(entry=b, listable=True).exists()
+    raises(Exception, lambda: unmerge(MergeEvent.objects.get(pk=ev.pk)))  # second undo refused
+
+
+@check("test_second_applied_merge_of_same_absorbed_rejected_by_database")
+def _():
+    a, b, c = (make_entry(f"Merge dup {x}", lahore, sports_gloves) for x in "abc")
+    merge_with_undo(a, b)
+    raises(IntegrityError, lambda: MergeEvent.objects.create(survivor=c, absorbed=b))
+
+
+# --------------------------------------------------------------------------- C13 closed, moved, renamed
+@check("test_agent_signals_never_close_alone")
+def _():
+    e = make_entry("Signal Ltd", lahore, sports_gloves)
+    for k in ("call_unanswered", "website_dead", "source_says_closed"):
+        lc.record_signal(e, k)
+    lc.recompute_closure_scores()
+    e.refresh_from_db()
+    assert e.closure_score == 4
+    assert lc.suspect_from_scores() >= 1
+    e.refresh_from_db()
+    assert e.status == "suspected_closed"
+    raises(lc.StatusError, lambda: lc.record_status(e, "permanently_closed", "web"))
+    lc.record_status(e, "permanently_closed", "surveyor", actor_id=1, evidence="phoned, shop shuttered")
+    e.refresh_from_db()
+    assert e.status == "permanently_closed"
+
+
+@check("test_signals_expire_and_score_recomputed")
+def _():
+    e = make_entry("Old signal", lahore, sports_gloves)
+    old = timezone.now() - timedelta(days=lc.SIGNAL_LIFE_DAYS + 5)
+    lc.record_signal(e, "source_says_closed", observed_at=old)
+    lc.record_signal(e, "call_unanswered")
+    lc.recompute_closure_scores()
+    e.refresh_from_db()
+    assert e.closure_score == 1
+
+
+@check("test_suspected_status_ranks_below_open_on_list")
+def _():
+    o, s_ = make_entry("Rank open", karachi, tiny), make_entry("Rank suspect", karachi, tiny)
+    lc.record_status(s_, "suspected_closed", "web", evidence="site down")
+    page = [e.pk for e in lists.first_page(karachi, tiny)]
+    assert page.index(o.pk) < page.index(s_.pk)
+
+
+@check("test_closed_entry_listed_last_in_grace_then_delisted")
+def _():
+    o, c = make_entry("Grace open", karachi, football_gloves), make_entry("Grace closed", karachi, football_gloves)
+    lc.record_status(c, "permanently_closed", "owner", actor_id=2, observed_at=timezone.now() - timedelta(days=30))
+    page = [e.pk for e in lists.first_page(karachi, football_gloves)]
+    assert page.index(o.pk) < page.index(c.pk)  # still shown, tagged on the page, ranked last
+    Entry.objects.filter(pk=c.pk).update(status_date=(timezone.now() - timedelta(days=95)).date())
+    assert lc.sweep_grace() >= 1
+    assert c.pk not in [e.pk for e in lists.first_page(karachi, football_gloves)]
+
+
+@check("test_reopen_needs_human_and_clears_signals")
+def _():
+    e = make_entry("Reopen", lahore, sports_gloves)
+    lc.record_status(e, "permanently_closed", "owner", actor_id=3)
+    raises(lc.StatusError, lambda: lc.record_status(e, "open", "web"))
+    lc.record_status(e, "open", "owner", actor_id=3)
+    e.refresh_from_db()
+    assert e.status == "open" and e.closure_score == 0
+    assert EntryStatusEvent.objects.filter(entry=e).count() == 2
+
+
+@check("test_moved_entry_changes_place_lists_and_keeps_history")
+def _():
+    e = make_entry("Mover 2", lahore, sports_gloves)
+    succ = make_entry("Mover 2 new", karachi, sports_gloves)
+    lc.record_status(e, "moved", "owner", actor_id=4, successor=succ)
+    e.refresh_from_db()
+    assert e.moved_to_id == succ.pk and EntryStatusEvent.objects.filter(entry=e, successor_entry_id=succ.pk).exists()
+
+
+# --------------------------------------------------------------------------- C03 chain versus branch
+@check("test_branch_rule_table")
+def _():
+    cases = [
+        # name_sim, same_phone, distance_m, same_address_text, same_brand -> verdict
+        (0.98, True, 10, True, False, "duplicate"),
+        (0.95, False, 30, False, False, "duplicate"),
+        (0.95, True, 4200, False, False, "branch"),
+        (0.92, False, 900, False, False, "branch"),
+        (0.50, True, 3000, False, False, "shared_phone"),
+        (0.40, True, 15, False, False, "different"),
+        (0.30, False, 100, False, False, "different"),
+        (0.97, False, None, False, False, "review"),
+        (0.50, False, 1000, False, True, "branch"),
+        (0.75, True, 20, False, False, "duplicate"),
+        (0.95, False, 120, False, False, "review"),
+    ]
+    for ns, ph, d, addr, br, want in cases:
+        got = classify_pair(name_sim=ns, same_phone=ph, distance_m=d, same_address_text=addr, same_brand=br)
+        assert got == want, (ns, ph, d, addr, br, got, want)
+    assert classify_pair(name_sim=0.5, same_phone=True, distance_m=3000, same_address_text=False) != "duplicate"  # the 0.5 + shared phone defect
+
+
+@check("test_brand_unique_wikidata")
+def _():
+    Brand.objects.create(name="Chain A", name_fold="chain a", wikidata_id="Q42")
+    Brand.objects.create(name="Chain B", name_fold="chain b", wikidata_id="")
+    Brand.objects.create(name="Chain C", name_fold="chain c", wikidata_id="")  # blank ids may repeat
+    raises(IntegrityError, lambda: Brand.objects.create(name="Chain A2", name_fold="chain a2", wikidata_id="Q42"))
+
+
+@check("test_branch_counts_once_at_own_place")
+def _():
+    br = Brand.objects.create(name="Chain Z", name_fold="chain z")
+    head = make_entry("Chain Z head", lahore, football_gloves, brand=br)
+    b1 = make_entry("Chain Z Karachi", karachi, football_gloves, brand=br, parent_entry=head)
+    ids_l = {e.pk for e in lists.first_page(lahore, football_gloves, limit=500)}
+    ids_k = {e.pk for e in lists.first_page(karachi, football_gloves, limit=500)}
+    assert head.pk in ids_l and head.pk not in ids_k and b1.pk in ids_k and b1.pk not in ids_l
+    assert Entry.objects.filter(brand=br).count() == 2
 
 # --------------------------------------------------------------------------- report
 width = max(len(n) for n, _, _ in RESULTS)
