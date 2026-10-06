@@ -36,3 +36,14 @@ def test_extended_set_loads_once_and_gates_individuals(tree):
     assert c.settings.is_individual and c.settings.share_hidden
     q = Concept.objects.filter(kind="list_type", slug__contains="quran").first()
     assert q is None or q.settings.is_child_facing
+
+
+def test_large_runs_need_confirmation(tree, monkeypatch):
+    from core.management.commands import generate_lists as gl
+
+    call_command("seed_taxonomy")
+    monkeypatch.setattr(gl, "LARGE", 10)
+    call_command("generate_lists")
+    assert PlaceList.objects.count() == 0
+    call_command("generate_lists", "--confirm-large")
+    assert PlaceList.objects.count() > 10

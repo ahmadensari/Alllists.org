@@ -7,6 +7,7 @@ from psycopg import sql
 from places.models import Place
 from taxonomy.models import PlaceList
 
+LARGE = 5_000_000  # about 0.7 GB at 144 bytes a row; hosting note 03
 LEVELS = [lv for lv, _ in Place.Level.choices]
 
 
@@ -17,6 +18,7 @@ class Command(BaseCommand):
         parser.add_argument("--levels", default="", help="comma list, e.g. world,country,admin1,city; default all")
         parser.add_argument("--country", default="", help="two-letter code, e.g. US")
         parser.add_argument("--dry-run", action="store_true")
+        parser.add_argument("--confirm-large", action="store_true", help=f"required above {LARGE:,} lists")
 
     def handle(self, *args, **opts):
         levels = [x for x in opts["levels"].split(",") if x]
@@ -41,6 +43,9 @@ class Command(BaseCommand):
         have = PlaceList.objects.count()
         self.stdout.write(f"{wanted} lists wanted, {have} already stored")
         if opts["dry_run"]:
+            return
+        if wanted - have > LARGE and not opts["confirm_large"]:
+            self.stderr.write(f"{wanted - have:,} new lists is large; use --levels or --country, or add --confirm-large")
             return
         before = have
         with connection.cursor() as cur:

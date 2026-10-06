@@ -177,3 +177,7 @@ The visitor address now comes from Cloudflare's header only when `BEHIND_CLOUDFL
 2. Finalise the prototype controls (done for the finder prototype: filters, shareable address, keyboard, theme memory).
 3. Train the list-filing agents to keep working on list filing, with an **AI auditor agent** (decided by the founder) embedded to keep re-checking the work independently.
 4. When all of that is ready the founder will ask to go beyond the prototype: build the full product, test, debug, and deploy on alllists.com. No deployment or upscaling before that instruction.
+
+## Backend research round (2026-10-06)
+
+Four research notes finished (`docs/BACKEND_RESEARCH_SUMMARY.md`). Defaults adopted pending founder change: 29 entry families; classified asking prices free, service prices locked; share-alike data sources (OpenStreetMap, OpenCorporates, Healthsites) left out; green sources must also carry licence text and review date; `ai` checks may not publish until the AI auditor exists; stricter pass rule for agent output than the 90% point estimate. Added `generate_lists --confirm-large` (runs above 5,000,000 new lists need it).
