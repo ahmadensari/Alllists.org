@@ -1,4 +1,5 @@
 import json
+import re
 
 import pytest
 from django.test import Client
@@ -49,6 +50,8 @@ def test_subject_access_names_what_we_hold_but_never_the_value(person):
     row = rep["entries"][0]
     assert row["code"] == person.uid and row["consent"][0]["status"] == "consented"
     text = privacy.subject_access_json(rep)
+    # timestamps are digits too and can contain "0300" by chance, so remove them before looking for the number
+    text = re.sub(r"\d{4}-\d\d-\d\dT[\d:.+-]+", "", text)
     assert "5551212" not in text and "0300" not in text
     assert privacy.subject_access_report("phone", "+92 300 000 0000", "PK")["entries"] == []
 
