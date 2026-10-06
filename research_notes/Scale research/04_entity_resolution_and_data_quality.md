@@ -27,7 +27,7 @@ Things I could not open: `docs.overturemaps.org` and `dataingovernment.blog.gov.
 6. **Freshness.** The existing rule (every check expires: AI 180 days, surveyor and owner 365, then 90 days grace) would cost USD 6 to 20 million a year at 100 million entries if every AI check were repeated [I]. A tiered, change-detecting schedule costs about USD 0.8 to 2.7 million a year (USD 0.008 to 0.027 per entry-year) [I] (section 5). `sweep_expired` loops over every published entry with one query each: about 200 million queries, 17 hours, every hour [I].
 7. **Humans.** One part-time surveyor does about 440 phone checks a month at 6 minutes each; checking every entry once by hand needs about 6,300 full-time years [I]. Human checks are therefore a scarce resource used on tier-1 entries, audits, disputes and review-band pairs only (section 6).
 8. **Quality bar.** Replace the 385-record estimate with a 29-record acceptance test per stratum (zero failures proves at least 90% at 95% confidence), escalating to 385 on any failure [I].
-9. **Abuse.** Competitor abuse is real at scale: Google reported blocking more than 100 million abusive Business Profile edits in 2021 and 12 million fake profiles in 2023 [R-search]. Defences: a report never changes state on its own; "closed" needs two independent signals (today one surveyor can close an entry alone [C `volunteers/services.py:75-80`]); merges involving a claimed, paid or person entry always go to a person.
+9. **Abuse.** Competitor abuse is real at scale: Google reported blocking more than 100 million abusive Business Profile edits in 2021 and 12 million fake profiles in 2023 [R-search]. Defences: a report never changes state on its own; "closed" needs two independent signals (today one surveyor can close an entry alone [C `volunteers/services.py:82-89`]); merges involving a claimed, paid or person entry always go to a person.
 10. **Work.** 22 work packages (section 10), each with named acceptance tests in the existing test folders. Nothing here requires deployment, spend or a founder decision before the pilot; items needing a decision are in section 11.
 
 ---
@@ -62,10 +62,10 @@ Files read: `backend/intake/dedupe.py`, `backend/intake/importer.py` (`settle_du
 | F20 | `CHECK_VALIDITY_DAYS = {surveyor 365, owner 365, ai 180}`, `GRACE_DAYS = 90`. One value per level, not per field group or list type. | `config/settings/base.py:161-162` | C |
 | F21 | `sweep_expired` runs hourly inside one transaction, locks every expired row, then loops over every published entry calling `current_level` (one query each) and `entry.verification_current.all()`. | `entries/services.py:339-382`; `core/jobs.py` (`expiry_sweeper`, HOUR) | C |
 | F22 | `queue_unchecked(limit=100)` runs daily and makes at most 100 verify tasks. `take_next_task` is oldest-first with `SKIP LOCKED`; no priority, no place or language affinity, no lease timeout. | `volunteers/services.py:34-63`; `core/jobs.py` | C |
-| F23 | A surveyor outcome `closed` sets `PERM_CLOSED` at once, with one person's evidence text. | `volunteers/services.py:75-80` | C |
+| F23 | A surveyor outcome `closed` sets `PERM_CLOSED` at once, with one person's evidence text. | `volunteers/services.py:82-89` | C |
 | F24 | Audit sample size 385 (95% confidence, 5% margin), accuracy bar 0.90; verifier canary accuracy under 0.8 after 3 tasks suspends. | `bulk.py:24-25`; `volunteers/services.py:109-116` | C |
 | F25 | The data-quality dashboard has three metrics: expired-check share (alert at 25%), "duplicate rejection rate" (rejected over merged plus rejected candidates, alert at 10%), surveyors under 80%. `AUTO_MERGED` is never written, so auto-merges are outside the second metric. | `core/monitoring.py:64-97`; `grep AUTO_MERGED` | C |
-| F26 | Bulk loaders place each record at the nearest city or area centre within 25 km (deepest within 3 km of the closest), by sorting every place of the country for every record. Many entries therefore share a city-level `place_id`, which makes the blocking key above produce very large blocks. | `intake/loaders.py:42-52,98-118` | C |
+| F26 | Bulk loaders place each record at the nearest city or area centre within 25 km (deepest within 3 km of the closest), by sorting every place of the country for every record. Many entries therefore share a city-level `place_id`, which makes the blocking key above produce very large blocks. | `intake/loaders.py:35-52,124-150` | C |
 | F27 | The plan's own numbers: 1 million entries all-pairs 5e11, blocked to about 20 per block gives 9.5 million comparisons; bulk loaders about 5,000 rows a second; 1.7 KB per entry (plan) against 6.6 KB per entry (hosting note's row arithmetic). | plan 4.3, 7.2, 7.4; hosting note 2.2 | C, I |
 
 ### 1.2 Measurements I ran (reproducible)
@@ -131,7 +131,7 @@ Against the plan's loader target of 5,000 rows a second [plan 7.2], the dedupe s
 |---|---|---|
 | Organisation (brand, company) | The legal or trading body | One `Entry` per organisation only where the list needs it (manufacturer lists); hotel chains are organisations |
 | Site (outlet, factory, hotel property) | A place where it operates | The normal `Entry` (one hotel, one factory). Two sites of one organisation are **linked by `parent_entry`, never merged** |
-| Person | A named individual | Gated (rules 5). Never auto-merged; consent applies to the survivor |
+| Person | A named individual | Gated (rule 5). Never auto-merged; consent applies to the survivor |
 
 A hotel in many lists is one site entry with many category memberships (section 4) and one place. A manufacturer in many product nodes is one entry with many memberships. A manufacturer with two factories is two site entries under one organisation entry. This keeps "same name, different address" from being merged by mistake, which is the commonest false merge for chains.
 
@@ -278,7 +278,7 @@ Embedding memory [I]: 768 dimensions at 4 bytes is 3.1 KB a vector. For one coun
 | Task kind | `dedupe_review` (exists in `Task.Kind`, never created by code [C]) |
 | Payload | Two entries side by side, the feature table, the evidence for each field, an LLM opinion with one-line reason, the "never merge" history |
 | Order | Priority by the larger of the two entries' views and paid or claimed status, then by p closest to 0.85 (most informative) |
-| Time budget | 40 s a pair for FAST REVIEW 15 s, full 60 to 90 s [H] |
+| Time budget | 40 s a pair on average; FAST REVIEW 15 s, full review 60 to 90 s [H] |
 | Decision | merge (choose survivor), not the same (writes a negative judgement), link as branch, skip |
 | Quality | 5% of tasks are seeded with known answers; two reviewers on 10% |
 | Volume (100 million entries) | 6 million review pairs if 2% of 300 million source records land in the review bands [H]; at 40 s that is 66,700 hours, about 42 full-time years (USD 0.2 to 1.0 million at USD 3 to 15 an hour); with an LLM pre-opinion that makes 65% of them confident, about 15 full-time years (USD 70,000 to 350,000) [I] |
@@ -305,7 +305,7 @@ Embedding memory [I]: 768 dimensions at 4 bytes is 3.1 KB a vector. For one coun
 6. **Verification.** Verification events are append-only and bound to facts that may differ. Copy the absorbed entry's still-valid events to the survivor as `carried` events (new rows pointing to the originals); never move them. Claims and consent: if exactly one side has a claim, it survives; both claimed is a NEVER; consent records are copied with `carried`.
 7. **Credit.** Keep the existing rule: the earliest `added` credit survives, the later is marked duplicate (D6).
 8. **Redirect.** Write `entry_redirect(absorbed, survivor)` and **flatten**: update every `entry_redirect` row that pointed to the absorbed entry to point to the survivor, recording `via_merge_event_id` (fixes F15).
-9. Write `merge_event`, `ChangeLog` and one audit row on the **per-partition** hash chain (section 8 of the capabilities note and D-10).
+9. Write `merge_event`, `ChangeLog` and one audit row on the **per-partition** hash chain (D-10; the global lock is the first row of the facts table in `Backend research/03_hosting_and_costs.md`).
 
 **Unmerge steps** (staff action, also automatic when a "not the same" judgement is saved on a merged pair):
 
@@ -324,10 +324,10 @@ Compute price: USD 0.0125 to 0.06 per vCPU-hour all in [I; the low end is the Or
 
 | Stage | Assumption | Per 1 million source records | Per 300 million |
 |---|---|---|---|
-| Normalise (fold twice, phone, domain, rule-based address) | 0.1 ms a record [H; fold is 7 µs, M] | 0.028 vCPU-h, USD 0.0004 to 0.002 | USD 0.1 to 0.5 |
+| Normalise (fold twice, phone, domain, rule-based address) | 0.1 ms a record [H; fold is 7 µs, M] | 0.028 vCPU-h, USD 0.0004 to 0.002 | USD 0.1 to 0.6 |
 | libpostal (optional) | 10,000 to 30,000 a second a thread [R] | 33 to 100 s, USD under 0.002 | USD under 0.5 |
 | Blocking and scoring, Splink | 1 million a minute on a laptop [R]; 8 vCPUs; Spark at 100 million with 3 times overhead [H] | 0.13 vCPU-h, USD 0.002 to 0.008 | USD 1.5 to 7 |
-| Embeddings (20% of records) | GPU 1,000 a second [H] | USD 0.02 to 0.06 | USD 6 to 17 |
+| Embeddings (20% of records) | GPU 1,000 a second [H] | USD 0.02 to 0.06 | USD 6 to 18 |
 | LLM pre-opinion on review-band pairs | 2% of records, 600 tokens in, 80 out, USD 0.001 to 0.005 a pair [I, from the Haiku prices in `docs/MASTER_DOCUMENT.md` as cited in the sibling note] | USD 20 to 100 | USD 6,000 to 30,000 |
 | Human review without LLM | 20,000 pairs, 40 s each | 222 hours, USD 667 to 3,333 | USD 0.2 to 1.0 million |
 | Human review with LLM (35% left) | | USD 233 to 1,167 | USD 70,000 to 350,000 |
@@ -440,7 +440,7 @@ For comparison the entry tables are 175 GB by the plan and about 660 GB by the h
 
 Why the denormalised columns: a leaf node can have 50,000 members in a country; a list for one district selects 500 of them. Without `place_path` in the index the planner must fetch 50,000 entry rows (random reads at about 0.05 ms each when cached is 2.5 s) to filter 500 [I]. With I3 it reads 500 index entries [I; planner behaviour H, verify with `EXPLAIN`].
 
-Concept ancestors: keep `concept_closure(ancestor_id, descendant_id, depth)` (nodes times depth, for 100,000 nodes at depth 6 about 600,000 rows). The current `descendant_concept_ids` runs one query per level (`analytics/rollups.py:47-52`); cache the result per node in process memory and invalidate on taxonomy version change.
+Concept ancestors: keep `concept_closure(ancestor_id, descendant_id, depth)` (nodes times depth, for 100,000 nodes at depth 6 about 600,000 rows). The current `descendant_concept_ids` runs one query per level (`analytics/rollups.py:42-47`); cache the result per node in process memory and invalidate on taxonomy version change.
 
 ### 4.4 Primary and secondary semantics, and abuse limits
 
@@ -516,7 +516,7 @@ Unit costs: a cheap automated check (HTTP, DNS, hash, register diff) USD 0.0002 
 | B, humans: 0.5% of entries a year targeted (500,000 calls) | 41,700 hours, 26 full-time years | USD 125,000 to 625,000 | |
 | **B total** | | **USD 0.77 to 2.72 million** | **USD 0.008 to 0.027** |
 
-Scenario B is 5 to 30 times the monthly infrastructure at 100 million entries (USD 3,700 to 29,700 a month, hosting note section 8), consistent with that note's finding that AI cost dominates. Set a freshness budget: alert at USD 0.02 and stop expansion at USD 0.03 per entry-year, in addition to the agent stop at USD 0.30 per verified record (rule 6). The 25% change rate and 60% website share are hypotheses; measure them in the pilot.
+Scenario B is 2 to 60 times the yearly infrastructure at 100 million entries (USD 3,700 to 29,700 a month, USD 44,000 to 356,000 a year, hosting note section 8), consistent with that note's finding that AI cost dominates. Set a freshness budget: alert at USD 0.02 and stop expansion at USD 0.03 per entry-year, in addition to the agent stop at USD 0.30 per verified record (rule 6). The 25% change rate and 60% website share are hypotheses; measure them in the pilot.
 
 ---
 
