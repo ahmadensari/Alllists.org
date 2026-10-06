@@ -1,0 +1,44 @@
+{
+ "scale": "5m",
+ "rows": 5000000,
+ "steps": {
+  "heap_pk": {
+   "seconds": 2.6,
+   "bytes": 112336896
+  },
+  "btree_list_query": {
+   "seconds": 10.2,
+   "bytes": 78372864
+  },
+  "btree_name_prefix": {
+   "seconds": 2.4,
+   "bytes": 118644736
+  },
+  "gin_trgm_name": {
+   "seconds": 31.9,
+   "bytes": 185778176
+  },
+  "add_tsv_column": {
+   "seconds": 56.5
+  },
+  "gin_tsv": {
+   "seconds": 9.7,
+   "bytes": 49594368
+  },
+  "variant_btree": {
+   "seconds": 0.2,
+   "bytes": 19775488
+  },
+  "variant_gin_trgm": {
+   "seconds": 4.8,
+   "bytes": 36413440
+  },
+  "analyze": {
+   "seconds": 0.3
+  }
+ },
+ "heap_bytes_before_tsv": 612368384,
+ "heap_bytes_with_tsv": 873988096,
+ "variant_heap_bytes": 57147392,
+ "count": 5000000
+}

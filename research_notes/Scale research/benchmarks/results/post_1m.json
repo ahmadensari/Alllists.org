@@ -1,0 +1,18 @@
+{
+ "idx_score_partial": {
+  "seconds": 0.3,
+  "bytes": 13451264
+ },
+ "words_table": {
+  "seconds": 2.5
+ },
+ "words_gin": {
+  "seconds": 0.1,
+  "bytes": 1933312
+ },
+ "vacuum_analyze": {
+  "seconds": 0.4
+ },
+ "distinct_words": 69438,
+ "words_heap_bytes": 3670016
+}

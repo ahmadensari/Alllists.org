@@ -1,0 +1,9 @@
+heap_pk                          2.6s  112336896
+btree_list_query                10.2s  78372864
+btree_name_prefix                2.4s  118644736
+gin_trgm_name                   31.9s  185778176
+add_tsv_column                  56.5s  
+gin_tsv                          9.7s  49594368
+variant_btree                    0.2s  19775488
+variant_gin_trgm                 4.8s  36413440
+analyze                          0.3s  

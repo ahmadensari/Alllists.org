@@ -1,0 +1,6 @@
+audit() writers=1 hold=0ms: n=3285 wall=12.00s rate=274/s p50=3.38ms p95=5.36ms p99=7.97ms rows=3286
+audit() writers=8 hold=0ms: n=2954 wall=12.00s rate=246/s p50=31.42ms p95=41.76ms p99=51.14ms rows=2962
+audit() writers=1 hold=5ms: n=1159 wall=12.00s rate=97/s p50=10.06ms p95=12.40ms p99=15.28ms rows=1160
+audit() writers=8 hold=5ms: n=1132 wall=12.00s rate=94/s p50=81.89ms p95=93.81ms p99=188.93ms rows=1140
+audit() writers=1 hold=20ms: n=455 wall=12.00s rate=38/s p50=26.15ms p95=28.52ms p99=32.28ms rows=456
+audit() writers=8 hold=20ms: n=357 wall=12.00s rate=30/s p50=220.75ms p95=414.52ms p99=696.10ms rows=365
