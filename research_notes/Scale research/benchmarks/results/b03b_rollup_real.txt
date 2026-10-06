@@ -1,0 +1,6 @@
+-- recount_cell (real code) vs SQL aggregate: same cell, same instant --
+1k entries  (PK, city pk.p1.c1, leaf): total=4000 published=4000  real=8.83s (8,010 queries)  sql=60ms (warm 39ms)  speedup=225x  identical=True
+/home/user/Alllists.org/.venv/lib/python3.11/site-packages/django/utils/connection.py:15: UserWarning: Limit for query logging exceeded, only the last 9000 queries will be returned.
+  return getattr(self._connections[self._alias], item)
+5k entries  (PK, province pk.p1, mid): total=9000 published=9000  real=19.46s (982 queries)  sql=85ms (warm 97ms)  speedup=200x  identical=True
+20k entries (PK, province, root): total=24000 published=19000  real=39.99s (0 queries)  sql=209ms (warm 198ms)  speedup=202x  identical=True

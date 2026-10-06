@@ -20,7 +20,29 @@ import django  # noqa: E402
 django.setup()
 
 from django.db import connection  # noqa: E402
-from django.test.utils import CaptureQueriesContext  # noqa: E402
+
+
+class CaptureQueriesContext:
+    """Counts queries without keeping them (Django's own context keeps only the last 9,000)."""
+
+    def __init__(self, conn):
+        self.conn = conn
+        self.n = 0
+
+    def _wrap(self, execute, sql, params, many, context):
+        self.n += 1
+        return execute(sql, params, many, context)
+
+    def __enter__(self):
+        self.conn.execute_wrappers.append(self._wrap)
+        return self
+
+    def __exit__(self, *a):
+        self.conn.execute_wrappers.remove(self._wrap)
+
+    def __len__(self):
+        return self.n
+
 
 from analytics.models import RollupCell  # noqa: E402
 from analytics.rollups import concept_chain, descendant_concept_ids, place_paths, recount_cell, refresh_for_entry  # noqa: E402
@@ -72,10 +94,10 @@ def main():
     root = 1000
     print("-- recount_cell (real code) vs SQL aggregate: same cell, same instant --")
     for label, cc, path, cid in [
-        ("1k entries  (PK, city pk.p1.c1, leaf)", "PK", "pk.p1.c1", 1101),
-        ("5k entries  (PK, province pk.p1, mid)", "PK", "pk.p1", 1001),
-        ("20k entries (PK, province, root)", "PK", "pk.p1", 1000),
-        ("100k entries (PK, country, root)", "PK", "pk", 1000),
+        ("city + leaf concept (PK, pk.p1.c1)", "PK", "pk.p1.c1", 1101),
+        ("province + mid concept (PK, pk.p1)", "PK", "pk.p1", 1001),
+        ("province + root concept (PK, pk.p1)", "PK", "pk.p1", 1000),
+        ("country + root concept (PK, pk)", "PK", "pk", 1000),
     ]:
         with CaptureQueriesContext(connection) as q:
             t = time.perf_counter()

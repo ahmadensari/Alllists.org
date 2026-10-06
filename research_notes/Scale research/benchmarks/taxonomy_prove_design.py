@@ -439,6 +439,21 @@ def _():
     assert before == after
 
 
+@check("test_changes_logged_and_release_assigns_version")
+def _():
+    from taxonomy import changes
+    from taxonomy.models import TaxonomyChange
+
+    c = mk("Change log node", 3, [gloves])
+    slugs.rename(c, "change-log-renamed")
+    v, n = changes.release(changed_by="proof")
+    assert n >= 2 and not TaxonomyChange.objects.filter(release__isnull=True).exists()
+    d = changes.diff_for_review(v)
+    assert "rename" in d and "edge_add" in d
+    v2, n2 = changes.release()
+    assert v2 == v + 1 and n2 == 0
+
+
 @check("test_db_check_slug_current_xor_retired")
 def _():
     c = mk("Xor", 3, [gloves])
@@ -562,7 +577,7 @@ def _():
     assert facets.validate_facet_values(sports_gloves, {"tannage": ["chrome", "vegetable"], "material": ["cowhide"]})
 
 
-@check("test_child_cap_blocks_61st_listable_child")
+@check("test_child_cap_blocks_81st_listable_child")
 def _():
     parent = mk("Cap parent", 2, [leather])
     for i in range(facets.MAX_LISTABLE_CHILDREN):
@@ -708,6 +723,16 @@ def _():
     assert lists.resolve_list(lahore, mid).robots == "noindex,follow"  # 25 members but 0 verified
     assert lists.resolve_list(lahore, ver).robots == "index,follow"
     assert lists.resolve_list(lahore, pin).robots == "index,follow"
+
+
+@check("test_place_total_independent_of_store_rule")
+def _():
+    recount.recount_place_totals("PK")
+    pt = PlaceTotal.objects.get(country_code="PK", place_path=lahore.path)
+    n = Entry.objects.filter(place_path__startswith=lahore.path, deleted_at__isnull=True, merged_into__isnull=True).count()
+    assert pt.total == n and n > 0
+    assert PlaceTotal.objects.get(country_code="PK", place_path="").total >= pt.total
+    assert cell(lahore, tiny) is None  # the thin list has no cell, yet the place total counts its entries
 
 
 @check("test_unknown_slug_or_place_is_404_not_virtual")

@@ -1,0 +1,19 @@
+== sealer running every 1 s while 8 writers insert unchained rows ==
+writers inserted 15,532 rows (1,942/s with the sealer running); sealed 15,532 in 9 seals; unsealed after final pass 0
+verify_seals on 15,532 rows: 0.33s (47,550 rows/s) -> intact
+== bulk fill to 1,000,000 rows, seal, verify, tamper ==
+COPY fill: 1,015,532 rows total (40,424 rows/s incl. hashing in Python)
+seal 1,000,000 rows in 1.80s (556,259 rows/s)
+verify_seals on 1,015,532 rows: 15.35s (66,161 rows/s) -> intact
+anchor published (seq=19, seal_hash=2015c8cd0bb1f24a...) to an external write-once place
+tamper UPDATE one row -> seal 14: row id 500001 content does not match its row_hash
+tamper DELETE one row -> seal 14: row count 99999 != sealed 100000 (row removed or added)
+strong attacker rewrites row + hashes + all later seals; verify_seals -> intact (NOT DETECTED by the database alone)
+anchor check: MISMATCH -> rewrite detected by the external anchor
+after rollback verify_seals -> intact
+== per-row chain verification cost (single chain, one chain of 1,000,000 rows) ==
+batch500_chain fill: 1,000,000 rows in 29.9s (33,436 rows/s)
+verify chain links of 1,000,000 rows: 7.80s -> intact
+== deadlock demo ==
+multi-chain tx, opposite order: {'T1': 'DEADLOCK (aborted by server)', 'T2': 'ok'} after 1.02s
+multi-chain tx, sorted order: {'T2': 'ok', 'T1': 'ok'} after 1.53s

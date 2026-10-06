@@ -28,37 +28,37 @@ def main():
         # concepts: 1 root, 4 mid, 20 leaves
         c.execute(
             "INSERT INTO taxonomy_concept (id, uid, kind, slug, entity_type_default, natural_scale, status, created_at, parent_id) "
-            "VALUES (1000, 'C000000000000000000000ROOT', 'list_type', 'manufacturing', 'business', 'global', 'active', now(), NULL)"
+            "VALUES (1000, 'CROOT000000000000000000000', 'list_type', 'manufacturing', 'business', 'global', 'active', now(), NULL)"
         )
         c.execute(
             "INSERT INTO taxonomy_concept (id, uid, kind, slug, entity_type_default, natural_scale, status, created_at, parent_id) "
-            "SELECT 1000 + m, 'C0000000000000000000MID' || lpad(m::text, 3, '0'), 'list_type', 'mid-' || m, 'business', 'country', 'active', now(), 1000 "
+            "SELECT 1000 + m, 'CMID' || lpad(m::text, 22, '0'), 'list_type', 'mid-' || m, 'business', 'country', 'active', now(), 1000 "
             "FROM generate_series(1, 4) m"
         )
         c.execute(
             "INSERT INTO taxonomy_concept (id, uid, kind, slug, entity_type_default, natural_scale, status, created_at, parent_id) "
-            "SELECT 1100 + l, 'C000000000000000000LEAF' || lpad(l::text, 3, '0'), 'list_type', 'leaf-' || l, 'business', 'city', 'active', now(), 1000 + 1 + ((l - 1) / 5) "
+            "SELECT 1100 + l, 'CLEAF' || lpad(l::text, 21, '0'), 'list_type', 'leaf-' || l, 'business', 'city', 'active', now(), 1000 + 1 + ((l - 1) / 5) "
             "FROM generate_series(1, 20) l"
         )
         c.execute("INSERT INTO taxonomy_listtypesettings (concept_id, index_threshold, row_descriptor_field, actions_allowed, share_hidden, is_individual, is_child_facing, is_health, price_required_date) "
                   "SELECT id, 10, '', '[]', false, false, false, false, true FROM taxonomy_concept")
         # places: world, 10 countries, 4 provinces, 5 cities each
         c.execute("INSERT INTO places_place (id, uid, level, local_level_label, iso_code, country_code, slug, path, depth, population_band, status, wikidata_id, created_at) "
-                  "VALUES (1, 'P000000000000000000000WORLD', 'world', '', '', '', 'world', '', 0, '', 'active', '', now())")
+                  "VALUES (1, 'PWORLD00000000000000000000', 'world', '', '', '', 'world', '', 0, '', 'active', '', now())")
         for ci, cc in enumerate(COUNTRIES):
             slug = cc.lower()
             base = 100 + ci * 100
             c.execute("INSERT INTO places_place (id, uid, level, local_level_label, iso_code, country_code, slug, path, depth, population_band, status, wikidata_id, created_at, parent_id) "
                       "VALUES (%s, %s, 'country', '', %s, %s, %s, %s, 1, '', 'active', '', now(), 1)",
-                      (base, f"P{ci:02d}" + "0" * 20 + "CTRY", cc, cc, slug, slug))
+                      (base, f"PC{ci:02d}".ljust(26, "0"), cc, cc, slug, slug))
             for p in range(1, 5):
                 c.execute("INSERT INTO places_place (id, uid, level, local_level_label, iso_code, country_code, slug, path, depth, population_band, status, wikidata_id, created_at, parent_id) "
                           "VALUES (%s, %s, 'region', '', '', %s, %s, %s, 2, '', 'active', '', now(), %s)",
-                          (base + p * 10, f"P{ci:02d}R{p}" + "0" * 18 + "REG", cc, f"p{p}", f"{slug}.p{p}", base))
+                          (base + p * 10, f"PR{ci:02d}{p}".ljust(26, "0"), cc, f"p{p}", f"{slug}.p{p}", base))
                 for k in range(1, 6):
                     c.execute("INSERT INTO places_place (id, uid, level, local_level_label, iso_code, country_code, slug, path, depth, population_band, status, wikidata_id, created_at, parent_id) "
                               "VALUES (%s, %s, 'city', '', '', %s, %s, %s, 3, '', 'active', '', now(), %s)",
-                              (base + p * 10 + k, f"P{ci:02d}R{p}C{k}" + "0" * 16 + "CIT", cc, f"c{k}", f"{slug}.p{p}.c{k}", base + p * 10))
+                              (base + p * 10 + k, f"PT{ci:02d}{p}{k}".ljust(26, "0"), cc, f"c{k}", f"{slug}.p{p}.c{k}", base + p * 10))
     print(f"concepts and places: {t0.s:.1f}s", flush=True)
 
     with Timer() as t:
@@ -70,20 +70,20 @@ INSERT INTO entries_entry (uid, deleted_at, tombstone_reason, country_code, enti
   status, publish_state, address, address_text, place_path, precision_class, coord_source, service_area, website, size_band,
   languages, price_band, payment_methods, addons, claim_state, listing_plan, visibility_flags, created_via, created_at, updated_at,
   last_verified_at, place_id, primary_concept_id)
-SELECT 'E' || lpad(%(ci)s::text, 2, '0') || lpad(n::text, 23, '0'),
-       CASE WHEN n % 100 = 0 THEN now() ELSE NULL END, '', %(cc)s, 'business',
-       'Entry ' || %(cc)s || ' ' || n, 'en', 'entry ' || lower(%(cc)s) || ' ' || n, '',
-       'open', CASE WHEN n % 10 < 7 THEN 'published' WHEN n % 10 < 9 THEN 'draft' ELSE 'review' END,
-       '{}', '', lower(%(cc)s) || '.p' || (1 + n % 4) || '.c' || (1 + (n / 4) % 5), '', '', '{}', '', '',
-       '[]', '', '[]', '{}', 'unclaimed', 'basic', '[]', 'import', now() - (n % 700 || ' days')::interval, now(),
-       CASE WHEN n % 10 < 3 THEN now() - ((n % 300) || ' days')::interval ELSE NULL END,
-       %(base)s + (1 + n % 4) * 10 + (1 + (n / 4) % 5),
-       1100 + 1 + n % 20
-FROM generate_series(1, %(per)s) n
+SELECT 'E' || lpad(%(ci)s::int::text, 2, '0') || lpad(n::text, 23, '0'),
+       CASE WHEN n %% 100 = 0 THEN now() ELSE NULL END, '', %(cc)s::text, 'business',
+       'Entry ' || %(cc)s::text || ' ' || n, 'en', 'entry ' || lower(%(cc)s::text) || ' ' || n, '',
+       'open', CASE WHEN n %% 10 < 7 THEN 'published' WHEN n %% 10 < 9 THEN 'draft' ELSE 'review' END,
+       '{}', '', lower(%(cc)s::text) || '.p' || (1 + n %% 4) || '.c' || (1 + (n / 4) %% 5), '', '', '{}', '', '',
+       '[]', '', '[]', '{}', 'unclaimed', 'basic', '[]', 'import', now() - (n %% 700 || ' days')::interval, now(),
+       CASE WHEN n %% 10 < 3 THEN now() - ((n %% 300) || ' days')::interval ELSE NULL END,
+       %(base)s::int + (1 + n %% 4) * 10 + (1 + (n / 4) %% 5),
+       1100 + 1 + n %% 20
+FROM generate_series(1, %(per)s::int) n
 """,
                 {"ci": ci, "cc": cc, "base": base, "per": per},
             )
-        print(f"entries inserted: {t.s:.1f}s", flush=True)
+    print(f"entries inserted: {t.s:.1f}s", flush=True)
     with Timer() as t:
         c.execute(
             """

@@ -62,3 +62,37 @@
 1m area         mid    repo     n= 44 p50=  561.58 p95=  648.64 max=   676.8 rows= 10.4 to=0
 1m area         mid    like     n= 77 p50=   49.11 p95=   68.11 max=    85.5 rows=  9.7 to=0
 1m area         mid    tsv      n= 77 p50=   47.12 p95=   65.56 max=   102.9 rows=  9.6 to=0
+1m area         two    repo     n= 39 p50=  600.14 p95=  736.11 max=   758.5 rows= 14.4 to=0
+1m area         two    like     n= 77 p50=   43.09 p95=   55.07 max=    58.8 rows=  1.5 to=0
+1m area         two    tsv      n= 77 p50=   44.00 p95=   61.01 max=    97.7 rows=  1.5 to=0
+1m area         typo   wsim     n= 77 p50=   44.73 p95=   99.89 max=   155.1 rows=  9.6 to=0 recall=0.753
+1m area         typo   dict     n= 77 p50=   22.78 p95=   71.15 max=    95.4 rows= 10.5 to=0 recall=0.883
+1m area         prefix btree    n= 77 p50=   33.50 p95=   71.68 max=   119.8 rows= 10.6 to=0
+1m area         prefix like     n= 67 p50=   62.19 p95=  839.47 max=   915.9 rows= 16.4 to=0
+1m area         prefix tsv      n= 77 p50=   49.58 p95=   84.77 max=   115.3 rows= 15.1 to=0
+1m city_concept common repo     n= 39 p50=  541.78 p95= 1068.59 max=  1144.6 rows= 19.4 to=0
+1m city_concept common like     n= 77 p50=   66.63 p95=  116.02 max=   134.7 rows= 19.0 to=0
+1m city_concept common tsv      n= 77 p50=   62.27 p95=   99.57 max=   119.9 rows= 18.5 to=0
+1m city_concept mid    repo     n= 44 p50=  512.00 p95=  701.94 max=   728.2 rows=  5.8 to=0
+1m city_concept mid    like     n= 77 p50=   40.63 p95=   65.18 max=    67.1 rows=  6.3 to=0
+1m city_concept mid    tsv      n= 77 p50=   40.75 p95=   62.70 max=    94.3 rows=  6.3 to=0
+1m city_concept two    repo     n= 36 p50=  673.80 p95=  869.98 max=   957.1 rows= 10.4 to=0
+1m city_concept two    like     n= 77 p50=   42.94 p95=   69.44 max=    81.8 rows=  1.9 to=0
+1m city_concept two    tsv      n= 77 p50=   43.74 p95=   56.29 max=    66.5 rows=  2.1 to=0
+1m city_concept typo   wsim     n= 77 p50=   37.12 p95=   93.83 max=   229.5 rows=  7.4 to=0 recall=0.74
+1m city_concept typo   dict     n= 77 p50=   15.16 p95=   65.85 max=    86.2 rows=  7.8 to=0 recall=0.831
+1m city_concept prefix btree    n= 77 p50=   44.20 p95=   73.19 max=    83.9 rows=  7.1 to=0
+1m city_concept prefix like     n= 76 p50=   61.02 p95=  855.84 max=   928.1 rows= 10.2 to=0
+1m city_concept prefix tsv      n= 77 p50=   46.97 p95=   84.48 max=   111.3 rows=  9.0 to=0
+1m city_nocc    common repo     n= 38 p50=  592.60 p95=  905.80 max=   972.9 rows= 24.3 to=0
+1m city_nocc    common like     n= 77 p50=   36.34 p95=   95.09 max=   233.7 rows= 24.5 to=0
+1m city_nocc    common tsv      n= 77 p50=   31.86 p95=   70.96 max=   272.2 rows= 24.5 to=0
+1m city_nocc    two    repo     n= 34 p50=  628.58 p95=  923.51 max=   984.1 rows= 21.1 to=0
+1m city_nocc    two    like     n= 77 p50=    4.43 p95=   13.20 max=    15.0 rows=  4.3 to=0
+1m city_nocc    two    tsv      n= 77 p50=    3.95 p95=   11.09 max=    16.9 rows=  4.6 to=0
+1m area_nocc    common repo     n= 45 p50=  517.16 p95=  578.49 max=   719.6 rows= 22.6 to=0
+1m area_nocc    common like     n= 77 p50=   51.32 p95=   88.65 max=   122.8 rows= 22.5 to=0
+1m area_nocc    common tsv      n= 77 p50=   44.04 p95=   74.82 max=    80.6 rows= 22.5 to=0
+1m area_nocc    two    repo     n= 39 p50=  607.01 p95=  686.94 max=   688.8 rows= 14.4 to=0
+1m area_nocc    two    like     n= 77 p50=    4.15 p95=   13.17 max=    20.5 rows=  1.5 to=0
+1m area_nocc    two    tsv      n= 77 p50=    3.21 p95=    8.22 max=    23.1 rows=  1.5 to=0
