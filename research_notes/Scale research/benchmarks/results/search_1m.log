@@ -1,0 +1,5 @@
+1m unscoped     common repo     n= 40 p50= 2788.27 p95= 3098.21 max=  3176.0 rows= 25.0 to=0
+1m unscoped     common like     n=147 p50=    0.83 p95=    1.97 max=    45.2 rows= 25.0 to=0
+1m unscoped     common tsv      n=147 p50=   10.81 p95=   18.08 max=    33.3 rows= 25.0 to=0
+1m unscoped     common tsvrank  n=147 p50=   61.49 p95=  151.49 max=   191.1 rows= 25.0 to=0
+1m unscoped     common wsim     n=147 p50=  210.27 p95=  601.14 max=   711.2 rows= 25.0 to=0

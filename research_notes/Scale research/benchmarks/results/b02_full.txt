@@ -28,3 +28,15 @@ chain16      writers=8 hold=20ms  tx/s=     234  rows/s=      234  p50=  28.14ms
 unchained    writers=1 hold=20ms  tx/s=      32  rows/s=       32  p50=  23.17ms p99=  140.93ms
 unchained    writers=8 hold=20ms  tx/s=     337  rows/s=      337  p50=  22.61ms p99=   31.48ms
 == sealer running every 1 s while 8 writers insert unchained rows ==
+writers inserted 38,776 rows (3,878/s with the sealer running); sealed 38,776 in 11 seals; unsealed after final pass 0
+Traceback (most recent call last):
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/b02_audit_alternatives.py", line 475, in <module>
+    main()
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/b02_audit_alternatives.py", line 421, in main
+    problem = verify_seals(sc)
+              ^^^^^^^^^^^^^^^^
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/b02_audit_alternatives.py", line 302, in verify_seals
+    cur.execute(
+  File "/home/user/Alllists.org/.venv/lib/python3.11/site-packages/psycopg/_server_cursor.py", line 98, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.NoActiveSqlTransaction: DECLARE CURSOR can only be used in transaction blocks

@@ -1,0 +1,147 @@
+query_id,segment,language,query,query_type,result_type,intent_concept,intent_place,exact_concepts,exact_places,substitute_concepts,substitute_places,complement_concepts,facet_filters,must_terms,status,notes
+Q001,hotels,en,hotels in lahore,head,list,hotels,pk.punjab.lahore,hotels,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,list page intent; the list page itself should rank first among result groups
+Q002,hotels,en,hotels in karachi,head,list,hotels,pk.sindh.karachi,hotels,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,list page intent; the list page itself should rank first among result groups
+Q003,hotels,en,hotels in islamabad,head,list,hotels,pk.islamabad.islamabad,hotels,pk.islamabad.islamabad,,pk.islamabad,,,,seed_unjudged,list page intent; the list page itself should rank first among result groups
+Q004,hotels,en,hotels in murree,head,list,hotels,pk.punjab.murree,hotels,pk.punjab.murree,,pk.punjab,,,,seed_unjudged,list page intent; the list page itself should rank first among result groups
+Q005,hotels,en,hotels in rawalpindi,head,list,hotels,pk.punjab.rawalpindi,hotels,pk.punjab.rawalpindi,,pk.punjab,,,,seed_unjudged,list page intent; the list page itself should rank first among result groups
+Q006,hotels,en,hotels in multan,head,list,hotels,pk.punjab.multan,hotels,pk.punjab.multan,,pk.punjab,,,,seed_unjudged,list page intent; the list page itself should rank first among result groups
+Q007,hotels,en,hotels in peshawar,head,list,hotels,pk.kpk.peshawar,hotels,pk.kpk.peshawar,,pk.kpk,,,,seed_unjudged,list page intent; the list page itself should rank first among result groups
+Q008,hotels,en,hotels in pakistan,head,list,hotels,pk,hotels,pk,,pk,,,,seed_unjudged,country scope; navigates to list page
+Q009,hotels,en,budget hotels lahore,torso,entries,hotels,pk.punjab.lahore,hotels.budget,pk.punjab.lahore,hotels,pk.punjab,,price_band=budget,,seed_unjudged,
+Q010,hotels,en,cheap hotels in karachi,torso,entries,hotels,pk.sindh.karachi,hotels.budget,pk.sindh.karachi,hotels,pk.sindh,,price_band=budget,,seed_unjudged,
+Q011,hotels,en,5 star hotels islamabad,torso,entries,hotels,pk.islamabad.islamabad,hotels,pk.islamabad.islamabad,,pk.islamabad,,star_rating=5,,seed_unjudged,needs structured star rating; text alone cannot satisfy
+Q012,hotels,en,family hotel murree,torso,entries,hotels,pk.punjab.murree,hotels,pk.punjab.murree,hotels.guest-houses,pk.punjab,,family_friendly=true,,seed_unjudged,
+Q013,hotels,en,guest house islamabad,torso,entries,hotels,pk.islamabad.islamabad,hotels.guest-houses,pk.islamabad.islamabad,hotels,pk.islamabad,,,,seed_unjudged,
+Q014,hotels,en,guest houses in lahore,torso,entries,hotels,pk.punjab.lahore,hotels.guest-houses,pk.punjab.lahore,hotels,pk.punjab,,,,seed_unjudged,
+Q015,hotels,en,hotels near airport lahore,torso,entries,hotels,pk.punjab.lahore,hotels,pk.punjab.lahore,,pk.punjab,,near=airport,,seed_unjudged,needs coordinates; area names alone are a weak substitute
+Q016,hotels,en,hotel with parking multan,tail,entries,hotels,pk.punjab.multan,hotels,pk.punjab.multan,,pk.punjab,,amenity=parking,,seed_unjudged,
+Q017,hotels,en,business hotel karachi clifton,tail,entries,hotels.business,pk.sindh.karachi.clifton,hotels.business,pk.sindh.karachi.clifton,hotels,pk.sindh.karachi,,,,seed_unjudged,
+Q018,hotels,en,hotels near gulberg lahore,tail,entries,hotels,pk.punjab.lahore.gulberg,hotels,pk.punjab.lahore.gulberg,,pk.punjab.lahore,,,,seed_unjudged,
+Q019,hotels,en,pearl continental lahore,navigational,entries,hotels,pk.punjab.lahore,hotels,pk.punjab.lahore,,pk.punjab,,,pearl continental,seed_unjudged,brand query; exact entry first
+Q020,hotels,en,serena hotel islamabad,navigational,entries,hotels,pk.islamabad.islamabad,hotels,pk.islamabad.islamabad,,pk.islamabad,,,serena,seed_unjudged,
+Q021,hotels,en,avari hotel lahore,navigational,entries,hotels,pk.punjab.lahore,hotels,pk.punjab.lahore,,pk.punjab,,,avari,seed_unjudged,
+Q022,hotels,en,resorts in murree,torso,entries,hotels.resorts,pk.punjab.murree,hotels.resorts,pk.punjab.murree,hotels,pk.punjab,,,,seed_unjudged,
+Q023,hotels,en,hotels in lahor,typo,entries,hotels,pk.punjab.lahore,hotels,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,one-letter deletion in the place name; place lookup must recover
+Q024,hotels,en,hotal lahore,typo,entries,hotels,pk.punjab.lahore,hotels,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,common misspelling of hotel
+Q025,hotels,en,hotels sialkot,head,entries,hotels,pk.punjab.sialkot,hotels,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,export-buyer visitor intent; small city
+Q026,hotels,en,hotels in faisalabad,head,entries,hotels,pk.punjab.faisalabad,hotels,pk.punjab.faisalabad,,pk.punjab,,,,seed_unjudged,
+Q027,hotels,en,hotels gujranwala,head,entries,hotels,pk.punjab.gujranwala,hotels,pk.punjab.gujranwala,,pk.punjab,,,,seed_unjudged,
+Q028,hotels,roman_ur,lahore mein hotel,head,entries,hotels,pk.punjab.lahore,hotels,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,
+Q029,hotels,roman_ur,karachi hotal,typo,entries,hotels,pk.sindh.karachi,hotels,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,spelling variant hotal
+Q030,hotels,roman_ur,sasta hotel lahore,torso,entries,hotels,pk.punjab.lahore,hotels.budget,pk.punjab.lahore,hotels,pk.punjab,,price_band=budget,,seed_unjudged,sasta = cheap
+Q031,hotels,roman_ur,murree mein family hotel,torso,entries,hotels,pk.punjab.murree,hotels,pk.punjab.murree,hotels.guest-houses,pk.punjab,,family_friendly=true,,seed_unjudged,
+Q032,hotels,roman_ur,musafir khana islamabad,torso,entries,hotels.guest-houses,pk.islamabad.islamabad,hotels.guest-houses,pk.islamabad.islamabad,hotels,pk.islamabad,,,,seed_unjudged,musafir khana = inn or lodging
+Q033,hotels,roman_ur,guest house rawalpindi,torso,entries,hotels,pk.punjab.rawalpindi,hotels.guest-houses,pk.punjab.rawalpindi,hotels,pk.punjab,,,,seed_unjudged,
+Q034,hotels,roman_ur,hotal multan,typo,entries,hotels,pk.punjab.multan,hotels,pk.punjab.multan,,pk.punjab,,,,seed_unjudged,
+Q035,hotels,roman_ur,hotel faisalabad station ke qareeb,tail,entries,hotels,pk.punjab.faisalabad,hotels,pk.punjab.faisalabad,,pk.punjab,,near=railway_station,,seed_unjudged,qareeb = near
+Q036,hotels,roman_ur,bachon ke sath hotel murree,tail,entries,hotels,pk.punjab.murree,hotels,pk.punjab.murree,,pk.punjab,,family_friendly=true,,seed_unjudged,
+Q037,hotels,roman_ur,kam kiraye wala hotel karachi,tail,entries,hotels,pk.sindh.karachi,hotels.budget,pk.sindh.karachi,hotels,pk.sindh,,price_band=budget,,seed_unjudged,kam kiraya = low rent
+Q038,hotels,roman_ur,islamabad ke hotel,head,entries,hotels,pk.islamabad.islamabad,hotels,pk.islamabad.islamabad,,pk.islamabad,,,,seed_unjudged,
+Q039,hotels,roman_ur,peshawar mein hotel,head,entries,hotels,pk.kpk.peshawar,hotels,pk.kpk.peshawar,,pk.kpk,,,,seed_unjudged,
+Q040,surgical,en,surgical instruments sialkot,head,list,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,core pilot query; list page and manufacturers
+Q041,surgical,en,surgical instruments manufacturers sialkot,head,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,role=manufacturer,,seed_unjudged,
+Q042,surgical,en,surgical instruments exporter pakistan,head,entries,manufacturing.surgical-instruments,pk,manufacturing.surgical-instruments,pk,,pk,,role=exporter,,seed_unjudged,
+Q043,surgical,en,forceps manufacturer sialkot,torso,entries,manufacturing.surgical-instruments.forceps,pk.punjab.sialkot,manufacturing.surgical-instruments.forceps,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab,,role=manufacturer,,seed_unjudged,
+Q044,surgical,en,surgical scissors sialkot,torso,entries,manufacturing.surgical-instruments.scissors,pk.punjab.sialkot,manufacturing.surgical-instruments.scissors,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab,,,,seed_unjudged,
+Q045,surgical,en,needle holder manufacturer sialkot,torso,entries,manufacturing.surgical-instruments.needle-holders,pk.punjab.sialkot,manufacturing.surgical-instruments.needle-holders,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab,,,,seed_unjudged,
+Q046,surgical,en,dental instruments sialkot,torso,entries,manufacturing.surgical-instruments.dental,pk.punjab.sialkot,manufacturing.surgical-instruments.dental,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab,,,,seed_unjudged,
+Q047,surgical,en,orthopedic instruments sialkot,torso,entries,manufacturing.surgical-instruments.orthopaedic,pk.punjab.sialkot,manufacturing.surgical-instruments.orthopaedic,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab,,,,seed_unjudged,US spelling; taxonomy uses orthopaedic
+Q048,surgical,en,ISO 13485 surgical instruments sialkot,tail,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,certification=iso13485,,seed_unjudged,certification facet
+Q049,surgical,en,CE marked surgical instruments sialkot,tail,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,certification=ce,,seed_unjudged,
+Q050,surgical,en,surgical instruments OEM private label sialkot,tail,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,service=oem,,seed_unjudged,
+Q051,surgical,en,scalpel handle supplier pakistan,tail,entries,manufacturing.surgical-instruments.scalpels,pk,manufacturing.surgical-instruments.scalpels,pk,manufacturing.surgical-instruments,pk,,,,seed_unjudged,
+Q052,surgical,en,stainless steel surgical instruments pakistan,torso,entries,manufacturing.surgical-instruments,pk,manufacturing.surgical-instruments,pk,,pk,,material=stainless_steel,,seed_unjudged,
+Q053,surgical,en,surgical instruments sialkot minimum order 100 pieces,tail,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,moq<=100,,seed_unjudged,
+Q054,surgical,en,retractors manufacturer sialkot,tail,entries,manufacturing.surgical-instruments.retractors,pk.punjab.sialkot,manufacturing.surgical-instruments.retractors,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab,,,,seed_unjudged,
+Q055,surgical,en,surgical kits sialkot,tail,entries,manufacturing.surgical-instruments.kits,pk.punjab.sialkot,manufacturing.surgical-instruments.kits,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab,,,,seed_unjudged,
+Q056,surgical,en,surgical instrments sialkot,typo,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,missing u
+Q057,surgical,en,sialkot surgcal instruments,typo,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,missing i
+Q058,surgical,en,sialkot surgical,head,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,short form
+Q059,surgical,en,surgical instruments lahore,head,entries,manufacturing.surgical-instruments,pk.punjab.lahore,manufacturing.surgical-instruments,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,expected few results; substitute is Sialkot
+Q060,surgical,en,forceps suppliers pakistan,torso,entries,manufacturing.surgical-instruments.forceps,pk,manufacturing.surgical-instruments.forceps,pk,manufacturing.surgical-instruments,pk,,,,seed_unjudged,
+Q061,surgical,roman_ur,jarrahi auzar sialkot,head,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,jarrahi auzar = surgical instruments
+Q062,surgical,roman_ur,surgical instruments banane wale sialkot,torso,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,role=manufacturer,,seed_unjudged,banane wale = makers
+Q063,surgical,roman_ur,sialkot surgical factory,torso,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,role=manufacturer,,seed_unjudged,
+Q064,surgical,roman_ur,sialkot qainchi forceps wholesale,tail,entries,manufacturing.surgical-instruments.forceps,pk.punjab.sialkot,manufacturing.surgical-instruments.forceps|manufacturing.surgical-instruments.scissors,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab,,,,seed_unjudged,qainchi = scissors
+Q065,surgical,roman_ur,dental auzar sialkot,torso,entries,manufacturing.surgical-instruments.dental,pk.punjab.sialkot,manufacturing.surgical-instruments.dental,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab,,,,seed_unjudged,
+Q066,surgical,roman_ur,operation ke auzar sialkot,torso,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,operation ke auzar = surgical tools
+Q067,surgical,roman_ur,surgical items export sialkot,tail,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,role=exporter,,seed_unjudged,
+Q068,surgical,roman_ur,sialkot mein surgical instruments ki factory,tail,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,role=manufacturer,,seed_unjudged,
+Q069,surgical,roman_ur,surgical instrments sialkot,typo,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,
+Q070,surgical,roman_ur,jarahi auzar sialkot,typo,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,variant spelling of jarrahi
+Q071,plumbers,en,plumber in lahore,head,list,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,
+Q072,plumbers,en,plumber in karachi,head,list,plumbers,pk.sindh.karachi,plumbers,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,
+Q073,plumbers,en,plumber in islamabad,head,list,plumbers,pk.islamabad.islamabad,plumbers,pk.islamabad.islamabad,,pk.islamabad,,,,seed_unjudged,
+Q074,plumbers,en,plumber in rawalpindi,head,list,plumbers,pk.punjab.rawalpindi,plumbers,pk.punjab.rawalpindi,,pk.punjab,,,,seed_unjudged,
+Q075,plumbers,en,plumber in faisalabad,head,list,plumbers,pk.punjab.faisalabad,plumbers,pk.punjab.faisalabad,,pk.punjab,,,,seed_unjudged,
+Q076,plumbers,en,plumbers karachi,head,entries,plumbers,pk.sindh.karachi,plumbers,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,
+Q077,plumbers,en,emergency plumber islamabad,torso,entries,plumbers.emergency,pk.islamabad.islamabad,plumbers.emergency,pk.islamabad.islamabad,plumbers,pk.islamabad,,,,seed_unjudged,
+Q078,plumbers,en,24 hour plumber lahore,torso,entries,plumbers.emergency,pk.punjab.lahore,plumbers.emergency,pk.punjab.lahore,plumbers,pk.punjab,,hours=24,,seed_unjudged,
+Q079,plumbers,en,plumber near me,near_me,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,place from edge guess or browser location; judged with place set to Lahore
+Q080,plumbers,en,bathroom fitting plumber rawalpindi,tail,entries,plumbers,pk.punjab.rawalpindi,plumbers,pk.punjab.rawalpindi,,pk.punjab,,service=bathroom_fitting,,seed_unjudged,
+Q081,plumbers,en,geyser repair plumber karachi,tail,entries,plumbers,pk.sindh.karachi,plumbers,pk.sindh.karachi,,pk.sindh,,service=geyser,,seed_unjudged,geyser = water heater
+Q082,plumbers,en,water tank cleaning lahore,tail,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,plumbers,pk.punjab,cleaning-services,,,seed_unjudged,"adjacent service; no exact list type in the pilot, plumbers are substitutes"
+Q083,plumbers,en,drain blockage plumber lahore,tail,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,,pk.punjab,,service=drain,,seed_unjudged,
+Q084,plumbers,en,plumber dha lahore,tail,entries,plumbers,pk.punjab.lahore.dha,plumbers,pk.punjab.lahore.dha,,pk.punjab.lahore,,,,seed_unjudged,area scope
+Q085,plumbers,en,plumber clifton karachi,tail,entries,plumbers,pk.sindh.karachi.clifton,plumbers,pk.sindh.karachi.clifton,,pk.sindh.karachi,,,,seed_unjudged,
+Q086,plumbers,en,plumbing contractors islamabad,torso,entries,plumbers,pk.islamabad.islamabad,plumbers,pk.islamabad.islamabad,,pk.islamabad,,role=contractor,,seed_unjudged,
+Q087,plumbers,en,plumbr karachi,typo,entries,plumbers,pk.sindh.karachi,plumbers,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,
+Q088,plumbers,en,plumer lahore,typo,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,
+Q089,plumbers,en,plumber multan,head,entries,plumbers,pk.punjab.multan,plumbers,pk.punjab.multan,,pk.punjab,,,,seed_unjudged,
+Q090,plumbers,en,sanitary works lahore,torso,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,trade synonym of plumbing work
+Q091,plumbers,roman_ur,plumber lahore,head,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,
+Q092,plumbers,roman_ur,nal saaz lahore,torso,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,"nal saaz = plumber (pipe maker); spelling varies (nal saz, nalsaz)"
+Q093,plumbers,roman_ur,nalka mistri karachi,torso,entries,plumbers,pk.sindh.karachi,plumbers,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,nalka = tap; mistri = tradesman
+Q094,plumbers,roman_ur,plumber mistri islamabad,torso,entries,plumbers,pk.islamabad.islamabad,plumbers,pk.islamabad.islamabad,,pk.islamabad,,,,seed_unjudged,
+Q095,plumbers,roman_ur,paani ki leakage plumber karachi,tail,entries,plumbers,pk.sindh.karachi,plumbers,pk.sindh.karachi,,pk.sindh,,service=leak,,seed_unjudged,paani = water
+Q096,plumbers,roman_ur,ghar mein plumber chahiye lahore,tail,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,need a plumber at home
+Q097,plumbers,roman_ur,sasta plumber islamabad,torso,entries,plumbers,pk.islamabad.islamabad,plumbers,pk.islamabad.islamabad,,pk.islamabad,,price_band=budget,,seed_unjudged,
+Q098,plumbers,roman_ur,tanki saaf karne wala lahore,tail,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,plumbers,pk.punjab,cleaning-services,,,seed_unjudged,tank cleaner
+Q099,plumbers,roman_ur,bathroom fitting ka mistri rawalpindi,tail,entries,plumbers,pk.punjab.rawalpindi,plumbers,pk.punjab.rawalpindi,,pk.punjab,,service=bathroom_fitting,,seed_unjudged,
+Q100,plumbers,roman_ur,gas aur paani pipe fitting karachi,tail,entries,plumbers,pk.sindh.karachi,plumbers,pk.sindh.karachi,,pk.sindh,,service=pipe_fitting,,seed_unjudged,
+Q101,plumbers,roman_ur,plumbar lahore,typo,entries,plumbers,pk.punjab.lahore,plumbers,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,
+Q102,plumbers,roman_ur,nalsaz karachi,typo,entries,plumbers,pk.sindh.karachi,plumbers,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,joined spelling
+Q103,schools,en,schools in lahore,head,list,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,
+Q104,schools,en,schools in islamabad,head,list,schools,pk.islamabad.islamabad,schools,pk.islamabad.islamabad,,pk.islamabad,,,,seed_unjudged,
+Q105,schools,en,schools in karachi,head,list,schools,pk.sindh.karachi,schools,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,
+Q106,schools,en,schools in rawalpindi,head,list,schools,pk.punjab.rawalpindi,schools,pk.punjab.rawalpindi,,pk.punjab,,,,seed_unjudged,
+Q107,schools,en,schools in faisalabad,head,list,schools,pk.punjab.faisalabad,schools,pk.punjab.faisalabad,,pk.punjab,,,,seed_unjudged,
+Q108,schools,en,schools in multan,head,list,schools,pk.punjab.multan,schools,pk.punjab.multan,,pk.punjab,,,,seed_unjudged,
+Q109,schools,en,best schools in islamabad,torso,entries,schools,pk.islamabad.islamabad,schools,pk.islamabad.islamabad,,pk.islamabad,,quality=high,,seed_unjudged,"quality intent; needs rating or verification, not only text"
+Q110,schools,en,private schools karachi,torso,entries,schools,pk.sindh.karachi,schools,pk.sindh.karachi,,pk.sindh,,sector=private,,seed_unjudged,
+Q111,schools,en,montessori school lahore,torso,entries,schools.montessori,pk.punjab.lahore,schools.montessori,pk.punjab.lahore,schools,pk.punjab,,,,seed_unjudged,
+Q112,schools,en,o level schools lahore,torso,entries,schools.o-level,pk.punjab.lahore,schools.o-level,pk.punjab.lahore,schools,pk.punjab,,curriculum=cambridge,,seed_unjudged,
+Q113,schools,en,girls school rawalpindi,torso,entries,schools.girls,pk.punjab.rawalpindi,schools.girls,pk.punjab.rawalpindi,schools,pk.punjab,,,,seed_unjudged,
+Q114,schools,en,boys schools in lahore dha,tail,entries,schools.boys,pk.punjab.lahore.dha,schools.boys,pk.punjab.lahore.dha,schools,pk.punjab.lahore,,,,seed_unjudged,
+Q115,schools,en,english medium school sialkot,torso,entries,schools,pk.punjab.sialkot,schools,pk.punjab.sialkot,,pk.punjab,,medium=english,,seed_unjudged,
+Q116,schools,en,cambridge school islamabad,torso,entries,schools,pk.islamabad.islamabad,schools,pk.islamabad.islamabad,,pk.islamabad,,curriculum=cambridge,,seed_unjudged,
+Q117,schools,en,school near me,near_me,entries,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,judged with place set to Lahore
+Q118,schools,en,cheap private school faisalabad,tail,entries,schools,pk.punjab.faisalabad,schools,pk.punjab.faisalabad,,pk.punjab,,fee_band=low,,seed_unjudged,
+Q119,schools,en,school admission 2027 lahore,tail,entries,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,admission=open,,seed_unjudged,needs admission status field; freshness matters
+Q120,schools,en,international school karachi,torso,entries,schools,pk.sindh.karachi,schools,pk.sindh.karachi,,pk.sindh,,curriculum=international,,seed_unjudged,
+Q121,schools,en,boarding school murree,tail,entries,schools,pk.punjab.murree,schools,pk.punjab.murree,,pk.punjab,,boarding=true,,seed_unjudged,
+Q122,schools,en,primary school peshawar,torso,entries,schools.primary,pk.kpk.peshawar,schools.primary,pk.kpk.peshawar,schools,pk.kpk,,,,seed_unjudged,
+Q123,schools,en,scool lahore,typo,entries,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,
+Q124,schools,en,montesori school karachi,typo,entries,schools.montessori,pk.sindh.karachi,schools.montessori,pk.sindh.karachi,schools,pk.sindh,,,,seed_unjudged,
+Q125,schools,en,schols in islamabad,typo,list,schools,pk.islamabad.islamabad,schools,pk.islamabad.islamabad,,pk.islamabad,,,,seed_unjudged,
+Q126,schools,en,the city school lahore,navigational,entries,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,,city school,seed_unjudged,brand query
+Q127,schools,en,beaconhouse school lahore,navigational,entries,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,,beaconhouse,seed_unjudged,
+Q128,schools,roman_ur,lahore ke achay school,torso,entries,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,quality=high,,seed_unjudged,achay = good
+Q129,schools,roman_ur,karachi mein private school,torso,entries,schools,pk.sindh.karachi,schools,pk.sindh.karachi,,pk.sindh,,sector=private,,seed_unjudged,
+Q130,schools,roman_ur,school mein admission islamabad,tail,entries,schools,pk.islamabad.islamabad,schools,pk.islamabad.islamabad,,pk.islamabad,,admission=open,,seed_unjudged,
+Q131,schools,roman_ur,ladkiyon ka school rawalpindi,torso,entries,schools.girls,pk.punjab.rawalpindi,schools.girls,pk.punjab.rawalpindi,schools,pk.punjab,,,,seed_unjudged,ladkiyon = girls
+Q132,schools,roman_ur,sasta school faisalabad,torso,entries,schools,pk.punjab.faisalabad,schools,pk.punjab.faisalabad,,pk.punjab,,fee_band=low,,seed_unjudged,
+Q133,schools,roman_ur,montessori lahore,head,entries,schools.montessori,pk.punjab.lahore,schools.montessori,pk.punjab.lahore,schools,pk.punjab,,,,seed_unjudged,
+Q134,schools,roman_ur,english medium school multan,torso,entries,schools,pk.punjab.multan,schools,pk.punjab.multan,,pk.punjab,,medium=english,,seed_unjudged,
+Q135,schools,roman_ur,bachon ka school gulberg lahore,tail,entries,schools,pk.punjab.lahore.gulberg,schools,pk.punjab.lahore.gulberg,,pk.punjab.lahore,,,,seed_unjudged,bachon = children
+Q136,schools,roman_ur,kam fees wala school lahore,tail,entries,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,fee_band=low,,seed_unjudged,
+Q137,schools,roman_ur,o level ka school karachi,tail,entries,schools.o-level,pk.sindh.karachi,schools.o-level,pk.sindh.karachi,schools,pk.sindh,,,,seed_unjudged,
+Q138,schools,roman_ur,hifz academy lahore,tail,entries,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,type=hifz,,seed_unjudged,Quran memorisation school; may need a new list type
+Q139,schools,roman_ur,skool lahore,typo,entries,schools,pk.punjab.lahore,schools,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,phonetic spelling
+Q140,schools,roman_ur,madrasa islamabad,torso,entries,schools,pk.islamabad.islamabad,schools,pk.islamabad.islamabad,,pk.islamabad,,type=madrasa,,seed_unjudged,religious school; own list type likely
+Q141,hotels,ur,ہوٹل لاہور,head,entries,hotels,pk.punjab.lahore,hotels,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,Urdu script (hotel Lahore); native speaker to confirm the wording
+Q142,schools,ur,سکول اسلام آباد,head,entries,schools,pk.islamabad.islamabad,schools,pk.islamabad.islamabad,,pk.islamabad,,,,seed_unjudged,Urdu script (school Islamabad); native speaker to confirm the wording
+Q143,plumbers,ur,پلمبر کراچی,head,entries,plumbers,pk.sindh.karachi,plumbers,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,Urdu script (plumber Karachi); native speaker to confirm the wording
+Q144,surgical,ur,جراحی کے اوزار سیالکوٹ,head,entries,manufacturing.surgical-instruments,pk.punjab.sialkot,manufacturing.surgical-instruments,pk.punjab.sialkot,,pk.punjab,,,,seed_unjudged,Urdu script (surgical instruments Sialkot); native speaker to confirm the wording
+Q145,hotels,ur,لاہور میں سستا ہوٹل,head,entries,hotels,pk.punjab.lahore,hotels,pk.punjab.lahore,,pk.punjab,,,,seed_unjudged,Urdu script (cheap hotel in Lahore); native speaker to confirm the wording
+Q146,schools,ur,کراچی کے اچھے سکول,head,entries,schools,pk.sindh.karachi,schools,pk.sindh.karachi,,pk.sindh,,,,seed_unjudged,Urdu script (good schools of Karachi); native speaker to confirm the wording
