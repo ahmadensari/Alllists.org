@@ -10,7 +10,7 @@ Variants (all return the same entries; checked by --verify):
   closure_placeidx closure + an extra place-major index on ec (place_path, concept_id)
 
 Run as the postgres OS user against a scratch database whose name starts with bench_taxonomy_:
-  sudo -u postgres env PYTHONPATH=/var/tmp/benchlibs python3 bench_queries.py DBNAME OUTDIR
+  sudo -u postgres env PYTHONPATH=/var/tmp/benchlibs python3 taxonomy_bench_queries.py DBNAME OUTDIR
 """
 import csv
 import re
@@ -110,14 +110,18 @@ pairs = conn.execute(
 ).fetchall()
 
 
-def run(label, variant, kind):
-    rows_out = []
-    for (pid, cl, pl, x, y, nm, nd) in pairs:
-        sql = build(variant, kind, x, y)
-        for rep in range(1, REPS + 1):
-            ms, status, _ = timed(sql)
-            rows_out.append((label, kind, pid, rep, round(ms, 3), status))
-    return rows_out
+def run_interleaved(variants, kind, reps=REPS):
+    """Pair by pair, rep by rep, variants in rotating order, so that load from other jobs on the machine hits every
+    variant the same way (the machine is shared; see results/taxonomy_machine_load.log)."""
+    out = []
+    for i, (pid, cl, pl, x, y, nm, nd) in enumerate(pairs):
+        sqls = {v: build(v, kind, x, y) for v in variants}
+        for rep in range(1, reps + 1):
+            k = (i + rep) % len(variants)
+            for v in variants[k:] + variants[:k]:
+                ms, status, _ = timed(sqls[v])
+                out.append((v, kind, pid, rep, round(ms, 3), status))
+    return out
 
 
 def verify(variants, sample=40):
@@ -143,19 +147,17 @@ if __name__ == "__main__":
     if mode in ("verify", "all"):
         verify(["closure", "ltree_resolver", "rcte", "ltree_denorm", "closure_ltplace"])
     if mode in ("all",):
-        for v in ["closure", "ltree_resolver", "rcte", "ltree_denorm", "closure_ltplace"]:
-            results += run(v, v, "page")
-            print("done page", v, flush=True)
-        for v in ["closure", "ltree_resolver", "rcte"]:
-            results += run(v, v, "count")
-            print("done count", v, flush=True)
-        # extra place-major index, then repeat the closure page query
+        results += run_interleaved(["closure", "ltree_resolver", "rcte", "ltree_denorm", "closure_ltplace"], "page")
+        print("done page", flush=True)
+        results += run_interleaved(["closure", "ltree_resolver", "rcte"], "count")
+        print("done count", flush=True)
+        # extra place-major index, then repeat the closure page and count queries
         conn.execute("CREATE INDEX ec_place_concept ON ec (place_path text_pattern_ops, concept_id) INCLUDE (entry_id, sort_key) WHERE published")
         conn.execute("ANALYZE ec")
         sz = conn.execute("SELECT pg_relation_size('ec_place_concept')").fetchone()[0]
-        print("ec_place_concept size bytes", sz)
-        results += run("closure_placeidx", "closure_placeidx", "page")
-        results += run("closure_placeidx", "closure_placeidx", "count")
+        print("ec_place_concept size bytes", sz, flush=True)
+        results += [("closure_placeidx",) + r[1:] for r in run_interleaved(["closure"], "page")]
+        results += [("closure_placeidx",) + r[1:] for r in run_interleaved(["closure"], "count")]
         conn.execute("DROP INDEX ec_place_concept")
         with open(f"{OUT}/query_raw.csv", "w", newline="") as f:
             w = csv.writer(f)

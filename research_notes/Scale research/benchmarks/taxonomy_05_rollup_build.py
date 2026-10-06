@@ -6,9 +6,10 @@ Algorithm (tree-reduced, requirement R6 of 01_manufacturing_depth_taxonomy.md se
           node axis, because an entry sits in several nodes under the same ancestor.
   step 2  place axis is additive (an entry has exactly one home place), so every place prefix is a plain SUM of step 1.
   step 3  world cells = sum of the country cells.
-  rule    keep a cell when total >= 25 or verified >= 10 (pinned cells are not simulated).
+  rule    keep a cell when published >= 25 or verified >= 10 (pinned cells are not simulated). "Members" means published
+          entries, the ones a visitor can see on the page.
 
-  sudo -u postgres env PYTHONPATH=/var/tmp/benchlibs python3 05_rollup_build.py DBNAME OUTDIR
+  sudo -u postgres env PYTHONPATH=/var/tmp/benchlibs python3 taxonomy_05_rollup_build.py DBNAME OUTDIR
 """
 import json
 import re
@@ -87,7 +88,7 @@ CREATE TABLE rollup_cell (
 ) WITH (fillfactor = 70)
 """
 )
-conn.execute("INSERT INTO rollup_cell SELECT * FROM rollup_all WHERE total >= 25 OR verified >= 10")
+conn.execute("INSERT INTO rollup_cell SELECT * FROM rollup_all WHERE published >= 25 OR verified >= 10")
 conn.execute("ANALYZE rollup_cell")
 conn.execute(
     "CREATE TABLE place_total AS SELECT place_path, sum(total) AS total, sum(published) AS published FROM (SELECT p AS place_path, count(*) AS total, count(*) FILTER (WHERE publish_state = 1) AS published FROM entry, LATERAL place_prefixes(entry.place_path) p GROUP BY 1) x GROUP BY 1"
@@ -99,11 +100,12 @@ stats["countries"] = len(countries)
 stats["build_seconds_total"] = round(total_build_s, 1)
 stats["world_step_seconds"] = round(t4 - t3, 2)
 stats["cells_all"] = cells_all
-stats["cells_total_ge25"] = conn.execute("SELECT count(*) FROM rollup_all WHERE total >= 25").fetchone()[0]
+stats["cells_published_ge25"] = conn.execute("SELECT count(*) FROM rollup_all WHERE published >= 25").fetchone()[0]
 stats["cells_verified_ge10"] = conn.execute("SELECT count(*) FROM rollup_all WHERE verified >= 10").fetchone()[0]
 stats["cells_stored"] = conn.execute("SELECT count(*) FROM rollup_cell").fetchone()[0]
-stats["cells_total_ge10"] = conn.execute("SELECT count(*) FROM rollup_all WHERE total >= 10").fetchone()[0]
-stats["cells_total_eq1"] = conn.execute("SELECT count(*) FROM rollup_all WHERE total = 1").fetchone()[0]
+stats["cells_published_ge10"] = conn.execute("SELECT count(*) FROM rollup_all WHERE published >= 10").fetchone()[0]
+stats["cells_published_eq1"] = conn.execute("SELECT count(*) FROM rollup_all WHERE published = 1").fetchone()[0]
+stats["cells_published_ge1"] = conn.execute("SELECT count(*) FROM rollup_all WHERE published >= 1").fetchone()[0]
 stats["rollup_all_bytes"] = conn.execute("SELECT pg_total_relation_size('rollup_all')").fetchone()[0]
 stats["rollup_cell_bytes"] = conn.execute("SELECT pg_total_relation_size('rollup_cell')").fetchone()[0]
 stats["place_total_rows"] = conn.execute("SELECT count(*) FROM place_total").fetchone()[0]
@@ -112,7 +114,7 @@ stats["entries"] = conn.execute("SELECT count(*) FROM entry").fetchone()[0]
 by_level = conn.execute(
     """
 SELECT array_length(string_to_array(NULLIF(place_path, ''), '.'), 1) AS place_level,
-       count(*) AS cells_all, count(*) FILTER (WHERE total >= 25 OR verified >= 10) AS cells_stored
+       count(*) AS cells_all, count(*) FILTER (WHERE published >= 25 OR verified >= 10) AS cells_stored
 FROM rollup_all GROUP BY 1 ORDER BY 1 NULLS FIRST
 """
 ).fetchall()

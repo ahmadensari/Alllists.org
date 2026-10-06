@@ -15,3 +15,5 @@ batch500_chain fill: 1,000,000 rows in 37.2s (26,906 rows/s)
 verify chain links of 1,000,000 rows: 7.69s -> intact
 == deadlock demo ==
 multi-chain tx, opposite order: {'T1': 'DEADLOCK (aborted by server)', 'T2': 'ok'} after 1.04s
+/usr/lib/python3.11/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 3 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

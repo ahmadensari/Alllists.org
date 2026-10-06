@@ -370,7 +370,10 @@ def deadlock_demo():
         try:
             with c.transaction():
                 c.execute("SELECT pg_advisory_xact_lock(%s)", (900000 + order[0],))
-                barrier.wait()
+                try:
+                    barrier.wait(timeout=1.5)
+                except threading.BrokenBarrierError:
+                    pass
                 c.execute("SELECT pg_advisory_xact_lock(%s)", (900000 + order[1],))
             results[name] = "ok"
         except psycopg.errors.DeadlockDetected:
@@ -451,16 +454,41 @@ def main():
         problem = verify_seals(sc)
     print(f"verify_seals on {n:,} rows: {t.s:.2f}s ({n / t.s:,.0f} rows/s) -> {problem or 'intact'}")
 
-    # tamper tests as the table owner with the trigger disabled (an attacker with owner rights)
+    # tamper tests as the table owner with the trigger disabled (an attacker with owner rights); each one is rolled back
     mid = sc.execute("SELECT id FROM a_unchained ORDER BY id OFFSET 500000 LIMIT 1").fetchone()[0]
+    anchor = sc.execute("SELECT seq, seal_hash FROM a_seal ORDER BY seq DESC LIMIT 1").fetchone()
+    print(f"anchor published (seq={anchor[0]}, seal_hash={anchor[1][:16]}...) to an external write-once place")
     sc.execute("ALTER TABLE a_unchained DISABLE TRIGGER USER")
-    sc.execute("UPDATE a_unchained SET action='bench.forged' WHERE id=%s", (mid,))
-    print("tamper UPDATE one row ->", verify_seals(sc))
-    sc.execute("UPDATE a_unchained SET action='bench.write' WHERE id=%s", (mid,))
-    assert verify_seals(sc) is None
-    row = sc.execute("DELETE FROM a_unchained WHERE id=%s RETURNING uid", (mid,)).fetchone()
-    print("tamper DELETE one row ->", verify_seals(sc))
-    sc.execute("ALTER TABLE a_unchained ENABLE TRIGGER USER")
+    sc.execute("ALTER TABLE a_seal DISABLE TRIGGER USER")
+    try:
+        with sc.transaction():
+            sc.execute("UPDATE a_unchained SET action='bench.forged' WHERE id=%s", (mid,))
+            print("tamper UPDATE one row ->", verify_seals(sc))
+            raise psycopg.Rollback()
+        with sc.transaction():
+            sc.execute("DELETE FROM a_unchained WHERE id=%s", (mid,))
+            print("tamper DELETE one row ->", verify_seals(sc))
+            raise psycopg.Rollback()
+        with sc.transaction():
+            # the strong attacker: edits the row, recomputes its row_hash, the Merkle root and every later seal
+            sc.execute("UPDATE a_unchained SET action='bench.forged' WHERE id=%s", (mid,))
+            r = sc.execute("SELECT uid, ts, actor_id, actor_role, action, object_type, object_uid, country_code, ip_hash, payload FROM a_unchained WHERE id=%s", (mid,)).fetchone()
+            sc.execute("UPDATE a_unchained SET row_hash=%s WHERE id=%s", (recompute_row_hash(r), mid))
+            prev = "0" * 64
+            for sl in sc.execute("SELECT seq, first_txid::text, first_id, last_txid::text, last_id, n_rows FROM a_seal ORDER BY seq").fetchall():
+                leaves = [x[0] for x in sc.execute("SELECT row_hash FROM a_unchained WHERE (txid, id) >= (%s::xid8, %s) AND (txid, id) <= (%s::xid8, %s) ORDER BY txid, id", (sl[1], sl[2], sl[3], sl[4])).fetchall()]
+                root = merkle(leaves)
+                seal = hashlib.sha256(f"{sl[0]}|{prev}|{sl[1]}|{sl[2]}|{sl[3]}|{sl[4]}|{sl[5]}|{root}".encode()).hexdigest()
+                sc.execute("UPDATE a_seal SET prev_seal=%s, merkle_root=%s, seal_hash=%s WHERE seq=%s", (prev, root, seal, sl[0]))
+                prev = seal
+            print("strong attacker rewrites row + hashes + all later seals; verify_seals ->", verify_seals(sc) or "intact (NOT DETECTED by the database alone)")
+            now_seal = sc.execute("SELECT seal_hash FROM a_seal WHERE seq=%s", (anchor[0],)).fetchone()[0]
+            print("anchor check:", "MATCH" if now_seal == anchor[1] else "MISMATCH -> rewrite detected by the external anchor")
+            raise psycopg.Rollback()
+    finally:
+        sc.execute("ALTER TABLE a_unchained ENABLE TRIGGER USER")
+        sc.execute("ALTER TABLE a_seal ENABLE TRIGGER USER")
+    print("after rollback verify_seals ->", verify_seals(sc) or "intact")
 
     print("== per-row chain verification cost (single chain, one chain of 1,000,000 rows) ==")
     reset()

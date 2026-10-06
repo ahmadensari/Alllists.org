@@ -1,0 +1,30 @@
+1m unscoped     common repo     n= 20 p50= 2712.54 p95= 3096.38 max=  3270.9 rows= 25.0 to=0
+1m unscoped     common like     n= 77 p50=    0.90 p95=    2.52 max=    38.4 rows= 25.0 to=0
+1m unscoped     common tsv      n= 77 p50=    7.62 p95=   13.55 max=    27.1 rows= 25.0 to=0
+1m unscoped     common tsvrank  n= 77 p50=   67.69 p95=  146.22 max=   176.9 rows= 25.0 to=0
+1m unscoped     common wsim     n= 73 p50=  274.22 p95=  637.22 max=   685.5 rows= 25.0 to=0
+1m unscoped     mid    repo     n= 20 p50= 2637.85 p95= 3072.03 max=  3303.1 rows= 25.0 to=0
+1m unscoped     mid    like     n= 77 p50=    5.90 p95=   12.93 max=    26.1 rows= 25.0 to=0
+1m unscoped     mid    tsv      n= 77 p50=    7.13 p95=   74.80 max=    86.2 rows= 25.0 to=0
+1m unscoped     mid    tsvrank  n= 77 p50=    8.99 p95=   13.26 max=    15.7 rows= 25.0 to=0
+1m unscoped     rare   repo     n= 20 p50= 2802.92 p95= 3013.83 max=  3146.1 rows= 21.6 to=0
+1m unscoped     rare   like     n= 77 p50=    1.45 p95=    3.81 max=     7.3 rows=  6.7 to=0
+1m unscoped     rare   tsv      n= 77 p50=    0.34 p95=    0.83 max=     2.2 rows=  5.4 to=0
+1m unscoped     two    repo     n= 20 p50= 3212.07 p95= 3432.92 max=  3759.8 rows= 25.0 to=0
+1m unscoped     two    like     n= 77 p50=    5.07 p95=   14.95 max=    53.7 rows= 18.4 to=0
+1m unscoped     two    tsv      n= 77 p50=    5.42 p95=   16.26 max=    55.6 rows= 19.6 to=0
+1m unscoped     typo   repo     n= 20 p50= 2574.03 p95= 2899.90 max=  3106.0 rows= 19.1 to=0 recall=0.8
+1m unscoped     typo   wsim     n= 77 p50=   36.01 p95=  150.93 max=   250.0 rows= 23.3 to=0 recall=0.805
+1m unscoped     typo   dict     n= 77 p50=    4.69 p95=   15.08 max=    40.2 rows= 23.4 to=0 recall=0.87
+1m unscoped     prefix btree    n= 77 p50=    3.17 p95=   11.12 max=    45.2 rows= 24.9 to=0
+1m unscoped     prefix like     n= 77 p50=    2.02 p95=   12.07 max=    18.8 rows= 25.0 to=0
+1m unscoped     prefix tsv      n= 77 p50=   16.13 p95=   59.83 max=    73.8 rows= 24.9 to=0
+1m country      common repo     n= 20 p50= 1921.86 p95= 2585.09 max=  2628.2 rows= 25.0 to=0
+1m country      common like     n= 77 p50=    1.57 p95=    3.56 max=    31.6 rows= 25.0 to=0
+1m country      common tsv      n= 77 p50=   15.89 p95=   31.22 max=    36.6 rows= 25.0 to=0
+1m country      common tsvrank  n= 77 p50=   94.50 p95=  138.59 max=   173.9 rows= 25.0 to=0
+1m country      common wsim     n= 77 p50=  167.98 p95=  363.07 max=   380.6 rows= 25.0 to=0
+1m country      mid    repo     n= 20 p50= 1868.22 p95= 2229.69 max=  2333.2 rows= 25.0 to=0
+1m country      mid    like     n= 77 p50=    5.68 p95=   20.80 max=    32.8 rows= 25.0 to=0
+1m country      mid    tsv      n= 77 p50=    6.52 p95=   34.15 max=   173.8 rows= 25.0 to=0
+1m country      mid    tsvrank  n= 77 p50=   54.19 p95=   65.85 max=    75.5 rows= 25.0 to=0

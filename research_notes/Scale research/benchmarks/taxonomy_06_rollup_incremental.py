@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Roll-up benchmark, part 2: cost of keeping cells right after entries change. Needs 05_rollup_build.py first.
+"""Roll-up benchmark, part 2: cost of keeping cells right after entries change. Needs taxonomy_05_rollup_build.py first.
 
 A  cells touched per changed entry: all cells, stored cells (store rule), and the frontier (non-stored cells that need a
    live probe because they might cross 25 members).
@@ -10,7 +10,7 @@ D  contention: 4 concurrent clients, with and without the hot cells (world, coun
 E  exact recount of every cell of an entry with count(DISTINCT), which is what the current refresh_for_entry does
    (but in SQL, not in Python: a lower bound for the current code).
 
-  sudo -u postgres env PYTHONPATH=/var/tmp/benchlibs python3 06_rollup_incremental.py DBNAME OUTDIR
+  sudo -u postgres env PYTHONPATH=/var/tmp/benchlibs python3 taxonomy_06_rollup_incremental.py DBNAME OUTDIR
 """
 import json
 import multiprocessing as mp
@@ -43,6 +43,8 @@ conn = connect()
 N_ENTRIES = conn.execute("SELECT count(*) FROM entry").fetchone()[0]
 rng = random.Random(7)
 results = {}
+CHECK_SQL = "SELECT sum(published), sum(total), count(*) FROM rollup_cell"
+results['checksum_before'] = list(conn.execute(CHECK_SQL).fetchone())
 
 
 def sample_ids(k):
@@ -307,5 +309,7 @@ results["E_summary"] = {
     "max_s": max(e["seconds"] for e in E),
     "timeouts": sum(1 for e in E if e["status"] == "timeout"),
 }
+results['checksum_after'] = list(conn.execute(CHECK_SQL).fetchone())
+results['checksum_equal'] = results['checksum_before'] == results['checksum_after']
 json.dump(results, open(f"{OUT}/rollup_incremental.json", "w"), indent=1)
 print(json.dumps(results["E_summary"]))
