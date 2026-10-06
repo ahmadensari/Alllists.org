@@ -32,6 +32,10 @@ class ImportBatch(models.Model):
         MAPPED = "mapped"
         DONE = "done"
         FAILED = "failed"
+        STAGED = "staged"  # bulk: rows parsed and scored, nothing published
+        AUDITED = "audited"  # bulk: sample checked and passed
+        REJECTED = "rejected"  # bulk: sample failed the accuracy bar
+        ROLLED_BACK = "rolled_back"
 
     source = models.ForeignKey(Source, on_delete=models.PROTECT, related_name="batches")
     uploader = models.ForeignKey("auth.User", null=True, on_delete=models.SET_NULL, related_name="+")
@@ -40,8 +44,13 @@ class ImportBatch(models.Model):
     concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
     raw_text = models.TextField()
     mapping = models.JSONField(default=dict, blank=True)
-    status = models.CharField(max_length=10, choices=Status.choices, default=Status.UPLOADED)
+    status = models.CharField(max_length=12, choices=Status.choices, default=Status.UPLOADED)
     counts = models.JSONField(default=dict, blank=True)
+    staged_through = models.PositiveIntegerField(default=0)  # checkpoint: last data row staged
+    published_through = models.PositiveIntegerField(default=0)  # checkpoint: last row published
+    audit_sample = models.JSONField(default=list, blank=True)  # line numbers chosen for human checking
+    accuracy = models.FloatField(null=True, blank=True)
+    quality = models.FloatField(null=True, blank=True)  # mean completeness of staged rows, 0 to 1
     created_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True, blank=True)
 
@@ -53,12 +62,14 @@ class ImportRow(models.Model):
         HELD = "held"
         ERROR = "error"
         DRAFTED = "drafted"
+        STAGED = "staged"
 
     batch = models.ForeignKey(ImportBatch, on_delete=models.CASCADE, related_name="rows")
     line_no = models.PositiveIntegerField()
     raw = models.JSONField(default=dict)
     normalised = models.JSONField(default=dict, blank=True)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
+    quality = models.FloatField(default=0)
     message = models.CharField(max_length=200, blank=True)
     entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
 

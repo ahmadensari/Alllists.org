@@ -166,3 +166,7 @@ For the time being all work is in English only: pages, labels, messages, documen
 ## Build log: visitor address trust (2026-10-06)
 
 The visitor address now comes from Cloudflare's header only when `BEHIND_CLOUDFLARE=1`; otherwise the socket address is used, so quota and throttle keys cannot be forged by sending the header (security requirement AS-01). Set the variable on the real server once Cloudflare fronts the site.
+
+## Build log: bulk upload pipeline (2026-10-06)
+
+`intake/bulk.py` adds staged bulk upload on top of the existing import (requirements BU-*): `stage` parses and scores rows in chunks of 2,000 with a checkpoint and creates no entries; rows that look like named people are held (personal email, short name with no business word, or any row for an individual or child-facing list type) and never published by this path; `draw_sample` picks a repeatable sample (385 for large batches, every row up to 200); `record_audit` needs every sampled row judged and passes only at 90% accuracy or better; `publish` creates drafts in chunks, resumable, only after a passed audit; `rollback` withdraws unverified drafts. Limit without counsel: 1,000,000 rows per batch (default, owner to confirm). Not yet built: upload screen, background worker for 10M-row batches, uploader fraud checks, per-batch lawful-basis record.
