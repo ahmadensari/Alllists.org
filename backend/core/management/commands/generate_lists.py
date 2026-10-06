@@ -2,6 +2,7 @@
 
 from django.core.management.base import BaseCommand
 from django.db import connection
+from psycopg import sql
 
 from places.models import Place
 from taxonomy.models import PlaceList
@@ -30,10 +31,10 @@ class Command(BaseCommand):
         if opts["country"]:
             where.append("(p.country_code = %s OR p.level = 'world')")
             params.append(opts["country"].upper())
-        clause = " AND ".join(where)
+        clause = sql.SQL(" AND ").join(sql.SQL(w) for w in where)
         with connection.cursor() as cur:
             cur.execute(
-                f"SELECT count(*) FROM places_place p CROSS JOIN taxonomy_concept c WHERE {clause}",  # nosec B608
+                sql.SQL("SELECT count(*) FROM places_place p CROSS JOIN taxonomy_concept c WHERE {}").format(clause),
                 params,
             )
             wanted = cur.fetchone()[0]
@@ -44,9 +45,11 @@ class Command(BaseCommand):
         before = have
         with connection.cursor() as cur:
             cur.execute(
-                f"INSERT INTO taxonomy_placelist (place_id, concept_id, created_at) "  # nosec B608
-                f"SELECT p.id, c.id, now() FROM places_place p CROSS JOIN taxonomy_concept c WHERE {clause} "
-                f"ON CONFLICT (place_id, concept_id) DO NOTHING",
+                sql.SQL(
+                    "INSERT INTO taxonomy_placelist (place_id, concept_id, created_at) "
+                    "SELECT p.id, c.id, now() FROM places_place p CROSS JOIN taxonomy_concept c WHERE {} "
+                    "ON CONFLICT (place_id, concept_id) DO NOTHING"
+                ).format(clause),
                 params,
             )
         self.stdout.write(f"{PlaceList.objects.count() - before} lists created")
