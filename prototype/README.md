@@ -14,3 +14,5 @@ Tested in Chromium at desktop and phone width, no script errors.
 ## Finder prototype (`finder.html`)
 
 A second static file: a minimalist landing page that asks where you are looking (1 country, 2 city, 3 keyword) or accepts one free-text search ("hotels in Murree Pakistan"), then shows results that load in batches with a smooth fade-in as you scroll. Sample data is generated on the fly (about 195,000 invented entries); the real product would query the database. No outside scripts or images; honours reduced-motion and light/dark themes. Tested in Chromium at desktop and 390 px width.
+
+Finder controls (final for the prototype): guided steps or one search bar; check-level filter chips; removable scope tags; shareable address (search state lives in the URL hash, back and forward work, "Copy link"); "/" jumps to search; theme choice remembered; smooth batch loading with skeletons; reduced-motion honoured.

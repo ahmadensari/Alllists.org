@@ -170,3 +170,10 @@ The visitor address now comes from Cloudflare's header only when `BEHIND_CLOUDFL
 ## Build log: bulk upload pipeline (2026-10-06)
 
 `intake/bulk.py` adds staged bulk upload on top of the existing import (requirements BU-*): `stage` parses and scores rows in chunks of 2,000 with a checkpoint and creates no entries; rows that look like named people are held (personal email, short name with no business word, or any row for an individual or child-facing list type) and never published by this path; `draw_sample` picks a repeatable sample (385 for large batches, every row up to 200); `record_audit` needs every sampled row judged and passes only at 90% accuracy or better; `publish` creates drafts in chunks, resumable, only after a passed audit; `rollback` withdraws unverified drafts. Limit without counsel: 1,000,000 rows per batch (default, owner to confirm). Not yet built: upload screen, background worker for 10M-row batches, uploader fraud checks, per-batch lawful-basis record.
+
+## Founder's sequence of work (2026-10-06)
+
+1. Finish backend research first (entry fields per list type, data sources per country, hosting and cost model, agent training and accuracy testing; four research agents started, files go in `research_notes/Backend research/`).
+2. Finalise the prototype controls (done for the finder prototype: filters, shareable address, keyboard, theme memory).
+3. Train the list-filing agents to keep working on list filing, with an **AI auditor agent** (decided by the founder) embedded to keep re-checking the work independently.
+4. When all of that is ready the founder will ask to go beyond the prototype: build the full product, test, debug, and deploy on alllists.com. No deployment or upscaling before that instruction.
