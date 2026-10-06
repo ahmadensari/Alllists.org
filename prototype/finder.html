@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AllLists finder</title>
+<meta name="description" content="Design prototype: a guided finder (country, city, keyword) or one search bar, with results that load smoothly as you scroll. Sample data only.">
+<meta name="robots" content="noindex">
+<style>
+/* Same tokens as alllists-prototype.html (design system v1); minimal, no outside scripts, no images. */
+:root{
+  --paper:#f6f8fb; --surface:#ffffff; --ink:#101828; --ink-2:#475467; --rule:#e4e7ec; --control:#667085;
+  --accent:#1d4e89; --accent-2:#3b82c4; --accent-ink:#fff; --soft:#eaf1f9; --focus:#b54708;
+  --ok:#067647; --warn:#b54708; --none:#667085; --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+  --r:14px; --ease:cubic-bezier(.22,.8,.24,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0b1020;--surface:#131a2c;--ink:#f2f4f7;--ink-2:#a4aebd;--rule:#232d44;--control:#8592a8;--accent:#84adff;--accent-2:#5b8def;--accent-ink:#0b1020;--soft:#18233b;--focus:#fec84b;--ok:#47cd89;--warn:#fec84b;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0b1020;--surface:#131a2c;--ink:#f2f4f7;--ink-2:#a4aebd;--rule:#232d44;--control:#8592a8;--accent:#84adff;--accent-2:#5b8def;--accent-ink:#0b1020;--soft:#18233b;--focus:#fec84b;--ok:#47cd89;--warn:#fec84b;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.55 var(--font);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:8px}
+.wrap{max-width:68rem;margin-inline:auto;padding-inline:1.25rem}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* top bar: shrinks into a sticky search once results show */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 82%,transparent);backdrop-filter:blur(12px);border-block-end:1px solid transparent;transition:border-color .3s,box-shadow .3s}
+header.scrolled{border-color:var(--rule);box-shadow:0 4px 20px rgba(16,24,40,.05)}
+.bar{display:flex;align-items:center;gap:1rem;min-height:3.5rem}
+.logo{font-weight:700;font-size:1.25rem;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.logo b{color:var(--accent)}
+.grow{flex:1}
+.mini{display:flex;flex:1;max-width:30rem;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .3s,transform .3s var(--ease)}
+header.scrolled .mini,header.results .mini{opacity:1;transform:none;pointer-events:auto}
+.icon-btn{border:1px solid var(--rule);background:var(--surface);color:var(--ink);width:2.5rem;height:2.5rem;border-radius:50%;cursor:pointer;font:inherit;transition:transform .2s var(--ease)}
+.icon-btn:hover{transform:rotate(20deg) scale(1.06)}
+@media (max-width:560px){.mini{min-width:0}.mini .btn{display:none}.mini input{padding:.5rem .8rem}.bar{gap:.6rem}}
+header.results .grow{display:none}
+/* hero */
+.hero{position:relative;padding:clamp(2.5rem,9vw,6rem) 0 2rem;text-align:center;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-30% -10% auto;height:26rem;background:radial-gradient(40% 60% at 30% 40%,color-mix(in srgb,var(--accent-2) 22%,transparent),transparent 70%),radial-gradient(35% 55% at 72% 30%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 70%);filter:blur(10px);animation:drift 14s ease-in-out infinite alternate;z-index:-1}
+@keyframes drift{to{transform:translate3d(4%,6%,0) scale(1.08)}}
+h1{font-size:clamp(1.9rem,5.5vw,3.4rem);line-height:1.1;letter-spacing:-.03em;margin:0 0 .75rem;text-wrap:balance}
+.lead{color:var(--ink-2);max-width:36rem;margin:0 auto 1.75rem;font-size:1.0625rem}
+.count{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+/* one big search bar */
+.search{display:flex;gap:.5rem;max-width:40rem;margin:0 auto;background:var(--surface);border:1px solid var(--rule);border-radius:999px;padding:.4rem;box-shadow:var(--shadow);transition:box-shadow .3s,border-color .3s}
+.search:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent),var(--shadow)}
+.search input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:1.0625rem;padding:.6rem 1rem;outline:0}
+.btn{border:0;border-radius:999px;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:600;padding:.6rem 1.25rem;cursor:pointer;transition:transform .2s var(--ease),filter .2s}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.btn:active{transform:scale(.97)}
+.hint{color:var(--ink-2);font-size:.875rem;margin:.9rem 0 0}
+.sug{position:relative;max-width:40rem;margin:.5rem auto 0;text-align:start}
+.sug ul{position:absolute;inset-inline:0;margin:0;padding:.4rem;list-style:none;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);z-index:5;animation:pop .18s var(--ease)}
+.sug li button{display:flex;justify-content:space-between;gap:1rem;width:100%;text-align:start;border:0;background:transparent;color:var(--ink);font:inherit;padding:.6rem .8rem;border-radius:10px;cursor:pointer}
+.sug li button:hover,.sug li button[aria-selected="true"]{background:var(--soft)}
+.sug small{color:var(--ink-2)}
+@keyframes pop{from{opacity:0;transform:translateY(-4px)}}
+.or{display:flex;align-items:center;gap:1rem;color:var(--ink-2);font-size:.875rem;max-width:40rem;margin:1.75rem auto}
+.or::before,.or::after{content:"";height:1px;background:var(--rule);flex:1}
+/* guided steps */
+.steps{max-width:40rem;margin:0 auto;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:1.25rem;box-shadow:var(--shadow);text-align:start}
+.progress{display:flex;gap:.4rem;margin-block-end:1rem}
+.progress i{flex:1;height:4px;border-radius:4px;background:var(--rule);overflow:hidden;position:relative}
+.progress i::after{content:"";position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.progress i.on::after{transform:scaleX(1)}
+.step{animation:slide .45s var(--ease)}
+@keyframes slide{from{opacity:0;transform:translateX(18px)}}
+.q{font-size:1.25rem;font-weight:650;letter-spacing:-.01em;margin:0 0 .25rem}
+.sub{color:var(--ink-2);font-size:.9375rem;margin:0 0 .9rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{border:1px solid var(--rule);background:var(--paper);color:var(--ink);font:inherit;font-size:.9375rem;padding:.5rem .9rem;border-radius:999px;cursor:pointer;transition:all .2s var(--ease)}
+.chip:hover{border-color:var(--accent);background:var(--soft);transform:translateY(-2px)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.row{display:flex;gap:.5rem;align-items:center;margin-block-start:1rem}
+.link{border:0;background:transparent;color:var(--accent);font:inherit;cursor:pointer;text-decoration:underline;padding:.25rem}
+.field{width:100%;border:1px solid var(--control);border-radius:12px;background:var(--paper);color:var(--ink);font:inherit;padding:.7rem .9rem;margin-block-end:.75rem}
+/* results */
+#results{padding-block:1.5rem 4rem}
+.rhead{display:flex;flex-wrap:wrap;gap:.75rem 1rem;align-items:baseline;justify-content:space-between;margin-block-end:1rem}
+.rhead h2{font-size:1.5rem;letter-spacing:-.02em;margin:0}
+.scope{display:flex;flex-wrap:wrap;gap:.4rem}
+.tag{display:inline-flex;gap:.35rem;align-items:center;background:var(--soft);color:var(--accent);border-radius:999px;padding:.2rem .7rem;font-size:.875rem}
+.tag button{border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;padding:0}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr))}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:1.1rem 1.1rem 1rem;display:flex;flex-direction:column;gap:.5rem;opacity:0;transform:translateY(18px) scale(.985);transition:opacity .6s var(--ease),transform .6s var(--ease),box-shadow .25s,border-color .25s}
+.card.in{opacity:1;transform:none}
+.card:hover{box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--accent) 40%,var(--rule));transform:translateY(-3px)}
+.card h3{font-size:1.0625rem;margin:0;letter-spacing:-.01em}
+.meta{color:var(--ink-2);font-size:.875rem}
+.facts{display:flex;flex-wrap:wrap;gap:.35rem .9rem;font-size:.875rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.check{display:inline-flex;align-items:center;gap:.4rem;font-size:.8125rem;font-weight:600}
+.dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--none)}
+.c-s .dot,.c-o .dot{background:var(--ok)} .c-a .dot{background:var(--accent-2)} .c-n .dot{background:var(--none)}
+.c-s,.c-o{color:var(--ok)} .c-a{color:var(--accent)} .c-n{color:var(--ink-2)}
+.card .act{margin-block-start:auto;padding-block-start:.5rem;display:flex;justify-content:space-between;align-items:center}
+.msg{border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:999px;padding:.35rem .9rem;font:inherit;font-size:.875rem;cursor:pointer;transition:all .2s}
+.msg:hover{background:var(--accent);color:var(--accent-ink)}
+.skel{height:9.5rem;border-radius:var(--r);background:linear-gradient(100deg,var(--rule) 30%,var(--soft) 50%,var(--rule) 70%);background-size:200% 100%;animation:sh 1.2s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+#sentinel{height:1px}
+.end{text-align:center;color:var(--ink-2);padding:2rem 0}
+.empty{text-align:center;padding:3rem 0;color:var(--ink-2)}
+.toast{position:fixed;inset-inline:0;bottom:1.25rem;margin-inline:auto;width:max-content;max-width:90vw;background:var(--ink);color:var(--paper);padding:.7rem 1.1rem;border-radius:999px;opacity:0;transform:translateY(12px);transition:all .35s var(--ease);pointer-events:none;z-index:50}
+.toast.on{opacity:1;transform:none}
+footer{color:var(--ink-2);font-size:.8125rem;text-align:center;padding:1.5rem 0 2.5rem;border-block-start:1px solid var(--rule)}
+.top{position:fixed;inset-inline-end:1.25rem;bottom:1.25rem;opacity:0;transform:scale(.8);transition:all .3s var(--ease);z-index:15}
+.top.on{opacity:1;transform:none}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.card{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header id="hdr"><div class="wrap bar">
+  <a class="logo" href="#" id="home">All<b>Lists</b></a>
+  <form class="mini search" id="miniForm" role="search" style="padding:.25rem"><label class="vh" for="mq">Search</label><input id="mq" placeholder="Search lists, places, names" autocomplete="off"><button class="btn" type="submit">Search</button></form>
+  <span class="grow"></span>
+  <button class="icon-btn" id="theme" type="button" aria-label="Switch light or dark theme">◐</button>
+</div></header>
+
+<main>
+<section class="hero wrap" id="hero">
+  <h1>Find the exact list,<br>anywhere in the world.</h1>
+  <p class="lead"><span class="count" id="total">0</span> sample entries across every country. Ask where you are looking, or just type.</p>
+
+  <form class="search" id="bigForm" role="search"><label class="vh" for="bq">Search</label><input id="bq" placeholder="Try “hotels in Murree” or “surgical instruments Sialkot”" autocomplete="off" aria-controls="sugList"><button class="btn" type="submit">Search</button></form>
+  <div class="sug" id="sug" hidden><ul id="sugList" role="listbox"></ul></div>
+  <p class="hint">One search bar understands a list, a city and a country together.</p>
+
+  <div class="or">or let us guide you</div>
+
+  <div class="steps" id="steps" aria-live="polite">
+    <div class="progress" aria-hidden="true"><i id="p1"></i><i id="p2"></i><i id="p3"></i></div>
+    <div id="stepBody"></div>
+  </div>
+</section>
+
+<section id="results" class="wrap" hidden aria-label="Results">
+  <div class="rhead"><div><h2 id="rtitle">Results</h2><div class="scope" id="scope"></div></div><span class="meta" id="rcount" role="status"></span></div>
+  <div class="grid" id="grid"></div>
+  <div id="sentinel"></div>
+  <div class="end" id="end" hidden>You have reached the end of this list.</div>
+  <div class="empty" id="empty" hidden><p><b>No matches yet.</b></p><p>Try a wider place or another word. Lists fill up as people add and check entries.</p><button class="btn" id="reset" type="button">Start again</button></div>
+</section>
+</main>
+<footer><div class="wrap">Prototype with invented sample data. Phone numbers, WhatsApp and emails are never shown; messages are relayed by AllLists.</div></footer>
+<button class="btn top" id="top" type="button" aria-label="Back to top">↑</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+/* ---- sample data bank: generated on demand, deterministic, invented ---- */
+var COUNTRIES={
+ "Pakistan":["Lahore","Karachi","Islamabad","Sialkot","Faisalabad","Gujranwala","Murree","Rawalpindi"],
+ "United States":["New York","Los Angeles","San Francisco","Chicago","Houston","Miami"],
+ "United Arab Emirates":["Dubai","Abu Dhabi","Sharjah"],
+ "India":["Mumbai","Delhi","Bengaluru","Jaipur"],
+ "United Kingdom":["London","Manchester","Birmingham"],
+ "Nigeria":["Lagos","Abuja","Kano"],
+ "Turkey":["Istanbul","Ankara","Izmir"],
+ "Bangladesh":["Dhaka","Chittagong"]
+};
+var TYPES=[["Hotels","hotel hotels stay guest house"],["Schools","school schools education"],["Hospitals","hospital clinic health doctor"],["Surgical instrument makers","surgical instruments manufacturers factory"],["Football makers","football soccer ball manufacturers"],["Plumbers","plumber plumbing pipe repair"],["Bakeries","bakery bread cake"],["Pharmacies","pharmacy medical store chemist"],["Real estate agents","property real estate agent"],["Mobile phone repair","mobile phone repair"],["Petrol pumps","petrol fuel gas station"],["Furniture makers","furniture wood maker"],["Movers and packers","movers packers shifting"],["Law firms","lawyer law firm legal"],["Beauty parlours","beauty salon parlour"],["Software houses","software developer it agency"]];
+var A=["Royal","Green","Crescent","Pioneer","Capital","Metro","Golden","Silver","Blue","Prime","Noor","Star","Unity","Apex","Heritage","Summit","Orient","Falcon","Delta","Zenith"];
+var B=["House","Centre","Works","Group","Point","Traders","Services","Associates","Enterprises","Corner","Hub","Co"];
+var CHK=[["c-s","Surveyor-verified"],["c-o","Owner-verified"],["c-a","AI-checked"],["c-n","Not verified yet"]];
+function rnd(seed){seed=seed>>>0;return function(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};}
+var places=[];Object.keys(COUNTRIES).forEach(function(c){COUNTRIES[c].forEach(function(city){places.push({country:c,city:city});});});
+var PER=380; /* entries per list type per city */
+var TOTAL=places.length*TYPES.length*PER;
+function entry(pi,ti,n){
+  var r=rnd(pi*7919+ti*104729+n*31+7),p=places[pi],t=TYPES[ti],ch=CHK[Math.floor(Math.pow(r(),1.6)*4)];
+  var name=A[Math.floor(r()*A.length)]+" "+t[0].split(" ")[0].replace(/s$/,"")+" "+B[Math.floor(r()*B.length)];
+  var d=new Date(2026,9,6-Math.floor(r()*240));
+  return {name:name,type:t[0],city:p.city,country:p.country,chk:ch,date:d.toISOString().slice(0,10),rating:(3+r()*2).toFixed(1),yrs:1+Math.floor(r()*38),size:5+Math.floor(r()*480),area:["Old Town","Business District","Main Boulevard","Station Road","Model Town","Harbour Side"][Math.floor(r()*6)],id:pi+"-"+ti+"-"+n};
+}
+/* a query returns a lazy cursor so a huge bank never loads at once */
+function cursor(f){
+  var ps=[],ts=[],i;
+  places.forEach(function(p,k){if((!f.country||p.country===f.country)&&(!f.city||p.city===f.city))ps.push(k);});
+  TYPES.forEach(function(t,k){if(!f.kw||t[1].indexOf(f.kw)>-1||t[0].toLowerCase().indexOf(f.kw)>-1)ts.push(k);});
+  var total=ps.length*ts.length*PER,pos=0;
+  var order=[];/* interleave so the first screens mix places */
+  return {total:total,next:function(n){var out=[];while(out.length<n&&pos<total){var q=pos++,pi=ps[q%ps.length],ti=ts[Math.floor(q/ps.length)%ts.length],k=Math.floor(q/(ps.length*ts.length));out.push(entry(pi,ti,k));}return out;},done:function(){return pos>=total;}};
+}
+/* ---- helpers ---- */
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function fmt(n){return n.toLocaleString("en");}
+function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("on");},2200);}
+var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* count-up */
+function countUp(el,to){if(reduce){el.textContent=fmt(to);return;}var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1400);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);}
+countUp($("total"),TOTAL);
+/* theme */
+$("theme").onclick=function(){var r=document.documentElement,dark=getComputedStyle(r).colorScheme==="dark"||r.getAttribute("data-theme")==="dark";r.setAttribute("data-theme",dark?"light":"dark");};
+/* ---- guided steps: country, city, keyword ---- */
+var sel={country:"",city:"",kw:""};
+function setProgress(n){["p1","p2","p3"].forEach(function(id,i){$(id).classList.toggle("on",i<n);});}
+function chips(list,key,after){return '<div class="chips">'+list.map(function(v){return '<button class="chip" type="button" data-v="'+esc(v)+'" aria-pressed="'+(sel[key]===v)+'">'+esc(v)+'</button>';}).join("")+'</div>';}
+function step(n){
+  var b=$("stepBody"),h="";setProgress(n-1);
+  if(n===1){h='<div class="step"><p class="q">1. Which country are you looking in?</p><p class="sub">Pick one, or skip to search the whole world.</p>'+chips(Object.keys(COUNTRIES),"country")+'<div class="row"><button class="link" data-skip="1" type="button">Skip, search everywhere</button></div></div>';}
+  if(n===2){h='<div class="step"><p class="q">2. Which city in '+esc(sel.country)+'?</p><p class="sub">Choose a city, or keep the whole country.</p>'+chips(COUNTRIES[sel.country],"city")+'<div class="row"><button class="link" data-back="1" type="button">Back</button><button class="link" data-skip="2" type="button">Whole country</button></div></div>';}
+  if(n===3){h='<div class="step"><p class="q">3. What are you looking for?</p><p class="sub">Type a word, or pick a popular list.</p><input class="field" id="kw" placeholder="e.g. hotels, surgical, plumbers" autocomplete="off">'+chips(TYPES.slice(0,8).map(function(t){return t[0];}),"kw")+'<div class="row"><button class="link" data-back="2" type="button">Back</button><button class="btn" id="go" type="button">Show lists</button></div></div>';}
+  b.innerHTML=h;
+  var kw=$("kw");if(kw){kw.focus({preventScroll:true});kw.onkeydown=function(e){if(e.key==="Enter"){sel.kw=kw.value.trim().toLowerCase();run();}};$("go").onclick=function(){sel.kw=kw.value.trim().toLowerCase();run();};}
+}
+$("stepBody").addEventListener("click",function(e){
+  var c=e.target.closest(".chip"),s=e.target.closest("[data-skip]"),bk=e.target.closest("[data-back]");
+  if(c){var v=c.getAttribute("data-v");
+    if($("kw")){sel.kw=v.toLowerCase();run();return;}
+    if(!sel.country||c.parentNode.previousElementSibling.textContent.indexOf("1.")===0){sel.country=v;sel.city="";step(2);}else{sel.city=v;step(3);}}
+  if(s){var k=s.getAttribute("data-skip");if(k==="1"){sel.country="";sel.city="";step(3);}else{sel.city="";step(3);}}
+  if(bk){var t=+bk.getAttribute("data-back");if(t===1){sel.country="";}step(t);}
+});
+/* ---- one search bar: parse "hotels in Murree Pakistan" ---- */
+function parse(text){
+  var s=" "+text.toLowerCase().replace(/[^a-z0-9 ]/g," ")+" ",f={country:"",city:"",kw:""};
+  Object.keys(COUNTRIES).forEach(function(c){var cl=c.toLowerCase();if(s.indexOf(" "+cl+" ")>-1||(cl==="united states"&&/ (usa|us|america) /.test(s))||(cl==="united arab emirates"&&/ (uae|emirates) /.test(s))||(cl==="united kingdom"&&/ (uk|britain) /.test(s))){f.country=c;s=s.replace(" "+cl+" "," ");}
+    COUNTRIES[c].forEach(function(city){var l=city.toLowerCase();if(s.indexOf(" "+l+" ")>-1){f.city=city;f.country=c;s=s.replace(" "+l+" "," ");}});});
+  var rest=s.replace(/ (in|at|near|of|the|for|and|from) /g," ").trim();
+  if(rest){var m=TYPES.filter(function(t){return rest.split(" ").some(function(w){return w.length>2&&(t[1].indexOf(w)>-1);});});f.kw=m.length?m[0][0].toLowerCase():rest;}
+  return f;
+}
+function suggestions(text){
+  var f=parse(text),out=[];
+  if(!text.trim())return out;
+  TYPES.forEach(function(t){var key=text.toLowerCase();if(t[1].indexOf(key.split(" ")[0])>-1||t[0].toLowerCase().indexOf(key.split(" ")[0])>-1)out.push({label:t[0]+(f.city?" in "+f.city:f.country?" in "+f.country:""),f:{country:f.country,city:f.city,kw:t[0].toLowerCase()}});});
+  places.forEach(function(p){if(p.city.toLowerCase().indexOf(text.toLowerCase())===0)out.push({label:p.city+", "+p.country,f:{country:p.country,city:p.city,kw:""}});});
+  Object.keys(COUNTRIES).forEach(function(c){if(c.toLowerCase().indexOf(text.toLowerCase())===0)out.push({label:c,f:{country:c,city:"",kw:""}});});
+  return out.slice(0,6);
+}
+var bq=$("bq"),sugBox=$("sug"),sugList=$("sugList"),cur=-1,items=[];
+bq.addEventListener("input",function(){items=suggestions(bq.value);cur=-1;sugList.innerHTML=items.map(function(s,i){return '<li><button type="button" data-i="'+i+'" role="option">'+esc(s.label)+'<small>jump</small></button></li>';}).join("");sugBox.hidden=!items.length;});
+bq.addEventListener("keydown",function(e){var bs=sugList.querySelectorAll("button");if(sugBox.hidden||!bs.length)return;
+  if(e.key==="ArrowDown"){e.preventDefault();cur=(cur+1)%bs.length;}else if(e.key==="ArrowUp"){e.preventDefault();cur=(cur-1+bs.length)%bs.length;}else if(e.key==="Escape"){sugBox.hidden=true;return;}else return;
+  bs.forEach(function(b,i){b.setAttribute("aria-selected",i===cur);});});
+sugList.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;sel=Object.assign({},items[+b.getAttribute("data-i")].f);sugBox.hidden=true;run();});
+document.addEventListener("click",function(e){if(!e.target.closest("#sug")&&e.target!==bq)sugBox.hidden=true;});
+function submitText(q){if(!q.trim())return;sel=parse(q);sugBox.hidden=true;run();}
+$("bigForm").onsubmit=function(e){e.preventDefault();submitText(bq.value);};
+$("miniForm").onsubmit=function(e){e.preventDefault();submitText($("mq").value);};
+/* ---- results with smooth infinite scroll ---- */
+var cs=null,loading=false,shown=0,io=null;
+function card(e,i){
+  var el=document.createElement("article");el.className="card";el.style.transitionDelay=Math.min(i%12,11)*45+"ms";
+  el.innerHTML='<h3>'+esc(e.name)+'</h3><div class="meta">'+esc(e.type)+' · '+esc(e.area)+', '+esc(e.city)+', '+esc(e.country)+'</div>'
+   +'<div class="facts"><span>★ '+e.rating+'</span><span>'+e.yrs+' yrs</span><span>'+e.size+' staff</span></div>'
+   +'<span class="check '+e.chk[0]+'"><span class="dot"></span>'+e.chk[1]+' · '+e.date+'</span>'
+   +'<div class="act"><span class="meta">Contact hidden</span><button class="msg" type="button" data-n="'+esc(e.name)+'">Send message</button></div>';
+  return el;
+}
+function loadMore(){
+  if(loading||!cs||cs.done())return;loading=true;
+  var g=$("grid"),sk=[];for(var i=0;i<3;i++){var s=document.createElement("div");s.className="skel";g.appendChild(s);sk.push(s);}
+  setTimeout(function(){ /* simulated fetch latency */
+    sk.forEach(function(s){s.remove();});
+    var rows=cs.next(12),frag=document.createDocumentFragment();
+    rows.forEach(function(r,i){frag.appendChild(card(r,i));});g.appendChild(frag);shown+=rows.length;
+    requestAnimationFrame(function(){requestAnimationFrame(function(){g.querySelectorAll(".card:not(.in)").forEach(function(c){c.classList.add("in");});});});
+    $("rcount").textContent="Showing "+fmt(shown)+" of "+fmt(cs.total);
+    loading=false;$("end").hidden=!cs.done();
+    if(!cs.done()&&$("sentinel").getBoundingClientRect().top<innerHeight+600)loadMore();
+  },reduce?0:380);
+}
+function run(){
+  var scope=[];if(sel.country)scope.push(["country",sel.country]);if(sel.city)scope.push(["city",sel.city]);if(sel.kw)scope.push(["kw","“"+sel.kw+"”"]);
+  cs=cursor(sel);shown=0;$("grid").innerHTML="";$("end").hidden=true;
+  $("hero").hidden=true;$("results").hidden=false;$("hdr").classList.add("results");
+  $("rtitle").textContent=(sel.kw?sel.kw.replace(/^./,function(c){return c.toUpperCase();}):"All lists")+(sel.city?" in "+sel.city:sel.country?" in "+sel.country:" worldwide");
+  $("scope").innerHTML=scope.map(function(s){return '<span class="tag">'+esc(s[1])+' <button type="button" data-rm="'+s[0]+'" aria-label="Remove '+esc(s[1])+'">×</button></span>';}).join("");
+  $("rcount").textContent="";$("empty").hidden=cs.total>0;
+  scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+  if(cs.total>0)loadMore();
+}
+$("scope").addEventListener("click",function(e){var b=e.target.closest("[data-rm]");if(!b)return;var k=b.getAttribute("data-rm");if(k==="country"){sel.country="";sel.city="";}else sel[k]="";run();});
+$("grid").addEventListener("click",function(e){var b=e.target.closest(".msg");if(b)toast("Message to "+b.getAttribute("data-n")+" will be relayed. Contacts stay private.");});
+function home(){$("results").hidden=true;$("hero").hidden=false;$("hdr").classList.remove("results");sel={country:"",city:"",kw:""};bq.value="";step(1);scrollTo({top:0});}
+$("home").onclick=function(e){e.preventDefault();home();};$("reset").onclick=home;
+io=new IntersectionObserver(function(en){if(en[0].isIntersecting)loadMore();},{rootMargin:"600px"});io.observe($("sentinel"));
+/* header + back-to-top react to scroll */
+var tick=false;addEventListener("scroll",function(){if(tick)return;tick=true;requestAnimationFrame(function(){$("hdr").classList.toggle("scrolled",scrollY>24);$("top").classList.toggle("on",scrollY>800);tick=false;});},{passive:true});
+$("top").onclick=function(){scrollTo({top:0,behavior:reduce?"auto":"smooth"});};
+step(1);
+})();
+</script>
+</body>
+</html>

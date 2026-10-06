@@ -10,3 +10,7 @@ A static design prototype. One file, `alllists-prototype.html`, with no server, 
 - It is not the production system. The production code lives in `backend/`.
 
 Tested in Chromium at desktop and phone width, no script errors.
+
+## Finder prototype (`finder.html`)
+
+A second static file: a minimalist landing page that asks where you are looking (1 country, 2 city, 3 keyword) or accepts one free-text search ("hotels in Murree Pakistan"), then shows results that load in batches with a smooth fade-in as you scroll. Sample data is generated on the fly (about 195,000 invented entries); the real product would query the database. No outside scripts or images; honours reduced-motion and light/dark themes. Tested in Chromium at desktop and 390 px width.
