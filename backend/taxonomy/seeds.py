@@ -276,3 +276,61 @@ def seed_list_types():
             )
             made += 1
     return made
+
+
+FAMILY_ALIASES = {"Healthcare": "Health", "Education and tutoring": "Education", "Home and trades": "Trades and services"}
+EXTENDED_FILE = "list_types.csv"
+
+
+@transaction.atomic
+def seed_extended_list_types():
+    """Load the merged research set (inventory plus platform catalogue) from data/list_types.csv.
+
+    Safe to run twice. Names already seeded are skipped. Individuals and child-facing types are created gated
+    (hidden contacts, flags set). Returns (created, skipped, collisions).
+    """
+    import csv
+    from pathlib import Path
+
+    from django.utils.text import slugify
+
+    from core.textfold import fold
+
+    from .services import TaxonomyError
+
+    seed_templates()
+    created = skipped = 0
+    collisions = []
+    path = Path(__file__).parent / "data" / EXTENDED_FILE
+    with path.open(newline="", encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            name = row["name"].strip()
+            if Concept.objects.filter(kind="list_type", slug=row["slug"]).exists() or Concept.objects.filter(
+                kind="list_type", labels__text_fold=fold(name)
+            ).exists():
+                skipped += 1
+                continue
+            fam_name = FAMILY_ALIASES.get(row["family"], row["family"]).strip().strip('"')
+            fam = Concept.objects.filter(kind="family", slug=slugify(fam_name)).first()
+            fam = fam or create_concept(kind=Concept.Kind.FAMILY, name=fam_name)
+            try:
+                with transaction.atomic():
+                    c = create_concept(
+                        kind=Concept.Kind.LIST_TYPE,
+                        name=name,
+                        slug=row["slug"],
+                        parent=fam,
+                        natural_scale=row["scale"],
+                        entity_type_default="person" if row["form"] == "individual" else "business",
+                    )
+            except TaxonomyError:
+                collisions.append(name)
+                continue
+            ListTypeSettings.objects.filter(concept=c).update(
+                is_individual=row["form"] == "individual",
+                is_child_facing=bool(row["child"]),
+                is_health=bool(row["health"]),
+                share_hidden=row["form"] == "individual" or bool(row["child"]),
+            )
+            created += 1
+    return created, skipped, collisions

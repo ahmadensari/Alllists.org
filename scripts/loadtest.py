@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Load test (plan 18.5, P6.03). Standard library only.
 
-    python3 scripts/loadtest.py https://staging.alllists.org --users 60 --seconds 120 --paths paths.txt
+    python3 scripts/loadtest.py https://staging.alllists.com --users 60 --seconds 120 --paths paths.txt
 
 `paths.txt` holds one path per line (list pages, entry pages, search pages); without it a small default mix is used.
 Every path that starts with /e/ also fetches its private fragment, like a browser does. Reports p50, p95, p99,

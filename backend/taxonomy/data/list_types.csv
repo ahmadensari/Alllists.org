@@ -1,0 +1,236 @@
+name,slug,family,scale,form,child,health,source
+Plumbers,plumbers,Home repair and skilled trades,hyper_local,firm,,,inventory A1
+Electricians,electricians,Home repair and skilled trades,hyper_local,individual,,,inventory A2
+Carpenters,carpenters,Home repair and skilled trades,hyper_local,individual,,,inventory A3
+Masons and tile fixers,masons-and-tile-fixers,Home repair and skilled trades,hyper_local,individual,,,inventory A4
+AC technicians,ac-technicians,Home repair and skilled trades,hyper_local,firm,,,inventory A5
+Painters,painters,Home repair and skilled trades,city,firm,,,inventory A6
+Welders and fabricators,welders-and-fabricators,Home repair and skilled trades,city,firm,,,inventory A7
+Locksmiths,locksmiths,Home repair and skilled trades,hyper_local,individual,,,inventory A8
+Roofing and waterproofing,roofing-and-waterproofing,Home repair and skilled trades,city,firm,,,inventory A9
+Pest control and fumigation,pest-control-and-fumigation,Home repair and skilled trades,city,firm,,,inventory A10
+Water tank and RO plant services,water-tank-and-ro-plant-services,Home repair and skilled trades,hyper_local,firm,,,inventory A11
+"Gas, geyser and stove repair",gas-geyser-and-stove-repair,Home repair and skilled trades,hyper_local,individual,,,inventory A12
+"Generator, UPS and solar installers",generator-ups-and-solar-installers,Home repair and skilled trades,city,firm,,,inventory A13
+Handymen / mistri (general),handymen-mistri-general,Home repair and skilled trades,hyper_local,individual,,,inventory A14
+Mobile phone repair,mobile-phone-repair,Appliance and device repair,hyper_local,firm,,,inventory B1
+Laptop and computer repair,laptop-and-computer-repair,Appliance and device repair,city,firm,,,inventory B2
+Home appliance repair,home-appliance-repair,Appliance and device repair,hyper_local,firm,,,inventory B3
+Car mechanics and workshops,car-mechanics-and-workshops,Appliance and device repair,city,firm,,,inventory B4
+Motorcycle repair,motorcycle-repair,Appliance and device repair,hyper_local,firm,,,inventory B5
+Tyre and battery shops,tyre-and-battery-shops,Appliance and device repair,hyper_local,firm,,,inventory B6
+Car wash and detailing,car-wash-and-detailing,Appliance and device repair,hyper_local,firm,,,inventory B7
+"Watch, shoe and bag repair",watch-shoe-and-bag-repair,Appliance and device repair,hyper_local,firm,,,inventory B8
+"Camera, printer and photocopier repair",camera-printer-and-photocopier-repair,Appliance and device repair,city,firm,,,inventory B9
+CCTV and security system installers,cctv-and-security-system-installers,Appliance and device repair,city,firm,,,inventory B10
+General and civil contractors,general-and-civil-contractors,"Construction, contracting and property",national,firm,,,inventory C1
+Architects and designers,architects-and-designers,"Construction, contracting and property",city,firm,,,inventory C2
+Interior designers,interior-designers,"Construction, contracting and property",city,firm,,,inventory C3
+"Civil, structural and MEP engineers",civil-structural-and-mep-engineers,"Construction, contracting and property",national,firm,,,inventory C4
+Quantity surveyors and valuers,quantity-surveyors-and-valuers,"Construction, contracting and property",national,firm,,,inventory C5
+Real estate agents and developers,real-estate-agents-and-developers,"Construction, contracting and property",hyper_local,firm,,,inventory C6
+Building material suppliers,building-material-suppliers,"Construction, contracting and property",city,firm,,,inventory C7
+Heavy equipment rental,heavy-equipment-rental,"Construction, contracting and property",city,firm,,,inventory C8
+Surveyors and land services,surveyors-and-land-services,"Construction, contracting and property",city,firm,,,inventory C9
+General practitioners and clinics,general-practitioners-and-clinics,Healthcare,hyper_local,firm,,1,inventory D1
+Eye doctors / ophthalmologists,eye-doctors-ophthalmologists,Healthcare,hyper_local,individual,,1,inventory D2
+Eye hospitals,eye-hospitals,Healthcare,city,firm,,1,inventory D3
+Dentists,dentists,Healthcare,hyper_local,firm,,1,inventory D4
+Paediatricians,paediatricians,Healthcare,city,individual,,1,inventory D5
+Gynaecologists and maternity,gynaecologists-and-maternity,Healthcare,city,firm,,1,inventory D6
+Other specialist doctors,other-specialist-doctors,Healthcare,city,individual,,1,inventory D7
+Hospitals,hospitals,Healthcare,city,firm,,1,inventory D8
+Diagnostic labs,diagnostic-labs,Healthcare,hyper_local,firm,,1,inventory D9
+"MRI, CT and radiology centres",mri-ct-and-radiology-centres,Healthcare,city,firm,,1,inventory D10
+Pharmacies,pharmacies,Healthcare,hyper_local,firm,,1,inventory D11
+Physiotherapists and rehab,physiotherapists-and-rehab,Healthcare,hyper_local,firm,,1,inventory D12
+Mental health,mental-health,Healthcare,city,individual,,1,inventory D13
+Hakeem and homeopathic,hakeem-and-homeopathic,Healthcare,hyper_local,individual,,1,inventory D14
+Veterinary clinics,veterinary-clinics,Healthcare,hyper_local,firm,,1,inventory D15
+Ambulance and blood services,ambulance-and-blood-services,Healthcare,city,firm,,1,inventory D16
+Opticians and optical shops,opticians-and-optical-shops,Healthcare,hyper_local,firm,,1,inventory D17
+Schools,schools,Education and tutoring,hyper_local,firm,,,inventory E1
+Colleges and universities,colleges-and-universities,Education and tutoring,national,firm,,,inventory E2
+Quran tutors,quran-tutors,Education and tutoring,hyper_local,individual,1,,inventory E3
+Madrasas and hifz schools,madrasas-and-hifz-schools,Education and tutoring,city,firm,1,,inventory E4
+Academic tutors,academic-tutors,Education and tutoring,hyper_local,individual,1,,inventory E5
+Coaching centres and academies,coaching-centres-and-academies,Education and tutoring,city,firm,,,inventory E6
+Language teachers,language-teachers,Education and tutoring,city,individual,,,inventory E7
+Vocational training institutes,vocational-training-institutes,Education and tutoring,city,firm,,,inventory E8
+Daycare and play groups,daycare-and-play-groups,Education and tutoring,hyper_local,firm,1,,inventory E9
+Driving schools,driving-schools,Education and tutoring,hyper_local,firm,,,inventory E10
+"Music, art and sports coaches",music-art-and-sports-coaches,Education and tutoring,hyper_local,firm,,,inventory E11
+Lawyers,lawyers,"Legal, finance and professional services",city,firm,,,inventory F1
+Corporate and tax lawyers,corporate-and-tax-lawyers,"Legal, finance and professional services",national,firm,,,inventory F2
+Notaries and oath commissioners,notaries-and-oath-commissioners,"Legal, finance and professional services",hyper_local,individual,,,inventory F3
+Accountants and auditors,accountants-and-auditors,"Legal, finance and professional services",city,firm,,,inventory F4
+Tax consultants,tax-consultants,"Legal, finance and professional services",city,individual,,,inventory F5
+Banks and branches,banks-and-branches,"Legal, finance and professional services",hyper_local,firm,,,inventory F6
+Insurance agents,insurance-agents,"Legal, finance and professional services",city,individual,,,inventory F7
+Money changers and remittance,money-changers-and-remittance,"Legal, finance and professional services",city,firm,,,inventory F8
+Loan and microfinance providers,loan-and-microfinance-providers,"Legal, finance and professional services",city,firm,,,inventory F9
+Management and business consultants,management-and-business-consultants,"Legal, finance and professional services",national,firm,,,inventory F10
+Recruitment agencies,recruitment-agencies,"Legal, finance and professional services",national,firm,,,inventory F11
+Translators and interpreters,translators-and-interpreters,"Legal, finance and professional services",national,individual,,,inventory F12
+Immigration and visa consultants,immigration-and-visa-consultants,"Legal, finance and professional services",national,firm,,,inventory F13
+Data scientists,data-scientists,"IT, data and digital professions",global,individual,,,inventory G1
+Software developers,software-developers,"IT, data and digital professions",global,firm,,,inventory G2
+Software houses and agencies,software-houses-and-agencies,"IT, data and digital professions",national,firm,,,inventory G3
+Web designers and SEO,web-designers-and-seo,"IT, data and digital professions",national,firm,,,inventory G4
+Cybersecurity professionals,cybersecurity-professionals,"IT, data and digital professions",global,firm,,,inventory G5
+Cloud and DevOps engineers,cloud-and-devops-engineers,"IT, data and digital professions",global,individual,,,inventory G6
+IT support and network installers,it-support-and-network-installers,"IT, data and digital professions",city,firm,,,inventory G7
+Freelance digital creatives,freelance-digital-creatives,"IT, data and digital professions",global,individual,,,inventory G8
+Digital marketing and social media,digital-marketing-and-social-media,"IT, data and digital professions",national,firm,,,inventory G9
+Beauty parlours,beauty-parlours,"Beauty, wellness and personal care",hyper_local,firm,,,inventory H1
+Barbers and salons (men),barbers-and-salons-men,"Beauty, wellness and personal care",hyper_local,firm,,,inventory H2
+Bridal makeup artists,bridal-makeup-artists,"Beauty, wellness and personal care",city,individual,,,inventory H3
+Spas and massage,spas-and-massage,"Beauty, wellness and personal care",city,firm,,,inventory H4
+Gyms and fitness,gyms-and-fitness,"Beauty, wellness and personal care",hyper_local,firm,,,inventory H5
+Tailors and boutiques,tailors-and-boutiques,"Beauty, wellness and personal care",hyper_local,firm,,,inventory H6
+Dry cleaners and laundry,dry-cleaners-and-laundry,"Beauty, wellness and personal care",hyper_local,firm,,,inventory H7
+Dieticians and nutrition,dieticians-and-nutrition,"Beauty, wellness and personal care",city,individual,,,inventory H8
+Bakeries,bakeries,"Food, retail and daily needs",hyper_local,firm,,,inventory I1
+Restaurants and cafes,restaurants-and-cafes,"Food, retail and daily needs",hyper_local,firm,,,inventory I2
+Caterers and cooks,caterers-and-cooks,"Food, retail and daily needs",city,firm,,,inventory I3
+Grocery and supermarkets,grocery-and-supermarkets,"Food, retail and daily needs",hyper_local,firm,,,inventory I4
+Petrol pumps,petrol-pumps,"Food, retail and daily needs",hyper_local,firm,,,inventory I5
+Water and gas delivery,water-and-gas-delivery,"Food, retail and daily needs",hyper_local,firm,,,inventory I6
+Meat and dairy suppliers,meat-and-dairy-suppliers,"Food, retail and daily needs",hyper_local,firm,,,inventory I7
+Movers and packers,movers-and-packers,"Transport, logistics and travel",city,firm,,,inventory J1
+Courier and logistics,courier-and-logistics,"Transport, logistics and travel",national,firm,,,inventory J2
+Taxi and ride services,taxi-and-ride-services,"Transport, logistics and travel",city,firm,,,inventory J3
+Truck and goods transporters,truck-and-goods-transporters,"Transport, logistics and travel",national,firm,,,inventory J4
+Travel agents and tour operators,travel-agents-and-tour-operators,"Transport, logistics and travel",national,firm,,,inventory J5
+Customs clearing agents,customs-clearing-agents,"Transport, logistics and travel",national,firm,,,inventory J6
+Wedding halls and marquees,wedding-halls-and-marquees,Events and creative services,city,firm,,,inventory K1
+Photographers and videographers,photographers-and-videographers,Events and creative services,city,firm,,,inventory K2
+Event planners and decorators,event-planners-and-decorators,Events and creative services,city,firm,,,inventory K3
+Printing and signage,printing-and-signage,Events and creative services,city,firm,,,inventory K4
+Mosques and prayer services,mosques-and-prayer-services,"Public, community and civic",hyper_local,firm,,,inventory L1
+NGOs and charities,ngos-and-charities,"Public, community and civic",city,firm,,,inventory L2
+Police and emergency services,police-and-emergency-services,"Public, community and civic",city,firm,,,inventory L3
+Government service offices,government-service-offices,"Public, community and civic",city,firm,,,inventory L4
+Agri inputs and seed dealers,agri-inputs-and-seed-dealers,Agriculture and rural,city,firm,,,inventory M1
+Tractor and farm machinery repair,tractor-and-farm-machinery-repair,Agriculture and rural,city,firm,,,inventory M2
+Agronomists and advisers,agronomists-and-advisers,Agriculture and rural,city,individual,,,inventory M3
+Maids and cleaners,maids-and-cleaners,Domestic and household help,hyper_local,firm,,,inventory N1
+Drivers and chauffeurs,drivers-and-chauffeurs,Domestic and household help,hyper_local,individual,,,inventory N2
+Gardeners,gardeners,Domestic and household help,hyper_local,individual,,,inventory N3
+Security guards and agencies,security-guards-and-agencies,Domestic and household help,city,firm,,,inventory N4
+Nannies and elder care,nannies-and-elder-care,Domestic and household help,hyper_local,individual,1,,inventory N5
+Engineering consultants (specialised),engineering-consultants-specialised,Specialised business services,national,firm,,,inventory O1
+Testing and certification labs,testing-and-certification-labs,Specialised business services,national,firm,,1,inventory O2
+Industrial suppliers and fabricators,industrial-suppliers-and-fabricators,Specialised business services,national,firm,,,inventory O3
+Waste and recycling services,waste-and-recycling-services,Specialised business services,city,firm,,,inventory O4
+Plumbers and electricians,plumbers-and-electricians,Home and trades,city,firm,,,platforms
+"Carpenters, painters, handymen, masons, tilers",carpenters-painters-handymen-masons-tilers,Home and trades,city,firm,,,platforms
+AC and appliance repair,ac-and-appliance-repair,Home and trades,city,firm,,,platforms
+Pest control,pest-control,Home and trades,city,firm,,,platforms
+"House, deep, sofa and carpet cleaning",house-deep-sofa-and-carpet-cleaning,Home and trades,city,firm,,,platforms
+"Movers, packers, helpers",movers-packers-helpers,Home and trades,city,firm,,,platforms
+"Roofers, waterproofing, solar, windows, doors, flooring, other LSA home jobs",roofers-waterproofing-solar-windows-doors-flooring-other-lsa-home-jobs,Home and trades,city,firm,,,platforms
+"Landscapers, gardeners, tree service",landscapers-gardeners-tree-service,Home and trades,city,firm,,,platforms
+"Furniture assembly, TV mounting, junk removal",furniture-assembly-tv-mounting-junk-removal,Home and trades,city,individual,,,platforms
+"Home inspectors; kitchen, bath and modular-kitchen remodellers",home-inspectors-kitchen-bath-and-modular-kitchen-remodellers,Home and trades,city,firm,,,platforms
+"Housekeepers, domestic workers, home cooks",housekeepers-domestic-workers-home-cooks,Home and trades,city,individual,,,platforms
+"Beauty, grooming, massage at home; makeup artists",beauty-grooming-massage-at-home-makeup-artists,Home and trades,city,individual,,,platforms
+Doctors and specialists by specialty,doctors-and-specialists-by-specialty,Health,city,individual,,1,platforms
+Eye doctors and eye care,eye-doctors-and-eye-care,Health,city,firm,,1,platforms
+Dentists and dental practices,dentists-and-dental-practices,Health,city,firm,,1,platforms
+"Hospitals, clinics, GP surgeries",hospitals-clinics-gp-surgeries,Health,city,firm,,1,platforms
+Hospitals ranked by specialty or accreditation,hospitals-ranked-by-specialty-or-accreditation,Health,city,firm,,1,platforms
+Diagnostic and pathology labs with test prices; collection points,diagnostic-and-pathology-labs-with-test-prices-collection-points,Health,city,firm,,1,platforms
+"Imaging centres (MRI, CT, X-ray, ultrasound)",imaging-centres-mri-ct-x-ray-ultrasound,Health,city,firm,,1,platforms
+"Installed medical machines (MRI, CT, PET)",installed-medical-machines-mri-ct-pet,Health,city,firm,,1,platforms
+Used equipment for sale; equipment suppliers and importers,used-equipment-for-sale-equipment-suppliers-and-importers,Health,city,firm,,1,platforms
+Pharmacies and medical stores,pharmacies-and-medical-stores,Health,city,firm,,1,platforms
+"Physiotherapists, psychologists, dietitians, audiologists",physiotherapists-psychologists-dietitians-audiologists,Health,city,individual,,1,platforms
+"Nurses, nurse practitioners, physician assistants",nurses-nurse-practitioners-physician-assistants,Health,city,individual,,1,platforms
+"Care homes; mental, sexual-health, pregnancy, vaccination services",care-homes-mental-sexual-health-pregnancy-vaccination-services,Health,city,firm,,1,platforms
+"Vets, pet groomers, boarders, walkers, shelters",vets-pet-groomers-boarders-walkers-shelters,Health,city,firm,,1,platforms
+Ambulance and blood banks,ambulance-and-blood-banks,Health,city,firm,,1,platforms
+"Schools, with board and district",schools-with-board-and-district,Education,city,firm,,,platforms
+"Colleges, universities, courses, exams, rankings, study abroad",colleges-universities-courses-exams-rankings-study-abroad,Education,city,firm,,,platforms
+"Coaching centres, vocational and computer training",coaching-centres-vocational-and-computer-training,Education,city,firm,,,platforms
+Academic and test-prep tutors,academic-and-test-prep-tutors,Education,city,individual,1,,platforms
+"Language, music, art and sports teachers",language-music-art-and-sports-teachers,Education,city,individual,,,platforms
+Quran tutors (individual),quran-tutors-individual,Education,city,individual,1,,platforms
+"Quran academies (Tajweed, Hifz, Noorani Qaida)",quran-academies-tajweed-hifz-noorani-qaida,Education,city,firm,1,,platforms
+Madrasas by wafaq board,madrasas-by-wafaq-board,Education,city,firm,1,,platforms
+Driving schools and instructors,driving-schools-and-instructors,Education,city,firm,,,platforms
+"Daycare, preschools, babysitters, nannies, carers",daycare-preschools-babysitters-nannies-carers,Education,city,firm,1,,platforms
+"Property for sale, residential and commercial",property-for-sale-residential-and-commercial,Construction and property,city,firm,,,platforms
+"Property to rent, share or swap; hostels; parking",property-to-rent-share-or-swap-hostels-parking,Construction and property,city,firm,,,platforms
+"New-build projects, housing societies, plot maps",new-build-projects-housing-societies-plot-maps,Construction and property,city,firm,,,platforms
+"Real estate agents, agencies, developers, builders",real-estate-agents-agencies-developers-builders,Construction and property,city,firm,,,platforms
+"Property managers, landlords, photographers, stagers, mortgage lenders",property-managers-landlords-photographers-stagers-mortgage-lenders,Construction and property,city,firm,,,platforms
+"General contractors, builders, design-build firms",general-contractors-builders-design-build-firms,Construction and property,city,firm,,,platforms
+Architects; interior designers,architects-interior-designers,Construction and property,city,firm,,,platforms
+"Heavy and construction machinery, new, used, rental",heavy-and-construction-machinery-new-used-rental,Construction and property,city,firm,,,platforms
+"Used and new cars, with curated lists (hybrid, imported, luxury)",used-and-new-cars-with-curated-lists-hybrid-imported-luxury,Vehicles,city,firm,,,platforms
+Car and bike dealers,car-and-bike-dealers,Vehicles,city,firm,,,platforms
+"Bikes, rickshaws, vans, trucks, buses, tractors, caravans, boats",bikes-rickshaws-vans-trucks-buses-tractors-caravans-boats,Vehicles,city,firm,,,platforms
+Auto parts and accessories,auto-parts-and-accessories,Vehicles,city,firm,,,platforms
+"Car repair, wash, tyres, towing",car-repair-wash-tyres-towing,Vehicles,city,firm,,,platforms
+"Car rental, taxis, drivers",car-rental-taxis-drivers,Vehicles,city,firm,,,platforms
+Petrol (gas) stations,petrol-gas-stations,Vehicles,city,firm,,,platforms
+"Industrial machinery, machine tools, spares",industrial-machinery-machine-tools-spares,Business and trade,city,firm,,,platforms
+Textile and garment makers and exporters,textile-and-garment-makers-and-exporters,Business and trade,city,firm,,,platforms
+"Chemicals, dyes, metals, minerals, ores",chemicals-dyes-metals-minerals-ores,Business and trade,city,firm,,,platforms
+"Sialkot cluster: surgical instruments, sports goods, gloves, leather goods",sialkot-cluster-surgical-instruments-sports-goods-gloves-leather-goods,Business and trade,city,firm,,,platforms
+"Food, agri, FMCG, fertiliser, seeds, farm machinery",food-agri-fmcg-fertiliser-seeds-farm-machinery,Business and trade,city,firm,,,platforms
+Packaging materials and machines,packaging-materials-and-machines,Business and trade,city,firm,,,platforms
+"Electronics, electrical, appliances, gifts, home products (makers)",electronics-electrical-appliances-gifts-home-products-makers,Business and trade,city,firm,,,platforms
+Furniture and furniture-hardware makers and wholesalers,furniture-and-furniture-hardware-makers-and-wholesalers,Business and trade,city,firm,,,platforms
+Lab and measuring instruments,lab-and-measuring-instruments,Business and trade,city,firm,,1,platforms
+Contract manufacturers and machine shops by process,contract-manufacturers-and-machine-shops-by-process,Business and trade,city,firm,,,platforms
+"Certified, women-owned and audited supplier lists (ISO, halal, GOTS)",certified-women-owned-and-audited-supplier-lists-iso-halal-gots,Business and trade,city,firm,,,platforms
+"Manufacturers' reps, distributors, wholesalers, wholesale markets",manufacturers-reps-distributors-wholesalers-wholesale-markets,Business and trade,city,firm,,,platforms
+"Importers and buyers; buy leads, RFQs, tenders",importers-and-buyers-buy-leads-rfqs-tenders,Business and trade,city,firm,,,platforms
+"Business services: freight, customs, warehousing, printing, IT, testing labs",business-services-freight-customs-warehousing-printing-it-testing-labs,Business and trade,city,firm,,1,platforms
+"Chambers, associations, trade shows, country pavilions",chambers-associations-trade-shows-country-pavilions,Business and trade,city,firm,,,platforms
+Company lists sold as data; prospects by filter,company-lists-sold-as-data-prospects-by-filter,Business and trade,city,firm,,,platforms
+Product catalogues and third-party sellers,product-catalogues-and-third-party-sellers,Business and trade,city,firm,,,platforms
+Businesses for sale,businesses-for-sale,Business and trade,city,firm,,,platforms
+Lawyers by speciality,lawyers-by-speciality,Professional and talent,city,firm,,,platforms
+"Accountants, tax specialists, financial planners, banks, insurers",accountants-tax-specialists-financial-planners-banks-insurers,Professional and talent,city,firm,,,platforms
+"Data scientists, analysts, ML engineers",data-scientists-analysts-ml-engineers,Professional and talent,city,individual,,,platforms
+"Software, web and app developers",software-web-and-app-developers,Professional and talent,city,individual,,,platforms
+"Designers, illustrators, writers, translators, video and audio creatives",designers-illustrators-writers-translators-video-and-audio-creatives,Professional and talent,city,individual,,,platforms
+"Digital marketers, virtual assistants, consultants",digital-marketers-virtual-assistants-consultants,Professional and talent,city,firm,,,platforms
+"Software, design and marketing agencies; call centres",software-design-and-marketing-agencies-call-centres,Professional and talent,city,firm,,,platforms
+Researchers and journals,researchers-and-journals,Professional and talent,city,firm,,,platforms
+Job vacancies and employers with reviews and salaries,job-vacancies-and-employers-with-reviews-and-salaries,Professional and talent,city,firm,,,platforms
+"Candidates, CV databases, profiles by skill",candidates-cv-databases-profiles-by-skill,Professional and talent,city,individual,,,platforms
+"Customer requests (jobs, projects, care jobs)",customer-requests-jobs-projects-care-jobs,Professional and talent,city,firm,,,platforms
+"Hotels, B&Bs, resorts, campgrounds",hotels-bbs-resorts-campgrounds,Travel and events,city,firm,,,platforms
+"Vacation rentals, tours, cruises, flights",vacation-rentals-tours-cruises-flights,Travel and events,city,firm,,,platforms
+"Attractions, museums, landmarks, outdoors",attractions-museums-landmarks-outdoors,Travel and events,city,firm,,,platforms
+"Cinemas, arcades, casinos, venues, bars, clubs",cinemas-arcades-casinos-venues-bars-clubs,Travel and events,city,firm,,,platforms
+"Events, festivals, what's on",events-festivals-whats-on,Travel and events,city,firm,,,platforms
+"Wedding planners, caterers, DJs, decorators, halls; photographers",wedding-planners-caterers-djs-decorators-halls-photographers,Travel and events,city,firm,,,platforms
+"Restaurants, cafes, takeaways by cuisine",restaurants-cafes-takeaways-by-cuisine,Retail and food (with beauty and fitness),city,firm,,,platforms
+Bakeries and cake shops,bakeries-and-cake-shops,Retail and food (with beauty and fitness),city,firm,,,platforms
+"Shops: furniture, books, electronics, clothing, music, home and garden",shops-furniture-books-electronics-clothing-music-home-and-garden,Retail and food (with beauty and fitness),city,firm,,,platforms
+"Mobile phones and accessories, new and used",mobile-phones-and-accessories-new-and-used,Retail and food (with beauty and fitness),city,firm,,,platforms
+Hardware shops,hardware-shops,Retail and food (with beauty and fitness),city,firm,,,platforms
+"Grocery, flower, laundry, delivery",grocery-flower-laundry-delivery,Retail and food (with beauty and fitness),city,firm,,,platforms
+"General for-sale classifieds; livestock, pets, pigeons",general-for-sale-classifieds-livestock-pets-pigeons,Retail and food (with beauty and fitness),city,firm,,,platforms
+"Salons, barbers, nail salons, spas, gyms, yoga",salons-barbers-nail-salons-spas-gyms-yoga,Retail and food (with beauty and fitness),city,firm,,,platforms
+Government bodies and public offices,government-bodies-and-public-offices,Civic and community,city,firm,,,platforms
+"Causes, communities, NGOs; community notices (lost and found, travel partners)",causes-communities-ngos-community-notices-lost-and-found-travel-partners,Civic and community,city,firm,,,platforms
+"Software by category in ranked grids; ""alternatives to X""; product launches",software-by-category-in-ranked-grids-alternatives-to-x-product-launches,Software and topic lists,city,firm,,,platforms
+AI tools by function,ai-tools-by-function,Software and topic lists,city,firm,,,platforms
+Websites and web tools by task; mobile apps by country,websites-and-web-tools-by-task-mobile-apps-by-country,Software and topic lists,city,firm,,,platforms
+"Developer resource lists (""awesome"")",developer-resource-lists-awesome,Software and topic lists,city,firm,,,platforms
+"Books, films, TV, music, podcasts, games",books-films-tv-music-podcasts-games,Software and topic lists,city,firm,,,platforms
+"Public figures (presidents, ministers, CEOs, judges, award winners); people from a place",public-figures-presidents-ministers-ceos-judges-award-winners-people-from-a-place,Software and topic lists,city,individual,,,platforms
+"Institutions with standard IDs (airports, universities, ports); fact lists, timelines",institutions-with-standard-ids-airports-universities-ports-fact-lists-timelines,Software and topic lists,city,firm,,,platforms
+"Best-of, awards and tested-product lists by place",best-of-awards-and-tested-product-lists-by-place,Software and topic lists,city,firm,,,platforms
+"Voted Top 10s, playlists, inspiration boards",voted-top-10s-playlists-inspiration-boards,Software and topic lists,city,firm,,,platforms
+"Wish lists and registries (wedding, baby)",wish-lists-and-registries-wedding-baby,Personal lists,city,individual,,,platforms
+Task lists and templates,task-lists-and-templates,Personal lists,city,individual,,,platforms
+Saved places and map layers,saved-places-and-map-layers,Personal lists,city,individual,,,platforms
+Watch and reading lists,watch-and-reading-lists,Personal lists,city,individual,,,platforms
+Alumni and classmates,alumni-and-classmates,Personal lists,city,individual,,,platforms

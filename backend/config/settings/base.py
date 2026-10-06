@@ -176,7 +176,7 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "1") == "1"
 EXTRACT_DIR = os.environ.get("EXTRACT_DIR", str(BASE_DIR / "var" / "extracts"))
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "AllLists <no-reply@alllists.org>")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "AllLists <no-reply@alllists.com>")
 LOGIN_MAX_PER_ACCOUNT = 5
 LOGIN_MAX_PER_ADDRESS = 20
 SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")

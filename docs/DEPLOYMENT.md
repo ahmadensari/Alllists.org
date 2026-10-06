@@ -10,7 +10,7 @@ Stages (plan 3.5): S0 one small server; S1 managed PostgreSQL plus one app serve
 
 ## 2. What you need to decide or buy first (the founder)
 
-1. **Domain and name.** Confirm the owner of `alllists.org`; consider `alllists.com` and `.pk`.
+1. **Domain and name.** Confirm the owner of `alllists.com`; consider `alllists.com` and `.pk`.
 2. **Hosting.** One server in a region close to most users plus managed backups, or a managed platform. The plan assumes Ubuntu 24.04, 2 vCPU, 4 GB RAM, 80 GB disk to start.
 3. **CDN and DNS** (Cloudflare free plan is enough at the start). It also supplies the visitor's country header the app reads.
 4. **Email sender** (a transactional email service) for sign-up codes, enquiry relay and alerts.

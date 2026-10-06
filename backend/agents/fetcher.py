@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from urllib import robotparser
 from urllib.parse import urlparse
 
-USER_AGENT = "AllListsBot/1.0 (+https://alllists.org/sources/)"
+USER_AGENT = "AllListsBot/1.0 (+https://alllists.com/sources/)"
 MAX_BYTES = 500_000
 TIMEOUT = 10
 MIN_INTERVAL = 2.0

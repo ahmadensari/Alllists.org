@@ -1,5 +1,5 @@
 # Reverse proxy (plan 18.2): TLS, compression, and a cache hint for the shared pages. The app sets its own security headers.
-alllists.org, www.alllists.org {
+alllists.com, www.alllists.com {
 	encode zstd gzip
 	@static path /static/*
 	header @static Cache-Control "public, max-age=31536000, immutable"

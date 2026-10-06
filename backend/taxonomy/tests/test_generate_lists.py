@@ -24,3 +24,15 @@ def test_levels_filter_and_dry_run(tree):
     call_command("generate_lists", "--levels=country")
     n = Place.objects.filter(status="active", level="country").count()
     assert PlaceList.objects.count() == n * Concept.objects.filter(kind="list_type", status="active").count()
+
+
+def test_extended_set_loads_once_and_gates_individuals(tree):
+    call_command("seed_taxonomy", "--extended")
+    n = Concept.objects.filter(kind="list_type").count()
+    assert n > 200
+    call_command("seed_taxonomy", "--extended")
+    assert Concept.objects.filter(kind="list_type").count() == n
+    c = Concept.objects.get(kind="list_type", slug="electricians")
+    assert c.settings.is_individual and c.settings.share_hidden
+    q = Concept.objects.filter(kind="list_type", slug__contains="quran").first()
+    assert q is None or q.settings.is_child_facing

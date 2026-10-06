@@ -158,3 +158,7 @@ Built: `taxonomy.PlaceList` (unique per place and type) and `manage.py generate_
 ## Rule: English only for now (2026-10-06, founder instruction)
 
 For the time being all work is in English only: pages, labels, messages, documents, list names, and new data. No new Urdu or other translations are written or reviewed; existing Urdu labels and the right-to-left support stay in the code, unused and untouched, until the founder lifts this rule. Default language stays `en` (`LANGUAGE_CODE`). Supersedes earlier notes that call for an Urdu review before launch.
+
+## Build log: extended list types and domain (2026-10-06)
+
+`manage.py seed_taxonomy --extended` loads the merged research set (inventory plus platform catalogue, 235 unique types in `backend/taxonomy/data/list_types.csv`) on top of the 32 seeded types; safe to repeat; individuals and child-facing types are created gated (contacts hidden). Default templates are not yet assigned to the new types. The domain in code, deploy files and the user agent is now alllists.com. Run `seed_taxonomy --extended`, load places, then `generate_lists --levels world,country,admin1,city` to create the stored lists.
