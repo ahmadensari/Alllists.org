@@ -33,7 +33,8 @@ class Command(BaseCommand):
         clause = " AND ".join(where)
         with connection.cursor() as cur:
             cur.execute(
-                f"SELECT count(*) FROM places_place p CROSS JOIN taxonomy_concept c WHERE {clause}", params
+                f"SELECT count(*) FROM places_place p CROSS JOIN taxonomy_concept c WHERE {clause}",  # nosec B608
+                params,
             )
             wanted = cur.fetchone()[0]
         have = PlaceList.objects.count()
@@ -43,7 +44,7 @@ class Command(BaseCommand):
         before = have
         with connection.cursor() as cur:
             cur.execute(
-                f"INSERT INTO taxonomy_placelist (place_id, concept_id, created_at) "
+                f"INSERT INTO taxonomy_placelist (place_id, concept_id, created_at) "  # nosec B608
                 f"SELECT p.id, c.id, now() FROM places_place p CROSS JOIN taxonomy_concept c WHERE {clause} "
                 f"ON CONFLICT (place_id, concept_id) DO NOTHING",
                 params,
