@@ -292,6 +292,11 @@ def recompute_row_hash(r):
 
 
 def verify_seals(conn):
+    with conn.transaction():
+        return _verify_seals(conn)
+
+
+def _verify_seals(conn):
     """Returns None if intact, else a description of the first problem."""
     prev = "0" * 64
     for s in conn.execute("SELECT seq, prev_seal, first_txid::text, first_id, last_txid::text, last_id, n_rows, merkle_root, seal_hash FROM a_seal ORDER BY seq").fetchall():
@@ -321,6 +326,11 @@ def verify_seals(conn):
 
 
 def verify_chain_rows(conn, chain=None):
+    with conn.transaction():
+        return _verify_chain_rows(conn, chain)
+
+
+def _verify_chain_rows(conn, chain=None):
     """Per-row chain verification of a_chains for one chain (what verify_audit_chain does today, per chain)."""
     prev, n = "", 0
     cur = conn.cursor(name="vc")
@@ -384,16 +394,18 @@ def main():
     make_db(DB)
     with connect(DB) as c:
         c.execute(SCHEMA)
+    import os
+    skip = os.environ.get("SKIP_WRITERS") == "1"
     print(f"== writers, {duration}s each ==")
-    for variant in ("current", "chain16", "chain256", "chainC_skew", "unchained", "batch500_chain", "batch500_unchained"):
+    for variant in (() if skip else ("current", "chain16", "chain256", "chainC_skew", "unchained", "batch500_chain", "batch500_unchained")):
         for workers in (1, 8):
             run(variant, workers, duration, 0, out)
     print("== same with 5 ms of other work in the same transaction (the bulk.publish shape) ==")
-    for variant in ("current", "chain16", "unchained"):
+    for variant in (() if skip else ("current", "chain16", "unchained")):
         for workers in (1, 8):
             run(variant, workers, duration, 5, out)
     print("== same with 20 ms ==")
-    for variant in ("current", "chain16", "unchained"):
+    for variant in (() if skip else ("current", "chain16", "unchained")):
         for workers in (1, 8):
             run(variant, workers, duration, 20, out)
 

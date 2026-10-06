@@ -27,7 +27,7 @@ import psycopg
 ap = argparse.ArgumentParser()
 ap.add_argument("--db", required=True)
 ap.add_argument("--scale", choices=["1m", "5m"], required=True)
-ap.add_argument("--n", type=int, default=150)
+ap.add_argument("--n", type=int, default=80)
 ap.add_argument("--only", default="", help="comma list of substrings; a cell runs if scope:cls:method contains any")
 ap.add_argument("--socket-dir", default="/var/lib/postgresql/bench_pg16")
 ap.add_argument("--port", type=int, default=5544)
@@ -111,6 +111,10 @@ def pick_scope(kind):
 
 def sample_names(kind, path, cc, cids, k=60):
     frag, pr = scope_sql(kind, path, cc, cids)
+    if kind in ("unscoped", "country"):
+        ids = [rnd.randrange(1, N + 1) for _ in range(k * 3)]
+        cur.execute(f"select id, name_fold, script from {E} where id = any(%(ids)s) and publish_state='published' {frag} limit {k}", dict(pr, ids=ids))
+        return cur.fetchall()
     cur.execute(f"select id, name_fold, script from {E} where publish_state='published' {frag} order by random() limit {k}", pr)
     return cur.fetchall()
 
@@ -215,13 +219,16 @@ SCOPES = ["unscoped", "country", "city", "area", "city_concept", "city_nocc", "a
 CELLS = []
 for sc in SCOPES:
     nocc = sc.endswith("_nocc")
-    for cls in ["common", "mid", "rare", "two"]:
-        ms = ["repo", "like", "tsv"] if not nocc else ["repo", "tsv"]
-        if sc in ("unscoped", "country"): ms.append("tsvrank")
+    big = sc in ("unscoped", "country")
+    classes = ["common", "two"] if nocc else (["common", "mid", "rare", "two"] if big else ["common", "mid", "two"])
+    for cls in classes:
+        ms = ["repo", "like", "tsv"]
+        if big and cls in ("common", "mid"): ms.append("tsvrank")
         if sc in ("unscoped", "country", "city") and cls == "common": ms.append("wsim")
         for m in ms: CELLS.append((sc, cls, m))
-    for m in ["repo", "wsim", "dict"]: CELLS.append((sc, "typo", m))
-    for m in ["btree", "like", "tsv"]: CELLS.append((sc, "prefix", m))
+    if not nocc:
+        for m in (["repo", "wsim", "dict"] if sc in ("unscoped", "country", "city") else ["wsim", "dict"]): CELLS.append((sc, "typo", m))
+        for m in ["btree", "like", "tsv"]: CELLS.append((sc, "prefix", m))
 only = [x for x in a.only.split(",") if x]
 if only:
     CELLS = [c for c in CELLS if any(o in ":".join(c) for o in only)]
@@ -263,7 +270,7 @@ for (sc, cls, method) in CELLS:
         lat.append(ms); rowsn.append(len(rows)); scr.append(q["script"])
         if cls == "typo":
             hits.append(any(q["orig"] in r[1].split() for r in rows))
-        if time.time() - t_cell > 120 and len(lat) >= 30: break  # slow cell: stop after 2 minutes with at least 30 samples
+        if time.time() - t_cell > 25 and len(lat) >= 20: break  # slow cell: stop after 25 s with at least 20 samples
     arr = np.array(lat)
     rec = dict(scale=a.scale, rows=N, scope=sc, cls=cls, method=method, n=len(lat), p50=round(float(np.percentile(arr, 50)), 2),
                p95=round(float(np.percentile(arr, 95)), 2), p99=round(float(np.percentile(arr, 99)), 2), max=round(float(arr.max()), 1),
@@ -275,6 +282,7 @@ for (sc, cls, method) in CELLS:
         v = [l for l, x in zip(lat, scr) if x == s]
         if len(v) >= 10: by[s] = [round(float(np.percentile(v, 50)), 2), round(float(np.percentile(v, 95)), 2), len(v)]
     rec["by_script_p50_p95_n"] = by
+    rec["loadavg_1m"] = open("/proc/loadavg").read().split()[0]
     rec["plan"] = plan
     outf.write(json.dumps(rec, ensure_ascii=False) + "\n"); outf.flush()
     print(f"{a.scale} {sc:13s}{cls:7s}{method:8s} n={rec['n']:3d} p50={rec['p50']:8.2f} p95={rec['p95']:8.2f} max={rec['max']:8.1f} rows={rec['mean_rows']:5.1f} to={timeouts}"
