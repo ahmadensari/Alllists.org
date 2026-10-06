@@ -138,3 +138,15 @@ class ReservedSlug(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["slug", "kind"], name="uniq_reserved_slug_kind")]
+
+
+class PlaceList(models.Model):
+    """One stored list: a list type at a place (decision E27). Created in bulk by `generate_lists`; entries are not copied."""
+
+    place = models.ForeignKey("places.Place", on_delete=models.CASCADE, related_name="stored_lists")
+    concept = models.ForeignKey(Concept, on_delete=models.CASCADE, related_name="stored_lists")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["place", "concept"], name="uniq_list_per_place_and_type")]
+        indexes = [models.Index(fields=["concept", "place"], name="placelist_concept_place")]
