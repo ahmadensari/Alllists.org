@@ -1,0 +1,11 @@
+rows 1170
+by level {'sector': 30, 'industry': 177, 'family': 489, 'product': 434, 'variant': 40}
+duplicate slugs 0
+max listable children under one parent [('4051', 15), ('1052', 11), ('2001', 11)] mean 4.77 parents with children 239
+primary parent not exactly one level above 0
+secondary parent links 21 | missing parent slug 0 | parent not one level above child 0 | max secondary parents on one node 1
+rows that declare facet groups 70 | facet keys 26 | distinct (key, value) pairs 559
+catch-all names (other, n.e.c., miscellaneous, etc, various) 0
+longest slug 58 | longest name 60 chars, 9 words
+leaf nodes 931 | sectors 30
+rows with an HS code 1166 | with an ISIC code 1170

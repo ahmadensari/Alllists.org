@@ -670,6 +670,16 @@ def _():
     assert c and c.pinned and c.published == 1
 
 
+@check("test_legacy_placelist_row_does_not_pin")
+def _():
+    # rows written by the old generate_lists mirror old cells; if they pinned, every cell would be pinned for ever
+    leg = mk("Store legacy", 3, [gloves])
+    _bulk(lahore, leg, 3)
+    PlaceList.objects.create(place=lahore, concept=leg, reason="legacy")
+    recount.recount_country("PK")
+    assert cell(lahore, leg) is None
+
+
 @check("test_recount_rolls_up_to_every_place_and_node_above")
 def _():
     for p in (punjab, pk, world):

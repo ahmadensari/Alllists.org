@@ -12,3 +12,15 @@ prewarmed 12 relations
 5m city         common like     n= 77 p50=  203.46 p95=  470.02 max=   523.6 rows= 25.0 to=0
 5m city         common tsv      n= 77 p50=  237.06 p95=  424.40 max=   465.5 rows= 25.0 to=0
 5m city         common wsim     n= 39 p50=  462.34 p95= 1392.16 max=  1690.9 rows= 25.0 to=0
+5m city         mid    repo     n= 20 p50= 3092.84 p95= 4000.00 max=  4000.0 rows= 14.4 to=10
+5m city         mid    like     n= 77 p50=   74.78 p95=  208.57 max=   253.5 rows= 24.1 to=0
+5m city         mid    tsv      n= 77 p50=   97.48 p95=  208.09 max=   238.2 rows= 24.1 to=0
+Traceback (most recent call last):
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/run_bench.py", line 259, in <module>
+    rows = sample_names(kind, path, cc, cids, 40)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/run_bench.py", line 126, in sample_names
+    cur.execute(f"select id, name_fold, script from {E} where publish_state='published' {frag} order by random() limit {k}", pr)
+  File "/tmp/claude-0/-home-user-Alllists-org/f60b6e22-1783-5e3a-86aa-85759a6f2550/scratchpad/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.QueryCanceled: canceling statement due to statement timeout
