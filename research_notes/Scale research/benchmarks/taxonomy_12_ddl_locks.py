@@ -30,21 +30,26 @@ N = conn.execute("SELECT count(*) FROM entry_mig").fetchone()[0]
 open("/var/tmp/benchout/ddl_writer.sql", "w").write("\\set id random(1, 2000000)\nUPDATE entry_mig SET fresh = fresh + 1 WHERE id = :id;\n")
 
 STEPS = [
-    ("ADD COLUMN brand_id bigint NULL (Django AddField, no default)", "ALTER TABLE entry_mig ADD COLUMN brand_id bigint NULL", "same"),
-    ("ADD COLUMN closure_score smallint NOT NULL DEFAULT 0", "ALTER TABLE entry_mig ADD COLUMN closure_score smallint NOT NULL DEFAULT 0", "same"),
     (
-        "ADD FOREIGN KEY, validated at once (what Django emits)",
-        "ALTER TABLE entry_mig ADD CONSTRAINT fk_brand_plain FOREIGN KEY (brand_id) REFERENCES brand_mig (id) DEFERRABLE INITIALLY DEFERRED",
+        "AddField, nullable foreign key (Django: ADD COLUMN ... REFERENCES in one statement)",
+        "ALTER TABLE entry_mig ADD COLUMN moved_to_id bigint NULL CONSTRAINT fk_moved REFERENCES entry_mig (id) DEFERRABLE INITIALLY DEFERRED",
+        "ALTER TABLE entry_mig ADD COLUMN brand_id bigint NULL;"
         "ALTER TABLE entry_mig ADD CONSTRAINT fk_brand_nv FOREIGN KEY (brand_id) REFERENCES brand_mig (id) DEFERRABLE INITIALLY DEFERRED NOT VALID;"
         "ALTER TABLE entry_mig VALIDATE CONSTRAINT fk_brand_nv",
     ),
     (
-        "CREATE INDEX on the new FK column (what Django emits)",
-        "CREATE INDEX entry_mig_brand_plain ON entry_mig (brand_id)",
+        "AddField, small integer with default 0, NOT NULL and CHECK (Django)",
+        "ALTER TABLE entry_mig ADD COLUMN closure_score smallint DEFAULT 0 NOT NULL CHECK (closure_score >= 0);"
+        "ALTER TABLE entry_mig ALTER COLUMN closure_score DROP DEFAULT",
+        "same",
+    ),
+    (
+        "Index on the new foreign key column (Django: plain CREATE INDEX)",
+        "CREATE INDEX entry_mig_moved_plain ON entry_mig (moved_to_id)",
         "CREATE INDEX CONCURRENTLY entry_mig_brand_cc ON entry_mig (brand_id)",
     ),
     (
-        "ADD CHECK on a populated column, validated at once",
+        "Check constraint on a populated column",
         "ALTER TABLE entry_mig ADD CONSTRAINT chk_plain CHECK (rank <= 3)",
         "ALTER TABLE entry_mig ADD CONSTRAINT chk_nv CHECK (rank <= 3) NOT VALID; ALTER TABLE entry_mig VALIDATE CONSTRAINT chk_nv",
     ),

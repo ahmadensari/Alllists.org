@@ -4,3 +4,7 @@
   return getattr(self._connections[self._alias], item)
 5k entries  (PK, province pk.p1, mid): total=9000 published=9000  real=19.46s (982 queries)  sql=85ms (warm 97ms)  speedup=200x  identical=True
 20k entries (PK, province, root): total=24000 published=19000  real=39.99s (0 queries)  sql=209ms (warm 198ms)  speedup=202x  identical=True
+100k entries (PK, country, root): total=99000 published=69000  real=142.48s (0 queries)  sql=455ms (warm 464ms)  speedup=307x  identical=True
+one entry edit touches 12 cells; entries scanned by the real code = 303,000
+same 12 cells with the SQL aggregate: 3078ms
+REAL refresh_for_entry for ONE edited entry: 513.1s, 0 queries

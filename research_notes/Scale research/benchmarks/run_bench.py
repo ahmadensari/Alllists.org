@@ -43,6 +43,13 @@ con = psycopg.connect(f"host={a.socket_dir} port={a.port} dbname={a.db} user=pos
 cur = con.cursor()
 cur.execute(f"set statement_timeout = {a.timeout_ms}")
 cur.execute("set pg_trgm.similarity_threshold = 0.25; set pg_trgm.word_similarity_threshold = 0.4; set jit = off")
+cur.execute("create extension if not exists pg_prewarm")
+cur.execute("""select c.oid::regclass::text from pg_class c where c.relkind in ('r','i') and c.relnamespace = 'public'::regnamespace
+               and (c.relname like %s or c.relname like %s or c.relname like %s)""", [f"{E}%", f"{V}%", f"words_{a.scale}%"])
+PREWARMED = []
+for (rel,) in cur.fetchall():
+    cur.execute("select pg_prewarm(%s)", [rel]); PREWARMED.append(rel)       # fully cached in shared_buffers (see note section 1.1)
+print("prewarmed", len(PREWARMED), "relations", flush=True)
 cur.execute(f"select count(*) from {E}"); N = cur.fetchone()[0]
 
 # ---------- word statistics ----------
