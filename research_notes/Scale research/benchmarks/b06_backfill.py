@@ -188,10 +188,11 @@ def main():
     print("== resume after kill ==", flush=True)
     reset_col(c)
     c.execute("DELETE FROM backfill_job")
-    st = run_batches("res", 5000, "fixed", kill_after=300)
+    kill = max(1, n // 5000 // 2)  # kill half way
+    st = run_batches("res", 5000, "fixed", kill_after=kill)
     mid = c.execute("SELECT last_id, done, status FROM backfill_job WHERE name='res'").fetchone()
     nulls_mid = c.execute("SELECT count(*) FROM t WHERE depth_fold IS NULL").fetchone()[0]
-    print(f"killed after 300 batches: {st}; checkpoint {mid}; NULL rows left {nulls_mid:,}")
+    print(f"killed after {kill} batches: {st}; checkpoint {mid}; NULL rows left {nulls_mid:,}")
     with Timer() as t:
         st = run_batches("res", 5000, "fixed")
     fin = c.execute("SELECT last_id, done, status FROM backfill_job WHERE name='res'").fetchone()
@@ -199,7 +200,7 @@ def main():
           f"rows touched exactly once: done={fin[1]:,} vs table {n:,} (live inserts by probe excluded)")
 
     print("== OFFSET versus keyset at depth ==")
-    for off in (0, 1_000_000, 4_000_000):
+    for off in (0, n // 2, n - 10_000):
         with Timer() as t1:
             c.execute("SELECT id FROM t ORDER BY id OFFSET %s LIMIT 5000", (off,)).fetchall()
         with Timer() as t2:

@@ -11,3 +11,4 @@ prewarmed 12 relations
 5m area         common repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  6.1 to=18
 5m area         common like     n= 77 p50=  227.16 p95=  564.52 max=  1290.7 rows= 24.9 to=0
 5m area         common tsv      n= 77 p50=  240.46 p95=  403.92 max=   460.0 rows= 24.9 to=0
+5m area         mid    repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  5.8 to=16
