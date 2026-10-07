@@ -1,0 +1,2 @@
+entries in table: 1,000,000
+exact recount, two-stage SQL (leaf GROUP BY then expand ancestors): 7.1s for 1,000,000 entries -> 1,500 cells

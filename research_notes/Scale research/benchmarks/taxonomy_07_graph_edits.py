@@ -68,10 +68,11 @@ DELETE FROM concept_closure WHERE descendant_id IN (SELECT id FROM _sub) AND anc
 """
 CLOSURE_REBUILD_LEVEL = """
 INSERT INTO concept_closure (ancestor_id, descendant_id, depth)
-SELECT cl.ancestor_id, e.child_id, cl.depth + 1
+SELECT cl.ancestor_id, e.child_id, min(cl.depth + 1)
 FROM concept_edge e
 JOIN concept c ON c.id = e.child_id AND c.level = %(lvl)s AND c.id IN (SELECT id FROM _sub)
 JOIN concept_closure cl ON cl.descendant_id = e.parent_id
+GROUP BY cl.ancestor_id, e.child_id   -- a node with two parents reaches the same ancestor twice
 ON CONFLICT (ancestor_id, descendant_id) DO UPDATE SET depth = LEAST(EXCLUDED.depth, concept_closure.depth)
 """
 LTREE_REMOVE = "DELETE FROM concept_path cp USING concept_path src WHERE src.concept_id = %(p)s AND cp.path <@ src.path || ('n' || %(c)s)::ltree"
