@@ -1,20 +1,8 @@
-Traceback (most recent call last):
-  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/taxonomy_07_graph_edits.py", line 120, in <module>
-    ms, cur = timed(lambda: conn.execute(LTREE_REMOVE, {"p": rng.choice([r[0] for r in conn.execute("SELECT parent_id FROM concept_edge WHERE child_id = %s", (c,)).fetchall()]), "c": c}))
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/taxonomy_07_graph_edits.py", line 83, in timed
-    r = fn()
-        ^^^^
-  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/taxonomy_07_graph_edits.py", line 120, in <lambda>
-    ms, cur = timed(lambda: conn.execute(LTREE_REMOVE, {"p": rng.choice([r[0] for r in conn.execute("SELECT parent_id FROM concept_edge WHERE child_id = %s", (c,)).fetchall()]), "c": c}))
-                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/var/tmp/benchlibs/psycopg/connection.py", line 304, in execute
-    raise ex.with_traceback(None)
-psycopg.errors.UndefinedFunction: operator does not exist: boolean || ltree
-LINE 1: ...WHERE src.concept_id = $1 AND cp.path <@ src.path || ('n' ||...
-                                                             ^
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+{'child_level': 2, 'median_desc_nodes': 503.5, 'median_members_in_subtree': 47073.0, 'closure_add_ms_median': 16.09, 'closure_add_ms_p95': 35.17, 'closure_rows_written_median': 1007.0, 'closure_remove_ms_median': 366.35, 'closure_remove_ms_p95': 670.17, 'ltree_add_ms_median': 15.95, 'ltree_add_ms_p95': 31.33, 'ltree_rows_written_median': 556.5, 'ltree_remove_ms_median': 1.94, 'ltree_on_ec_rows_median': 47073.0, 'ltree_on_ec_rows_max': 151428, 'ltree_on_ec_update_ms_median': 7064.1}
+{'child_level': 3, 'median_desc_nodes': 42.5, 'median_members_in_subtree': 3839.0, 'closure_add_ms_median': 2.22, 'closure_add_ms_p95': 4.03, 'closure_rows_written_median': 177.5, 'closure_remove_ms_median': 195.55, 'closure_remove_ms_p95': 245.95, 'ltree_add_ms_median': 2.42, 'ltree_add_ms_p95': 9.07, 'ltree_rows_written_median': 83.0, 'ltree_remove_ms_median': 0.68, 'ltree_on_ec_rows_median': 3839.0, 'ltree_on_ec_rows_max': 20071, 'ltree_on_ec_update_ms_median': 2954.4}
+{'child_level': 4, 'median_desc_nodes': 9.5, 'median_members_in_subtree': 794.5, 'closure_add_ms_median': 0.92, 'closure_add_ms_p95': 1.5, 'closure_rows_written_median': 61.5, 'closure_remove_ms_median': 154.48, 'closure_remove_ms_p95': 235.42, 'ltree_add_ms_median': 1.86, 'ltree_add_ms_p95': 3.57, 'ltree_rows_written_median': 27.0, 'ltree_remove_ms_median': 0.74, 'ltree_on_ec_rows_median': 794.5, 'ltree_on_ec_rows_max': 3654, 'ltree_on_ec_update_ms_median': 1823.1}
+{'child_level': 5, 'median_desc_nodes': 1.0, 'median_members_in_subtree': 78.5, 'closure_add_ms_median': 0.52, 'closure_add_ms_p95': 0.88, 'closure_rows_written_median': 12.5, 'closure_remove_ms_median': 138.94, 'closure_remove_ms_p95': 213.21, 'ltree_add_ms_median': 1.33, 'ltree_add_ms_p95': 2.67, 'ltree_rows_written_median': 7.0, 'ltree_remove_ms_median': 0.66, 'ltree_on_ec_rows_median': 78.5, 'ltree_on_ec_rows_max': 470, 'ltree_on_ec_update_ms_median': 1738.9}
 
-real	0m2.552s
-user	0m0.198s
-sys	0m0.026s
+real	1m5.122s
+user	0m0.340s
+sys	0m0.031s

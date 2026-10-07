@@ -1,0 +1,5 @@
+setup: 160,000 roll-up cells for PK
+== real code, on request ==
+/home/user/Alllists.org/.venv/lib/python3.11/site-packages/django/utils/connection.py:15: UserWarning: Limit for query logging exceeded, only the last 9000 queries will be returned.
+  return getattr(self._connections[self._alias], item)
+indexable_list_cells('PK'): 154.9s, 9,000 queries, 106,667 indexable cells

@@ -2,3 +2,13 @@ prewarmed 12 relations
 5m country      two    repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  0.0 to=23
 5m country      two    like     n= 77 p50=   17.46 p95=   51.78 max=   173.3 rows= 18.6 to=0
 5m country      two    tsv      n= 77 p50=   15.17 p95=   78.74 max=   148.0 rows= 21.3 to=0
+5m country      typo   repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  0.0 to=23 recall=0.0
+5m country      typo   wsim     n= 70 p50=  273.44 p95=  833.35 max=  1866.8 rows= 24.6 to=0 recall=0.914
+5m country      typo   dict     n= 77 p50=    9.97 p95=   37.83 max=    68.2 rows= 24.1 to=0 recall=0.87
+5m country      prefix btree    n= 77 p50=    6.28 p95=   43.50 max=    58.9 rows= 25.0 to=0
+5m country      prefix like     n= 77 p50=    4.16 p95=   54.41 max=   119.9 rows= 25.0 to=0
+5m country      prefix tsv      n= 77 p50=   35.02 p95=  178.01 max=   264.6 rows= 25.0 to=0
+5m city         common repo     n= 20 p50= 3082.78 p95= 4000.00 max=  4000.0 rows= 15.0 to=10
+5m city         common like     n= 77 p50=  203.46 p95=  470.02 max=   523.6 rows= 25.0 to=0
+5m city         common tsv      n= 77 p50=  237.06 p95=  424.40 max=   465.5 rows= 25.0 to=0
+5m city         common wsim     n= 39 p50=  462.34 p95= 1392.16 max=  1690.9 rows= 25.0 to=0

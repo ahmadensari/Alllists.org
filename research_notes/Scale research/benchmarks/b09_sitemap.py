@@ -1,8 +1,8 @@
 """B09: sitemap generation. The REAL catalog.views.sitemap_index / sitemap_shard / indexable_list_cells on bench_django with
-200,000 roll-up cells for one country, versus a precomputed table + file writer. Then the file writer at 5,000,000 URLs.
+160,000 roll-up cells for one country, versus a precomputed table + file writer. Then the file writer at 5,000,000 URLs.
 
 Setup done here (bench_django only): 8,000 extra PK city places, CountrySwitch(PK, indexing_on), 200,000 RollupCell rows
-(8,000 places x 25 concepts; about 60% have >= 10 verified entries so they are indexable).
+(8,000 places x 20 leaf concepts; about two thirds have >= 10 verified entries so they are indexable).
 
 Run: PYTHONDONTWRITEBYTECODE=1 DJANGO_ALLOW_TEST_KEY=1 POSTGRES_DB=bench_django .venv/bin/python b09_sitemap.py [out_dir]
 """
@@ -47,7 +47,7 @@ def setup():
     c.execute(
         """INSERT INTO analytics_rollupcell (country_code, place_path, concept_id, total, published, by_level, verified_12m, with_contact_pct, updated_at)
            SELECT 'PK', p.path, k.id, 20, 15,
-                  jsonb_build_object('surveyor', (p.id + k.id) % 7, 'owner', (p.id * 3 + k.id) % 5, 'ai', 5, 'none', 3), 4, 50, now() - ((p.id + k.id) % 30 || ' days')::interval
+                  jsonb_build_object('surveyor', (p.id + k.id) % 9 + 2, 'owner', (p.id * 3 + k.id) % 7 + 2, 'ai', 5, 'none', 3), 4, 50, now() - ((p.id + k.id) % 30 || ' days')::interval
              FROM places_place p CROSS JOIN taxonomy_concept k
             WHERE p.path LIKE 'pk.r%' AND k.kind = 'list_type' AND k.id >= 1100""")
     c.execute("ANALYZE analytics_rollupcell")

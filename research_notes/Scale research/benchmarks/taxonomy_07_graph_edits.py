@@ -75,7 +75,7 @@ JOIN concept_closure cl ON cl.descendant_id = e.parent_id
 GROUP BY cl.ancestor_id, e.child_id   -- a node with two parents reaches the same ancestor twice
 ON CONFLICT (ancestor_id, descendant_id) DO UPDATE SET depth = LEAST(EXCLUDED.depth, concept_closure.depth)
 """
-LTREE_REMOVE = "DELETE FROM concept_path cp USING concept_path src WHERE src.concept_id = %(p)s AND cp.path <@ src.path || ('n' || %(c)s)::ltree"
+LTREE_REMOVE = "DELETE FROM concept_path cp USING concept_path src WHERE src.concept_id = %(p)s AND cp.path <@ (src.path || ('n' || %(c)s)::ltree)"
 
 
 def timed(fn):
@@ -122,7 +122,7 @@ for child_level in (2, 3, 4, 5):
         conn.execute("ROLLBACK")
         # --- ltree copy on membership rows: how many ec_lt rows are in the child subtree (they all change)
         rec["ltree_on_ec_rows_to_rewrite"] = n_members
-        if n_members <= 150000:
+        if n_members <= 150000 and sum(1 for r in rows if 'ltree_on_ec_update_ms' in r) < 3:  # timed for the first 3 per level only: one rewrite takes minutes
             conn.execute("BEGIN")
             ms, cur = timed(
                 lambda: conn.execute(
