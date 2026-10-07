@@ -1,0 +1,1 @@
+{'clients': 1, 'entries_per_s': 61.6, 'memberships_per_s': 184.8, 'latency_ms': 16.23, 'failed': 0, 'design': 'A: ec, 3 indexes'}

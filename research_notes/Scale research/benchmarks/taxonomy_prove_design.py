@@ -198,6 +198,18 @@ def _():
     assert closure.check_consistency()["closure_extra"] == 0
 
 
+@check("test_remove_secondary_edge_when_node_keeps_two_parents")
+def _():
+    # a node that still has two parents after the removal reaches the same ancestor by two routes in one INSERT ... ON CONFLICT
+    # DO UPDATE statement; without GROUP BY PostgreSQL refuses it ("cannot affect row a second time"). Found by 07 and fixed.
+    a, b, c = mk("tp A", 2, [leather]), mk("tp B", 2, [sports]), mk("tp C", 2, [leather])
+    d = mk("tp D", 3, [a, b, c])
+    closure.remove_edge(c, d)
+    anc = set(closure.ancestor_ids(d.pk))
+    assert {a.pk, b.pk, leather.pk, sports.pk, root.pk} <= anc and c.pk not in anc
+    assert closure.check_consistency() == {"parent_mismatch": 0, "closure_missing": 0, "closure_extra": 0}
+
+
 @check("test_set_primary_parent_moves_subtree_and_updates_parent_column")
 def _():
     f = mk("movable family", 2, [leather])
