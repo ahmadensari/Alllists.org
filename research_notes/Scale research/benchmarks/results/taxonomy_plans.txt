@@ -1,0 +1,933 @@
+
+==== small cell: product variant in one region: pair 232, node 18977, place 'ah.region_00', 1 members ====
+
+
+--- variant closure
+
+Nested Loop (actual time=0.691..0.694 rows=1 loops=1)
+  Buffers: shared hit=46 read=14
+  ->  Limit (actual time=0.627..0.629 rows=1 loops=1)
+        Buffers: shared hit=43 read=10
+        ->  Sort (actual time=0.626..0.627 rows=1 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=43 read=10
+              ->  GroupAggregate (actual time=0.607..0.608 rows=1 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=40 read=10
+                    ->  Sort (actual time=0.602..0.603 rows=1 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 25kB
+                          Buffers: shared hit=40 read=10
+                          ->  Nested Loop (actual time=0.575..0.593 rows=1 loops=1)
+                                Buffers: shared hit=40 read=10
+                                ->  Index Only Scan using concept_closure_pkey on concept_closure cl (actual time=0.032..0.032 rows=1 loops=1)
+                                      Index Cond: (ancestor_id = 18977)
+                                      Heap Fetches: 0
+                                      Buffers: shared hit=1 read=3
+                                ->  Index Only Scan using ec_list on ec (actual time=0.540..0.557 rows=1 loops=1)
+                                      Index Cond: (concept_id = cl.descendant_id)
+                                      Filter: ((place_path = 'ah.region_00'::text) OR (place_path ~~ 'ah.region_00.%'::text))
+                                      Rows Removed by Filter: 87
+                                      Heap Fetches: 0
+                                      Buffers: shared hit=39 read=7
+  ->  Index Scan using entry_pkey on entry e (actual time=0.061..0.061 rows=1 loops=1)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=3 read=4
+Planning:
+  Buffers: shared hit=250 read=37 dirtied=3
+Planning Time: 2.776 ms
+Execution Time: 0.787 ms
+
+--- variant rcte
+
+Nested Loop (actual time=0.099..0.101 rows=1 loops=1)
+  Buffers: shared hit=50 read=2
+  CTE d
+    ->  Recursive Union (actual time=0.006..0.030 rows=1 loops=1)
+          Buffers: shared read=2
+          ->  Result (actual time=0.001..0.001 rows=1 loops=1)
+          ->  Nested Loop (actual time=0.024..0.024 rows=0 loops=1)
+                Buffers: shared read=2
+                ->  WorkTable Scan on d d_1 (actual time=0.000..0.001 rows=1 loops=1)
+                ->  Index Only Scan using concept_edge_pkey on concept_edge e_1 (actual time=0.022..0.022 rows=0 loops=1)
+                      Index Cond: (parent_id = d_1.id)
+                      Heap Fetches: 0
+                      Buffers: shared read=2
+  ->  Limit (actual time=0.087..0.088 rows=1 loops=1)
+        Buffers: shared hit=46 read=2
+        ->  Sort (actual time=0.086..0.087 rows=1 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=46 read=2
+              ->  GroupAggregate (actual time=0.080..0.081 rows=1 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=46 read=2
+                    ->  Sort (actual time=0.078..0.078 rows=1 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 25kB
+                          Buffers: shared hit=46 read=2
+                          ->  Nested Loop (actual time=0.035..0.072 rows=1 loops=1)
+                                Buffers: shared hit=46 read=2
+                                ->  CTE Scan on d (actual time=0.007..0.031 rows=1 loops=1)
+                                      Buffers: shared read=2
+                                ->  Index Only Scan using ec_list on ec (actual time=0.027..0.039 rows=1 loops=1)
+                                      Index Cond: (concept_id = d.id)
+                                      Filter: ((place_path = 'ah.region_00'::text) OR (place_path ~~ 'ah.region_00.%'::text))
+                                      Rows Removed by Filter: 87
+                                      Heap Fetches: 0
+                                      Buffers: shared hit=46
+  ->  Index Scan using entry_pkey on entry e (actual time=0.011..0.011 rows=1 loops=1)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=35 read=2
+Planning Time: 0.376 ms
+Execution Time: 0.163 ms
+
+--- variant ltree_resolver
+
+Nested Loop (actual time=227.962..231.569 rows=1 loops=1)
+  Buffers: shared hit=304 read=57525
+  ->  Limit (actual time=227.926..231.531 rows=1 loops=1)
+        Buffers: shared hit=300 read=57525
+        ->  Sort (actual time=211.860..215.464 rows=1 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=300 read=57525
+              ->  Finalize HashAggregate (actual time=211.637..215.445 rows=1 loops=1)
+                    Group Key: ec.entry_id
+                    Batches: 1  Memory Usage: 1561kB
+                    Buffers: shared hit=300 read=57525
+                    ->  Gather (actual time=211.180..215.085 rows=1 loops=1)
+                          Workers Planned: 2
+                          Workers Launched: 2
+                          Buffers: shared hit=300 read=57525
+                          ->  Partial HashAggregate (actual time=195.137..195.156 rows=0 loops=3)
+                                Group Key: ec.entry_id
+                                Batches: 1  Memory Usage: 793kB
+                                Buffers: shared hit=300 read=57525
+                                Worker 0:  Batches: 1  Memory Usage: 793kB
+                                Worker 1:  Batches: 1  Memory Usage: 793kB
+                                ->  Hash Join (actual time=172.513..194.992 rows=0 loops=3)
+                                      Hash Cond: (ec.concept_id = cp.concept_id)
+                                      Buffers: shared hit=300 read=57525
+                                      ->  Parallel Seq Scan on ec (actual time=8.226..190.079 rows=4886 loops=3)
+                                            Filter: (published AND ((place_path = 'ah.region_00'::text) OR (place_path ~~ 'ah.region_00.%'::text)))
+                                            Rows Removed by Filter: 1981727
+                                            Buffers: shared read=57466
+                                      ->  Hash (actual time=3.085..3.088 rows=1 loops=3)
+                                            Buckets: 65536  Batches: 1  Memory Usage: 513kB
+                                            Buffers: shared hit=300 read=59
+                                            ->  HashAggregate (actual time=3.035..3.082 rows=1 loops=3)
+                                                  Group Key: cp.concept_id
+                                                  Batches: 1  Memory Usage: 1561kB
+                                                  Buffers: shared hit=300 read=59
+                                                  Worker 0:  Batches: 1  Memory Usage: 1561kB
+                                                  Worker 1:  Batches: 1  Memory Usage: 1561kB
+                                                  ->  Nested Loop (actual time=0.313..2.729 rows=20 loops=3)
+                                                        Buffers: shared hit=300 read=59
+                                                        ->  Index Scan using concept_path_concept on concept_path xp (actual time=0.045..0.060 rows=20 loops=3)
+                                                              Index Cond: (concept_id = 18977)
+                                                              Buffers: shared hit=12 read=5
+                                                        ->  Bitmap Heap Scan on concept_path cp (actual time=0.131..0.131 rows=1 loops=60)
+                                                              Recheck Cond: (path <@ xp.path)
+                                                              Heap Blocks: exact=20
+                                                              Buffers: shared hit=288 read=54
+                                                              ->  Bitmap Index Scan on concept_path_gist (actual time=0.128..0.128 rows=1 loops=60)
+                                                                    Index Cond: (path <@ xp.path)
+                                                                    Buffers: shared hit=228 read=54
+  ->  Index Scan using entry_pkey on entry e (actual time=0.022..0.023 rows=1 loops=1)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=150 read=12
+Planning Time: 1.035 ms
+Execution Time: 251.006 ms
+
+--- variant ltree_denorm
+
+Nested Loop (actual time=5989.650..5989.665 rows=1 loops=1)
+  Buffers: shared hit=76749 read=586555 written=11
+  ->  Limit (actual time=5989.610..5989.623 rows=1 loops=1)
+        Buffers: shared hit=76749 read=586551 written=11
+        ->  Sort (actual time=5989.608..5989.620 rows=1 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=76749 read=586551 written=11
+              ->  GroupAggregate (actual time=5989.596..5989.607 rows=1 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=76749 read=586551 written=11
+                    ->  Sort (actual time=5989.588..5989.600 rows=1 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 25kB
+                          Buffers: shared hit=76749 read=586551 written=11
+                          ->  Bitmap Heap Scan on ec_lt ec (actual time=5989.031..5989.585 rows=1 loops=1)
+                                Recheck Cond: (((cpaths <@ 'n1.n7.n130.n1187.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n27.n500.n3434.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n7.n136.n2796.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n8.n136.n2796.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n21.n396.n2796.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n21.n395.n2796.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n23.n427.n2796.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n7.n128.n1178.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n10.n190.n1178.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n21.n190.n1178.n5462.n18977'::ltree) OR (cpaths <@ 'n1.n18.n552.n3754.n11806.n18977'::ltree) OR (cpaths <@ 'n1.n23.n431.n3754.n11806.n18977'::ltree) OR (cpaths <@ 'n1.n27.n550.n3754.n11806.n18977'::ltree) OR (cpaths <@ 'n1.n29.n552.n3754.n11806.n18977'::ltree) OR (cpaths <@ 'n1.n29.n550.n3754.n11806.n18977'::ltree) OR (cpaths <@ 'n1.n27.n550.n3731.n11806.n18977'::ltree) OR (cpaths <@ 'n1.n27.n549.n3731.n11806.n18977'::ltree) OR (cpaths <@ 'n1.n29.n550.n3731.n11806.n18977'::ltree) OR (cpaths <@ 'n1.n29.n549.n3731.n11806.n18977'::ltree) OR (cpaths <@ 'n1.n30.n549.n3731.n11806.n18977'::ltree)) AND (((place_path = 'ah.region_00'::text) AND published) OR ((place_path ~~ 'ah.region_00.%'::text) AND published)))
+                                Rows Removed by Index Recheck: 98
+                                Filter: ((place_path = 'ah.region_00'::text) OR (place_path ~~ 'ah.region_00.%'::text))
+                                Heap Blocks: exact=98
+                                Buffers: shared hit=76749 read=586551 written=11
+                                ->  BitmapAnd (actual time=5987.455..5987.465 rows=0 loops=1)
+                                      Buffers: shared hit=76749 read=586453 written=11
+                                      ->  BitmapOr (actual time=5978.982..5978.990 rows=0 loops=1)
+                                            Buffers: shared hit=76746 read=586376 written=11
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=341.751..341.751 rows=737 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n7.n130.n1187.n5462.n18977'::ltree)
+                                                  Buffers: shared read=32062 written=4
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=281.962..281.962 rows=380 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n27.n500.n3434.n5462.n18977'::ltree)
+                                                  Buffers: shared hit=5414 read=26874 written=7
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=250.911..250.911 rows=416 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n7.n136.n2796.n5462.n18977'::ltree)
+                                                  Buffers: shared hit=5411 read=23633
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=254.654..254.654 rows=371 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n8.n136.n2796.n5462.n18977'::ltree)
+                                                  Buffers: shared read=29044
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=281.424..281.424 rows=444 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n21.n396.n2796.n5462.n18977'::ltree)
+                                                  Buffers: shared hit=3452 read=27775
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=288.570..288.570 rows=386 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n21.n395.n2796.n5462.n18977'::ltree)
+                                                  Buffers: shared read=31227
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=197.348..197.349 rows=103 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n23.n427.n2796.n5462.n18977'::ltree)
+                                                  Buffers: shared hit=9692 read=14863
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=262.351..262.351 rows=541 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n7.n128.n1178.n5462.n18977'::ltree)
+                                                  Buffers: shared hit=8176 read=22921
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=260.540..260.540 rows=137 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n10.n190.n1178.n5462.n18977'::ltree)
+                                                  Buffers: shared hit=6098 read=23959
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=273.050..273.050 rows=137 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n21.n190.n1178.n5462.n18977'::ltree)
+                                                  Buffers: shared read=30056
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=279.206..279.206 rows=1027 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n18.n552.n3754.n11806.n18977'::ltree)
+                                                  Buffers: shared hit=2421 read=27905
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=267.226..267.226 rows=2923 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n23.n431.n3754.n11806.n18977'::ltree)
+                                                  Buffers: shared hit=6417 read=25194
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=251.296..251.296 rows=565 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n27.n550.n3754.n11806.n18977'::ltree)
+                                                  Buffers: shared hit=1925 read=27247
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=251.771..251.772 rows=675 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n29.n552.n3754.n11806.n18977'::ltree)
+                                                  Buffers: shared hit=1706 read=28620
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=238.961..238.961 rows=575 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n29.n550.n3754.n11806.n18977'::ltree)
+                                                  Buffers: shared hit=3589 read=25583
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=362.941..362.941 rows=533 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n27.n550.n3731.n11806.n18977'::ltree)
+                                                  Buffers: shared hit=7807 read=32539
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=441.531..441.531 rows=1156 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n27.n549.n3731.n11806.n18977'::ltree)
+                                                  Buffers: shared hit=4945 read=38780
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=340.635..340.635 rows=488 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n29.n550.n3731.n11806.n18977'::ltree)
+                                                  Buffers: shared hit=4865 read=35480
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=407.680..407.680 rows=2812 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n29.n549.n3731.n11806.n18977'::ltree)
+                                                  Buffers: shared hit=4828 read=38896
+                                            ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=445.140..445.141 rows=1435 loops=1)
+                                                  Index Cond: (cpaths <@ 'n1.n30.n549.n3731.n11806.n18977'::ltree)
+                                                  Buffers: shared read=43718
+                                      ->  BitmapOr (actual time=7.695..7.696 rows=0 loops=1)
+                                            Buffers: shared hit=3 read=77
+                                            ->  Bitmap Index Scan on ec_lt_place (actual time=0.027..0.027 rows=0 loops=1)
+                                                  Index Cond: (place_path = 'ah.region_00'::text)
+                                                  Buffers: shared read=3
+                                            ->  Bitmap Index Scan on ec_lt_place (actual time=7.665..7.665 rows=70005 loops=1)
+                                                  Index Cond: ((place_path ~>=~ 'ah.region'::text) AND (place_path ~<~ 'ah.regioo'::text))
+                                                  Buffers: shared hit=3 read=74
+  ->  Index Scan using entry_pkey on entry e (actual time=0.034..0.034 rows=1 loops=1)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared read=4
+Planning:
+  Buffers: shared hit=87 read=6
+Planning Time: 2.174 ms
+Execution Time: 5990.119 ms
+
+--- variant closure_ltplace
+
+Nested Loop (actual time=827.007..827.011 rows=1 loops=1)
+  Buffers: shared hit=44 read=16
+  ->  Limit (actual time=826.972..826.974 rows=1 loops=1)
+        Buffers: shared hit=40 read=16
+        ->  Sort (actual time=826.970..826.972 rows=1 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=40 read=16
+              ->  GroupAggregate (actual time=826.964..826.966 rows=1 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=40 read=16
+                    ->  Sort (actual time=826.951..826.953 rows=1 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 25kB
+                          Buffers: shared hit=40 read=16
+                          ->  Nested Loop (actual time=586.564..826.941 rows=1 loops=1)
+                                Buffers: shared hit=40 read=16
+                                ->  Index Only Scan using concept_closure_pkey on concept_closure cl (actual time=0.016..0.021 rows=1 loops=1)
+                                      Index Cond: (ancestor_id = 18977)
+                                      Heap Fetches: 0
+                                      Buffers: shared hit=1 read=3
+                                ->  Index Scan using ec_pl_list on ec_pl ec (actual time=586.541..826.908 rows=1 loops=1)
+                                      Index Cond: ((concept_id = cl.descendant_id) AND (place_l <@ 'ah.region_00'::ltree))
+                                      Buffers: shared hit=39 read=13
+  ->  Index Scan using entry_pkey on entry e (actual time=0.029..0.029 rows=1 loops=1)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=40 read=24
+Planning Time: 1.343 ms
+Execution Time: 827.059 ms
+
+==== medium cell: family in one country: pair 120, node 3285, place 'bp', 20 members ====
+
+
+--- variant closure
+
+Nested Loop (actual time=1.933..2.218 rows=20 loops=1)
+  Buffers: shared hit=2063 read=245 dirtied=1
+  ->  Limit (actual time=1.901..1.907 rows=20 loops=1)
+        Buffers: shared hit=2034 read=194 dirtied=1
+        ->  Sort (actual time=1.900..1.904 rows=20 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=2034 read=194 dirtied=1
+              ->  GroupAggregate (actual time=1.884..1.893 rows=20 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=2034 read=194 dirtied=1
+                    ->  Sort (actual time=1.878..1.881 rows=21 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 25kB
+                          Buffers: shared hit=2034 read=194 dirtied=1
+                          ->  Nested Loop (actual time=0.060..1.867 rows=21 loops=1)
+                                Buffers: shared hit=2034 read=194 dirtied=1
+                                ->  Index Only Scan using concept_closure_pkey on concept_closure cl (actual time=0.023..0.369 rows=68 loops=1)
+                                      Index Cond: (ancestor_id = 3285)
+                                      Heap Fetches: 76
+                                      Buffers: shared hit=2 read=78 dirtied=1
+                                ->  Index Only Scan using ec_list on ec (actual time=0.018..0.022 rows=0 loops=68)
+                                      Index Cond: (concept_id = cl.descendant_id)
+                                      Filter: ((place_path = 'bp'::text) OR (place_path ~~ 'bp.%'::text))
+                                      Rows Removed by Filter: 55
+                                      Heap Fetches: 0
+                                      Buffers: shared hit=2032 read=116
+  ->  Index Scan using entry_pkey on entry e (actual time=0.015..0.015 rows=1 loops=20)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=29 read=51
+Planning:
+  Buffers: shared hit=9
+Planning Time: 0.416 ms
+Execution Time: 2.257 ms
+
+--- variant rcte
+
+Nested Loop (actual time=1.826..1.919 rows=20 loops=1)
+  Buffers: shared hit=2362 read=7
+  CTE d
+    ->  Recursive Union (actual time=0.033..0.929 rows=68 loops=1)
+          Buffers: shared hit=130 read=7
+          ->  Result (actual time=0.031..0.031 rows=1 loops=1)
+          ->  Nested Loop (actual time=0.128..0.288 rows=22 loops=3)
+                Buffers: shared hit=130 read=7
+                ->  WorkTable Scan on d d_1 (actual time=0.000..0.002 rows=23 loops=3)
+                ->  Index Only Scan using concept_edge_pkey on concept_edge e_1 (actual time=0.012..0.012 rows=1 loops=68)
+                      Index Cond: (parent_id = d_1.id)
+                      Heap Fetches: 0
+                      Buffers: shared hit=130 read=7
+  ->  Limit (actual time=1.814..1.818 rows=20 loops=1)
+        Buffers: shared hit=2282 read=7
+        ->  Sort (actual time=1.813..1.815 rows=20 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=2282 read=7
+              ->  GroupAggregate (actual time=1.797..1.804 rows=20 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=2282 read=7
+                    ->  Sort (actual time=1.791..1.793 rows=21 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 25kB
+                          Buffers: shared hit=2282 read=7
+                          ->  Nested Loop (actual time=0.050..1.781 rows=21 loops=1)
+                                Buffers: shared hit=2282 read=7
+                                ->  CTE Scan on d (actual time=0.034..0.945 rows=68 loops=1)
+                                      Buffers: shared hit=130 read=7
+                                ->  Index Only Scan using ec_list on ec (actual time=0.010..0.012 rows=0 loops=68)
+                                      Index Cond: (concept_id = d.id)
+                                      Filter: ((place_path = 'bp'::text) OR (place_path ~~ 'bp.%'::text))
+                                      Rows Removed by Filter: 55
+                                      Heap Fetches: 0
+                                      Buffers: shared hit=2152
+  ->  Index Scan using entry_pkey on entry e (actual time=0.004..0.004 rows=1 loops=20)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=80
+Planning Time: 0.296 ms
+Execution Time: 1.981 ms
+
+--- variant ltree_resolver
+
+Nested Loop (actual time=214.124..218.190 rows=20 loops=1)
+  Buffers: shared hit=197 read=57516
+  ->  Limit (actual time=214.095..218.078 rows=20 loops=1)
+        Buffers: shared hit=117 read=57516
+        ->  Sort (actual time=199.592..203.573 rows=20 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=117 read=57516
+              ->  Finalize GroupAggregate (actual time=199.492..203.480 rows=20 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=117 read=57516
+                    ->  Gather Merge (actual time=199.479..203.463 rows=20 loops=1)
+                          Workers Planned: 2
+                          Workers Launched: 2
+                          Buffers: shared hit=117 read=57516
+                          ->  Partial GroupAggregate (actual time=179.945..179.953 rows=7 loops=3)
+                                Group Key: ec.entry_id
+                                Buffers: shared hit=117 read=57516
+                                ->  Sort (actual time=179.897..179.903 rows=7 loops=3)
+                                      Sort Key: ec.entry_id
+                                      Sort Method: quicksort  Memory: 25kB
+                                      Buffers: shared hit=117 read=57516
+                                      Worker 0:  Sort Method: quicksort  Memory: 25kB
+                                      Worker 1:  Sort Method: quicksort  Memory: 25kB
+                                      ->  Hash Join (actual time=46.467..179.852 rows=7 loops=3)
+                                            Hash Cond: (ec.concept_id = cp.concept_id)
+                                            Buffers: shared hit=100 read=57515
+                                            ->  Parallel Seq Scan on ec (actual time=8.221..176.490 rows=8482 loops=3)
+                                                  Filter: (published AND ((place_path = 'bp'::text) OR (place_path ~~ 'bp.%'::text)))
+                                                  Rows Removed by Filter: 1978131
+                                                  Buffers: shared read=57466
+                                            ->  Hash (actual time=0.999..1.003 rows=68 loops=3)
+                                                  Buckets: 65536  Batches: 1  Memory Usage: 515kB
+                                                  Buffers: shared hit=100 read=49
+                                                  ->  HashAggregate (actual time=0.696..0.984 rows=68 loops=3)
+                                                        Group Key: cp.concept_id
+                                                        Batches: 1  Memory Usage: 1561kB
+                                                        Buffers: shared hit=100 read=49
+                                                        Worker 0:  Batches: 1  Memory Usage: 1561kB
+                                                        Worker 1:  Batches: 1  Memory Usage: 1561kB
+                                                        ->  Nested Loop (actual time=0.537..0.658 rows=68 loops=3)
+                                                              Buffers: shared hit=100 read=49
+                                                              ->  Index Scan using concept_path_concept on concept_path xp (actual time=0.035..0.036 rows=1 loops=3)
+                                                                    Index Cond: (concept_id = 3285)
+                                                                    Buffers: shared hit=9 read=5
+                                                              ->  Bitmap Heap Scan on concept_path cp (actual time=0.284..0.394 rows=68 loops=3)
+                                                                    Recheck Cond: (path <@ xp.path)
+                                                                    Heap Blocks: exact=39
+                                                                    Buffers: shared hit=91 read=44
+                                                                    ->  Bitmap Index Scan on concept_path_gist (actual time=0.265..0.266 rows=68 loops=3)
+                                                                          Index Cond: (path <@ xp.path)
+                                                                          Buffers: shared hit=12 read=6
+  ->  Index Scan using entry_pkey on entry e (actual time=0.005..0.005 rows=1 loops=20)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=80
+Planning Time: 0.337 ms
+Execution Time: 220.070 ms
+
+--- variant ltree_denorm
+
+Nested Loop (actual time=296.569..296.654 rows=20 loops=1)
+  Buffers: shared hit=5264 read=27699
+  ->  Limit (actual time=296.548..296.554 rows=20 loops=1)
+        Buffers: shared hit=5184 read=27699
+        ->  Sort (actual time=296.546..296.551 rows=20 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=5184 read=27699
+              ->  GroupAggregate (actual time=296.531..296.541 rows=20 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=5184 read=27699
+                    ->  Sort (actual time=296.523..296.528 rows=21 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 25kB
+                          Buffers: shared hit=5184 read=27699
+                          ->  Bitmap Heap Scan on ec_lt ec (actual time=296.137..296.512 rows=21 loops=1)
+                                Recheck Cond: ((cpaths <@ 'n1.n25.n475.n3285'::ltree) AND (((place_path = 'bp'::text) AND published) OR ((place_path ~~ 'bp.%'::text) AND published)))
+                                Rows Removed by Index Recheck: 40
+                                Filter: ((place_path = 'bp'::text) OR (place_path ~~ 'bp.%'::text))
+                                Heap Blocks: exact=60
+                                Buffers: shared hit=5184 read=27699
+                                ->  BitmapAnd (actual time=295.965..295.968 rows=0 loops=1)
+                                      Buffers: shared hit=5184 read=27639
+                                      ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=293.828..293.828 rows=15743 loops=1)
+                                            Index Cond: (cpaths <@ 'n1.n25.n475.n3285'::ltree)
+                                            Buffers: shared hit=5181 read=27608
+                                      ->  BitmapOr (actual time=1.310..1.311 rows=0 loops=1)
+                                            Buffers: shared hit=3 read=31
+                                            ->  Bitmap Index Scan on ec_lt_place (actual time=0.024..0.025 rows=0 loops=1)
+                                                  Index Cond: (place_path = 'bp'::text)
+                                                  Buffers: shared read=3
+                                            ->  Bitmap Index Scan on ec_lt_place (actual time=1.282..1.282 rows=25447 loops=1)
+                                                  Index Cond: ((place_path ~>=~ 'bp.'::text) AND (place_path ~<~ 'bp/'::text))
+                                                  Buffers: shared hit=3 read=28
+  ->  Index Scan using entry_pkey on entry e (actual time=0.004..0.004 rows=1 loops=20)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=80
+Planning Time: 0.393 ms
+Execution Time: 296.703 ms
+
+--- variant closure_ltplace
+
+Nested Loop (actual time=8735.065..8735.182 rows=20 loops=1)
+  Buffers: shared hit=329 read=227
+  ->  Limit (actual time=8735.039..8735.045 rows=20 loops=1)
+        Buffers: shared hit=249 read=227
+        ->  Sort (actual time=8735.037..8735.041 rows=20 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=249 read=227
+              ->  GroupAggregate (actual time=8735.020..8735.031 rows=20 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=249 read=227
+                    ->  Sort (actual time=8735.006..8735.010 rows=21 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 25kB
+                          Buffers: shared hit=249 read=227
+                          ->  Nested Loop (actual time=415.357..8734.862 rows=21 loops=1)
+                                Buffers: shared hit=249 read=227
+                                ->  Index Only Scan using concept_closure_pkey on concept_closure cl (actual time=0.023..1.217 rows=68 loops=1)
+                                      Index Cond: (ancestor_id = 3285)
+                                      Heap Fetches: 67
+                                      Buffers: shared hit=1 read=70
+                                ->  Index Scan using ec_pl_list on ec_pl ec (actual time=113.931..128.428 rows=0 loops=68)
+                                      Index Cond: ((concept_id = cl.descendant_id) AND (place_l <@ 'bp'::ltree))
+                                      Buffers: shared hit=248 read=157
+  ->  Index Scan using entry_pkey on entry e (actual time=0.006..0.006 rows=1 loops=20)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=80
+Planning:
+  Buffers: shared hit=4 read=5
+Planning Time: 0.350 ms
+Execution Time: 8735.225 ms
+
+==== large cell: sector in one country: pair 13, node 31, place 'bv', 3152 members ====
+
+
+--- variant closure
+
+Nested Loop (actual time=170.071..173.958 rows=25 loops=1)
+  Buffers: shared hit=520286 read=20524
+  ->  Limit (actual time=170.026..173.611 rows=25 loops=1)
+        Buffers: shared hit=520245 read=20465
+        ->  Sort (actual time=170.024..173.606 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=520245 read=20465
+              ->  Finalize GroupAggregate (actual time=167.715..173.255 rows=3152 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=520245 read=20465
+                    ->  Gather Merge (actual time=167.710..172.503 rows=3858 loops=1)
+                          Workers Planned: 2
+                          Workers Launched: 2
+                          Buffers: shared hit=520245 read=20465
+                          ->  Partial GroupAggregate (actual time=154.327..154.852 rows=1286 loops=3)
+                                Group Key: ec.entry_id
+                                Buffers: shared hit=520245 read=20465
+                                ->  Sort (actual time=154.317..154.457 rows=1438 loops=3)
+                                      Sort Key: ec.entry_id
+                                      Sort Method: quicksort  Memory: 114kB
+                                      Buffers: shared hit=520245 read=20465
+                                      Worker 0:  Sort Method: quicksort  Memory: 107kB
+                                      Worker 1:  Sort Method: quicksort  Memory: 92kB
+                                      ->  Nested Loop (actual time=1.137..153.437 rows=1438 loops=3)
+                                            Buffers: shared hit=520228 read=20464
+                                            ->  Parallel Bitmap Heap Scan on concept_closure cl (actual time=0.944..13.724 rows=4013 loops=3)
+                                                  Recheck Cond: (ancestor_id = 31)
+                                                  Heap Blocks: exact=2023
+                                                  Buffers: shared hit=45 read=5453
+                                                  ->  Bitmap Index Scan on concept_closure_pkey (actual time=1.963..1.963 rows=14441 loops=1)
+                                                        Index Cond: (ancestor_id = 31)
+                                                        Buffers: shared hit=1 read=52
+                                            ->  Index Only Scan using ec_list on ec (actual time=0.029..0.034 rows=0 loops=12038)
+                                                  Index Cond: (concept_id = cl.descendant_id)
+                                                  Filter: ((place_path = 'bv'::text) OR (place_path ~~ 'bv.%'::text))
+                                                  Rows Removed by Filter: 80
+                                                  Heap Fetches: 0
+                                                  Buffers: shared hit=520183 read=15011
+  ->  Index Scan using entry_pkey on entry e (actual time=0.013..0.013 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=41 read=59
+Planning:
+  Buffers: shared hit=9
+Planning Time: 0.421 ms
+Execution Time: 174.019 ms
+
+--- variant rcte
+
+Nested Loop (actual time=265.865..265.981 rows=25 loops=1)
+  Buffers: shared hit=552060 read=7364 dirtied=3 written=2
+  CTE d
+    ->  Recursive Union (actual time=0.003..41.558 rows=12038 loops=1)
+          Buffers: shared hit=23881 read=255 dirtied=3
+          ->  Result (actual time=0.001..0.001 rows=1 loops=1)
+          ->  Nested Loop (actual time=1.583..7.081 rows=2890 loops=5)
+                Buffers: shared hit=23881 read=255 dirtied=3
+                ->  WorkTable Scan on d d_1 (actual time=0.000..0.180 rows=2408 loops=5)
+                ->  Index Only Scan using concept_edge_pkey on concept_edge e_1 (actual time=0.002..0.003 rows=1 loops=12038)
+                      Index Cond: (parent_id = d_1.id)
+                      Heap Fetches: 99
+                      Buffers: shared hit=23881 read=255 dirtied=3
+  ->  Limit (actual time=265.845..265.850 rows=25 loops=1)
+        Buffers: shared hit=551960 read=7364 dirtied=3 written=2
+        ->  Sort (actual time=265.843..265.846 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=551960 read=7364 dirtied=3 written=2
+              ->  GroupAggregate (actual time=264.290..265.531 rows=3152 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=551960 read=7364 dirtied=3 written=2
+                    ->  Sort (actual time=264.277..264.637 rows=4313 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 361kB
+                          Buffers: shared hit=551960 read=7364 dirtied=3 written=2
+                          ->  Nested Loop (actual time=0.292..262.950 rows=4313 loops=1)
+                                Buffers: shared hit=551960 read=7364 dirtied=3 written=2
+                                ->  CTE Scan on d (actual time=0.004..44.312 rows=12038 loops=1)
+                                      Buffers: shared hit=23881 read=255 dirtied=3
+                                ->  Index Only Scan using ec_list on ec (actual time=0.015..0.018 rows=0 loops=12038)
+                                      Index Cond: (concept_id = d.id)
+                                      Filter: ((place_path = 'bv'::text) OR (place_path ~~ 'bv.%'::text))
+                                      Rows Removed by Filter: 80
+                                      Heap Fetches: 0
+                                      Buffers: shared hit=528079 read=7109 written=2
+  ->  Index Scan using entry_pkey on entry e (actual time=0.005..0.005 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=100
+Planning Time: 0.373 ms
+Execution Time: 266.229 ms
+
+--- variant ltree_resolver
+
+Nested Loop (actual time=322.420..325.392 rows=25 loops=1)
+  Buffers: shared hit=8578 read=61704 dirtied=2
+  ->  Limit (actual time=322.353..325.154 rows=25 loops=1)
+        Buffers: shared hit=8478 read=61704 dirtied=2
+        ->  Sort (actual time=306.762..309.560 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=8478 read=61704 dirtied=2
+              ->  Finalize HashAggregate (actual time=305.481..309.048 rows=3152 loops=1)
+                    Group Key: ec.entry_id
+                    Batches: 1  Memory Usage: 1809kB
+                    Buffers: shared hit=8478 read=61704 dirtied=2
+                    ->  Gather (actual time=303.406..306.878 rows=3152 loops=1)
+                          Workers Planned: 2
+                          Workers Launched: 2
+                          Buffers: shared hit=8478 read=61704 dirtied=2
+                          ->  Partial HashAggregate (actual time=287.499..287.845 rows=1051 loops=3)
+                                Group Key: ec.entry_id
+                                Batches: 1  Memory Usage: 913kB
+                                Buffers: shared hit=8478 read=61704 dirtied=2
+                                Worker 0:  Batches: 1  Memory Usage: 849kB
+                                Worker 1:  Batches: 1  Memory Usage: 913kB
+                                ->  Hash Join (actual time=79.112..286.232 rows=1438 loops=3)
+                                      Hash Cond: (ec.concept_id = cp.concept_id)
+                                      Buffers: shared hit=8478 read=61704 dirtied=2
+                                      ->  Parallel Seq Scan on ec (actual time=9.089..213.058 rows=7507 loops=3)
+                                            Filter: (published AND ((place_path = 'bv'::text) OR (place_path ~~ 'bv.%'::text)))
+                                            Rows Removed by Filter: 1979106
+                                            Buffers: shared read=57466
+                                      ->  Hash (actual time=69.719..69.723 rows=12038 loops=3)
+                                            Buckets: 65536  Batches: 1  Memory Usage: 936kB
+                                            Buffers: shared hit=8478 read=4238 dirtied=2
+                                            ->  HashAggregate (actual time=65.865..67.624 rows=12038 loops=3)
+                                                  Group Key: cp.concept_id
+                                                  Batches: 1  Memory Usage: 2065kB
+                                                  Buffers: shared hit=8478 read=4238 dirtied=2
+                                                  Worker 0:  Batches: 1  Memory Usage: 2065kB
+                                                  Worker 1:  Batches: 1  Memory Usage: 2065kB
+                                                  ->  Nested Loop (actual time=20.957..59.525 rows=19498 loops=3)
+                                                        Buffers: shared hit=8478 read=4238 dirtied=2
+                                                        ->  Index Scan using concept_path_concept on concept_path xp (actual time=0.039..0.042 rows=1 loops=3)
+                                                              Index Cond: (concept_id = 31)
+                                                              Buffers: shared hit=9 read=5
+                                                        ->  Bitmap Heap Scan on concept_path cp (actual time=20.894..56.476 rows=19498 loops=3)
+                                                              Recheck Cond: (path <@ xp.path)
+                                                              Heap Blocks: exact=3946
+                                                              Buffers: shared hit=8469 read=4233 dirtied=2
+                                                              ->  Bitmap Index Scan on concept_path_gist (actual time=20.313..20.314 rows=19520 loops=3)
+                                                                    Index Cond: (path <@ xp.path)
+                                                                    Buffers: shared hit=576 read=288
+  ->  Index Scan using entry_pkey on entry e (actual time=0.007..0.007 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=100
+Planning Time: 0.390 ms
+Execution Time: 327.358 ms
+
+--- variant ltree_denorm
+
+Nested Loop (actual time=823.047..823.307 rows=25 loops=1)
+  Buffers: shared hit=39 read=56208 written=2
+  ->  Limit (actual time=822.982..822.993 rows=25 loops=1)
+        Buffers: shared hit=3 read=56144 written=2
+        ->  Sort (actual time=822.980..822.988 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=3 read=56144 written=2
+              ->  GroupAggregate (actual time=821.571..822.643 rows=3152 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=3 read=56144 written=2
+                    ->  Sort (actual time=821.559..821.770 rows=4313 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 361kB
+                          Buffers: shared hit=3 read=56144 written=2
+                          ->  Bitmap Heap Scan on ec_lt ec (actual time=798.738..820.687 rows=4313 loops=1)
+                                Recheck Cond: ((((place_path = 'bv'::text) AND published) OR ((place_path ~~ 'bv.%'::text) AND published)) AND (cpaths <@ 'n1.n31'::ltree))
+                                Rows Removed by Index Recheck: 749
+                                Filter: ((place_path = 'bv'::text) OR (place_path ~~ 'bv.%'::text))
+                                Heap Blocks: exact=3780
+                                Buffers: shared hit=3 read=56144 written=2
+                                ->  BitmapAnd (actual time=798.103..798.108 rows=0 loops=1)
+                                      Buffers: shared hit=3 read=52364 written=2
+                                      ->  BitmapOr (actual time=1.777..1.778 rows=0 loops=1)
+                                            Buffers: shared hit=3 read=28
+                                            ->  Bitmap Index Scan on ec_lt_place (actual time=0.031..0.031 rows=0 loops=1)
+                                                  Index Cond: (place_path = 'bv'::text)
+                                                  Buffers: shared read=3
+                                            ->  Bitmap Index Scan on ec_lt_place (actual time=1.745..1.745 rows=22522 loops=1)
+                                                  Index Cond: ((place_path ~>=~ 'bv.'::text) AND (place_path ~<~ 'bv/'::text))
+                                                  Buffers: shared hit=3 read=25
+                                      ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=793.031..793.031 rows=1345610 loops=1)
+                                            Index Cond: (cpaths <@ 'n1.n31'::ltree)
+                                            Buffers: shared read=52336 written=2
+  ->  Index Scan using entry_pkey on entry e (actual time=0.012..0.012 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=36 read=64
+Planning Time: 0.478 ms
+Execution Time: 823.378 ms
+
+--- variant closure_ltplace
+
+Nested Loop (actual time=17577.575..17577.865 rows=25 loops=1)
+  Buffers: shared hit=69631 read=55778 dirtied=2
+  ->  Limit (actual time=17577.518..17577.526 rows=25 loops=1)
+        Buffers: shared hit=69595 read=55714 dirtied=2
+        ->  Sort (actual time=17577.516..17577.521 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=69595 read=55714 dirtied=2
+              ->  GroupAggregate (actual time=17575.469..17577.020 rows=3152 loops=1)
+                    Group Key: ec.entry_id
+                    Buffers: shared hit=69595 read=55714 dirtied=2
+                    ->  Sort (actual time=17575.458..17575.762 rows=4313 loops=1)
+                          Sort Key: ec.entry_id
+                          Sort Method: quicksort  Memory: 361kB
+                          Buffers: shared hit=69595 read=55714 dirtied=2
+                          ->  Nested Loop (actual time=9886.407..17572.738 rows=4313 loops=1)
+                                Buffers: shared hit=69595 read=55714 dirtied=2
+                                ->  Bitmap Heap Scan on ec_pl ec (actual time=9886.271..17490.716 rows=22522 loops=1)
+                                      Recheck Cond: ((place_l <@ 'bv'::ltree) AND published)
+                                      Heap Blocks: exact=7361
+                                      Buffers: shared read=53423
+                                      ->  Bitmap Index Scan on ec_pl_list (actual time=9884.982..9884.983 rows=22522 loops=1)
+                                            Index Cond: (place_l <@ 'bv'::ltree)
+                                            Buffers: shared read=46062
+                                ->  Index Only Scan using concept_closure_pkey on concept_closure cl (actual time=0.003..0.003 rows=0 loops=22522)
+                                      Index Cond: ((ancestor_id = 31) AND (descendant_id = ec.concept_id))
+                                      Heap Fetches: 4319
+                                      Buffers: shared hit=69595 read=2291 dirtied=2
+  ->  Index Scan using entry_pkey on entry e (actual time=0.013..0.013 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=36 read=64
+Planning:
+  Buffers: shared hit=2 read=7
+Planning Time: 0.377 ms
+Execution Time: 17577.929 ms
+
+==== huge cell: sector in the world: pair 7, node 24, place '', 760681 members ====
+
+
+--- variant closure
+
+Nested Loop (actual time=1945.379..1945.727 rows=25 loops=1)
+  Buffers: shared hit=2122 read=61157
+  ->  Limit (actual time=1945.252..1945.261 rows=25 loops=1)
+        Buffers: shared hit=2077 read=61102
+        ->  Sort (actual time=1934.396..1934.402 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=2077 read=61102
+              ->  HashAggregate (actual time=1673.082..1865.298 rows=760681 loops=1)
+                    Group Key: ec.entry_id
+                    Batches: 1  Memory Usage: 98321kB
+                    Buffers: shared hit=2077 read=61102
+                    ->  Hash Join (actual time=24.383..1280.656 rows=1057026 loops=1)
+                          Hash Cond: (ec.concept_id = cl.descendant_id)
+                          Buffers: shared hit=2077 read=61102
+                          ->  Seq Scan on ec (actual time=0.037..593.427 rows=5064987 loops=1)
+                                Filter: published
+                                Rows Removed by Filter: 894852
+                                Buffers: shared read=57466
+                          ->  Hash (actual time=24.252..24.253 rows=14124 loops=1)
+                                Buckets: 16384  Batches: 1  Memory Usage: 625kB
+                                Buffers: shared hit=2077 read=3636
+                                ->  Bitmap Heap Scan on concept_closure cl (actual time=2.164..21.866 rows=14124 loops=1)
+                                      Recheck Cond: (ancestor_id = 24)
+                                      Heap Blocks: exact=5651
+                                      Buffers: shared hit=2077 read=3636
+                                      ->  Bitmap Index Scan on concept_closure_pkey (actual time=1.308..1.308 rows=16161 loops=1)
+                                            Index Cond: (ancestor_id = 24)
+                                            Buffers: shared hit=1 read=61
+  ->  Index Scan using entry_pkey on entry e (actual time=0.016..0.016 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=45 read=55
+Planning:
+  Buffers: shared hit=3 read=6
+Planning Time: 0.360 ms
+Execution Time: 1976.836 ms
+
+--- variant rcte
+
+Nested Loop (actual time=1129.619..1129.871 rows=25 loops=1)
+  Buffers: shared hit=598287 read=16931 dirtied=4
+  CTE d
+    ->  Recursive Union (actual time=0.004..29.232 rows=14124 loops=1)
+          Buffers: shared hit=28019 read=262 dirtied=4
+          ->  Result (actual time=0.001..0.002 rows=1 loops=1)
+          ->  Nested Loop (actual time=1.689..4.030 rows=3435 loops=5)
+                Buffers: shared hit=28019 read=262 dirtied=4
+                ->  WorkTable Scan on d d_1 (actual time=0.000..0.275 rows=2825 loops=5)
+                ->  Index Only Scan using concept_edge_pkey on concept_edge e_1 (actual time=0.001..0.001 rows=1 loops=14124)
+                      Index Cond: (parent_id = d_1.id)
+                      Heap Fetches: 34
+                      Buffers: shared hit=28019 read=262 dirtied=4
+  ->  Limit (actual time=1129.547..1129.554 rows=25 loops=1)
+        Buffers: shared hit=598239 read=16879 dirtied=4
+        ->  Sort (actual time=1129.546..1129.550 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=598239 read=16879 dirtied=4
+              ->  HashAggregate (actual time=865.704..1048.409 rows=760681 loops=1)
+                    Group Key: ec.entry_id
+                    Batches: 1  Memory Usage: 73745kB
+                    Buffers: shared hit=598239 read=16879 dirtied=4
+                    ->  Nested Loop (actual time=0.193..444.984 rows=1057026 loops=1)
+                          Buffers: shared hit=598239 read=16879 dirtied=4
+                          ->  CTE Scan on d (actual time=0.006..32.831 rows=14124 loops=1)
+                                Buffers: shared hit=28019 read=262 dirtied=4
+                          ->  Index Only Scan using ec_list on ec (actual time=0.006..0.021 rows=75 loops=14124)
+                                Index Cond: (concept_id = d.id)
+                                Heap Fetches: 0
+                                Buffers: shared hit=570220 read=16617
+  ->  Index Scan using entry_pkey on entry e (actual time=0.012..0.012 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=48 read=52
+Planning Time: 0.315 ms
+Execution Time: 1134.343 ms
+
+--- variant ltree_resolver
+
+Nested Loop (actual time=2029.088..2029.212 rows=25 loops=1)
+  Buffers: shared hit=101 read=62178 dirtied=1
+  ->  Limit (actual time=2029.000..2029.012 rows=25 loops=1)
+        Buffers: shared hit=1 read=62178 dirtied=1
+        ->  Sort (actual time=2017.099..2017.108 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=1 read=62178 dirtied=1
+              ->  HashAggregate (actual time=1755.956..1949.058 rows=760681 loops=1)
+                    Group Key: ec.entry_id
+                    Batches: 1  Memory Usage: 98321kB
+                    Buffers: shared hit=1 read=62178 dirtied=1
+                    ->  Hash Join (actual time=78.863..1344.583 rows=1057026 loops=1)
+                          Hash Cond: (ec.concept_id = cp.concept_id)
+                          Buffers: shared hit=1 read=62178 dirtied=1
+                          ->  Seq Scan on ec (actual time=0.036..615.310 rows=5064987 loops=1)
+                                Filter: published
+                                Rows Removed by Filter: 894852
+                                Buffers: shared read=57466
+                          ->  Hash (actual time=78.745..78.749 rows=14124 loops=1)
+                                Buckets: 65536  Batches: 1  Memory Usage: 1009kB
+                                Buffers: shared hit=1 read=4712 dirtied=1
+                                ->  HashAggregate (actual time=74.394..76.543 rows=14124 loops=1)
+                                      Group Key: cp.concept_id
+                                      Batches: 1  Memory Usage: 2577kB
+                                      Buffers: shared hit=1 read=4712 dirtied=1
+                                      ->  Nested Loop (actual time=44.783..68.014 rows=23720 loops=1)
+                                            Buffers: shared hit=1 read=4712 dirtied=1
+                                            ->  Index Scan using concept_path_concept on concept_path xp (actual time=0.043..0.076 rows=1 loops=1)
+                                                  Index Cond: (concept_id = 24)
+                                                  Buffers: shared read=4
+                                            ->  Bitmap Heap Scan on concept_path cp (actual time=44.697..65.170 rows=23720 loops=1)
+                                                  Recheck Cond: (path <@ xp.path)
+                                                  Heap Blocks: exact=4345
+                                                  Buffers: shared hit=1 read=4708 dirtied=1
+                                                  ->  Bitmap Index Scan on concept_path_gist (actual time=44.079..44.079 rows=23738 loops=1)
+                                                        Index Cond: (path <@ xp.path)
+                                                        Buffers: shared read=364
+  ->  Index Scan using entry_pkey on entry e (actual time=0.005..0.005 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=100
+Planning Time: 0.337 ms
+Execution Time: 2057.243 ms
+
+--- variant ltree_denorm
+
+Nested Loop (actual time=4468.378..4468.678 rows=25 loops=1)
+  Buffers: shared hit=37 read=537442 written=5
+  ->  Limit (actual time=4468.263..4468.270 rows=25 loops=1)
+        Buffers: shared read=537379 written=5
+        ->  Sort (actual time=4268.723..4268.727 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared read=537379 written=5
+              ->  HashAggregate (actual time=4026.499..4192.526 rows=760681 loops=1)
+                    Group Key: ec.entry_id
+                    Batches: 1  Memory Usage: 73745kB
+                    Buffers: shared read=537379 written=5
+                    ->  Bitmap Heap Scan on ec_lt ec (actual time=887.786..3585.702 rows=1057026 loops=1)
+                          Recheck Cond: (cpaths <@ 'n1.n24'::ltree)
+                          Rows Removed by Index Recheck: 222676
+                          Filter: published
+                          Rows Removed by Filter: 186928
+                          Heap Blocks: exact=485041
+                          Buffers: shared read=537379 written=5
+                          ->  Bitmap Index Scan on ec_lt_paths_gist (actual time=745.824..745.824 rows=1466630 loops=1)
+                                Index Cond: (cpaths <@ 'n1.n24'::ltree)
+                                Buffers: shared read=52338 written=5
+  ->  Index Scan using entry_pkey on entry e (actual time=0.014..0.014 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=37 read=63
+Planning Time: 0.278 ms
+Execution Time: 4475.696 ms
+
+--- variant closure_ltplace
+
+Nested Loop (actual time=2882.757..2882.964 rows=25 loops=1)
+  Buffers: shared hit=101 read=76752
+  ->  Limit (actual time=2882.652..2882.665 rows=25 loops=1)
+        Buffers: shared hit=1 read=76752
+        ->  Sort (actual time=2871.586..2871.594 rows=25 loops=1)
+              Sort Key: (min(ec.sort_key)), ec.entry_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=1 read=76752
+              ->  HashAggregate (actual time=2599.107..2788.898 rows=760681 loops=1)
+                    Group Key: ec.entry_id
+                    Batches: 1  Memory Usage: 73745kB
+                    Buffers: shared hit=1 read=76752
+                    ->  Hash Join (actual time=28.276..2139.852 rows=1057026 loops=1)
+                          Hash Cond: (ec.concept_id = cl.descendant_id)
+                          Buffers: shared hit=1 read=76752
+                          ->  Seq Scan on ec_pl ec (actual time=0.404..1284.656 rows=5064987 loops=1)
+                                Filter: published
+                                Rows Removed by Filter: 894852
+                                Buffers: shared read=71040
+                          ->  Hash (actual time=27.812..27.814 rows=14124 loops=1)
+                                Buckets: 16384  Batches: 1  Memory Usage: 625kB
+                                Buffers: shared hit=1 read=5712
+                                ->  Bitmap Heap Scan on concept_closure cl (actual time=2.218..25.339 rows=14124 loops=1)
+                                      Recheck Cond: (ancestor_id = 24)
+                                      Heap Blocks: exact=5651
+                                      Buffers: shared hit=1 read=5712
+                                      ->  Bitmap Index Scan on concept_closure_pkey (actual time=1.354..1.355 rows=16161 loops=1)
+                                            Index Cond: (ancestor_id = 24)
+                                            Buffers: shared read=62
+  ->  Index Scan using entry_pkey on entry e (actual time=0.008..0.008 rows=1 loops=25)
+        Index Cond: (id = ec.entry_id)
+        Buffers: shared hit=100
+Planning:
+  Buffers: shared hit=2 read=7
+Planning Time: 0.349 ms
+Execution Time: 2896.109 ms

@@ -1,0 +1,8 @@
+== 1. connection limit: scratch server max_connections=40 ==
+direct: 40 connections opened before failure: connection failed: connection to server at "127.0.0.1", port 55432 failed: FATAL:  sorry, too many clients already
+   client errors: {'prepared statement "_pg3_0" already exists': 280, 'prepared statement "_pg3_0" does not exist': 7}
+via PgBouncer: 300 client connections x 20 queries of 20 ms: 13 ok, 287 errors, 1.9s, peak server backends for the database = 20 (pool_size 20), query p50=235ms p99=306ms
+== 2. cost of a new connection (the CONN_MAX_AGE=0 case) ==
+direct: 3.35 ms per connect+query+close (trust auth, localhost)
+via PgBouncer: 0.66 ms per connect+query+close (trust auth, localhost)
+== 3. pgbench select-only (-S), 8 s, 2 threads, scratch server max_connections=40 ==

@@ -1,0 +1,17 @@
+Timing is on.
+SET
+Time: 0.263 ms
+psql:taxonomy_11b_rebuild_closure_dag.sql:7: NOTICE:  table "closure_rebuilt" does not exist, skipping
+DROP TABLE
+Time: 0.306 ms
+CREATE TABLE
+Time: 13.468 ms
+INSERT 0 1004185
+Time: 6555.374 ms (00:06.555)
+ rows_rebuilt | rows_in_table | missing | extra 
+--------------+---------------+---------+-------
+      1004185 |       1004185 |       0 |     0
+(1 row)
+Time: 1612.890 ms (00:01.613)
+DROP TABLE
+Time: 16.112 ms

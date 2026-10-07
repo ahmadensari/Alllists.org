@@ -2,3 +2,6 @@ prewarmed 12 relations
 5m city         two    repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  6.2 to=16
 5m city         two    like     n= 77 p50=   23.13 p95=   46.57 max=   124.0 rows=  8.9 to=0
 5m city         two    tsv      n= 77 p50=   20.56 p95=   72.17 max=   140.0 rows= 10.0 to=0
+5m city         typo   repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  2.2 to=17 recall=0.1
+5m city         typo   wsim     n= 77 p50=  181.03 p95=  410.43 max=  1032.7 rows= 21.6 to=0 recall=0.935
+5m city         typo   dict     n= 77 p50=   51.27 p95=  194.59 max=   293.5 rows= 21.9 to=0 recall=0.948

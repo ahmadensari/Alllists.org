@@ -28,11 +28,13 @@ SCRATCH = {"host": "127.0.0.1", "port": 55432}
 
 
 def start_pgb(max_prepared=0, pool_size=20, extra=""):
-    d = tempfile.mkdtemp(prefix="bench_pgb_")
+    d = tempfile.mkdtemp(prefix="bench_pgb_", dir="/var/tmp")
+    os.chmod(d, 0o777)  # PgBouncer refuses to run as root: it is started with -u postgres and needs to write its log here
     ini = f"""[databases]
 bench_pgb = host=127.0.0.1 port=55432 dbname=bench_pgb pool_size={pool_size}
 bench_pgb1 = host=127.0.0.1 port=55432 dbname=bench_pgb pool_size=1
 bench_pgb2 = host=127.0.0.1 port=55432 dbname=bench_pgb pool_size=2
+bench_pgb3 = host=127.0.0.1 port=55432 dbname=bench_pgb pool_size=1
 bench_django_pool = host=127.0.0.1 port=5432 dbname=bench_django user=alllists password=alllists pool_size=4
 
 [pgbouncer]
@@ -40,6 +42,7 @@ listen_addr = 127.0.0.1
 listen_port = {PORT}
 unix_socket_dir = {d}
 auth_type = trust
+auth_file = {d}/userlist.txt
 pool_mode = transaction
 max_client_conn = 2000
 default_pool_size = {pool_size}
@@ -52,8 +55,9 @@ admin_users = postgres
 {extra}
 """
     open(f"{d}/pgbouncer.ini", "w").write(ini)
+    open(f"{d}/userlist.txt", "w").write('"postgres" ""\n"alllists" "alllists"\n')
     env = dict(os.environ, LD_LIBRARY_PATH=f"{PGB}/usr/lib/x86_64-linux-gnu")
-    p = subprocess.Popen([f"{PGB}/usr/sbin/pgbouncer", f"{d}/pgbouncer.ini"], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    p = subprocess.Popen([f"{PGB}/usr/sbin/pgbouncer", "-u", "postgres", f"{d}/pgbouncer.ini"], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
     for _ in range(50):
         try:
             psycopg.connect(host="127.0.0.1", port=PORT, user="postgres", dbname="bench_pgb", autocommit=True, connect_timeout=1).close()
@@ -100,7 +104,7 @@ def part_limits():
             c.close()
             done.append(i)
         except psycopg.Error as e:
-            errs.append(str(e).splitlines()[0])
+            errs.append(str(e).strip().splitlines()[0])
 
     peak = [0]
     stop = [False]
@@ -120,6 +124,9 @@ def part_limits():
     stop[0] = True
     wt.join()
     lat.sort()
+    if errs:
+        import collections
+        print("   client errors:", dict(collections.Counter(e[:110] for e in errs).most_common(3)))
     print(f"via PgBouncer: 300 client connections x 20 queries of 20 ms: {len(done)} ok, {len(errs)} errors, {t.s:.1f}s, "
           f"peak server backends for the database = {peak[0]} (pool_size 20), query p50={lat[len(lat) // 2] * 1000:.0f}ms p99={lat[int(len(lat) * .99)] * 1000:.0f}ms")
     return p
@@ -147,11 +154,14 @@ def pgbench(args, label):
 
 def part_pgbench(p_holder):
     print("== 3. pgbench select-only (-S), 8 s, 2 threads, scratch server max_connections=40 ==")
+    stop_pgb(p_holder)  # its idle pool of 20 server connections would eat half of max_connections=40 during the direct runs
+    time.sleep(1)
     subprocess.run([f"{BIN}/pgbench", "-i", "-s", "10", "-h", "127.0.0.1", "-p", "55432", "-U", "postgres", "bench_pgb"], capture_output=True)
     base = ["-S", "-T", "8", "-j", "2", "-U", "postgres", "bench_pgb"]
     pgbench(["-c", "8", "-h", "127.0.0.1", "-p", "55432", *base], "direct, 8 clients")
     pgbench(["-c", "30", "-h", "127.0.0.1", "-p", "55432", *base], "direct, 30 clients")
     pgbench(["-c", "200", "-h", "127.0.0.1", "-p", "55432", *base], "direct, 200 clients")
+    p_holder, _ = start_pgb(pool_size=20)
     pgbench(["-c", "8", "-h", "127.0.0.1", "-p", str(PORT), *base], "PgBouncer, 8 clients")
     pgbench(["-c", "30", "-h", "127.0.0.1", "-p", str(PORT), *base], "PgBouncer, 30 clients")
     pgbench(["-c", "200", "-h", "127.0.0.1", "-p", str(PORT), *base], "PgBouncer, 200 clients")
@@ -159,6 +169,7 @@ def part_pgbench(p_holder):
     print("-- same with new connection per transaction (-C), 8 clients --")
     pgbench(["-C", "-c", "8", "-h", "127.0.0.1", "-p", "55432", *base], "direct -C")
     pgbench(["-C", "-c", "8", "-h", "127.0.0.1", "-p", str(PORT), *base], "PgBouncer -C")
+    return p_holder
 
 
 def part_semantics():
@@ -216,8 +227,11 @@ def part_semantics():
     # e. role/database defaults reach pooled sessions
     admin = direct("bench_pgb")
     admin.execute("ALTER DATABASE bench_pgb SET lock_timeout = '3s'")
-    c = via("bench_pgb")
-    print("e. ALTER DATABASE .. SET lock_timeout='3s' seen through the pooler:", c.execute("SHOW lock_timeout").fetchone()[0])
+    old = via("bench_pgb1")  # its one server connection was opened BEFORE the ALTER (the tests above used it)
+    c = via("bench_pgb3")  # a pool that has not opened a server connection yet
+    print("e. ALTER DATABASE .. SET lock_timeout='3s': pool with a server connection opened before the ALTER sees",
+          old.execute("SHOW lock_timeout").fetchone()[0], "; a pool that opens its server connection after the ALTER sees", c.execute("SHOW lock_timeout").fetchone()[0])
+    old.close()
     c.close()
     admin.execute("ALTER DATABASE bench_pgb RESET lock_timeout")
 
@@ -281,7 +295,7 @@ def main():
     make_db("bench_pgb", **SCRATCH)
     p = part_limits()
     part_connect_cost()
-    part_pgbench(p)
+    p = part_pgbench(p)
     part_semantics()
     stop_pgb(p)
     print("== 5. prepared statements ==")
