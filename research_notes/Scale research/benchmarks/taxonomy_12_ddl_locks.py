@@ -60,7 +60,7 @@ def run_step(sql):
     for f in glob.glob("pgbench_log.*"):
         os.remove(f)
     p = subprocess.Popen(
-        ["pgbench", "-n", "-h", "/var/run/postgresql", "-U", "postgres", "-d", DB, "-f", "/var/tmp/benchout/ddl_writer.sql", "-c", "1", "-T", "40", "-l"],
+        ["pgbench", "-n", "-h", "/var/run/postgresql", "-U", "postgres", "-f", "/var/tmp/benchout/ddl_writer.sql", "-c", "1", "-T", "40", "-l", DB],  # DB is positional: "-d" means --debug
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
     )
     time.sleep(4)

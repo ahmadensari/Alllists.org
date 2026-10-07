@@ -123,6 +123,7 @@ def sample_names(kind, path, cc, cids, k=60):
         ids = [rnd.randrange(1, N + 1) for _ in range(k * 3)]
         cur.execute(f"select id, name_fold, script from {E} where id = any(%(ids)s) and publish_state='published' {frag} limit {k}", dict(pr, ids=ids))
         return cur.fetchall()
+    cur.execute("set statement_timeout = 0")      # query sampling is setup, not a measured query (order by random() can exceed 4 s at 5M)
     cur.execute(f"select id, name_fold, script from {E} where publish_state='published' {frag} order by random() limit {k}", pr)
     return cur.fetchall()
 
@@ -252,6 +253,7 @@ for (sc, cls, method) in CELLS:
     if key not in pool_cache:
         qs = []
         tries = 0
+        cur.execute("set statement_timeout = 0")   # setup queries are not timed
         while len(qs) < a.n and tries < a.n * 8:
             tries += 1
             kind = key[0]
@@ -260,6 +262,7 @@ for (sc, cls, method) in CELLS:
             q = make_query(cls, rows)
             if q: q.update(path=path, cc=cc, cids=cids); qs.append(q)
         pool_cache[key] = qs
+        cur.execute(f"set statement_timeout = {a.timeout_ms}")
     qs = pool_cache[key]
     if not qs:
         continue

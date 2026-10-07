@@ -1,7 +1,7 @@
 """B09: sitemap generation. The REAL catalog.views.sitemap_index / sitemap_shard / indexable_list_cells on bench_django with
 160,000 roll-up cells for one country, versus a precomputed table + file writer. Then the file writer at 5,000,000 URLs.
 
-Setup done here (bench_django only): 8,000 extra PK city places, CountrySwitch(PK, indexing_on), 200,000 RollupCell rows
+Setup done here (bench_django only): 8,000 extra PK city places, CountrySwitch(PK, indexing_on), 160,000 RollupCell rows
 (8,000 places x 20 leaf concepts; about two thirds have >= 10 verified entries so they are indexable).
 
 Run: PYTHONDONTWRITEBYTECODE=1 DJANGO_ALLOW_TEST_KEY=1 POSTGRES_DB=bench_django .venv/bin/python b09_sitemap.py [out_dir]
@@ -24,12 +24,32 @@ django.setup()
 
 from django.db import connection  # noqa: E402
 from django.test import RequestFactory  # noqa: E402
-from django.test.utils import CaptureQueriesContext  # noqa: E402
 
 from catalog import views  # noqa: E402
 from common import Timer, connect  # noqa: E402
 
 SIZE = 50_000
+
+
+class CaptureQueriesContext:
+    """Counts queries without keeping them (Django's own context keeps only the last 9,000)."""
+
+    def __init__(self, conn):
+        self.conn, self.n = conn, 0
+
+    def _wrap(self, execute, sql, params, many, context):
+        self.n += 1
+        return execute(sql, params, many, context)
+
+    def __enter__(self):
+        self.conn.execute_wrappers.append(self._wrap)
+        return self
+
+    def __exit__(self, *a):
+        self.conn.execute_wrappers.remove(self._wrap)
+
+    def __len__(self):
+        return self.n
 HEAD = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
 
 
@@ -66,15 +86,16 @@ def main():
         with Timer() as t:
             cells = views.indexable_list_cells("PK")
     print(f"indexable_list_cells('PK'): {t.s:.1f}s, {len(q):,} queries, {len(cells):,} indexable cells")
-    with CaptureQueriesContext(connection) as q:
+    if not os.environ.get("SKIP_SHARD_AND_INDEX"):  # each of these repeats the full 155 s scan
+        with CaptureQueriesContext(connection) as q:
+            with Timer() as t:
+                r = views.sitemap_shard(rf.get("/sitemaps/pk-1.xml"), "pk", 1)
+        print(f"sitemap_shard pk-1 (one crawler request): {t.s:.1f}s, {len(q):,} queries, {len(r.content) / 1e6:.1f} MB")
         with Timer() as t:
-            r = views.sitemap_shard(rf.get("/sitemaps/pk-1.xml"), "pk", 1)
-    print(f"sitemap_shard pk-1 (one crawler request): {t.s:.1f}s, {len(q):,} queries, {len(r.content) / 1e6:.1f} MB")
-    with Timer() as t:
-        views.sitemap_index(rf.get("/sitemap.xml"))
-    print(f"sitemap_index: {t.s:.1f}s")
+            views.sitemap_index(rf.get("/sitemap.xml"))
+        print(f"sitemap_index: {t.s:.1f}s")
     shards = -(-len(cells) // SIZE)
-    print(f"a crawler fetching the index and all {shards} shards triggers about {(shards + 1)} full scans = {t.s * (shards + 1):.0f}s of database time (index {t.s:.1f}s each)")
+    print(f"a crawler fetching the index and all {shards} shards triggers about {(shards + 1)} full scans (one scan took the time printed above for indexable_list_cells)")
 
     print("== precomputed table ==")
     c.execute("DROP TABLE IF EXISTS sitemap_url")
@@ -114,7 +135,7 @@ def main():
     with Timer() as t:
         c.execute(
             """INSERT INTO sitemap_url (country_code, loc, lastmod, shard)
-               SELECT (ARRAY['PK','IN','BD','LK','NP'])[1 + g % 5], 'https://alllists.com/' || 'x' || (g % 80) || '/y' || g || '/leaf-' || (g % 25) || '/', current_date - (g % 300), (g - 1) / %s
+               SELECT (ARRAY['PK','IN','BD','LK','NP'])[1 + g %% 5], 'https://alllists.com/' || 'x' || (g %% 80) || '/y' || g || '/leaf-' || (g %% 25) || '/', current_date - (g %% 300), (g - 1) / %s
                  FROM generate_series(1, 5000000) g""", (SIZE,))
     print(f"table filled: {t.s:.0f}s")
     c.execute("CREATE INDEX sitemap_url_shard ON sitemap_url (shard, id)")

@@ -52,7 +52,7 @@ def pgbench(script_name, clients, seconds=15):
     path = f"/var/tmp/benchout/ins_{script_name}.sql"
     open(path, "w").write(SCRIPTS[script_name])
     out = subprocess.run(
-        ["pgbench", "-n", "-h", "/var/run/postgresql", "-U", "postgres", "-d", DB, "-f", path, "-c", str(clients), "-j", str(clients), "-T", str(seconds)],
+        ["pgbench", "-n", "-h", "/var/run/postgresql", "-U", "postgres", "-f", path, "-c", str(clients), "-j", str(clients), "-T", str(seconds), DB],  # DB is positional: "-d" means --debug
         capture_output=True, text=True,
     ).stdout
     tps = float(re.search(r"tps = ([0-9.]+)", out).group(1))
