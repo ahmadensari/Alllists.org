@@ -1,0 +1,19 @@
+Timing is off.
+psql:taxonomy_10_recall.sql:10: NOTICE:  table "bench_recall" does not exist, skipping
+DROP TABLE
+SELECT 250
+ concept_level | pairs | pct_seen_by_primary_tree | pct_seen_by_current_code 
+---------------+-------+--------------------------+--------------------------
+             1 |    50 |                      9.5 |                      5.5
+             2 |    50 |                     24.1 |                      8.0
+             3 |    50 |                     34.4 |                     12.1
+             4 |    50 |                     78.3 |                     25.5
+             5 |    50 |                    100.0 |                     39.0
+               |   250 |                     12.7 |                      6.2
+(6 rows)
+
+ mean_pct_per_page_seen_by_current_code | pages_where_current_code_misses_entries | pages 
+----------------------------------------+-----------------------------------------+-------
+                                   34.0 |                                     194 |   250
+(1 row)
+

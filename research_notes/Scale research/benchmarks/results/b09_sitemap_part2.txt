@@ -1,2 +1,16 @@
 setup: 160,000 roll-up cells for PK
 == real code, on request ==
+indexable_list_cells('PK'): 164.3s, 160,002 queries, 106,667 indexable cells
+a crawler fetching the index and all 3 shards triggers about 4 full scans (one scan took the time printed above for indexable_list_cells)
+== precomputed table ==
+one SQL statement builds sitemap_url: 2.5s for 106,667 URLs (same count as real code: True)
+write 3 gzip shard files for 106,667 URLs: 0.4s; total size 0.5 MB
+== 5,000,000 URLs ==
+table filled: 36s
+full rebuild: 100 shard files, 5,000,000 URLs: 12s (428,175 URLs/s), 24 MB gzip, single process
+one shard built entirely in SQL (string_agg): 34 ms (4.6 MB raw)
+2,000 new URLs appended -> 1 shard file rewritten (0.0s) instead of 100; stable shard = (identity id - 1) / 50000
+
+real	4m52.613s
+user	2m7.397s
+sys	0m7.236s

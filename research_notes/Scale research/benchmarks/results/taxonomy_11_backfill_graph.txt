@@ -1,0 +1,31 @@
+Timing is on.
+SELECT 50000
+Time: 55.646 ms
+CREATE INDEX
+Time: 13.788 ms
+CREATE INDEX
+Time: 10.027 ms
+CREATE TABLE
+Time: 2.464 ms
+CREATE TABLE
+Time: 1.350 ms
+CREATE TABLE
+Time: 2.422 ms
+--- edges
+INSERT 0 49999
+Time: 120.507 ms
+--- levels
+UPDATE 50000
+Time: 337.518 ms
+--- closure by recursion
+INSERT 0 282995
+Time: 1518.826 ms (00:01.519)
+--- slugs
+INSERT 0 50000
+Time: 171.689 ms
+ edges | closure_rows | slugs 
+-------+--------------+-------
+ 49999 |       282995 | 50000
+(1 row)
+
+Time: 29.354 ms

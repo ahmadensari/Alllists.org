@@ -1,1 +1,4 @@
 prewarmed 12 relations
+5m city         two    repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  6.2 to=16
+5m city         two    like     n= 77 p50=   23.13 p95=   46.57 max=   124.0 rows=  8.9 to=0
+5m city         two    tsv      n= 77 p50=   20.56 p95=   72.17 max=   140.0 rows= 10.0 to=0
