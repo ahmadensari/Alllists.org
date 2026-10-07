@@ -1,0 +1,81 @@
+Timing is on.
+CREATE EXTENSION
+CREATE EXTENSION
+ setseed 
+---------
+ 
+(1 row)
+SET
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 6
+CREATE TABLE
+INSERT 0 50000
+CREATE TABLE
+CREATE INDEX
+INSERT 0 49999
+SELECT 982
+INSERT 0 982
+CREATE TABLE
+INSERT 0 50000
+CREATE INDEX
+DO
+CREATE TABLE
+INSERT 0 1
+CREATE INDEX
+DO
+CREATE INDEX
+CREATE INDEX
+ANALYZE
+--- taxonomy statistics ---
+ nodes 
+-------
+ 50000
+(1 row)
+ edges | parents_per_node 
+-------+------------------
+ 50981 |             1.02
+(1 row)
+ closure_rows | closure_rows_per_node 
+--------------+-----------------------
+       290117 |                  5.80
+(1 row)
+ ltree_paths | paths_per_node | max_depth 
+-------------+----------------+-----------
+       53579 |           1.07 |         6
+(1 row)
+ level | nodes | avg_paths | max_paths | avg_ancestors | max_ancestors 
+-------+-------+-----------+-----------+---------------+---------------
+     0 |     1 |       1.0 |         1 |           1.0 |             1
+     1 |    30 |       1.0 |         1 |           2.0 |             2
+     2 |   560 |       1.0 |         2 |           3.0 |             4
+     3 |  3400 |       1.0 |         2 |           4.0 |             6
+     4 |  8400 |       1.1 |         3 |           5.1 |            10
+     5 | 37609 |       1.1 |         4 |           6.2 |            13
+(6 rows)
+ level | nodes | avg_descendants | max_descendants 
+-------+-------+-----------------+-----------------
+     0 |     1 |         50000.0 |           50000
+     1 |    30 |          1741.4 |            1897
+     2 |   560 |            93.8 |             137
+     3 |  3400 |            15.0 |              30
+     4 |  8400 |             5.6 |               9
+(5 rows)
+     relname     |  total  
+-----------------+---------
+ concept         | 4096 kB
+ concept_closure | 28 MB
+ concept_edge    | 4456 kB
+ concept_path    | 17 MB
+(4 rows)
+        index         |  size   
+----------------------+---------
+ concept_edge_pkey    | 1112 kB
+ concept_edge_child   | 1112 kB
+ concept_closure_pkey | 8024 kB
+ concept_closure_desc | 8464 kB
+ concept_path_concept | 1160 kB
+ concept_path_gist    | 7360 kB
+ concept_path_btree   | 3912 kB
+(7 rows)

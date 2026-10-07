@@ -102,7 +102,8 @@ for child_level in (2, 3, 4, 5):
         # --- closure: remove (rebuild subtree), still inside the same transaction
         conn.execute("DELETE FROM concept_edge WHERE parent_id = %s AND child_id = %s", (p, c))
         t = time.perf_counter()
-        conn.execute(CLOSURE_REBUILD, {"c": c})
+        for stmt in [x for x in CLOSURE_REBUILD.split(";") if x.strip()]:  # psycopg3 cannot run several commands in one parameterised call
+            conn.execute(stmt, {"c": c})
         for lvl in range(child_level, 6):
             conn.execute(CLOSURE_REBUILD_LEVEL, {"lvl": lvl})
         rec["closure_remove_ms"] = round((time.perf_counter() - t) * 1000, 2)

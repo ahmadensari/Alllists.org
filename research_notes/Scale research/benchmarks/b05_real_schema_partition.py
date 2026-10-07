@@ -157,6 +157,7 @@ CREATE TRIGGER entries_entry_mirror_t AFTER INSERT OR UPDATE OR DELETE ON entrie
             for tmp, old in newidx:
                 c.execute(f'ALTER INDEX "{old}" RENAME TO "{old}_old"')
                 c.execute(f'ALTER INDEX "{tmp}" RENAME TO "{old}"')
+            c.execute("ALTER TABLE entries_entry_old RENAME CONSTRAINT entries_entry_uid_key TO entries_entry_old_uid_key")
             c.execute("ALTER INDEX p_uid_key RENAME TO entries_entry_uid_key")
             if identity:
                 c.execute(f"ALTER TABLE entries_entry ALTER COLUMN id RESTART WITH {mx + 1}")

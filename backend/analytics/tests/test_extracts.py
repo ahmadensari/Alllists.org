@@ -28,6 +28,12 @@ def _staff(user):
     return c
 
 
+def _has_seeded_phone(text):
+    """The seeded numbers are 0300 000 00NN. Random ids in the files are hex and can contain "0300" by chance, so look
+    for the number itself in each written form, not for the prefix."""
+    return any(f"0300 000 00{i:02d}" in text or f"030000000{i:02d}" in text or f"+9230000000{i:02d}" in text for i in range(100))
+
+
 def _seed(tree, make_published, n=8):
     return [make_published(f"Works {i}", tree["paris"], phone=f"0300 000 00{i:02d}") for i in range(n)]
 
@@ -37,7 +43,7 @@ def test_statistics_are_aggregates_only_and_hide_small_cells(tree, surgical, mak
     rep = ex.statistics_report("pk.punjab.sialkot", surgical)
     assert rep["published"] == 8
     text = ex.statistics_csv(rep)
-    assert "Works 1" not in text and "0300" not in text
+    assert "Works 1" not in text and not _has_seeded_phone(text)
     small = ex.statistics_report("pk.punjab.sialkot.paris-road", None)
     assert isinstance(small["by_level"], dict)
     make_published("Lonely Co", tree["sialkot"])
@@ -67,7 +73,7 @@ def test_extract_plants_trace_entries_excludes_contacts_and_identifies_leaks(tre
     one = ex.build_extract(admin, "pk.punjab.sialkot", surgical, purpose="research", buyer_label="Buyer A")
     two = ex.build_extract(admin, "pk.punjab.sialkot", surgical, purpose="research", buyer_label="Buyer B")
     data = ex.read_extract(one, admin).decode()
-    assert "0300" not in data and "@" not in data
+    assert not _has_seeded_phone(data) and "@" not in data
     assert one.row_count == 10 and one.trace_count >= 3
     assert data.count("\n") == 1 + 10 + one.trace_count
     traces = list(one.traces.all())

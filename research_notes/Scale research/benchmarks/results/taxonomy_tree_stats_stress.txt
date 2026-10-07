@@ -1,0 +1,52 @@
+Timing is off.
+--- taxonomy statistics ---
+ nodes 
+-------
+ 50000
+(1 row)
+ edges | parents_per_node 
+-------+------------------
+ 99871 |             2.00
+(1 row)
+ closure_rows | closure_rows_per_node 
+--------------+-----------------------
+      1004185 |                 20.08
+(1 row)
+ ltree_paths | paths_per_node | max_depth 
+-------------+----------------+-----------
+      591833 |          11.84 |         6
+(1 row)
+ level | nodes | avg_paths | max_paths | avg_ancestors | max_ancestors 
+-------+-------+-----------+-----------+---------------+---------------
+     0 |     1 |       1.0 |         1 |           1.0 |             1
+     1 |    30 |       1.0 |         1 |           2.0 |             2
+     2 |   560 |       1.8 |         4 |           3.8 |             6
+     3 |  3400 |       3.5 |        13 |           6.9 |            16
+     4 |  8400 |       6.9 |        30 |          12.6 |            37
+     5 | 37609 |      13.9 |        66 |          23.2 |            74
+(6 rows)
+ level | nodes | avg_descendants | max_descendants 
+-------+-------+-----------------+-----------------
+     0 |     1 |         50000.0 |           50000
+     1 |    30 |         11865.2 |           14986
+     2 |   560 |           549.6 |             985
+     3 |  3400 |            49.7 |             179
+     4 |  8400 |            10.0 |              67
+(5 rows)
+     relname     |  total  
+-----------------+---------
+ concept         | 4096 kB
+ concept_closure | 100 MB
+ concept_edge    | 8864 kB
+ concept_path    | 171 MB
+(4 rows)
+        index         |  size   
+----------------------+---------
+ concept_edge_pkey    | 2312 kB
+ concept_edge_child   | 2200 kB
+ concept_closure_pkey | 29 MB
+ concept_closure_desc | 29 MB
+ concept_path_concept | 6384 kB
+ concept_path_gist    | 70 MB
+ concept_path_btree   | 43 MB
+(7 rows)

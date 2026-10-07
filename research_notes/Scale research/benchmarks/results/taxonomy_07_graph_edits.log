@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/taxonomy_07_graph_edits.py", line 108, in <module>
+    conn.execute(CLOSURE_REBUILD_LEVEL, {"lvl": lvl})
+  File "/var/tmp/benchlibs/psycopg/connection.py", line 304, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.CardinalityViolation: ON CONFLICT DO UPDATE command cannot affect row a second time
+HINT:  Ensure that no rows proposed for insertion within the same command have duplicate constrained values.
+
+real	0m2.061s
+user	0m0.178s
+sys	0m0.089s
