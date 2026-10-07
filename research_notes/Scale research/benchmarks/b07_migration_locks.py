@@ -128,7 +128,7 @@ def main():
     c = connect(DB)
     with Timer() as tl:
         c.execute("CREATE TABLE t (id bigserial PRIMARY KEY, country varchar(2) NOT NULL, name varchar(80) NOT NULL, payload text NOT NULL, touched timestamptz, small_id int)")
-        c.execute("INSERT INTO t (country, name, payload, small_id) SELECT (ARRAY['PK','IN','BD','LK','NP'])[1 + g % 5], 'name ' || g, repeat('p', 120) || g, g FROM generate_series(1, %s) g", (n,))
+        c.execute("INSERT INTO t (country, name, payload, small_id) SELECT (ARRAY['PK','IN','BD','LK','NP'])[1 + g %% 5], 'name ' || g, repeat('p', 120) || g, g FROM generate_series(1, %s) g", (n,))
         c.execute("CREATE TABLE ref (code varchar(2) PRIMARY KEY)")
         c.execute("INSERT INTO ref VALUES ('PK'),('IN'),('BD'),('LK'),('NP')")
         c.execute("ANALYZE")

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Builds 05_taxonomy_schema_designs.md from a template, so that every code block in the note is the code that was run.
 Placeholders:  {{CLASS path Name}}  {{FUNC path Name}}  {{DIFF path}}  {{LINES path start end}}  {{INCLUDE file}}
+               {{FILE path}} (whole design file)  {{MIGOPS path}} (one line per operation of a migration)
 Paths are relative to the design copy of backend/ (argument 1)."""
 import ast
 import difflib
@@ -40,6 +41,20 @@ def sub(m):
     if kind == "LINES":
         ls = open(f"{DESIGN}/{parts[1]}").read().splitlines()
         return "\n".join(ls[int(parts[2]) - 1 : int(parts[3])])
+    if kind == "FILE":
+        return open(f"{DESIGN}/{parts[1]}").read().rstrip("\n")
+    if kind == "MIGOPS":
+        src = open(f"{DESIGN}/{parts[1]}").read()
+        out = []
+        for node in ast.walk(ast.parse(src)):
+            if isinstance(node, ast.Assign) and getattr(node.targets[0], "id", "") == "operations":
+                for e in node.value.elts:
+                    if isinstance(e, ast.Call) and isinstance(e.func, ast.Attribute):
+                        names = [k.value.value for k in e.keywords if k.arg in ("model_name", "name") and isinstance(k.value, ast.Constant)]
+                        out.append(f"{e.func.attr}({', '.join(names)})" if names else f"{e.func.attr}(...)")
+                    else:
+                        out.append(ast.get_source_segment(src, e).split("(")[0] + "(...)")
+        return "\n".join(out)
     if kind == "INCLUDE":
         return open(parts[1]).read().rstrip("\n")
     raise ValueError(kind)

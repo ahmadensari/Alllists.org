@@ -34,7 +34,7 @@ def setup(n):
     c.execute("""CREATE TABLE t (id bigserial PRIMARY KEY, country varchar(2) NOT NULL, name varchar(80) NOT NULL,
                  payload text NOT NULL, touched timestamptz, depth_fold text)""")
     with Timer() as tl:
-        c.execute("""INSERT INTO t (country, name, payload) SELECT (ARRAY['PK','IN','BD','LK','NP'])[1 + g % 5], 'name ' || g, repeat('p', 120) || g
+        c.execute("""INSERT INTO t (country, name, payload) SELECT (ARRAY['PK','IN','BD','LK','NP'])[1 + g %% 5], 'name ' || g, repeat('p', 120) || g
                      FROM generate_series(1, %s) g""", (n,))
     c.execute("CREATE INDEX t_country ON t (country)")
     c.execute("CREATE INDEX t_name ON t (name)")
@@ -101,7 +101,7 @@ def measure(label, fn, n):
     wal = c.execute("SELECT pg_wal_lsn_diff(%s, %s)", (w1, w0)).fetchone()[0]
     s1 = c.execute("SELECT pg_relation_size('t') + pg_indexes_size('t')").fetchone()[0]
     probe = m.probe[base:]
-    print(f"{label}: {t.s:.1f}s, WAL {wal / 1e6:,.0f} MB, table+index growth {(s1 - s0) / 1e6:,.0f} MB, "
+    print(f"{label}: {t.s:.1f}s, WAL {float(wal) / 1e6:,.0f} MB, table+index growth {(s1 - s0) / 1e6:,.0f} MB, "
           f"probe (read+write) p50={pctl(probe, 50) * 1000:.1f}ms p99={pctl(probe, 99) * 1000:.1f}ms max={max(probe) * 1000:.0f}ms (n={len(probe)}), "
           f"max replica lag {m.max_lag_bytes / 1e6:.1f} MB / {m.max_lag_s:.2f}s {extra or ''}", flush=True)
     c.close()
@@ -122,7 +122,7 @@ def big():
 
 
 SLICE = "SELECT max(id), count(*) FROM (SELECT id FROM t WHERE id > %s ORDER BY id LIMIT %s) b"
-UPD = "UPDATE t SET depth_fold = lower(country) || ':' || (id % 100) WHERE id > %s AND id <= %s AND depth_fold IS NULL"
+UPD = "UPDATE t SET depth_fold = lower(country) || ':' || (id %% 100) WHERE id > %s AND id <= %s AND depth_fold IS NULL"
 
 
 def batch(c, name, last, n):

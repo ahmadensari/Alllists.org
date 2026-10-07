@@ -96,7 +96,7 @@ def part_limits():
 
     def client(i):
         try:
-            c = via()
+            c = via(prepare_threshold=None)  # section 5 tests prepared statements on their own
             for _ in range(20):
                 t = time.perf_counter()
                 c.execute("SELECT pg_sleep(0.02)")
@@ -271,7 +271,7 @@ def part_prepared(max_prepared):
     [t.join() for t in ths]
     print(f"   psycopg prepare_threshold=0, max_prepared_statements={max_prepared}: {len(ok)}/8 clients finished; errors: {sorted(set(errs))[:2]}")
     # default psycopg (threshold 5) and prepare_threshold=None
-    for label, kw in (("default threshold 5", {}), ("prepare_threshold=None (Django: DISABLE_SERVER_SIDE_BINDING-safe setting)", {"prepare_threshold": None})):
+    for label, kw in (("default threshold 5", {}), ("prepare_threshold=None (psycopg never prepares)", {"prepare_threshold": None})):
         errs.clear()
         ok.clear()
 
