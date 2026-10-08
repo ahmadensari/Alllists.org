@@ -1,0 +1,18 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results" data-ref-code="{{ prof.ref_code }}">My contributions</h1>
+{% for m in messages %}<div class="notice" role="status">{{ m }}</div>{% endfor %}
+{% if not onboarded %}<div class="co-note"><a href="/account/contributor/onboarding/">Start here: the rules in five questions</a></div>{% endif %}
+<dl class="facts"><dt>Level</dt><dd>{{ prof.level }}{% if to_next %} · {{ to_next }} more checked contributions for the next level{% endif %}</dd><dt>Entries added</dt><dd class="num">{{ added }}</dd>
+<dt>Checked by a person (counts for your share)</dt><dd class="num">{{ eligible }}</dd><dt>Waiting for a check</dt><dd class="num">{{ waiting }}</dd></dl>
+<p class="muted">You are paid only when a list is sold. Until then your work earns credit, levels and certificates. Nothing here is a promise of money.</p>
+<p><a href="/account/payout/">Payout details and balance</a></p>
+<h2>Your share link</h2><p><span class="mono">{{ ref_link }}</span></p>
+<p class="small muted">Visits that arrived through your link: <span class="num">{{ visits_7d }}</span> in the last 7 days, <span class="num">{{ visits_total }}</span> in total. Each person is counted once a day.</p>
+<h2>Certificates and credit</h2>
+<ul class="records">{% for c in certificates %}<li><a href="/account/certificates/{{ c.pk }}/">{{ c.detail }} certificate</a> · {{ c.granted_at|date:"Y-m-d" }}</li>{% empty %}<li>Your first certificate comes with level 1.</li>{% endfor %}
+{% for c in credits %}<li>Access credit: {{ c.detail }}</li>{% endfor %}</ul>
+<h2>Visible credit</h2>
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="credit">
+<p class="field"><label for="id_dn">Public name</label><input id="id_dn" name="display_name" maxlength="60" value="{{ display_name }}"></p>
+<p class="field"><label><input type="checkbox" name="show_credit" {% if prof.show_credit %}checked{% endif %}> Show "Added by" with this name on entries I added once a person has checked them</label></p>
+<button class="btn">Save</button></form>{% endblock %}

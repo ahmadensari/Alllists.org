@@ -1,0 +1,26 @@
+entries in table: 1,000,000
+exact recount, two-stage SQL (leaf GROUP BY then expand ancestors): 7.1s for 1,000,000 entries -> 1,500 cells
+exact recount, one-stage SQL (every entry x 4 place paths x 3 concepts): 72.6s -> 1,500 cells
+initial fill of rc and ers: 4.7s
+diff rc vs exact after initial fill: 0
+PK / world path / root concept cell: (99000, 69000, 8334, 8333, 8333, 44000, 29000, 39000)
+== delta apply, one consumer ==
+batch of      1 changed entries: median       3.8 ms/batch  p95       5.1 ms  = 3.804 ms per entry  (263 entries/s)
+batch of    100 changed entries: median      17.6 ms/batch  p95      23.7 ms  = 0.176 ms per entry  (5,682 entries/s)
+batch of  1,000 changed entries: median     106.8 ms/batch  p95     114.1 ms  = 0.107 ms per entry  (9,367 entries/s)
+batch of 10,000 changed entries: median    1230.1 ms/batch  p95    1348.3 ms  = 0.123 ms per entry  (8,129 entries/s)
+diff rc vs exact after single-consumer workload (must be 0): 0
+== 4 parallel consumers (SKIP LOCKED), 20,000 changed entries ==
+queued=19,898 processed=19,898 in 0.98s (20,307 entries/s) errors=[]
+diff after parallel consumers (must be 0): 0
+== clock moves 40 days: sweeper finds entries whose answer changes ==
+  sweeper query without indexes: 1087 ms, 33,226 entries queued
+  built the two sweeper indexes in 1.0s
+  sweeper query with indexes: 292 ms, 33,226 entries queued
+  applied 33,226 sweeper entries in 3.1s
+diff rc vs exact at now+40d (must be 0): 0
+rc: updates=36,033 hot=33,146 (92%) dead=2,781 size=680 kB
+
+real	2m10.825s
+user	0m0.690s
+sys	0m0.102s

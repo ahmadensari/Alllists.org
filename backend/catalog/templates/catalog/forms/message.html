@@ -1,0 +1,8 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Message {{ entry.name }}</h1>
+<p class="muted">We pass your message on. The business never sees your phone number, and you never see theirs. Replies come to your email.</p>
+{% include "catalog/forms/_errors.html" %}
+<form method="post" class="form">{% csrf_token %}
+<p class="field"><label for="id_reply_to">Reply email</label><input id="id_reply_to" name="reply_to" type="email" value="{{ form.reply_to|default:request.user.email }}" required></p>
+<p class="field"><label for="id_text">Message</label><textarea id="id_text" name="text" maxlength="2000" required>{{ form.text }}</textarea><span class="hint">Do not put phone numbers, emails or links in the message.</span></p>
+<button class="btn primary">Send</button></form>{% endblock %}

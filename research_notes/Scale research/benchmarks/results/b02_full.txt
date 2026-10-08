@@ -1,0 +1,42 @@
+== writers, 10.0s each ==
+current      writers=1 hold= 0ms  tx/s=     474  rows/s=      474  p50=   1.48ms p99=    8.14ms
+current      writers=8 hold= 0ms  tx/s=     449  rows/s=      449  p50=  13.86ms p99=   57.07ms
+chain16      writers=1 hold= 0ms  tx/s=     370  rows/s=      370  p50=   1.68ms p99=    9.85ms
+chain16      writers=8 hold= 0ms  tx/s=   1,592  rows/s=    1,592  p50=   3.50ms p99=   18.82ms
+chain256     writers=1 hold= 0ms  tx/s=     657  rows/s=      657  p50=   1.36ms p99=    4.00ms
+chain256     writers=8 hold= 0ms  tx/s=   1,277  rows/s=    1,277  p50=   4.10ms p99=   37.05ms
+chainC_skew  writers=1 hold= 0ms  tx/s=     552  rows/s=      552  p50=   1.54ms p99=    5.57ms
+chainC_skew  writers=8 hold= 0ms  tx/s=     700  rows/s=      700  p50=   6.13ms p99=   51.97ms
+unchained    writers=1 hold= 0ms  tx/s=     653  rows/s=      653  p50=   1.24ms p99=    3.31ms
+unchained    writers=8 hold= 0ms  tx/s=   2,150  rows/s=    2,150  p50=   2.27ms p99=    7.71ms
+batch500_chain writers=1 hold= 0ms  tx/s=      48  rows/s=   24,100  p50=  17.58ms p99=   50.88ms
+batch500_chain writers=8 hold= 0ms  tx/s=      67  rows/s=   33,500  p50= 116.79ms p99=  188.46ms
+batch500_unchained writers=1 hold= 0ms  tx/s=      66  rows/s=   33,150  p50=  13.56ms p99=   36.76ms
+batch500_unchained writers=8 hold= 0ms  tx/s=     126  rows/s=   62,900  p50=  56.24ms p99=  157.56ms
+== same with 5 ms of other work in the same transaction (the bulk.publish shape) ==
+current      writers=1 hold= 5ms  tx/s=     105  rows/s=      105  p50=   8.03ms p99=   17.62ms
+current      writers=8 hold= 5ms  tx/s=     114  rows/s=      114  p50=  61.95ms p99=  115.18ms
+chain16      writers=1 hold= 5ms  tx/s=     135  rows/s=      135  p50=   6.97ms p99=   10.69ms
+chain16      writers=8 hold= 5ms  tx/s=     514  rows/s=      514  p50=  13.73ms p99=   45.61ms
+unchained    writers=1 hold= 5ms  tx/s=      61  rows/s=       61  p50=   7.34ms p99=  346.35ms
+unchained    writers=8 hold= 5ms  tx/s=     508  rows/s=      508  p50=  13.07ms p99=   31.98ms
+== same with 20 ms ==
+current      writers=1 hold=20ms  tx/s=      42  rows/s=       42  p50=  22.63ms p99=   34.33ms
+current      writers=8 hold=20ms  tx/s=      43  rows/s=       43  p50= 186.59ms p99=  213.27ms
+chain16      writers=1 hold=20ms  tx/s=      35  rows/s=       35  p50=  22.47ms p99=  195.07ms
+chain16      writers=8 hold=20ms  tx/s=     234  rows/s=      234  p50=  28.14ms p99=  130.93ms
+unchained    writers=1 hold=20ms  tx/s=      32  rows/s=       32  p50=  23.17ms p99=  140.93ms
+unchained    writers=8 hold=20ms  tx/s=     337  rows/s=      337  p50=  22.61ms p99=   31.48ms
+== sealer running every 1 s while 8 writers insert unchained rows ==
+writers inserted 38,776 rows (3,878/s with the sealer running); sealed 38,776 in 11 seals; unsealed after final pass 0
+Traceback (most recent call last):
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/b02_audit_alternatives.py", line 475, in <module>
+    main()
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/b02_audit_alternatives.py", line 421, in main
+    problem = verify_seals(sc)
+              ^^^^^^^^^^^^^^^^
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/b02_audit_alternatives.py", line 302, in verify_seals
+    cur.execute(
+  File "/home/user/Alllists.org/.venv/lib/python3.11/site-packages/psycopg/_server_cursor.py", line 98, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.NoActiveSqlTransaction: DECLARE CURSOR can only be used in transaction blocks

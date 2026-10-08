@@ -1,0 +1,17 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">{{ task.entry.name }}</h1>
+<p class="muted">{{ task.entry.place_path }} · {{ task.entry.address_text }}</p>
+<p>Confirm that this business exists at this place and that its name is right. Call or visit, and write what you saw or heard.</p>
+{% if revealed %}<div class="panel"><strong>Contacts (for this task only; this view is logged)</strong><ul class="mono">{% for k, v in revealed %}<li>{{ k }}: {{ v }}</li>{% endfor %}</ul></div>
+{% else %}<form method="post">{% csrf_token %}<button class="btn" name="action" value="reveal">Show the contact numbers</button></form>{% endif %}
+{% include "catalog/forms/_errors.html" %}
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="complete">
+<fieldset><legend>Outcome</legend>
+<label><input type="radio" name="outcome" value="confirmed" checked> Confirmed</label><br>
+<label><input type="radio" name="outcome" value="closed"> It has closed</label><br>
+<label><input type="radio" name="outcome" value="wrong"> Details are wrong or it does not exist</label><br>
+<label><input type="radio" name="outcome" value="unreachable"> Could not reach anyone</label></fieldset>
+<p class="field"><label for="id_method">How did you check?</label><select id="id_method" name="method"><option value="call">Phone call</option><option value="visit">Visit</option></select></p>
+<p class="field"><label for="id_evidence">What did you see or hear?</label><textarea id="id_evidence" name="evidence"></textarea></p>
+<p class="field"><label for="id_minutes">Minutes spent</label><input id="id_minutes" name="minutes" inputmode="numeric"></p>
+<button class="btn primary">Save</button></form>{% endblock %}

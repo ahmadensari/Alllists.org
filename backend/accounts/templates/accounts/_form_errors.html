@@ -1,0 +1,1 @@
+{% if errors %}<div class="notice" role="alert"><strong>Please fix:</strong><ul>{% for f, m in errors %}<li><a href="#id_{{ f }}">{{ m }}</a></li>{% endfor %}</ul></div>{% endif %}

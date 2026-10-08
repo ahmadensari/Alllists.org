@@ -1,0 +1,24 @@
+setup: 160,000 roll-up cells for PK
+== real code, on request ==
+/home/user/Alllists.org/.venv/lib/python3.11/site-packages/django/utils/connection.py:15: UserWarning: Limit for query logging exceeded, only the last 9000 queries will be returned.
+  return getattr(self._connections[self._alias], item)
+indexable_list_cells('PK'): 154.9s, 9,000 queries, 106,667 indexable cells
+sitemap_shard pk-1 (one crawler request): 167.7s, 0 queries, 4.5 MB
+sitemap_index: 164.8s
+a crawler fetching the index and all 3 shards triggers about 4 full scans = 659s of database time (index 164.8s each)
+== precomputed table ==
+one SQL statement builds sitemap_url: 1.8s for 106,667 URLs (same count as real code: True)
+write 3 gzip shard files for 106,667 URLs: 0.4s; total size 0.5 MB
+== 5,000,000 URLs ==
+Traceback (most recent call last):
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/b09_sitemap.py", line 160, in <module>
+    main()
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/b09_sitemap.py", line 115, in main
+    c.execute(
+  File "/home/user/Alllists.org/.venv/lib/python3.11/site-packages/psycopg/connection.py", line 304, in execute
+    raise ex.with_traceback(None)
+psycopg.ProgrammingError: incomplete placeholder: '%'; if you want to use '%' as an operator you can double it up, i.e. use '%%'
+
+real	8m16.165s
+user	5m42.131s
+sys	0m25.230s

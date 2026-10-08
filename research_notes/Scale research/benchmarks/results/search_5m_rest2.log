@@ -1,0 +1,14 @@
+prewarmed 12 relations
+5m city         two    repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  6.2 to=16
+5m city         two    like     n= 77 p50=   23.13 p95=   46.57 max=   124.0 rows=  8.9 to=0
+5m city         two    tsv      n= 77 p50=   20.56 p95=   72.17 max=   140.0 rows= 10.0 to=0
+5m city         typo   repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  2.2 to=17 recall=0.1
+5m city         typo   wsim     n= 77 p50=  181.03 p95=  410.43 max=  1032.7 rows= 21.6 to=0 recall=0.935
+5m city         typo   dict     n= 77 p50=   51.27 p95=  194.59 max=   293.5 rows= 21.9 to=0 recall=0.948
+5m city         prefix btree    n= 77 p50=   45.25 p95=  459.69 max=  3086.9 rows= 23.7 to=0
+5m city         prefix like     n= 44 p50=   75.48 p95= 3779.99 max=  4000.0 rows= 23.4 to=2
+5m city         prefix tsv      n= 77 p50=   59.61 p95=  234.28 max=   807.9 rows= 23.9 to=0
+5m area         common repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  6.1 to=18
+5m area         common like     n= 77 p50=  227.16 p95=  564.52 max=  1290.7 rows= 24.9 to=0
+5m area         common tsv      n= 77 p50=  240.46 p95=  403.92 max=   460.0 rows= 24.9 to=0
+5m area         mid    repo     n= 20 p50= 4000.00 p95= 4000.00 max=  4000.0 rows=  5.8 to=16

@@ -1,0 +1,27 @@
+template copy of bench_django: 2.1s
+entries_entry rows=1,000,000; foreign keys from other tables=38; self foreign keys=2
+step 1: LIKE .. INCLUDING IDENTITY on a partitioned table: OK
+step 1 done in 0.17s: 10 partitions + default, 15 indexes (identity=True, old sequence=public.entries_entry_id_seq)
+step 3: copied in 34.2s (29,241 rows/s) while a writer did 7,863 statements, slowest 293 ms (mirror trigger cost included)
+step 4: old rows=1,002,321 checksum=1203a68b47  new rows=1,002,321 checksum=1203a68b47  equal=True
+step 5: swap transaction held ACCESS EXCLUSIVE on entries_entry for 30 ms (includes dropping 38 foreign keys)
+step 6: composite FKs re-added and validated on 13 tables that already carry country_code (0.8s on small tables)
+        25 referencing tables have no country_code column (['access_ad', 'access_placement', 'agents_draftentry', 'billing_order', 'entries_claim', 'entries_companysection'] ...): add the column or db_constraint=False + orphan check
+ORM create -> 1002322 01M4BSQHGQGTSWB3RMMJQ0RK3X
+ORM filter count PK city: 7322
+ORM update ok; get by pk: published
+Contact create with composite FK in place ok
+explain list query:
+   Limit  (cost=600.97..601.04 rows=25 width=22)
+     ->  Sort  (cost=600.97..601.83 rows=344 width=22)
+           Sort Key: entries_entry.name_fold
+           ->  Index Scan using entries_entry_pk_country_code_place_path_primary_concept_id_idx on entries_entry_pk entries_entry  (cost=0.29..591.27 rows=344 width=22)
+                 Index Cond: (((country_code)::text = 'PK'::text) AND ((place_path)::text = 'pk.p1.c1'::text) AND (primary_concept_id = 1101) AND ((publish_state)::text = 'published'::text))
+real recount_cell on partitioned table: total 6322 in 6.45s
+ORM delete (Python cascade over children) ok; rows left with that uid: 0
+
+makemigrations --check: No changes detected
+
+real	0m53.986s
+user	0m7.186s
+sys	0m0.947s

@@ -1,0 +1,4 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Enter your code</h1>
+{% if error %}<div class="notice" role="alert">{{ error }}</div>{% endif %}
+<form method="post" class="form">{% csrf_token %}<p class="field"><label for="id_code">Authenticator or recovery code</label><input id="id_code" name="code" autocomplete="one-time-code" required></p><button class="btn primary">Verify</button></form>{% endblock %}

@@ -1,0 +1,2 @@
+{% load catalog_tags %}{% if ads and ad %}<aside id="ad-slot" class="ad" aria-label="{% tr 'ad_label' %}"><span class="small muted">{% tr 'ad_label' %}</span>
+<a href="/go/ad/{{ ad.pk }}/" rel="nofollow sponsored"><strong>{{ ad.headline }}</strong></a>{% if ad.body %} <span>{{ ad.body }}</span>{% endif %}</aside>{% endif %}

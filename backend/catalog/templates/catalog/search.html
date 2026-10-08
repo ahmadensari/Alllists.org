@@ -1,0 +1,10 @@
+{% extends "catalog/base.html" %}{% load catalog_tags %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">{% tr 'search_everything' %}</h1>
+<form action="{% u '/search/' %}" method="get" role="search" class="ctl"><label class="visually-hidden" for="q">{% tr 'search_everything' %}</label>
+<input id="q" name="q" value="{{ q }}" type="search" autofocus>{% if scope %}<input type="hidden" name="scope" value="{{ scope.path }}">{% endif %}<button class="btn primary">{% tr 'search_go' %}</button></form>
+{% if short %}<p class="muted">{% tr 'search_too_short' %}</p>{% endif %}
+{% if none %}<div class="empty"><strong>{% tr 'search_no_results' %}</strong><p>{% tr 'search_start_list' %} <a class="btn" href="{% u '/add/' %}">{% tr 'add_entry' %}</a></p></div>{% endif %}
+{% if concept_links %}<h2>{% tr 'search_lists' %}</h2><ul class="records">{% for c, url in concept_links %}<li><a href="{% u url %}">{% clabel c %}</a></li>{% endfor %}</ul>{% endif %}
+{% if place_links %}<h2>{% tr 'search_places' %}</h2><ul class="records">{% for p, url in place_links %}<li><a href="{% u url %}">{% pname p %}</a> <span class="muted small">{{ p.path }}</span></li>{% endfor %}</ul>{% endif %}
+{% if scope %}<h2>{% tr 'search_entries' %}</h2><ul class="rows" id="live-results">{% include "catalog/search_rows.html" %}</ul>{% endif %}
+{% endblock %}

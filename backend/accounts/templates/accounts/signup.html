@@ -1,0 +1,9 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Create an account</h1>
+{% include "accounts/_form_errors.html" %}
+<form method="post" class="form">{% csrf_token %}
+<p class="field"><label for="id_username">Username</label><input id="id_username" name="username" value="{{ form.username }}" autocomplete="username" required></p>
+<p class="field"><label for="id_email">Email</label><input id="id_email" name="email" type="email" value="{{ form.email }}" autocomplete="email" required></p>
+<p class="field"><label for="id_password1">Password</label><input id="id_password1" name="password1" type="password" autocomplete="new-password" required></p>
+<p class="field"><label for="id_password2">Repeat password</label><input id="id_password2" name="password2" type="password" autocomplete="new-password" required></p>
+<button class="btn primary">Create account</button> <a class="btn quiet" href="/account/login/">I have an account</a></form>{% endblock %}

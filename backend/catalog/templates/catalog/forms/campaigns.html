@@ -1,0 +1,18 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Outreach campaigns</h1>
+{% include "catalog/forms/_errors.html" %}
+{% if not supplier %}<form method="post" class="form"><p>Verified companies can send campaigns to businesses that opted in.</p>{% csrf_token %}<input type="hidden" name="action" value="verify">
+<p class="field"><label for="id_company">Company name</label><input id="id_company" name="company" required></p><button class="btn primary">Ask for verification</button></form>
+{% elif supplier.state != 'verified' %}<p>Your verification is <strong>{{ supplier.state }}</strong>.</p>
+{% else %}
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="create">
+<p class="field"><label for="id_scope">Place</label><select id="id_scope" name="scope">{% for p in places %}<option value="{{ p.path }}">{{ p.path }}</option>{% endfor %}</select></p>
+<p class="field"><label for="id_type">List type</label><select id="id_type" name="type">{% for t in types %}<option value="{{ t.slug }}">{{ t.slug }}</option>{% endfor %}</select></p>
+<p class="field"><label for="id_channel">Channel</label><select id="id_channel" name="channel"><option>whatsapp</option><option>sms</option><option>email</option></select></p>
+<p class="field"><label for="id_template">Approved template</label><select id="id_template" name="template">{% for t in templates %}<option value="{{ t.pk }}">{{ t.key }} ({{ t.channel }}, {{ t.language }})</option>{% endfor %}</select></p>
+<p class="field"><label for="id_company2">Your company</label><input id="id_company2" name="company"></p>
+<p class="field"><label for="id_category">Category</label><input id="id_category" name="category"></p>
+<p class="field"><label for="id_note">Short note (no numbers, emails or links)</label><input id="id_note" name="note" maxlength="200"></p>
+<p class="field"><label for="id_budget">Budget in minor units</label><input id="id_budget" name="budget_minor" inputmode="numeric"></p>
+<button class="btn primary">Create campaign</button></form>{% endif %}
+<h2>My campaigns</h2><ul class="records">{% for r in rows %}<li>#{{ r.c.pk }} · {{ r.c.status }} · {{ r.c.channel }} · {{ r.report.total }} sent, {{ r.report.replied }} replies, {{ r.report.opted_out }} stopped{% if r.report.cost_per_reply_minor %} · {{ r.report.cost_per_reply_minor|floatformat:1 }} per reply{% endif %}</li>{% empty %}<li>None yet.</li>{% endfor %}</ul>{% endblock %}

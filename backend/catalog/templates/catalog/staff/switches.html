@@ -1,0 +1,6 @@
+{% extends "catalog/base.html" %}{% block crumbs %}<nav class="crumbs"><a href="/staff/">Staff</a></nav>{% endblock %}
+{% block content %}<h1 id="results">Country switches</h1><p class="muted">Everything except browsing is off until someone records who cleared it.</p>
+{% for sw in switches %}<section class="sec"><h2>{{ sw.country_code }}</h2>
+{% for f in fields %}<form method="post" class="ctl">{% csrf_token %}<input type="hidden" name="country" value="{{ sw.country_code }}"><input type="hidden" name="field" value="{{ f }}">
+<span>{{ f }}</span> <button class="btn" name="value" value="on">On</button> <button class="btn" name="value" value="off">Off</button></form>{% endfor %}</section>{% endfor %}
+<form method="post" class="form"><h2>Add a country</h2>{% csrf_token %}<p class="field"><label for="id_country">Country code</label><input id="id_country" name="country" maxlength="2" required></p><input type="hidden" name="field" value="browsing_on"><button class="btn" name="value" value="on">Add</button></form>{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">{{ entry.name }}: your page</h1>
+{% if not eligible %}<div class="notice">Individuals and children's services cannot have a company page.</div>
+{% elif not active %}<div class="co-note">A company page adds sections written by you: about, products and services, capacity, terms and questions. It is paid. <a href="/account/subscription/">See plans</a>.</div>
+{% else %}
+{% include "catalog/forms/_errors.html" %}
+{% if saved %}<div class="notice" role="status">Saved. A moderator checks new text before it shows.</div>{% endif %}
+<p class="muted">Everything here is public and labelled "Provided by the company". Our checks stay separate and cannot be bought.</p>
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="section">
+<p class="field"><label for="id_kind">Section</label><select id="id_kind" name="kind">{% for k in kinds %}<option value="{{ k }}">{{ k|capfirst }}</option>{% endfor %}</select></p>
+<p class="field"><label for="id_title">Title or question (for questions and answers)</label><input id="id_title" name="title"></p>
+<p class="field"><label for="id_body">Text</label><textarea id="id_body" name="body" maxlength="4000" required></textarea></p>
+<button class="btn primary">Save section</button></form>
+<h2>Certificates you hold</h2>
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="action" value="certificate">
+<p class="field"><label for="id_scheme">Name (for example ISO 13485)</label><input id="id_scheme" name="scheme"></p>
+<p class="field"><label for="id_value">Number</label><input id="id_value" name="value"></p>
+<p class="field"><label for="id_issuer">Issued by</label><input id="id_issuer" name="issuer"></p>
+<button class="btn">Add certificate</button></form>
+<ul class="records">{% for c in certs %}<li>{{ c.scheme }} {{ c.value }} · {% if c.last_checked %}checked by AllLists{% else %}company says{% endif %}</li>{% endfor %}</ul>
+<h2>Your sections</h2><ul class="records">{% for s in sections %}<li><strong>{{ s.kind }}</strong> {{ s.title }} · {{ s.state }}<br><span class="muted">{{ s.body|truncatechars:120 }}</span></li>{% empty %}<li>None yet.</li>{% endfor %}</ul>
+{% endif %}{% endblock %}

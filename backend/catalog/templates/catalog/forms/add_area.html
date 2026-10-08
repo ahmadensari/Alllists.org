@@ -1,0 +1,8 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Suggest an area</h1>
+{% include "catalog/forms/_errors.html" %}
+{% if result %}<div class="panel">{% if result.state == 'duplicate' %}<p><strong>{{ result.proposed_name }}</strong> already exists there. Use the existing area.</p>{% else %}<p>Thank you. A moderator will check <strong>{{ result.proposed_name }}</strong>.</p>{% endif %}</div>{% endif %}
+<form method="post" class="form">{% csrf_token %}
+<p class="field"><label for="id_parent">City or area it belongs to</label><select id="id_parent" name="parent">{% for p in places %}<option value="{{ p.uid }}">{{ p.path }}</option>{% endfor %}</select></p>
+<p class="field"><label for="id_name">Area name (road, street, neighbourhood, housing society)</label><input id="id_name" name="name" required></p>
+<button class="btn primary">Suggest area</button></form>{% endblock %}

@@ -1,0 +1,8 @@
+real audit() through PgBouncer (pool of 4 server connections), 6 client processes, 8 s: 2723 writes = 340/s
+rows: 2723  verify_audit_chain() -> None (None means intact: advisory xact lock held correctly through the pooler)
+QuerySet.iterator() with DISABLE_SERVER_SIDE_CURSORS=False: iterated 60000 rows without error
+QuerySet.iterator() with DISABLE_SERVER_SIDE_CURSORS=True: iterated 60000 rows without error
+
+real	1m43.607s
+user	0m8.519s
+sys	0m1.956s

@@ -1,0 +1,8 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">One enquiry to several businesses</h1>
+{% include "catalog/forms/_errors.html" %}
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="path" value="{{ place.path }}"><input type="hidden" name="type" value="{{ concept.slug }}">
+<fieldset><legend>Choose businesses (up to 50)</legend>{% for e in entries %}<label><input type="checkbox" name="entry" value="{{ e.uid }}" checked> {{ e.name }}</label><br>{% endfor %}</fieldset>
+<p class="field"><label for="id_reply_to">Reply email</label><input id="id_reply_to" name="reply_to" type="email" value="{{ request.user.email }}" required></p>
+<p class="field"><label for="id_text">Message</label><textarea id="id_text" name="text" maxlength="2000" required></textarea><span class="hint">No phone numbers, emails or links.</span></p>
+<button class="btn primary">Send</button></form>{% endblock %}

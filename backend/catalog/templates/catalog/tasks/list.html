@@ -1,0 +1,5 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">My verification tasks</h1>
+{% for m in messages %}<div class="notice" role="status">{{ m }}</div>{% endfor %}
+<form method="post">{% csrf_token %}<button class="btn primary" name="action" value="take">Take the next task</button></form>
+<ul class="records">{% for t in tasks %}<li><a href="/account/tasks/{{ t.pk }}/">{{ t.entry.name }}</a></li>{% empty %}<li>No task in progress.</li>{% endfor %}</ul>{% endblock %}

@@ -1,0 +1,12 @@
+{% load catalog_tags %}<div id="near-you" class="locbar">
+{% if place %}<span class="where">{% tr 'near_you' %}: <a href="{% u steps.0.url %}">{% pname place %}</a></span>
+<span class="small muted">{% if source == 'guess' %}{% pname place as pn %}{% tr 'near_you_guess' place=pn %}{% else %}{% pname place as pn %}{% tr 'near_you_chosen' place=pn %}{% endif %}</span>
+<span class="widen">{% for s in steps %}<a class="chip-link" href="{% u s.url %}">{% if s.place.level == 'world' %}{% tr 'home' %}{% else %}{% pname s.place %}{% endif %} <span class="num">({{ s.n }})</span></a> {% endfor %}</span>
+{% else %}<span class="where">{% tr 'near_you_none' %}</span>{% endif %}
+<form method="post" action="{% u '/prefs/' %}" class="ctl">{% csrf_token %}<input type="hidden" name="next" value="{{ request.META.HTTP_REFERER|default:'/' }}">
+<label for="pl" class="visually-hidden">{% tr 'change_place' %}</label>
+<select id="pl" name="place">{% for p in all_places %}<option value="{{ p.uid }}"{% if place and place.pk == p.pk %} selected{% endif %}>{{ p.path }}</option>{% endfor %}</select>
+<button class="btn" type="submit">{% tr 'change_place' %}</button>
+<span class="geo" hidden><button class="btn quiet" type="button" data-geolocate>{% tr 'use_exact_location' %}</button></span>
+{% if demo_mode %}<button class="btn quiet" type="submit" name="plan" value="{% if demo_plan == 'subscriber' %}free{% else %}subscriber{% endif %}">{% tr 'demo_plan' %}: {% if demo_plan == 'subscriber' %}{% tr 'plan_subscriber' %}{% else %}{% tr 'plan_free' %}{% endif %}</button>{% endif %}</form>
+</div>

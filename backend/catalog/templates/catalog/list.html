@@ -1,0 +1,42 @@
+{% extends "catalog/base.html" %}{% load catalog_tags %}
+{% block content %}
+<h1>{% tr 'list_title' list_type=names.list_type place=names.place %}</h1>
+<p class="muted">{% tr 'scope_line' list_type=names.list_type place=names.place %}</p>
+{% if empty %}
+<div class="empty" id="results"><strong>{% tr 'empty_title' %}</strong>
+<p>{% tr 'empty_body' list_type=names.list_type place=names.place %}</p>
+<p><a class="btn primary" href="{% u '/add/' %}">{% tr 'add_entry' %}</a> <a class="btn" href="{% u '/add/area/' %}">{% tr 'suggest_area' %}</a></p></div>
+{% else %}
+<section class="hero" aria-label="{% tr 'trust_hero_label' %}">
+  <div class="hero-num num">{{ trust.pct }}%</div>
+  <div class="hero-body">
+    <p>{% tr 'trust_hero_label' %}</p>
+    <div class="tbar" role="img" aria-label="{{ trust.pct }}%"><i class="t-s" style="--w:{{ trust.s }}%"></i><i class="t-o" style="--w:{{ trust.o }}%"></i><i class="t-a" style="--w:{{ trust.a }}%"></i></div>
+    <div class="legend"><span><b style="background:var(--ok)"></b>{% tr 'legend_surveyor' %}</span><span><b style="background:color-mix(in oklab,var(--ok) 55%,var(--surface))"></b>{% tr 'legend_owner' %}</span><span><b></b>{% tr 'legend_ai' %}</span></div>
+    <p class="small muted">{% date last as d %}{% tr 'trust_line' published=published awaiting=awaiting date=d %}</p>
+  </div>
+</section>
+{% include "catalog/includes/check_key.html" %}
+{% include "catalog/includes/share_bar.html" %}
+{% if chips %}<nav class="chips" aria-label="{% tr 'areas' %}">
+  <a class="chip-link" href="{% u path %}" {% if not area %}aria-current="true"{% endif %}>{% tr 'all_areas' %}</a>
+  {% for c, n in chips %}<a class="chip-link" href="{% u path %}?area={{ c.slug }}" {% if area and area.pk == c.pk %}aria-current="true"{% endif %}>{% pname c as nm %}{% tr 'area_count' area=nm n=n %}</a>{% endfor %}
+</nav>{% endif %}
+<div class="actions">
+  <a class="btn quiet" href="{% u path %}{% if sort != 'checked' %}?sort=checked{% endif %}">{% if sort == 'checked' %}{% tr 'sort_name' %}{% else %}{% tr 'sort_checked' %}{% endif %}</a>
+  <span class="vt" role="group" aria-label="view"><button type="button" data-view="list" aria-pressed="true">{% tr 'view_list' %}</button><button type="button" data-view="cards" aria-pressed="false">{% tr 'view_cards' %}</button></span>
+  {% if area or sort %}<a class="btn quiet" href="{% u path %}">{% tr 'clear_filters' %}</a>{% endif %}
+</div>
+{% if sponsored_rows %}<section class="sponsored-slot" aria-label="{% tr 'sponsored' %}">
+<ul class="rows" data-view-target>{% for r in sponsored_rows %}{% include "catalog/includes/row.html" %}{% endfor %}</ul>
+<p class="small muted"><a href="{% u '/how-lists-are-ordered/' %}">{% tr 'how_ordered' %}</a></p></section>{% endif %}
+<ul class="rows enter" id="results" data-view-target>
+{% for r in rows %}{% include "catalog/includes/row.html" %}{% endfor %}
+</ul>
+{% if page.paginator.num_pages > 1 %}<nav class="actions pager" aria-label="pages">
+{% if page.has_previous %}<a class="btn" rel="prev" href="{% u path %}?page={{ page.previous_page_number }}{% if area %}&area={{ area.slug }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{% tr 'page_prev' %}</a>{% endif %}
+<span class="muted num">{% tr 'page_of' page=page.number pages=page.paginator.num_pages %}</span>
+{% if page.has_next %}<a class="btn" rel="next" href="{% u path %}?page={{ page.next_page_number }}{% if area %}&area={{ area.slug }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{% tr 'page_next' %}</a>{% endif %}</nav>{% endif %}
+{% endif %}
+{% include "catalog/includes/something_wrong.html" %}
+{% endblock %}

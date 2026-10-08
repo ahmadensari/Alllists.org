@@ -1,0 +1,6 @@
+{% extends "catalog/base.html" %}{% load catalog_tags %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">{% tr 'page_plans' %}</h1><p>{% tr 'plans_intro' %}</p>
+<table class="staff"><thead><tr><th scope="col"></th><th scope="col">{% tr 'plan_free_own' %}</th><th scope="col">{% tr 'plan_free_wider' %}</th><th scope="col">{% tr 'plan_subscriber' %}</th></tr></thead><tbody>
+{% for label, own, wider, sub in rows %}<tr><th scope="row">{% tr label %}</th><td>{% with k=words|get:own %}{% tr k %}{% endwith %}</td><td>{% with k=words|get:wider %}{% tr k %}{% endwith %}</td><td>{% with k=words|get:sub %}{% tr k %}{% endwith %}</td></tr>{% endfor %}
+</tbody></table><p class="muted">{% tr 'plans_never' %}</p>
+<p><a class="btn primary" href="/account/subscription/">{% tr 'subscribe' %}</a></p>{% endblock %}

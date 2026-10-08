@@ -1,0 +1,36 @@
+== 1. connection limit: scratch server max_connections=40 ==
+direct: 40 connections opened before failure: connection failed: connection to server at "127.0.0.1", port 55432 failed: FATAL:  sorry, too many clients already
+via PgBouncer: 300 client connections x 20 queries of 20 ms: 300 ok, 0 errors, 6.2s, peak server backends for the database = 20 (pool_size 20), query p50=306ms p99=313ms
+== 2. cost of a new connection (the CONN_MAX_AGE=0 case) ==
+direct: 3.66 ms per connect+query+close (trust auth, localhost)
+via PgBouncer: 0.53 ms per connect+query+close (trust auth, localhost)
+== 3. pgbench select-only (-S), 8 s, 2 threads, scratch server max_connections=40 ==
+direct, 8 clients: tps = 36550.043768 (without initial connection time) | latency average = 0.219 ms 
+direct, 30 clients: tps = 45036.357126 (without initial connection time) | latency average = 0.666 ms 
+direct, 200 clients: NO RESULT |  pgbench: error: connection to server at "127.0.0.1", port 55432 failed: FATAL:  sorry, too
+PgBouncer, 8 clients: tps = 20173.640798 (without initial connection time) | latency average = 0.397 ms 
+PgBouncer, 30 clients: tps = 26426.678862 (without initial connection time) | latency average = 1.135 ms 
+PgBouncer, 200 clients: tps = 23936.466114 (without initial connection time) | latency average = 8.355 ms 
+PgBouncer, 1000 clients: tps = 22123.369375 (without initial connection time) | latency average = 45.201 ms 
+-- same with new connection per transaction (-C), 8 clients --
+direct -C: tps = 382.007234 (including reconnection times) | latency average = 20.942 ms 
+PgBouncer -C: tps = 4805.144428 (including reconnection times) | latency average = 1.665 ms 
+== 4. semantics in transaction pooling mode ==
+a. pg_advisory_xact_lock through the pooler: [('A', 'got lock after', 0.0), ('B', 'got lock after', 0.8)] -> B waited for A: serialisation intact
+b. session-level advisory lock held by client 1; client 2 try_lock returns True (a direct connection would return False): the lock is tied to the shared server connection -> do not use pg_advisory_lock through the pooler
+c. session SET by client 1 is visible to client 2: statement_timeout=1234ms
+   SET LOCAL inside a transaction: after commit client 2 sees 0
+d. startup option '-c lock_timeout=5000' through PgBouncer: connection failed: connection to server at "127.0.0.1", port 6432 failed: FATAL:  unsupported startup parameter in options: lock_timeout
+e. ALTER DATABASE .. SET lock_timeout='3s': pool with a server connection opened before the ALTER sees 0 ; a pool that opens its server connection after the ALTER sees 3s
+f. named WITH HOLD cursor through the pooler: fetched 20000 rows without error (lucky routing)
+== 5. prepared statements ==
+   psycopg prepare_threshold=0, max_prepared_statements=0: 1/8 clients finished; errors: ['DuplicatePreparedStatement: prepared statement "_pg3_0" already exists']
+   psycopg default threshold 5, max_prepared_statements=0: 1/8 finished; errors: ['DuplicatePreparedStatement: prepared statement "_pg3_0" already exists']
+   psycopg prepare_threshold=None (Django: DISABLE_SERVER_SIDE_BINDING-safe setting), max_prepared_statements=0: 8/8 finished; errors: []
+   psycopg prepare_threshold=0, max_prepared_statements=100: 8/8 clients finished; errors: []
+   psycopg default threshold 5, max_prepared_statements=100: 8/8 finished; errors: []
+   psycopg prepare_threshold=None (Django: DISABLE_SERVER_SIDE_BINDING-safe setting), max_prepared_statements=100: 8/8 finished; errors: []
+
+real	1m16.722s
+user	0m13.487s
+sys	0m31.224s

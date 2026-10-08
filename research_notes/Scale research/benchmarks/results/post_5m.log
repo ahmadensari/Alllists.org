@@ -1,0 +1,5 @@
+static_score already present (computed at cut time)
+idx_score_partial            1.5s 45285376
+words_table                 13.4s 
+words_gin                    0.3s 3260416
+vacuum_analyze {'seconds': 1.9}

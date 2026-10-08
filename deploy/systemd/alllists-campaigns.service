@@ -1,0 +1,10 @@
+[Unit]
+Description=AllLists outreach sender (approved, funded campaigns only)
+After=postgresql.service
+
+[Service]
+Type=oneshot
+User=alllists
+WorkingDirectory=/srv/alllists/current/backend
+EnvironmentFile=/etc/alllists/alllists.env
+ExecStart=/srv/alllists/venv/bin/python manage.py send_campaigns

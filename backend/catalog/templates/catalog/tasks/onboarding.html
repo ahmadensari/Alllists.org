@@ -1,0 +1,8 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Before you start</h1>
+<p>Five questions about the rules. You need {{ pass_mark }} of {{ total }}, and you can try again.</p>
+{% if result %}<div class="notice" role="status">You answered {{ result.0 }} of {{ total }} correctly. {% if not result.1 %}Read the <a href="/contributors/rules/">contributor rules</a> and try again; the rights box must also be ticked.{% endif %}</div>{% endif %}
+<form method="post" class="form">{% csrf_token %}
+{% for q in questions %}<fieldset><legend>{{ forloop.counter }}. {{ q.text }}</legend>{% for key, text in q.answers %}<p><label><input type="radio" name="q_{{ q.key }}" value="{{ key }}" required> {{ text }}</label></p>{% endfor %}</fieldset>{% endfor %}
+<p class="field"><label><input type="checkbox" name="rights" required> I will only add information I have the right to share, and I understand that contact details are never shown to buyers.</label></p>
+<button class="btn primary">Submit</button></form>{% endblock %}

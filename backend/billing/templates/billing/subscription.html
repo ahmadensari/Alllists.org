@@ -1,0 +1,13 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Plans</h1>
+{% include "catalog/forms/_errors.html" %}
+<form method="post" class="form">{% csrf_token %}
+<p class="field"><label for="id_product">Product</label><select id="id_product" name="product">{% for p in products %}<option value="{{ p.key }}">{{ p.name }} ({{ p.currency }} {{ p.price_minor }} minor units)</option>{% endfor %}</select></p>
+<p class="field"><label for="id_scope">Place</label><select id="id_scope" name="scope"><option value="">Whole world</option>{% for p in places %}<option value="{{ p.path }}">{{ p.path }}</option>{% endfor %}</select></p>
+<p class="field"><label for="id_type">List type</label><select id="id_type" name="type"><option value="">Any</option>{% for t in types %}<option value="{{ t.slug }}">{{ t.slug }}</option>{% endfor %}</select></p>
+<p class="field"><label for="id_entry">Entry code (company page only)</label><input id="id_entry" name="entry"></p>
+<p class="field"><label for="id_bn">Name on the invoice (optional)</label><input id="id_bn" name="billing_name"></p>
+<p class="field"><label for="id_ba">Address on the invoice (optional)</label><input id="id_ba" name="billing_address"></p>
+<p class="field"><label for="id_bt">Tax number (optional)</label><input id="id_bt" name="billing_tax_id"></p>
+<button class="btn primary">Order</button></form>
+<h2>My orders</h2><ul class="records">{% for o in orders %}<li><a href="/account/orders/{{ o.ref }}/">{{ o.ref }}</a> · {{ o.product.name }} · {{ o.state }}</li>{% empty %}<li>None yet.</li>{% endfor %}</ul>{% endblock %}

@@ -1,0 +1,5 @@
+{% extends "catalog/base.html" %}{% block crumbs %}<nav class="crumbs"><a href="/staff/">Staff</a></nav>{% endblock %}
+{% block content %}<h1 id="results">Pending orders</h1>
+{% for m in messages %}<div class="notice" role="status">{{ m }}</div>{% endfor %}
+<ul class="records">{% for o in orders %}<li>{{ o.ref }} · {{ o.buyer.username }} · {{ o.product.name }} · {{ o.currency }} {{ o.amount_minor }}
+<form method="post" class="ctl">{% csrf_token %}<input type="hidden" name="order" value="{{ o.ref }}"><input type="hidden" name="amount_minor" value="{{ o.amount_minor }}"><input name="reference" placeholder="Bank reference" aria-label="Bank reference" required><button class="btn">Record payment</button></form></li>{% empty %}<li>No pending orders.</li>{% endfor %}</ul>{% endblock %}

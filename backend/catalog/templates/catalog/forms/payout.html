@@ -1,0 +1,13 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Payout details</h1>
+<p>You earn when a list that includes your verified entries sells. Money is held for 14 days in case of a refund, then becomes payable. Details are encrypted and checked by a person before the first payout.</p>
+<p>Payable now: <strong>{{ payable }}</strong> minor units · held for refunds: <strong>{{ held }}</strong></p>
+{% if profile %}<p>Status: <strong>{{ profile.state }}</strong>{% if profile.note %} · {{ profile.note }}{% endif %}</p>{% endif %}
+{% include "catalog/forms/_errors.html" %}
+<form method="post" class="form">{% csrf_token %}
+<p class="field"><label for="id_legal_name">Legal name</label><input id="id_legal_name" name="legal_name" required></p>
+<p class="field"><label for="id_country">Country (two letters)</label><input id="id_country" name="country" maxlength="2" required></p>
+<p class="field"><label for="id_method">Method</label><select id="id_method" name="method"><option>bank</option><option>wallet</option></select></p>
+<p class="field"><label for="id_account">Account number or wallet</label><input id="id_account" name="account" required autocomplete="off"></p>
+<p class="field"><label for="id_tax_id">Tax number (optional)</label><input id="id_tax_id" name="tax_id" autocomplete="off"></p>
+<button class="btn primary">Save for review</button></form>{% endblock %}

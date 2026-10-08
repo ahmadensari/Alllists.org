@@ -1,0 +1,107 @@
+"""Source register (plan section 7.1). Every import and agent fetch references a source; the gate decides."""
+
+from django.db import models
+
+
+class Source(models.Model):
+    class Tier(models.TextChoices):
+        GREEN = "green"
+        AMBER = "amber"
+        RED = "red"
+
+    name = models.CharField(max_length=160, unique=True)
+    tier = models.CharField(max_length=6, choices=Tier.choices, default=Tier.AMBER)
+    licence_text = models.TextField(blank=True)
+    terms_url = models.URLField(blank=True)
+    robots_decision = models.CharField(max_length=60, blank=True)
+    allowed_uses = models.JSONField(default=list, blank=True)  # e.g. ["import", "agent_fetch", "display"]
+    bulk_permission = models.BooleanField(default=False)
+    personal_data_rules = models.TextField(blank=True)
+    attribution_text = models.CharField(max_length=300, blank=True)
+    reviewed_by = models.CharField(max_length=120, blank=True)
+    reviewed_on = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=10, default="active")
+
+    def __str__(self):
+        return self.name
+
+
+class ImportBatch(models.Model):
+    class Status(models.TextChoices):
+        UPLOADED = "uploaded"
+        MAPPED = "mapped"
+        DONE = "done"
+        FAILED = "failed"
+        STAGED = "staged"  # bulk: rows parsed and scored, nothing published
+        AUDITED = "audited"  # bulk: sample checked and passed
+        REJECTED = "rejected"  # bulk: sample failed the accuracy bar
+        ROLLED_BACK = "rolled_back"
+
+    source = models.ForeignKey(Source, on_delete=models.PROTECT, related_name="batches")
+    uploader = models.ForeignKey("auth.User", null=True, on_delete=models.SET_NULL, related_name="+")
+    declared_rights = models.BooleanField(default=False)  # contributor declares the right to share (D11)
+    place = models.ForeignKey("places.Place", on_delete=models.PROTECT, related_name="+")
+    concept = models.ForeignKey("taxonomy.Concept", on_delete=models.PROTECT, related_name="+")
+    raw_text = models.TextField()
+    mapping = models.JSONField(default=dict, blank=True)
+    status = models.CharField(max_length=12, choices=Status.choices, default=Status.UPLOADED)
+    counts = models.JSONField(default=dict, blank=True)
+    staged_through = models.PositiveIntegerField(default=0)  # checkpoint: last data row staged
+    published_through = models.PositiveIntegerField(default=0)  # checkpoint: last row published
+    audit_sample = models.JSONField(default=list, blank=True)  # line numbers chosen for human checking
+    accuracy = models.FloatField(null=True, blank=True)
+    quality = models.FloatField(null=True, blank=True)  # mean completeness of staged rows, 0 to 1
+    created_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+
+
+class ImportRow(models.Model):
+    class Status(models.TextChoices):
+        NEW = "new"
+        DUPLICATE = "duplicate"
+        HELD = "held"
+        ERROR = "error"
+        DRAFTED = "drafted"
+        STAGED = "staged"
+
+    batch = models.ForeignKey(ImportBatch, on_delete=models.CASCADE, related_name="rows")
+    line_no = models.PositiveIntegerField()
+    raw = models.JSONField(default=dict)
+    normalised = models.JSONField(default=dict, blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
+    quality = models.FloatField(default=0)
+    message = models.CharField(max_length=200, blank=True)
+    entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+
+
+class DedupeCandidate(models.Model):
+    class State(models.TextChoices):
+        PENDING = "pending"
+        AUTO_MERGED = "auto_merged"
+        REJECTED = "rejected"
+        MERGED = "merged"
+
+    a_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
+    b_entry = models.ForeignKey("entries.Entry", on_delete=models.CASCADE, related_name="+")
+    score = models.FloatField()
+    features = models.JSONField(default=dict)
+    state = models.CharField(max_length=12, choices=State.choices, default=State.PENDING)
+    decided_by_id = models.BigIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["a_entry", "b_entry"], name="uniq_dedupe_pair")]
+
+
+class ExternalRecord(models.Model):
+    """One record from an open dataset (Overture, Foursquare, a register) and what happened to it. Doubles as the
+    checkpoint: a loader that stops can run again and skips whatever is already here."""
+
+    source = models.ForeignKey(Source, on_delete=models.PROTECT, related_name="records")
+    external_id = models.CharField(max_length=80)
+    entry = models.ForeignKey("entries.Entry", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    outcome = models.CharField(max_length=20)  # drafted, merged, no_category, no_place, no_name, blocked, error
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["source", "external_id"], name="uniq_external_record")]

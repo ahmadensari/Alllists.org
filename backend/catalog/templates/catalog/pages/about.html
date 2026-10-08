@@ -1,0 +1,4 @@
+{% extends "catalog/base.html" %}{% load catalog_tags %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">{% tr 'page_about' %}</h1>
+<p>{% tr 'about_1' %}</p><p>{% tr 'about_2' %}</p><p>{% tr 'about_3' %}</p>
+<p><a class="btn" href="{% u '/how-checks-work/' %}">{% tr 'page_how_checks_work' %}</a> <a class="btn" href="{% u '/plans/' %}">{% tr 'page_plans' %}</a></p>{% endblock %}

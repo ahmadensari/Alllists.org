@@ -1,0 +1,7 @@
+loaded 1,000,000 rows in 3s
+== backfill variants (foreground probe running throughout) ==
+big single UPDATE: 11.4s, WAL 521 MB, table+index growth 251 MB, probe (read+write) p50=1.2ms p99=12.8ms max=11074ms (n=172), max replica lag 25.8 MB / 0.38s 
+fixed 5,000-row batches, no pause: 10.5s, WAL 498 MB, table+index growth 10 MB, probe (read+write) p50=1.8ms p99=33.0ms max=128ms (n=1681), max replica lag 2.8 MB / 0.09s ('done', 200, 1000000, 0.0)
+throttled adaptive batches + replica lag guard: 19.7s, WAL 636 MB, table+index growth 0 MB, probe (read+write) p50=1.2ms p99=10.1ms max=134ms (n=3798), max replica lag 6.3 MB / 0.09s ('done', 67, 1000000, 0.0)
+after throttled run: rows still NULL=0, rows with wrong value=0
+== resume after kill ==

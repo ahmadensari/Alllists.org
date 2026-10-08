@@ -1,0 +1,8 @@
+[Unit]
+Description=AllLists nightly database dump
+
+[Service]
+Type=oneshot
+User=alllists
+EnvironmentFile=/etc/alllists/alllists.env
+ExecStart=/srv/alllists/current/scripts/backup.sh

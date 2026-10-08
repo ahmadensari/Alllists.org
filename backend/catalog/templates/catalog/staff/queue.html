@@ -1,0 +1,5 @@
+{% extends "catalog/base.html" %}{% block crumbs %}<nav class="crumbs"><a href="/staff/">Staff</a></nav>{% endblock %}
+{% block content %}<h1 id="results">{{ q.title }}</h1>
+{% for m in messages %}<div class="notice" role="alert">{{ m }}</div>{% endfor %}
+<ul class="records">{% for i in items %}<li>{{ i.text }}
+<form method="post" class="ctl">{% csrf_token %}{% for k, label in q.actions %}<button class="btn" formaction="/staff/{{ q.key }}/{{ i.obj.pk }}/{{ k }}/">{{ label }}</button>{% endfor %}<input name="note" placeholder="Note" aria-label="Note"></form></li>{% empty %}<li>Nothing waiting.</li>{% endfor %}</ul>{% endblock %}

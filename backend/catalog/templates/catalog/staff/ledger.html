@@ -1,0 +1,12 @@
+{% extends "catalog/base.html" %}{% block crumbs %}<nav class="crumbs"><a href="/staff/">Staff</a></nav>{% endblock %}
+{% block content %}<h1 id="results">Ledger</h1>
+{% for m in messages %}<div class="notice" role="status">{{ m }}</div>{% endfor %}
+<h2>Reconciliation</h2>
+<table class="staff"><thead><tr><th scope="col">Check</th><th scope="col">Expected</th><th scope="col">Actual</th><th scope="col">Result</th></tr></thead>
+<tbody>{% for r in results %}<tr><td>{{ r.check }}</td><td>{{ r.expected }}</td><td>{{ r.actual }}</td><td>{% if r.ok %}agrees{% else %}<strong>DIFFERENT</strong>{% endif %}</td></tr>{% endfor %}</tbody></table>
+<h2>Payout batches</h2>
+<form method="post">{% csrf_token %}<button class="btn" name="action" value="create">Create batch from payable balances</button></form>
+{% for b, ps in batches %}<section><h3>Batch {{ b.pk }}: {{ b.state }}, {{ b.total_minor }} {{ b.currency }}</h3>
+<ul>{% for p in ps %}<li>{{ p.pk }} · {{ p.user.username }} · {{ p.amount_minor }} · {{ p.state }}{% if p.external_ref %} · {{ p.external_ref }}{% endif %}{% if p.state == 'pending' or p.state == 'approved' %} <form method="post" style="display:inline">{% csrf_token %}<input type="hidden" name="payout" value="{{ p.pk }}"><button class="btn quiet" name="action" value="cancel_payout">Cancel</button></form>{% endif %}</li>{% endfor %}</ul>
+{% if b.state == 'pending' %}<form method="post">{% csrf_token %}<input type="hidden" name="batch" value="{{ b.pk }}"><button class="btn" name="action" value="approve">Approve</button></form>
+{% elif b.state == 'approved' %}<form method="post">{% csrf_token %}<input type="hidden" name="batch" value="{{ b.pk }}"><p class="field"><label for="refs{{ b.pk }}">Payment references, one per line as payout id = reference</label><textarea id="refs{{ b.pk }}" name="refs" rows="4"></textarea></p><button class="btn" name="action" value="paid">Mark paid</button></form>{% endif %}</section>{% endfor %}{% endblock %}

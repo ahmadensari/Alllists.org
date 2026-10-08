@@ -1,0 +1,3 @@
+{% load catalog_tags %}{% if crumbs %}<nav class="crumbs" aria-label="Breadcrumb"><ol>
+{% for c in crumbs %}<li>{% if forloop.last and not link_last %}<strong aria-current="page">{% pname c.place %}</strong>{% else %}<a href="{% u c.url %}">{% if c.place.level == 'world' %}{% tr 'home' %}{% else %}{% pname c.place %}{% endif %}</a>{% endif %}</li>{% endfor %}
+</ol></nav>{% endif %}

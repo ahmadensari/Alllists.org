@@ -1,0 +1,13 @@
+add_score                   49.2s 
+idx_score_partial            1.0s 13451264
+words_table                  3.3s 
+words_gin                    0.1s 1941504
+Traceback (most recent call last):
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/post_build.py", line 35, in <module>
+    step(cur, "vacuum_analyze", f"vacuum analyze {E}; analyze words_{a.scale}")
+  File "/home/user/Alllists.org/research_notes/Scale research/benchmarks/post_build.py", line 20, in step
+    t = time.time(); cur.execute(sql); dt = time.time() - t
+                     ^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-Alllists-org/f60b6e22-1783-5e3a-86aa-85759a6f2550/scratchpad/venv/lib/python3.11/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.ActiveSqlTransaction: VACUUM cannot run inside a transaction block

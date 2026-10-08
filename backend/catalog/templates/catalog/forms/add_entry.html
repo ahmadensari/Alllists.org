@@ -1,0 +1,22 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Add an entry</h1>
+{% if not concept %}
+<form method="get" class="form"><p class="field"><label for="id_type">What kind of business is it?</label>
+<select id="id_type" name="type">{% for c in list_types %}<option value="{{ c.slug }}">{{ c.slug|cut:'-'|capfirst }}</option>{% endfor %}</select></p>
+<button class="btn primary">Continue</button></form>
+{% else %}
+{% include "catalog/forms/_errors.html" %}
+<form method="post" class="form">{% csrf_token %}<input type="hidden" name="type" value="{{ concept.slug }}">
+<p class="field"><label for="id_name">Business name</label><input id="id_name" name="name" value="{{ form.name }}" required></p>
+<p class="field"><label for="id_place">Place or area</label><select id="id_place" name="place" required>{% for p in places %}<option value="{{ p.uid }}"{% if form.place == p.uid %} selected{% endif %}>{{ p.path }}</option>{% endfor %}</select><span class="hint">Area missing? <a href="/add/area/">Suggest an area</a>.</span></p>
+<p class="field"><label for="id_address">Address</label><input id="id_address" name="address" value="{{ form.address }}"></p>
+<p class="field"><label for="id_phone">Phone (never shown to anyone)</label><input id="id_phone" name="phone" inputmode="tel" value="{{ form.phone }}"></p>
+<p class="field"><label for="id_email">Email (never shown to anyone)</label><input id="id_email" name="email" type="email" value="{{ form.email }}"></p>
+<p class="field"><label for="id_website">Website</label><input id="id_website" name="website" type="url" value="{{ form.website }}"></p>
+{% for f in fields %}<p class="field"><label for="id_addon_{{ f.key }}">{{ f.key|cut:'_'|capfirst }}</label>
+{% if f.type == 'enum' %}<select id="id_addon_{{ f.key }}" name="addon_{{ f.key }}"><option value=""></option>{% for ch in f.validation.choices %}<option value="{{ ch }}">{{ ch }}</option>{% endfor %}</select>
+{% elif f.type == 'bool' %}<select id="id_addon_{{ f.key }}" name="addon_{{ f.key }}"><option value=""></option><option value="yes">Yes</option><option value="no">No</option></select>
+{% else %}<input id="id_addon_{{ f.key }}" name="addon_{{ f.key }}"{% if f.type == 'number' %} inputmode="numeric"{% endif %}>{% if f.type == 'concept_list' %}<span class="hint">Separate items with commas.</span>{% endif %}{% endif %}</p>{% endfor %}
+<p class="field"><label><input id="id_rights" type="checkbox" name="rights" value="1"> I have the right to share this information.</label></p>
+<button class="btn primary">Add entry</button></form>
+{% endif %}{% endblock %}

@@ -1,0 +1,3 @@
+{% extends "catalog/base.html" %}{% block crumbs %}{% endblock %}
+{% block content %}<h1 id="results">Stop messages from AllLists</h1><p>You will not receive enquiries or campaigns through AllLists again.</p>
+<form method="post">{% csrf_token %}<button class="btn primary">Stop messages</button></form>{% endblock %}

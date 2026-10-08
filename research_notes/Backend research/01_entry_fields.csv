@@ -1,0 +1,587 @@
+family,key,label,type,required,show,filterable,row_descriptor,sensitivity
+core,entity_type,Entity type,enum,true,P,true,false,none
+core,primary_category,Primary list type,concept_list,true,P,true,false,none
+core,secondary_categories,Other list types,concept_list,false,P,true,false,none
+core,name,Name,text,true,P,false,true,none
+core,name_variants,Other names and spellings,text,false,P,false,false,none
+core,description,About,text,false,P,false,false,none
+core,status,Operating status,enum,true,P,true,false,none
+core,address_area,Area (place tree nodes),place_list,true,P,true,true,none
+core,address_street,Street address,text,true,L,false,false,personal
+core,latitude,Map pin latitude,number,true,L,false,false,personal
+core,longitude,Map pin longitude,number,true,L,false,false,personal
+core,location_precision,Pin precision,enum,true,P,false,false,none
+core,service_area,Areas served,place_list,false,P,true,false,none
+core,contacts,"Phones, WhatsApp, email",text,false,H,false,false,personal
+core,website,Website,text,false,L,false,false,none
+core,social_links,Social pages,text,false,L,false,false,none
+core,owner_name,Owner or manager,text,false,L,false,false,personal
+core,size_band,Size band,enum,false,L,false,false,none
+core,year_established,Year established,number,false,P,false,false,none
+core,parent_entry,Chain or head office,text,false,P,false,false,none
+core,languages,Languages served,concept_list,false,P,true,false,none
+core,price_band,Price level,enum,false,P,true,false,none
+core,payment_methods,Payment methods,concept_list,false,P,true,false,none
+core,specialities,Specialities,concept_list,false,P,true,true,none
+core,identifiers,Registrations and licences,identifier_list,false,P,false,false,none
+core,hours_summary,Hours and 24x7 flag,text,false,P,true,false,none
+core,verification_level,Check chips,enum,true,P,true,false,none
+core,claimed,Claimed by owner,bool,true,P,true,false,none
+core,consent_status,Consent (individuals),enum,true,P,false,false,personal
+core,last_verified_on,Last verified,date,true,P,false,false,none
+core,do_not_share,Do-not-share flag,bool,true,I,false,false,none
+repair_and_trade_services,provider_mode,How the service is delivered,enum,true,P,true,false,none
+repair_and_trade_services,trades,Trades and services offered,concept_list,true,P,true,true,none
+repair_and_trade_services,brands_serviced,Brands serviced,concept_list,false,P,true,false,none
+repair_and_trade_services,visit_charge,Visit or inspection charge,money,false,L,false,false,none
+repair_and_trade_services,starting_price,Typical starting price,money,false,L,false,false,none
+repair_and_trade_services,rate_unit,Rate basis,enum,false,L,false,false,none
+repair_and_trade_services,prices_checked_on,Prices checked on,date,false,L,false,false,none
+repair_and_trade_services,emergency_service,Emergency call-out,bool,false,P,true,false,none
+repair_and_trade_services,same_day_available,Same-day service,bool,false,P,true,false,none
+repair_and_trade_services,parts_policy,Parts policy,enum,false,P,false,false,none
+repair_and_trade_services,warranty_days,Warranty on work (days),number,false,P,true,false,none
+repair_and_trade_services,years_in_trade,Years in trade,number,false,P,false,false,none
+repair_and_trade_services,trade_licence,Trade licence or certificate,identifier_list,false,P,false,false,none
+repair_and_trade_services,training_certificates,Training or manufacturer authorisation,identifier_list,false,L,false,false,none
+repair_and_trade_services,identity_checked,Identity checked,bool,false,P,true,false,personal
+repair_and_trade_services,police_check_passed,Police check passed,bool,false,P,true,false,personal
+repair_and_trade_services,team_size,Team size,enum,false,L,false,false,none
+repair_and_trade_services,insurance_cover,Liability insurance,bool,false,L,false,false,none
+repair_and_trade_services,gender_self_declared,Gender (self-declared),enum,false,P,true,false,personal
+construction_and_design_firms,practice_type,Practice type,enum,true,P,true,true,none
+construction_and_design_firms,professional_registrations,Regulator registrations,identifier_list,false,P,false,false,none
+construction_and_design_firms,registration_category,Registration category or class,text,false,P,true,false,none
+construction_and_design_firms,fields_of_work,Fields of work,concept_list,true,P,true,false,none
+construction_and_design_firms,work_types,Work types,concept_list,true,P,true,false,none
+construction_and_design_firms,project_size_band,Typical project size,enum,false,P,true,false,none
+construction_and_design_firms,project_value_min,Typical project value from,money,false,L,false,false,commercial
+construction_and_design_firms,project_value_max,Typical project value to,money,false,L,false,false,commercial
+construction_and_design_firms,insurance_verified,Public liability insurance verified,bool,false,P,true,false,none
+construction_and_design_firms,years_trading,Years trading,number,false,P,false,false,none
+construction_and_design_firms,references_checked,References checked by us,number,false,P,false,false,none
+construction_and_design_firms,past_projects_consented,Past projects shown with consent,number,false,L,false,false,commercial
+construction_and_design_firms,key_equipment,Key equipment owned,concept_list,false,L,false,false,none
+construction_and_design_firms,engineers_on_staff,Registered engineers on staff,number,false,L,false,false,none
+construction_and_design_firms,quality_certifications,ISO and safety certificates,identifier_list,false,L,true,false,none
+construction_and_design_firms,enlisted_with,Enlisted with authorities,concept_list,false,P,true,false,none
+real_estate_agents_and_developers,business_role,Business role,enum,true,P,true,true,none
+real_estate_agents_and_developers,agency_name,Agency name,text,false,P,false,false,none
+real_estate_agents_and_developers,licence,Agent or developer licence,identifier_list,false,P,false,false,none
+real_estate_agents_and_developers,listing_types,Listing types handled,concept_list,true,P,true,false,none
+real_estate_agents_and_developers,areas_served,Areas and societies served,place_list,true,P,true,false,none
+real_estate_agents_and_developers,years_experience,Years of experience,number,false,P,false,false,none
+real_estate_agents_and_developers,active_listings_count,Active listings,number,false,P,false,false,none
+real_estate_agents_and_developers,approval_authority,Scheme approving authority,text,false,P,false,false,none
+real_estate_agents_and_developers,approval_status,Approval status,enum,false,P,true,false,none
+real_estate_agents_and_developers,project_stage,Project stage,enum,false,P,true,false,none
+real_estate_agents_and_developers,possession_year,Possession year,number,false,P,false,false,none
+real_estate_agents_and_developers,total_area_acres,Scheme area (acres),number,false,L,false,false,none
+real_estate_agents_and_developers,plot_sizes,Plot sizes offered,concept_list,false,P,true,false,none
+real_estate_agents_and_developers,payment_plan_offered,Instalment plan offered,bool,false,P,true,false,none
+real_estate_agents_and_developers,languages_spoken,Languages spoken,concept_list,false,P,true,false,personal
+property_listings,purpose,Purpose,enum,true,P,true,false,none
+property_listings,property_type,Property type,enum,true,P,true,true,none
+property_listings,asking_price,Price or rent,money,true,L,false,false,none
+property_listings,price_date,Price date,date,true,L,false,false,none
+property_listings,price_negotiable,Negotiable,bool,false,L,false,false,none
+property_listings,rent_period,Rent period,enum,false,L,false,false,none
+property_listings,security_deposit,Security deposit,money,false,L,false,false,none
+property_listings,area_size,Area size,number,true,P,true,false,none
+property_listings,area_unit,Area unit,enum,true,P,true,false,none
+property_listings,bedrooms,Bedrooms,number,false,P,true,false,none
+property_listings,bathrooms,Bathrooms,number,false,P,true,false,none
+property_listings,furnishing,Furnishing,enum,false,P,true,false,none
+property_listings,floor_number,Floor,number,false,P,false,false,none
+property_listings,construction_year,Construction year,number,false,P,false,false,none
+property_listings,possession_status,Possession status,enum,false,P,true,false,none
+property_listings,instalment_plan,Instalments available,bool,false,P,true,false,none
+property_listings,initial_amount,Initial amount,money,false,L,false,false,none
+property_listings,monthly_instalment,Monthly instalment,money,false,L,false,false,none
+property_listings,remaining_instalments,Remaining instalments,number,false,L,false,false,none
+property_listings,amenities,Amenities,concept_list,false,P,true,false,none
+property_listings,listed_by_seller_type,Listed by,enum,true,P,true,false,personal
+property_listings,listing_expires_on,Listing expires,date,true,P,false,false,none
+property_listings,documents_checked,Ownership documents checked,bool,false,P,true,false,none
+medical_practitioners,system_of_medicine,Discipline,enum,true,P,true,true,none
+medical_practitioners,specialty,Specialty,concept_list,true,P,true,false,none
+medical_practitioners,sub_specialties,Sub-specialties,concept_list,false,P,true,false,none
+medical_practitioners,qualifications,Qualifications,text,false,P,false,false,none
+medical_practitioners,regulator_registration,Regulator registration,identifier_list,false,P,false,false,none
+medical_practitioners,registration_checked_on,Registration checked on,date,false,P,false,false,none
+medical_practitioners,years_experience,Years of experience,number,false,P,true,false,none
+medical_practitioners,conditions_treated,Conditions or procedures,concept_list,false,P,true,false,none
+medical_practitioners,appointment_mode,Appointment mode,enum,false,P,true,false,none
+medical_practitioners,video_consultation,Video consultation,bool,false,P,true,false,none
+medical_practitioners,home_visit,Home visits,bool,false,P,true,false,none
+medical_practitioners,accepting_new_patients,Accepting new patients,bool,false,P,true,false,none
+medical_practitioners,consultation_fee,Consultation fee (typical),money,false,L,false,false,health_price
+medical_practitioners,followup_fee,Follow-up fee,money,false,L,false,false,health_price
+medical_practitioners,video_fee,Video consultation fee,money,false,L,false,false,health_price
+medical_practitioners,fee_checked_on,Fee checked on,date,false,L,false,false,health_price
+medical_practitioners,insurance_panels,Insurance and panels,concept_list,false,L,true,false,none
+medical_practitioners,memberships,Professional memberships,concept_list,false,P,false,false,none
+medical_practitioners,gender_self_declared,Gender (self-declared),enum,false,P,true,false,personal
+health_facilities,facility_type,Facility type,enum,true,P,true,true,none
+health_facilities,ownership,Ownership,enum,false,P,true,false,none
+health_facilities,facility_licence,Healthcare licence,identifier_list,false,P,false,false,none
+health_facilities,accreditations,Accreditations,identifier_list,false,P,true,false,none
+health_facilities,departments,Departments and OPD specialities,concept_list,true,P,true,false,none
+health_facilities,emergency_24x7,Emergency 24x7,bool,false,P,true,false,none
+health_facilities,procedures_offered,Procedures and services,concept_list,false,P,true,false,none
+health_facilities,procedure_price_from,Typical procedure price from,money,false,L,false,false,health_price
+health_facilities,price_checked_on,Price checked on,date,false,L,false,false,health_price
+health_facilities,doctor_count,Doctors on roster,number,false,P,false,false,none
+health_facilities,bed_count,Beds (total),number,false,L,false,false,none
+health_facilities,insurance_panels,Insurance and panels,concept_list,false,L,true,false,none
+health_facilities,charity_or_zakat,Free or zakat-eligible care,bool,false,P,true,false,none
+health_facilities,patient_facilities,Patient facilities,concept_list,false,P,true,false,none
+health_facilities,online_reports,Online reports,bool,false,P,true,false,none
+health_facilities,ambulance_types,Ambulance types,concept_list,false,P,true,false,none
+health_facilities,ambulance_coverage,Ambulance coverage,place_list,false,P,true,false,none
+health_facilities,species_served,Animals treated,concept_list,false,P,true,false,none
+diagnostics_and_imaging,centre_type,Centre type,enum,true,P,true,true,none
+diagnostics_and_imaging,modalities,Modalities,concept_list,true,P,true,false,none
+diagnostics_and_imaging,disciplines,Lab disciplines,concept_list,false,P,true,false,none
+diagnostics_and_imaging,home_collection,Home sample collection,bool,false,P,true,false,none
+diagnostics_and_imaging,home_collection_fee,Home collection fee,money,false,L,false,false,health_price
+diagnostics_and_imaging,report_turnaround_hours,Report turnaround (hours),number,false,P,false,false,none
+diagnostics_and_imaging,online_reports,Online reports,bool,false,P,true,false,none
+diagnostics_and_imaging,referral_required,Doctor referral,enum,false,P,true,false,none
+diagnostics_and_imaging,radiation_licence,Radiation licence,identifier_list,false,P,false,false,none
+diagnostics_and_imaging,accreditations,Lab accreditations,identifier_list,false,P,true,false,none
+diagnostics_and_imaging,mri_field_strength_tesla,MRI field strength (T),number,false,P,true,false,none
+diagnostics_and_imaging,equipment_count,Machines in centre,number,false,P,false,false,none
+diagnostics_and_imaging,test_price_from,Typical test price from,money,false,L,false,false,health_price
+diagnostics_and_imaging,contrast_surcharge,Contrast surcharge,money,false,L,false,false,health_price
+diagnostics_and_imaging,price_checked_on,Prices checked on,date,false,L,false,false,health_price
+diagnostics_and_imaging,insurance_panels,Insurance and corporate rates,concept_list,false,L,true,false,none
+diagnostics_and_imaging,machine_make,Machine make,text,false,P,true,false,none
+diagnostics_and_imaging,machine_model,Machine model,text,false,P,false,false,none
+diagnostics_and_imaging,machine_install_year,Machine install year,number,false,P,false,false,none
+diagnostics_and_imaging,machine_status,Machine status,enum,false,P,true,false,none
+diagnostics_and_imaging,services_supported,Scans supported by machine,concept_list,false,P,true,false,none
+pharmacy_and_optical,outlet_type,Outlet type,enum,true,P,true,true,none
+pharmacy_and_optical,brand,Chain or brand,text,false,P,true,false,none
+pharmacy_and_optical,drug_licence,Drug licence,identifier_list,false,P,false,false,none
+pharmacy_and_optical,pharmacist_in_charge_registered,Pharmacist in charge registered,bool,false,P,true,false,none
+pharmacy_and_optical,pharmacist_name,Pharmacist in charge,text,false,L,false,false,personal
+pharmacy_and_optical,open_24x7,Open 24x7,bool,false,P,true,false,none
+pharmacy_and_optical,home_delivery,Home delivery,bool,false,P,true,false,none
+pharmacy_and_optical,drive_through,Drive-through,bool,false,P,true,false,none
+pharmacy_and_optical,prescription_service,Prescription fulfilment,bool,false,P,true,false,none
+pharmacy_and_optical,cold_chain,Cold-chain storage,bool,false,P,true,false,none
+pharmacy_and_optical,controlled_drug_licence,Controlled-drug licence,bool,false,L,false,false,none
+pharmacy_and_optical,categories_stocked,Categories stocked,concept_list,false,P,true,false,none
+pharmacy_and_optical,eye_test_available,Eye test on site,bool,false,P,true,false,none
+pharmacy_and_optical,optometrist_on_site,Qualified optometrist on site,bool,false,P,true,false,none
+pharmacy_and_optical,brands_stocked,Frame and lens brands,concept_list,false,P,true,false,none
+pharmacy_and_optical,insurance_panels,Panels accepted,concept_list,false,L,true,false,none
+education_institutions,institution_type,Institution type,enum,true,P,true,true,none
+education_institutions,registration,Registration and recognition,identifier_list,false,P,false,false,none
+education_institutions,board_affiliation,Board or affiliation,concept_list,false,P,true,false,none
+education_institutions,curriculum,Curriculum,concept_list,false,P,true,false,none
+education_institutions,grades_offered,Grades or levels offered,text,true,P,true,false,none
+education_institutions,programmes,Programmes and courses,concept_list,false,P,true,false,none
+education_institutions,gender_mix,Gender,enum,false,P,true,false,none
+education_institutions,day_or_boarding,Day or boarding,enum,false,P,true,false,none
+education_institutions,medium_of_instruction,Medium of instruction,concept_list,false,P,true,false,none
+education_institutions,age_min_years,Youngest age taken (years),number,false,P,true,false,none
+education_institutions,age_max_years,Oldest age taken (years),number,false,P,false,false,none
+education_institutions,monthly_fee,Monthly tuition,money,false,L,false,false,none
+education_institutions,admission_fee,Admission fee,money,false,L,false,false,none
+education_institutions,fee_year,Fee year,number,false,L,false,false,none
+education_institutions,concessions_offered,Scholarships or concessions,bool,false,P,true,false,none
+education_institutions,campuses,Campuses,number,false,P,false,false,none
+education_institutions,student_count_band,Students (band),enum,false,L,false,false,none
+education_institutions,student_teacher_ratio,Student-teacher ratio,number,false,L,false,false,none
+education_institutions,facilities,Facilities,concept_list,false,P,true,false,none
+education_institutions,admissions_open,Admissions open,bool,false,P,true,false,none
+education_institutions,child_protection_policy,Child protection policy,bool,false,P,true,false,child
+education_institutions,staff_background_checked,Staff background-checked,bool,false,P,true,false,child
+education_institutions,staff_child_ratio,Staff to child ratio,number,false,L,false,false,child
+tutors_and_instructors,subjects,Subjects taught,concept_list,true,P,true,true,child
+tutors_and_instructors,levels,Levels,concept_list,false,P,true,false,child
+tutors_and_instructors,exam_prep,Exam preparation,concept_list,false,P,true,false,child
+tutors_and_instructors,quran_subjects,Quran subjects,concept_list,false,P,true,false,child
+tutors_and_instructors,teaching_modes,Teaching modes,concept_list,false,P,true,false,child
+tutors_and_instructors,travel_radius_km,Travel radius (km),number,false,P,true,false,personal
+tutors_and_instructors,hourly_rate,Hourly rate,money,false,L,false,false,none
+tutors_and_instructors,trial_class,Trial lesson,enum,false,P,true,false,none
+tutors_and_instructors,qualifications,Qualifications,text,false,P,false,false,personal
+tutors_and_instructors,qualification_checked,Qualification document checked,bool,false,P,true,false,none
+tutors_and_instructors,ijazah_checked,Ijazah or sanad checked,bool,false,P,true,false,none
+tutors_and_instructors,years_teaching,Years teaching,number,false,P,true,false,none
+tutors_and_instructors,class_format,Individual or group,enum,false,P,true,false,none
+tutors_and_instructors,student_age_groups,Student age groups taken,concept_list,false,P,true,false,child
+tutors_and_instructors,tutor_gender,Tutor gender (self-declared),enum,false,P,true,false,personal|child
+tutors_and_instructors,accepts_student_gender,Students accepted,enum,false,P,true,false,personal|child
+tutors_and_instructors,safeguarding_status,Safeguarding check,enum,true,P,true,false,child
+tutors_and_instructors,safeguarding_checked_on,Safeguarding check date,date,true,P,false,false,child
+tutors_and_instructors,parent_present_policy,Parent-present policy,enum,false,P,true,false,child
+tutors_and_instructors,cancellation_notice_hours,Cancellation notice (hours),number,false,L,false,false,none
+domestic_and_care_workers,roles,Roles,concept_list,true,P,true,true,personal
+domestic_and_care_workers,employment_type,Employment type,enum,false,P,true,false,personal
+domestic_and_care_workers,years_experience,Years of experience,number,false,P,true,false,personal
+domestic_and_care_workers,rate_amount,Rate,money,false,L,false,false,personal
+domestic_and_care_workers,rate_period,Rate period,enum,false,L,false,false,personal
+domestic_and_care_workers,duties,Duties,concept_list,false,P,true,false,none
+domestic_and_care_workers,care_for,Care for,concept_list,false,P,true,false,child
+domestic_and_care_workers,first_aid_trained,First aid trained,bool,false,P,true,false,none
+domestic_and_care_workers,driving_licence_checked,Driving licence checked,bool,false,P,true,false,personal
+domestic_and_care_workers,vehicle_types_driven,Vehicle types driven,concept_list,false,P,true,false,none
+domestic_and_care_workers,identity_checked,Identity checked,bool,false,P,true,false,personal
+domestic_and_care_workers,police_check_passed,Police check passed,bool,false,P,true,false,personal
+domestic_and_care_workers,reference_checked,References checked,bool,false,P,true,false,personal
+domestic_and_care_workers,agency_name,Placing agency,text,false,P,false,false,none
+domestic_and_care_workers,security_licence,Guard agency licence,identifier_list,false,P,false,false,none
+domestic_and_care_workers,guards_available,Guards available,number,false,L,false,false,none
+domestic_and_care_workers,armed_or_unarmed,Armed or unarmed,enum,false,P,true,false,none
+domestic_and_care_workers,gender_self_declared,Gender (self-declared),enum,false,P,true,false,personal
+professional_advisers,practice_areas,Practice areas,concept_list,true,P,true,true,none
+professional_advisers,bar_or_body_registration,Regulator or body registration,identifier_list,false,P,false,false,none
+professional_advisers,registration_checked_on,Registration checked on,date,false,P,false,false,none
+professional_advisers,court_levels,Court levels,concept_list,false,P,true,false,none
+professional_advisers,qualifications,Qualifications,text,false,P,false,false,none
+professional_advisers,years_practising,Years practising,number,false,P,true,false,none
+professional_advisers,consultation_fee,Consultation fee,money,false,L,false,false,none
+professional_advisers,fee_basis,Fee basis,enum,false,P,true,false,none
+professional_advisers,free_first_consultation,Free first consultation,bool,false,P,true,false,none
+professional_advisers,firm_size_band,Firm size,enum,false,L,false,false,none
+professional_advisers,countries_advised,Countries covered,place_list,false,P,true,false,none
+professional_advisers,licence_scheme,Consultant licence,identifier_list,false,P,false,false,none
+professional_advisers,notary_appointment,Notary appointment,identifier_list,false,P,false,false,none
+financial_providers,provider_type,Provider type,enum,true,P,true,true,none
+financial_providers,institution_name,Institution or brand,text,true,P,true,false,none
+financial_providers,regulator_licence,Regulator licence,identifier_list,true,P,false,false,none
+financial_providers,branch_code,Branch code,text,false,P,false,false,none
+financial_providers,atm_available,ATM on site,bool,false,P,true,false,none
+financial_providers,services,Services,concept_list,false,P,true,false,none
+financial_providers,products,Products,concept_list,false,P,true,false,none
+financial_providers,currencies_exchanged,Currencies exchanged,concept_list,false,P,true,false,none
+financial_providers,insurers_represented,Insurers represented,concept_list,false,P,true,false,none
+financial_providers,shariah_compliant,Shariah-compliant products,bool,false,P,true,false,none
+financial_providers,loan_amount_min,Smallest loan,money,false,L,false,false,none
+financial_providers,loan_amount_max,Largest loan,money,false,L,false,false,none
+financial_providers,terms_disclosed,Markup or fees disclosed,bool,false,P,true,false,none
+digital_talent_and_agencies,role_types,Role types,concept_list,true,P,true,true,none
+digital_talent_and_agencies,seniority,Seniority,enum,false,P,true,false,none
+digital_talent_and_agencies,skills,Skills,concept_list,true,P,true,false,none
+digital_talent_and_agencies,years_experience,Years of experience,number,false,P,true,false,none
+digital_talent_and_agencies,domains,Domain experience,concept_list,false,P,true,false,none
+digital_talent_and_agencies,tools_stack,Tools and stack,concept_list,false,P,true,false,none
+digital_talent_and_agencies,engagement_types,Engagement types,concept_list,false,P,true,false,none
+digital_talent_and_agencies,work_mode,Work mode,enum,false,P,true,false,none
+digital_talent_and_agencies,availability,Availability,enum,false,P,true,false,none
+digital_talent_and_agencies,hours_per_week,Hours per week,number,false,P,false,false,none
+digital_talent_and_agencies,timezone,Time zone,text,false,P,false,false,none
+digital_talent_and_agencies,rate_min,Rate from,money,false,L,false,false,personal
+digital_talent_and_agencies,rate_max,Rate to,money,false,L,false,false,personal
+digital_talent_and_agencies,rate_unit,Rate unit,enum,false,L,false,false,personal
+digital_talent_and_agencies,verified_profiles,Verified profiles,concept_list,false,P,true,false,none
+digital_talent_and_agencies,profile_links,Portfolio links,text,false,L,false,false,none
+digital_talent_and_agencies,credentials,Certifications,identifier_list,false,L,false,false,none
+digital_talent_and_agencies,publications_count,Publications,number,false,L,false,false,none
+digital_talent_and_agencies,education,Education,text,false,L,false,false,personal
+digital_talent_and_agencies,client_industries,Industries served,concept_list,false,P,true,false,none
+digital_talent_and_agencies,min_project_size,Minimum project size,money,false,L,false,false,none
+digital_talent_and_agencies,team_size_band,Team size,enum,false,L,false,false,none
+digital_talent_and_agencies,open_to_relocate,Open to relocate,bool,false,H,false,false,personal
+digital_talent_and_agencies,work_authorisation,Work authorisation,text,false,H,false,false,personal
+digital_talent_and_agencies,recruiter_opt_in,Recruiters may contact,bool,true,I,false,false,personal
+opportunity_posts,post_kind,Post kind,enum,true,P,true,true,none
+opportunity_posts,post_title,Title,text,true,P,false,false,none
+opportunity_posts,category,Category,concept_list,true,P,true,false,none
+opportunity_posts,post_place,Place,place_list,true,P,true,false,none
+opportunity_posts,deadline,Deadline or valid through,date,true,P,true,false,none
+opportunity_posts,employment_type,Employment type,enum,false,P,true,false,none
+opportunity_posts,experience_required,Experience required,text,false,P,false,false,none
+opportunity_posts,salary_min,Pay from,money,false,L,false,false,none
+opportunity_posts,salary_max,Pay to,money,false,L,false,false,none
+opportunity_posts,budget_min,Budget from,money,false,L,false,false,none
+opportunity_posts,budget_max,Budget to,money,false,L,false,false,none
+opportunity_posts,quantity_text,Quantity and unit,text,false,L,false,false,none
+opportunity_posts,delivery_place,Delivery place,place_list,false,P,true,false,none
+opportunity_posts,tender_authority,Tender authority,text,false,P,false,false,none
+opportunity_posts,tender_reference,Tender reference,text,false,P,false,false,none
+opportunity_posts,requester_type,Requester type,enum,false,P,true,false,personal
+opportunity_posts,event_start,Event start,date,false,P,true,false,none
+opportunity_posts,event_ticket_price,Ticket price,money,false,L,false,false,none
+opportunity_posts,asking_price,Asking price,money,false,L,false,false,none
+opportunity_posts,annual_revenue_band,Annual revenue band,enum,false,L,false,false,commercial
+opportunity_posts,post_status,Post status,enum,true,P,true,false,none
+opportunity_posts,involves_children,Involves children,bool,false,I,false,false,child
+personal_care_wellness_fitness,outlet_type,Outlet type,enum,true,P,true,true,none
+personal_care_wellness_fitness,clientele,Clientele,enum,true,P,true,false,none
+personal_care_wellness_fitness,price_from,Services priced from,money,false,L,false,false,none
+personal_care_wellness_fitness,price_checked_on,Prices checked on,date,false,L,false,false,none
+personal_care_wellness_fitness,appointment_mode,Appointments,enum,false,P,true,false,none
+personal_care_wellness_fitness,home_service,Home service,bool,false,P,true,false,none
+personal_care_wellness_fitness,bridal_packages,Bridal packages,bool,false,P,true,false,none
+personal_care_wellness_fitness,brands_used,Brands used,concept_list,false,P,true,false,none
+personal_care_wellness_fitness,female_staff_only,Female staff only,bool,false,P,true,false,none
+personal_care_wellness_fitness,facilities,Facilities,concept_list,false,P,true,false,none
+personal_care_wellness_fitness,membership_fee_monthly,Monthly membership,money,false,L,false,false,none
+personal_care_wellness_fitness,trainer_certified,Certified trainers,bool,false,P,true,false,none
+personal_care_wellness_fitness,classes_offered,Classes,concept_list,false,P,true,false,none
+personal_care_wellness_fitness,turnaround_days,Turnaround (days),number,false,P,false,false,none
+personal_care_wellness_fitness,pickup_delivery,Pickup and delivery,bool,false,P,true,false,none
+personal_care_wellness_fitness,custom_stitching,Custom stitching,bool,false,P,true,false,none
+food_and_beverage_outlets,outlet_type,Outlet type,enum,true,P,true,true,none
+food_and_beverage_outlets,cuisines,Cuisines,concept_list,true,P,true,false,none
+food_and_beverage_outlets,service_modes,Service modes,concept_list,false,P,true,false,none
+food_and_beverage_outlets,cost_for_two,Cost for two,money,false,L,false,false,none
+food_and_beverage_outlets,cost_checked_on,Cost checked on,date,false,L,false,false,none
+food_and_beverage_outlets,halal_status,Halal status,enum,false,P,true,false,none
+food_and_beverage_outlets,food_licence,Food authority licence,identifier_list,false,P,false,false,none
+food_and_beverage_outlets,dietary_options,Dietary options,concept_list,false,P,true,false,none
+food_and_beverage_outlets,seating_capacity,Seating capacity,number,false,P,false,false,none
+food_and_beverage_outlets,family_section,Family section,bool,false,P,true,false,none
+food_and_beverage_outlets,amenities,Amenities,concept_list,false,P,true,false,none
+food_and_beverage_outlets,delivery_radius_km,Delivery radius (km),number,false,P,true,false,none
+food_and_beverage_outlets,delivery_fee,Delivery fee,money,false,L,false,false,none
+food_and_beverage_outlets,catering_min_guests,Catering minimum guests,number,false,P,false,false,none
+food_and_beverage_outlets,catering_price_per_head,Catering price per head,money,false,L,false,false,none
+food_and_beverage_outlets,reservations,Reservations taken,bool,false,P,true,false,none
+retail_shops,shop_type,Shop type,enum,true,P,true,false,none
+retail_shops,product_categories,Product categories,concept_list,true,P,true,false,none
+retail_shops,brands_carried,Brands carried,concept_list,false,P,true,true,none
+retail_shops,new_or_used,New or used,enum,false,P,true,false,none
+retail_shops,authorised_dealer_of,Authorised dealer of,concept_list,false,P,true,false,none
+retail_shops,delivery,Delivery,bool,false,P,true,false,none
+retail_shops,delivery_area,Delivery area,place_list,false,P,true,false,none
+retail_shops,installments_offered,Instalment plans,bool,false,P,true,false,none
+retail_shops,warranty_offered,Warranty,enum,false,P,true,false,none
+retail_shops,returns_policy,Returns policy,text,false,L,false,false,none
+retail_shops,pta_approved_stock,PTA-approved phones,bool,false,P,true,false,none
+retail_shops,vehicle_makes_sold,Vehicle makes sold,concept_list,false,P,true,false,none
+retail_shops,inspection_offered,Inspection before sale,bool,false,P,true,false,none
+retail_shops,input_dealer_licence,Input dealer licence,identifier_list,false,P,false,false,none
+retail_shops,home_installation,Home installation,bool,false,P,true,false,none
+fuel_and_utility_supply,brand,Marketing company or brand,text,false,P,true,true,none
+fuel_and_utility_supply,fuel_types,Fuel types,concept_list,true,P,true,false,none
+fuel_and_utility_supply,open_24x7,Open 24x7,bool,false,P,true,false,none
+fuel_and_utility_supply,ancillary_services,Ancillary services,concept_list,false,P,true,false,none
+fuel_and_utility_supply,ev_connector_types,EV connector types,concept_list,false,P,true,false,none
+fuel_and_utility_supply,ev_charger_kw,EV charger power (kW),number,false,P,true,false,none
+fuel_and_utility_supply,petroleum_licence,Outlet licence,identifier_list,false,P,false,false,none
+fuel_and_utility_supply,calibration_seal_date,Pump calibration seal date,date,false,P,false,false,none
+fuel_and_utility_supply,delivery_products,Delivered products,concept_list,false,P,true,false,none
+fuel_and_utility_supply,cylinder_sizes_kg,Cylinder sizes (kg),concept_list,false,P,true,false,none
+fuel_and_utility_supply,tanker_capacity_litres,Tanker capacity (litres),number,false,P,true,false,none
+fuel_and_utility_supply,delivery_time_hours,Typical delivery time (hours),number,false,P,false,false,none
+fuel_and_utility_supply,posted_fuel_price,Posted fuel price,money,false,L,false,false,none
+fuel_and_utility_supply,posted_price_date,Posted price date,date,false,L,false,false,none
+classified_listings,item_kind,Item kind,enum,true,P,true,true,none
+classified_listings,condition,Condition,enum,true,P,true,false,none
+classified_listings,seller_type,Seller type,enum,true,P,true,false,personal
+classified_listings,asking_price,Asking price,money,true,L,false,false,none
+classified_listings,price_date,Price date,date,true,L,false,false,none
+classified_listings,price_negotiable,Negotiable,bool,false,L,false,false,none
+classified_listings,listing_expires_on,Listing expires,date,true,P,false,false,none
+classified_listings,make,Make,concept_list,false,P,true,false,none
+classified_listings,model,Model,text,false,P,true,false,none
+classified_listings,model_year,Model year,number,false,P,true,false,none
+classified_listings,mileage_km,Mileage (km),number,false,P,true,false,none
+classified_listings,fuel_type,Fuel type,enum,false,P,true,false,none
+classified_listings,engine_cc,Engine capacity (cc),number,false,P,true,false,none
+classified_listings,transmission,Transmission,enum,false,P,true,false,none
+classified_listings,assembly,Assembly,enum,false,P,true,false,none
+classified_listings,body_type,Body type,enum,false,P,true,false,none
+classified_listings,colour,Colour,text,false,P,true,false,none
+classified_listings,registration_city,Registered in,place_list,false,P,true,false,none
+classified_listings,registration_status,Registration status,enum,false,P,true,false,none
+classified_listings,owner_count,Previous owners,number,false,P,false,false,none
+classified_listings,inspection_report,Inspection,enum,false,P,true,false,none
+classified_listings,vin,Chassis number,text,false,H,false,false,personal
+classified_listings,species_breed,Species and breed,text,false,P,true,false,none
+classified_listings,age_months,Age (months),number,false,P,true,false,none
+classified_listings,vaccination_status,Vaccination status,enum,false,P,true,false,none
+transport_and_logistics,service_type,Service type,enum,true,P,true,true,none
+transport_and_logistics,coverage,Coverage area,place_list,true,P,true,false,none
+transport_and_logistics,vehicle_types,Vehicle types,concept_list,false,P,true,false,none
+transport_and_logistics,fleet_size,Fleet size,number,false,L,false,false,none
+transport_and_logistics,capacity_tonnes_max,Largest load (tonnes),number,false,P,true,false,none
+transport_and_logistics,pricing_basis,Pricing basis,enum,false,P,true,false,none
+transport_and_logistics,rate_from,Rate from,money,false,L,false,false,none
+transport_and_logistics,rate_checked_on,Rate checked on,date,false,L,false,false,none
+transport_and_logistics,goods_insured,Goods insured,bool,false,P,true,false,none
+transport_and_logistics,insurance_cover_limit,Insurance cover limit,money,false,L,false,false,none
+transport_and_logistics,tracking_available,Tracking available,bool,false,P,true,false,none
+transport_and_logistics,international_service,International service,bool,false,P,true,false,none
+transport_and_logistics,cod_available,Cash on delivery,bool,false,P,true,false,none
+transport_and_logistics,driver_included,Driver included,bool,false,P,true,false,none
+transport_and_logistics,packing_included,Packing included,bool,false,P,true,false,none
+transport_and_logistics,storage_available,Storage available,bool,false,P,true,false,none
+transport_and_logistics,customs_licence,Customs agent licence,identifier_list,false,P,false,false,none
+transport_and_logistics,route_permit,Route or operator permit,identifier_list,false,P,false,false,none
+accommodation_and_travel,property_type,Property type,enum,true,P,true,true,none
+accommodation_and_travel,star_class,Star class,number,false,P,true,false,none
+accommodation_and_travel,rating_body,Rating body,text,false,P,false,false,none
+accommodation_and_travel,rooms,Number of rooms,number,false,P,false,false,none
+accommodation_and_travel,room_types,Room types,concept_list,false,P,true,false,none
+accommodation_and_travel,guest_capacity,Guest capacity,number,false,P,true,false,none
+accommodation_and_travel,bedrooms,Bedrooms,number,false,P,true,false,none
+accommodation_and_travel,check_in_time,Check-in time,text,false,P,false,false,none
+accommodation_and_travel,check_out_time,Check-out time,text,false,P,false,false,none
+accommodation_and_travel,amenities,Amenities,concept_list,false,P,true,false,none
+accommodation_and_travel,house_rules,House rules,concept_list,false,P,true,false,none
+accommodation_and_travel,cancellation_policy,Cancellation policy,enum,false,P,true,false,none
+accommodation_and_travel,price_from,Base rate from,money,false,L,false,false,none
+accommodation_and_travel,price_basis,Price basis,enum,false,L,false,false,none
+accommodation_and_travel,price_season,Price season,enum,false,L,false,false,none
+accommodation_and_travel,price_checked_on,Price checked on,date,false,L,false,false,none
+accommodation_and_travel,landmark_distance_m,Distance to main landmark (m),number,false,P,true,false,none
+accommodation_and_travel,all_weather_access,All-weather road access,enum,false,P,true,false,none
+accommodation_and_travel,backup_power,Backup power,enum,false,P,true,false,none
+accommodation_and_travel,parking_spaces,Parking spaces,number,false,P,false,false,none
+accommodation_and_travel,tourism_registration,Tourism registration,identifier_list,false,P,false,false,none
+accommodation_and_travel,tour_types,Tour types,concept_list,false,P,true,false,none
+accommodation_and_travel,destinations,Destinations,place_list,false,P,true,false,none
+accommodation_and_travel,travel_licence,Travel or Hajj licence,identifier_list,false,P,false,false,none
+accommodation_and_travel,booking_url,Booking link,text,false,L,false,false,none
+venues_and_event_services,venue_kind,Venue or service kind,enum,true,P,true,true,none
+venues_and_event_services,guest_capacity_min,Capacity from,number,false,P,true,false,none
+venues_and_event_services,guest_capacity_max,Capacity up to,number,false,P,true,false,none
+venues_and_event_services,indoor_outdoor,Indoor or outdoor,enum,false,P,true,false,none
+venues_and_event_services,air_conditioned,Air conditioned,bool,false,P,true,false,none
+venues_and_event_services,catering_policy,Catering policy,enum,false,P,true,false,none
+venues_and_event_services,price_per_head,Price per head,money,false,L,false,false,none
+venues_and_event_services,hire_rate_from,Hire rate from,money,false,L,false,false,none
+venues_and_event_services,price_checked_on,Prices checked on,date,false,L,false,false,none
+venues_and_event_services,bridal_rooms,Bridal rooms,number,false,P,false,false,none
+venues_and_event_services,parking_capacity,Parking capacity,number,false,P,false,false,none
+venues_and_event_services,backup_power,Backup power,bool,false,P,true,false,none
+venues_and_event_services,event_services,Event services offered,concept_list,false,P,true,false,none
+venues_and_event_services,booking_deposit_percent,Booking deposit (percent),number,false,L,false,false,none
+venues_and_event_services,advance_booking_days,Advance booking (days),number,false,P,false,false,none
+venues_and_event_services,entry_fee,Entry fee,money,false,L,false,false,none
+venues_and_event_services,age_restriction,Age restriction,text,false,P,true,false,none
+venues_and_event_services,accessibility,Accessibility,concept_list,false,P,true,false,none
+venues_and_event_services,venue_licence,Venue licence,identifier_list,false,P,false,false,none
+manufacturers_and_exporters,business_type,Business type,enum,true,P,true,true,none
+manufacturers_and_exporters,product_categories,Product categories,concept_list,true,P,true,false,none
+manufacturers_and_exporters,tax_ids,Tax and legal IDs,identifier_list,false,P,false,false,none
+manufacturers_and_exporters,year_established,Year established,number,false,P,false,false,none
+manufacturers_and_exporters,years_exporting,Years exporting,number,false,P,false,false,none
+manufacturers_and_exporters,export_markets,Export markets,place_list,false,L,true,false,none
+manufacturers_and_exporters,certifications,Certifications,identifier_list,false,L,true,false,none
+manufacturers_and_exporters,regulatory_registrations,Regulatory registrations,identifier_list,false,L,true,false,none
+manufacturers_and_exporters,product_standards,Product standards and marks,identifier_list,false,P,true,false,none
+manufacturers_and_exporters,verification_tier,Verification tier,enum,false,P,true,false,none
+manufacturers_and_exporters,capacity_band,Capacity band,enum,false,L,false,false,commercial
+manufacturers_and_exporters,monthly_capacity,Monthly capacity,number,false,L,false,false,commercial
+manufacturers_and_exporters,workforce_band,Workforce band,enum,false,L,false,false,none
+manufacturers_and_exporters,factory_area_sqm,Factory area (sqm),number,false,L,false,false,none
+manufacturers_and_exporters,oem,OEM or private label,bool,false,P,true,false,none
+manufacturers_and_exporters,customisation,Customisation capability,concept_list,false,P,true,false,none
+manufacturers_and_exporters,materials,Materials,concept_list,false,P,true,false,none
+manufacturers_and_exporters,moq,Minimum order,text,false,L,false,false,none
+manufacturers_and_exporters,lead_time_days,Lead time (days),number,false,L,false,false,none
+manufacturers_and_exporters,sample_policy,Sample policy,enum,false,L,false,false,none
+manufacturers_and_exporters,payment_terms,Payment terms,concept_list,false,L,false,false,none
+manufacturers_and_exporters,sub_contracting,Sub-contracting,enum,false,L,false,false,none
+manufacturers_and_exporters,audits,Social and buyer audits,identifier_list,false,L,false,false,none
+manufacturers_and_exporters,trade_body_memberships,Trade body memberships,concept_list,false,P,true,false,none
+manufacturers_and_exporters,dealer_network_places,Dealer network cities,place_list,false,P,true,false,none
+manufacturers_and_exporters,warranty_years,Warranty (years),number,false,P,true,false,none
+manufacturers_and_exporters,factory_address,Factory address,text,false,L,false,false,none
+manufacturers_and_exporters,turnover_band,Annual turnover band,enum,false,L,false,false,commercial
+suppliers_distributors_and_equipment,trade_role,Trade role,enum,true,P,true,true,none
+suppliers_distributors_and_equipment,product_categories,Product categories,concept_list,true,P,true,false,none
+suppliers_distributors_and_equipment,brands_distributed,Brands distributed,concept_list,false,P,true,false,none
+suppliers_distributors_and_equipment,territory,Territory covered,place_list,false,P,true,false,none
+suppliers_distributors_and_equipment,hs_codes,HS codes,concept_list,false,L,false,false,none
+suppliers_distributors_and_equipment,import_origins,Import origins,place_list,false,L,true,false,none
+suppliers_distributors_and_equipment,stock_availability,Stock availability,enum,false,P,true,false,none
+suppliers_distributors_and_equipment,moq,Minimum order,text,false,L,false,false,none
+suppliers_distributors_and_equipment,price_basis,Price basis,enum,false,L,false,false,none
+suppliers_distributors_and_equipment,payment_terms,Payment terms,concept_list,false,L,false,false,none
+suppliers_distributors_and_equipment,warehouse_places,Warehouse places,place_list,false,L,false,false,none
+suppliers_distributors_and_equipment,equipment_condition,Equipment condition,enum,false,P,true,false,none
+suppliers_distributors_and_equipment,equipment_types,Equipment types,concept_list,false,P,true,false,none
+suppliers_distributors_and_equipment,equipment_makes,Equipment makes,concept_list,false,P,true,false,none
+suppliers_distributors_and_equipment,rental_rate_from,Rental rate from,money,false,L,false,false,none
+suppliers_distributors_and_equipment,rental_period,Rental period,enum,false,L,false,false,none
+suppliers_distributors_and_equipment,operator_included,Operator included,bool,false,P,true,false,none
+suppliers_distributors_and_equipment,spares_and_service,Spares and service support,bool,false,P,true,false,none
+suppliers_distributors_and_equipment,importer_licence,Importer licence,identifier_list,false,P,false,false,none
+suppliers_distributors_and_equipment,market_name,Wholesale market,text,false,P,true,false,none
+suppliers_distributors_and_equipment,buys_products,Products bought,concept_list,false,P,true,false,none
+suppliers_distributors_and_equipment,typical_order_band,Typical order size band,enum,false,L,false,false,commercial
+suppliers_distributors_and_equipment,dataset_size_band,Dataset size band,enum,false,L,false,false,none
+suppliers_distributors_and_equipment,data_licence_basis,Data licence basis,text,false,P,false,false,none
+b2b_support_and_trade_bodies,service_kind,Service kind,enum,true,P,true,true,none
+b2b_support_and_trade_bodies,scope_of_services,Scope of services,concept_list,true,P,true,false,none
+b2b_support_and_trade_bodies,accreditations,Accreditations,identifier_list,false,P,true,false,none
+b2b_support_and_trade_bodies,accreditation_scope,Accreditation scope,text,false,P,false,false,none
+b2b_support_and_trade_bodies,tests_offered,Tests offered,concept_list,false,P,true,false,none
+b2b_support_and_trade_bodies,turnaround_days,Turnaround (days),number,false,P,false,false,none
+b2b_support_and_trade_bodies,sample_pickup,Sample pickup,bool,false,P,true,false,none
+b2b_support_and_trade_bodies,price_list_from,Typical price from,money,false,L,false,false,none
+b2b_support_and_trade_bodies,price_checked_on,Price checked on,date,false,L,false,false,none
+b2b_support_and_trade_bodies,warehouse_area_sqft,Warehouse area (sqft),number,false,L,false,false,none
+b2b_support_and_trade_bodies,storage_types,Storage types,concept_list,false,P,true,false,none
+b2b_support_and_trade_bodies,print_methods,Print methods,concept_list,false,P,true,false,none
+b2b_support_and_trade_bodies,waste_types,Waste types handled,concept_list,false,P,true,false,none
+b2b_support_and_trade_bodies,waste_licence,Waste licence,identifier_list,false,P,false,false,none
+b2b_support_and_trade_bodies,recycling_capacity_tpd,Recycling capacity (tonnes per day),number,false,L,false,false,none
+b2b_support_and_trade_bodies,member_count,Members,number,false,P,false,false,none
+b2b_support_and_trade_bodies,membership_categories,Membership categories,concept_list,false,P,true,false,none
+b2b_support_and_trade_bodies,sector_focus,Sector focus,concept_list,false,P,true,false,none
+b2b_support_and_trade_bodies,next_edition_date,Next edition date,date,false,P,true,false,none
+government_civic_community,body_type,Body type,enum,true,P,true,true,none
+government_civic_community,jurisdiction,Jurisdiction,place_list,true,P,true,false,none
+government_civic_community,services_provided,Services provided,concept_list,false,P,true,false,none
+government_civic_community,appointment_mode,Appointments,enum,false,P,true,false,none
+government_civic_community,online_services_url,Online services link,text,false,P,false,false,none
+government_civic_community,official_fee_schedule_url,Official fee schedule link,text,false,P,false,false,none
+government_civic_community,public_helpline,Public helpline,text,false,P,false,false,none
+government_civic_community,ngo_registration,NGO or charity registration,identifier_list,false,P,false,false,none
+government_civic_community,mission_summary,Mission,text,false,P,false,false,none
+government_civic_community,programme_areas,Programme areas,concept_list,false,P,true,false,none
+government_civic_community,tax_exempt,Approved non-profit status,bool,false,P,true,false,none
+government_civic_community,zakat_eligible,Accepts zakat,bool,false,P,true,false,none
+government_civic_community,donation_methods,Donation methods,concept_list,false,L,false,false,none
+government_civic_community,annual_expenditure_band,Annual expenditure band,enum,false,L,false,false,commercial
+government_civic_community,volunteer_opportunities,Volunteers needed,bool,false,P,true,false,none
+government_civic_community,mosque_capacity,Mosque capacity,number,false,P,true,false,none
+government_civic_community,mosque_facilities,Mosque facilities,concept_list,false,P,true,false,none
+government_civic_community,jumuah_time,Jumuah time,text,false,P,false,false,none
+government_civic_community,notice_kind,Notice kind,enum,false,P,true,false,personal|child
+government_civic_community,notice_expires_on,Notice expires,date,false,P,false,false,personal
+topic_and_curated_lists,item_kind,Item kind,enum,true,P,true,true,none
+topic_and_curated_lists,topic_ids,Topics,concept_list,true,P,true,false,none
+topic_and_curated_lists,official_url,Official link,text,true,P,false,false,none
+topic_and_curated_lists,creator_or_vendor,Creator or vendor,text,false,P,true,false,none
+topic_and_curated_lists,first_release_date,First release,date,false,P,true,false,none
+topic_and_curated_lists,platforms,Platforms,concept_list,false,P,true,false,none
+topic_and_curated_lists,pricing_model,Pricing model,enum,false,P,true,false,none
+topic_and_curated_lists,starting_price,Starting price,money,false,L,false,false,none
+topic_and_curated_lists,price_checked_on,Price checked on,date,false,L,false,false,none
+topic_and_curated_lists,licence,Licence,text,false,P,true,false,none
+topic_and_curated_lists,available_in,Available in,place_list,false,P,true,false,none
+topic_and_curated_lists,editorial_pick,Editorial pick,bool,false,P,true,false,none
+topic_and_curated_lists,alternatives_to,Alternative to,concept_list,false,P,true,false,none
+topic_and_curated_lists,standard_ids,Standard IDs,identifier_list,false,P,false,false,none
+topic_and_curated_lists,award_name,Award or list name,text,false,P,true,false,none
+topic_and_curated_lists,award_year,Award year,number,false,P,true,false,none
+topic_and_curated_lists,person_role,Public role,text,false,P,true,false,personal
+topic_and_curated_lists,term_start,Term start,date,false,P,false,false,personal
+topic_and_curated_lists,term_end,Term end,date,false,P,false,false,personal
+topic_and_curated_lists,source_citation,Source,text,true,P,false,false,none
+topic_and_curated_lists,affiliate_link,Affiliate link in use,bool,false,I,false,false,none
+personal_lists,item_kind,Item kind,enum,true,O,true,true,none
+personal_lists,item_note,Note,text,false,O,false,false,personal
+personal_lists,item_status,Status,enum,false,O,true,false,none
+personal_lists,quantity,Quantity,number,false,O,false,false,none
+personal_lists,target_price,Target price,money,false,O,false,false,none
+personal_lists,due_date,Due date,date,false,O,true,false,none
+personal_lists,saved_place,Place,place_list,false,O,true,false,none
+personal_lists,date_consumed,Date finished,date,false,O,true,false,none
+personal_lists,personal_rating,My rating,number,false,O,false,false,none
+personal_lists,registry_event_date,Event date,date,false,O,false,false,child
+personal_lists,alumnus_name,Person name,text,false,O,false,false,personal|child
+personal_lists,school_or_class,School or class,text,false,O,true,false,personal|child
+personal_lists,class_year,Class year,number,false,O,true,false,personal
+personal_lists,member_consent_confirmed,Members consented to listing,bool,false,I,false,false,personal|child
